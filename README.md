@@ -1,5 +1,8 @@
 <p align="center">
     <a href="https://en.wikipedia.org/wiki/Business_intelligence" target="_blank" rel="external">
+        <img src="https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/yii.png" height="80px">
+    </a>
+    <a href="https://en.wikipedia.org/wiki/Business_intelligence" target="_blank" rel="external">
         <img src="https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/BI.png" height="80px">
     </a>
     <h1 align="center">Business intelligence dashboard for Yii 2</h1>
