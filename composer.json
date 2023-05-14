@@ -1,0 +1,59 @@
+{
+  "name": "sadi01/yii2-bi-dashboard",
+  "description": "Yii2 Business Intelligence Dashboard",
+  "keywords": [
+    "yii2",
+    "framework",
+    "extension",
+    "bi",
+    "dashboard",
+    "business intelligence"
+  ],
+  "homepage": "https://github.com/Sadi01/yii2-bi-dashboard",
+  "type": "yii2-extension",
+  "license": "BSD-3-Clause",
+  "support": {
+    "issues": "https://github.com/Sadi01/yii2-bi-dashboard/issues?state=open",
+    "source": "https://github.com/Sadi01/yii2-bi-dashboard"
+  },
+  "authors": [
+    {
+      "name": "Sadegh Shafii",
+      "email": "sadshafiei.01@gmail.com",
+      "homepage": "https://github.com/Sadi01"
+    },
+    {
+      "name": "Saeed Baghaee Ravari",
+      "email": "baghaee.sr@gmail.com",
+      "homepage": "https://github.com/baghaee-sr"
+    },
+    {
+      "name": "Firooze Daeizadeh",
+      "email": "firoozedaeizadeh@gmail.com",
+      "homepage": "https://github.com/firoozedaeizadeh"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "yiisoft/yii2": "~2.0.14"
+  },
+  "autoload": {
+    "psr-4": { "sadi01\\bidashboard\\": "src" }
+  },
+  "config": {
+    "process-timeout": 1800,
+    "fxp-asset": {
+      "enabled": false
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ],
+  "extra": {
+    "bootstrap": "sadi01\\bidashboard\\Bootstrap"
+  }
+}
