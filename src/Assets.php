@@ -1,6 +1,6 @@
 <?php
 
-namespace sadi01\bidashboard\assets;
+namespace sadi01\bidashboard;
 
 use yii\web\AssetBundle;
 

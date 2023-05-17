@@ -27,7 +27,7 @@ use  yii\helpers\Url;
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="authentication-login1.html" aria-expanded="false">
                         <i class="mdi mdi-adjust text-info"></i>
-                        <span class="hide-menu">Log Out</span>
+                        <span class="hide-menu">خروج</span>
                     </a>
                 </li>
             </ul>

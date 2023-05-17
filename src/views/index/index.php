@@ -15,10 +15,14 @@ $url = Yii::$app->assetManager->getPublishedUrl('@sadi01/bidashboard/assets');
             <h5 class="font-medium text-uppercase mb-0">داشبورد</h5>
         </div>
         <div class="col-lg-9 col-md-8 col-xs-12 align-self-center">
-            <nav aria-label="breadcrumb" class="mt-2 float-md-right float-left">
+            <nav aria-label="breadcrumb" class="mt-2 float-md-right float-left" style="direction: rtl;">
                 <ol class="breadcrumb mb-0 justify-content-end p-0 bg-light">
-                    <li class="breadcrumb-item"><a href="<?php Url::to(['/bidashboard/index']) ?>">هوش تجاری</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">داشبورد</li>
+                    <li class="breadcrumb-item">
+                        <a href="<?php Url::to(['/bidashboard/index']) ?>">هوش تجاری</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        داشبورد
+                    </li>
                 </ol>
             </nav>
         </div>

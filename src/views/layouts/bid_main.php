@@ -2,23 +2,10 @@
 
 use Yii;
 use yii\bootstrap5\Html;
+use sadi01\bidashboard\BiAssets;
 
-/** @var \yii\web\View $this */
-
-list(, $url) = Yii::$app->assetManager->publish('@sadi01/bidashboard/assets');
-
-$this->registerCssFile($url . '/bidashboard/dist/css/style.min.css');
-
-$this->registerJsFile($url . '/bidashboard/libs/jquery/dist/jquery.min.js');
-$this->registerJsFile($url . '/bidashboard/libs/bootstrap/dist/js/bootstrap.min.js');
-$this->registerJsFile($url . '/bidashboard/dist/js/app.min.js');
-$this->registerJsFile($url . '/bidashboard/dist/js/app.init.mini-sidebar.js');
-$this->registerJsFile($url . '/bidashboard/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js');
-$this->registerJsFile($url . '/bidashboard/dist/js/sidebarmenu.js');
-$this->registerJsFile($url . '/bidashboard/dist/js/custom.min.js');
-$this->registerJsFile($url . '/bidashboard/dist/js/custom.min.js',['position' => $this::POS_READY]);
-
-$this->registerJsFile($url . '/bidashboard/libs/fullcalendar/dist/fullcalendar.min.js');
+$biAssets = BiAssets::register($this);
+$url = $biAssets->baseUrl;
 
 ?>
 <?php $this->beginPage() ?>
@@ -47,13 +34,9 @@ $this->registerJsFile($url . '/bidashboard/libs/fullcalendar/dist/fullcalendar.m
     <div id="main-wrapper">
 
         <!-- Topbar header -->
-        <?php $this->beginContent('@sadi01/bidashboard/views/layouts/topbar.php', ['url' => $url]); ?>
-        <?php $this->endContent(); ?>
-
+        <?= $this->render('@sadi01/bidashboard/views/layouts/topbar.php', ['url' => $url]) ?>
         <!-- Menu Sidebar-->
-        <?php $this->beginContent('@sadi01/bidashboard/views/layouts/sidbar.php', ['url' => $url]); ?>
-        <?php $this->endContent(); ?>
-
+        <?= $this->render('@sadi01/bidashboard/views/layouts/sidebar.php', ['url' => $url]) ?>
 
         <div class="page-wrapper">
             <?php $this->beginBody() ?>
@@ -64,7 +47,6 @@ $this->registerJsFile($url . '/bidashboard/libs/fullcalendar/dist/fullcalendar.m
                 <a href="https://mobit.ir">مبیت</a>
             </footer>
         </div>
-    </div>
 
     </html>
 <?php $this->endPage();
