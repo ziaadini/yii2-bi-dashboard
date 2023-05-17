@@ -6,8 +6,7 @@ use yii\web\AssetBundle;
 
 class AppAsset extends AssetBundle
 {
-    public $sourcePath = '@sadi01/bidashboard/assets/theme';
-
+    public $sourcePath = '@sadi01/bidashboard/assets/bidashboard/';
 
     public $css = [
     ];
