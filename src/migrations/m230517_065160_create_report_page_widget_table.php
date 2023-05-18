@@ -20,7 +20,7 @@ class m230517_065160_create_report_page_widget_table extends Migration
             'shape' => $this->tinyInteger()->notNull(),
             'created_at' => $this->integer()->unsigned()->notNull(),
             'updated_at' => $this->integer()->unsigned()->notNull(),
-            'deleted_at' => $this->integer()->unsigned(),
+            'deleted_at' => $this->integer()->unsigned()->notNull()->defaultValue(0),
             'updated_by' => $this->integer()->unsigned(),
             'created_by' => $this->integer()->unsigned(),
         ]);

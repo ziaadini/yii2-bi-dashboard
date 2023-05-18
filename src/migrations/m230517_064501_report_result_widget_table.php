@@ -16,15 +16,14 @@ class m230517_064501_report_result_widget_table extends Migration
     {
         $this->createTable('{{%widget_result}}', [
             'id' => $this->primaryKey()->unsigned(),
-            'result' => $this->json()->defaultValue(new Expression('(JSON_OBJECT())')),
+            'add_on' => $this->json()->defaultValue(new Expression('(JSON_OBJECT())')),
             'widget_id' => $this->integer()->unsigned()->notNull(),
-            'start_at' => $this->integer()->unsigned()->notNull(),
-            'end_at' => $this->integer()->unsigned()->notNull(),
-            'status' => $this->integer()->unsigned()->notNull(),
-            'parameters' => $this->json()->defaultValue(new Expression('(JSON_OBJECT())')),
+            'start_range' => $this->integer()->unsigned()->notNull(),
+            'end_range' => $this->integer()->unsigned()->notNull(),
+            'status' => $this->tinyInteger()->notNull()->defaultValue(1),
             'updated_at' => $this->integer()->unsigned()->notNull(),
             'created_at' => $this->integer()->unsigned()->notNull(),
-            'deleted_at' => $this->integer()->unsigned()->notNull(),
+            'deleted_at' => $this->integer()->unsigned()->notNull()->defaultValue(0),
             'update_by' => $this->integer()->unsigned()->notNull(),
             'created_by' => $this->integer()->unsigned()->notNull(),
         ]);
