@@ -1,7 +1,7 @@
 <?php
 
 use Yii;
-use yii\bootstrap5\Html;
+use yii\bootstrap4\Html;
 use sadi01\bidashboard\BiAssets;
 
 $biAssets = BiAssets::register($this);
