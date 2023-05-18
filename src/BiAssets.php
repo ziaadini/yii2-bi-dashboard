@@ -19,8 +19,6 @@ class BiAssets extends AssetBundle
         'bidashboard/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js',
         'bidashboard/dist/js/sidebarmenu.js',
         'bidashboard/dist/js/custom.min.js',
-        'bidashboard/libs/fullcalendar/dist/fullcalendar.min.js',
-
     ];
     public $depends = [
         'yii\web\YiiAsset',
