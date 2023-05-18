@@ -24,7 +24,6 @@ class BiAssets extends AssetBundle
     ];
     public $depends = [
         'yii\web\YiiAsset',
-//        'yii\bootstrap5\BootstrapAsset',
         'yii\widgets\ActiveFormAsset',
         'yii\validators\ValidationAsset',
     ];
