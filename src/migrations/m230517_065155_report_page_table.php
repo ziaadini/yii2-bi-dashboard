@@ -2,7 +2,7 @@
 
 
 use yii\db\Migration;
-
+use yii\db\Expression;
 /**
  * Class m230517_065155_page_table
  */
@@ -13,11 +13,12 @@ class m230517_065155_report_page_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('{{%page}}', [
+        $this->createTable('{{%report_page}}', [
             'id' => $this->primaryKey()->unsigned(),
             'title' => $this->string(128)->notNull(),
-            'route' => $this->string(255)->notNull(),
             'status' => $this->tinyInteger()->notNull()->defaultValue(1),
+            'range_type' => $this->tinyInteger(),
+            'add_on' => $this->json()->defaultValue(new Expression('(JSON_OBJECT())')),
             'created_at' => $this->integer()->unsigned()->notNull(),
             'updated_at' => $this->integer()->unsigned()->notNull(),
             'deleted_at' => $this->integer()->unsigned()->notNull()->defaultValue(0),
@@ -31,6 +32,6 @@ class m230517_065155_report_page_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%widget}}');
+        $this->dropTable('{{%report_page}}');
     }
 }

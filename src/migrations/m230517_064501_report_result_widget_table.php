@@ -2,7 +2,7 @@
 
 
 use yii\db\Migration;
-
+use yii\db\Expression;
 
 /**
  * Handles the creation of table `{{%widget}}`.
@@ -14,12 +14,14 @@ class m230517_064501_report_result_widget_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('{{%widget_result}}', [
+        $this->createTable('{{%report_widget_result}}', [
             'id' => $this->primaryKey()->unsigned(),
             'add_on' => $this->json()->defaultValue(new Expression('(JSON_OBJECT())')),
             'widget_id' => $this->integer()->unsigned()->notNull(),
             'start_range' => $this->integer()->unsigned()->notNull(),
             'end_range' => $this->integer()->unsigned()->notNull(),
+            'run_controller' => $this->string(256),
+            'run_action' => $this->string(128),
             'status' => $this->tinyInteger()->notNull()->defaultValue(1),
             'updated_at' => $this->integer()->unsigned()->notNull(),
             'created_at' => $this->integer()->unsigned()->notNull(),
@@ -27,12 +29,12 @@ class m230517_064501_report_result_widget_table extends Migration
             'update_by' => $this->integer()->unsigned()->notNull(),
             'created_by' => $this->integer()->unsigned()->notNull(),
         ]);
-        $this->createIndex('widget_result_ibfk_1', '{{%widget_result}}', ['widget_id']);
+        $this->createIndex('widget_result_ibfk_1', '{{%report_widget_result}}', ['widget_id']);
         $this->addForeignKey(
             'widget_result_ibfk_1',
-            '{{%widget_result}}',
+            '{{%report_widget_result}}',
             ['widget_id'],
-            '{{%widget}}',
+            '{{%report_widget}}',
             ['id'],
             'RESTRICT',
             'RESTRICT'
@@ -44,6 +46,6 @@ class m230517_064501_report_result_widget_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%widget_result}}');
+        $this->dropTable('{{%report_widget_result}}');
     }
 }

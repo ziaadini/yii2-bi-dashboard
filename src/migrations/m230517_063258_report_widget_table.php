@@ -2,6 +2,8 @@
 
 
 use yii\db\Migration;
+use yii\db\Expression;
+
 
 
 /**

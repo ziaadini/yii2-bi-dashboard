@@ -2,7 +2,7 @@
 
 
 use yii\db\Migration;
-
+use yii\db\Expression;
 /**
  * Handles the creation of table `{{%page_widget}}`.
  */
@@ -13,11 +13,13 @@ class m230517_065160_create_report_page_widget_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('{{%page_widget}}', [
+        $this->createTable('{{%report_page_widget}}', [
             'id' => $this->primaryKey()->unsigned(),
             'page_id' => $this->integer()->unsigned()->notNull(),
             'widget_id' => $this->integer()->unsigned()->notNull(),
-            'shape' => $this->tinyInteger()->notNull(),
+            'report_widget_field' => $this->string(64),
+            'report_widget_field_format' => $this->tinyInteger(),
+            'status' => $this->tinyInteger()->notNull()->defaultValue(1),
             'created_at' => $this->integer()->unsigned()->notNull(),
             'updated_at' => $this->integer()->unsigned()->notNull(),
             'deleted_at' => $this->integer()->unsigned()->notNull()->defaultValue(0),
@@ -25,22 +27,22 @@ class m230517_065160_create_report_page_widget_table extends Migration
             'created_by' => $this->integer()->unsigned(),
         ]);
 
-        $this->createIndex('page_widget_ibfk_1', '{{%page_widget}}', 'page_id');
-        $this->createIndex('page_widget_ibfk_2', '{{%page_widget}}', 'widget_id');
+        $this->createIndex('page_widget_ibfk_1', '{{%report_page_widget}}', 'page_id');
+        $this->createIndex('page_widget_ibfk_2', '{{%report_page_widget}}', 'widget_id');
         $this->addForeignKey(
             'page_widget_ibfk_1',
-            '{{%page_widget}}',
+            '{{%report_page_widget}}',
             ['page_id'],
-            '{{%page}}',
+            '{{%report_page}}',
             ['id'],
             'RESTRICT',
             'RESTRICT'
         );
         $this->addForeignKey(
-            'wpage_widget_ibfk_2',
-            '{{%page_widget}}',
+            'page_widget_ibfk_2',
+            '{{%report_page_widget}}',
             ['widget_id'],
-            '{{%widget}}',
+            '{{%report_widget}}',
             ['id'],
             'RESTRICT',
             'RESTRICT'
@@ -52,6 +54,6 @@ class m230517_065160_create_report_page_widget_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%page_widget}}');
+        $this->dropTable('{{%report_page_widget}}');
     }
 }
