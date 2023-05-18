@@ -1,7 +1,7 @@
 <?php
 
 
-use sadi01\bidashboard\migration;
+use yii\db\Migration;
 
 
 /**
