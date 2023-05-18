@@ -6,7 +6,7 @@ use yii\db\Migration;
 /**
  * Class m230517_065155_page_table
  */
-class m230517_065155_page_table extends Migration
+class m230517_065155_report_page_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -30,23 +30,6 @@ class m230517_065155_page_table extends Migration
      */
     public function safeDown()
     {
-        echo "m230517_065155_page_table cannot be reverted.\n";
-
-        return false;
+        $this->dropTable('{{%widget}}');
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m230517_065155_page_table cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

@@ -6,7 +6,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%page_widget}}`.
  */
-class m230517_065160_create_page_widget_table extends Migration
+class m230517_065160_create_report_page_widget_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -17,7 +17,7 @@ class m230517_065160_create_page_widget_table extends Migration
             'id' => $this->primaryKey()->unsigned(),
             'page_id' => $this->integer()->unsigned()->notNull(),
             'widget_id' => $this->integer()->unsigned()->notNull(),
-            'shape_id' => $this->integer()->unsigned()->notNull(),
+            'shape' => $this->tinyInteger()->notNull(),
             'created_at' => $this->integer()->unsigned()->notNull(),
             'updated_at' => $this->integer()->unsigned()->notNull(),
             'deleted_at' => $this->integer()->unsigned(),

@@ -7,7 +7,7 @@ use yii\db\Migration;
 /**
  * Class m230517_063258_widget
  */
-class m230517_063258_widget_table extends Migration
+class m230517_063258_report_widget_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -21,7 +21,7 @@ class m230517_063258_widget_table extends Migration
         $this->createTable('{{%widget}}', [
             'id' => $this->primaryKey()->unsigned()->notNull(),
             'title' => $this->string(255)->notNull(),
-            'description' => $this->string(255)->notNull(),
+            'description' => $this->string(255)->Null(),
             'search_model' => $this->string(255)->notNull(),
             'method' => $this->string(255)->notNull(),
             'status' => $this->tinyInteger()->notNull()->defaultValue(0),
@@ -40,19 +40,5 @@ class m230517_063258_widget_table extends Migration
     {
         $this->dropTable('{{%widget}}');
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m230517_063258_widget cannot be reverted.\n";
-
-        return false;
-    }
-    */
+    
 }

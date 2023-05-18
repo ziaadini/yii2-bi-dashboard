@@ -7,7 +7,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%widget}}`.
  */
-class m230517_064501_result_widget_table extends Migration
+class m230517_064501_report_result_widget_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -16,12 +16,12 @@ class m230517_064501_result_widget_table extends Migration
     {
         $this->createTable('{{%widget_result}}', [
             'id' => $this->primaryKey()->unsigned(),
-            'result' => $this->json(),
+            'result' => $this->json()->defaultValue(new Expression('(JSON_OBJECT())')),
             'widget_id' => $this->integer()->unsigned()->notNull(),
             'start_at' => $this->integer()->unsigned()->notNull(),
             'end_at' => $this->integer()->unsigned()->notNull(),
             'status' => $this->integer()->unsigned()->notNull(),
-            'parameters' => $this->json(),
+            'parameters' => $this->json()->defaultValue(new Expression('(JSON_OBJECT())')),
             'updated_at' => $this->integer()->unsigned()->notNull(),
             'created_at' => $this->integer()->unsigned()->notNull(),
             'deleted_at' => $this->integer()->unsigned()->notNull(),
