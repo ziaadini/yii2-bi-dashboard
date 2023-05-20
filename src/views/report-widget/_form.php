@@ -22,23 +22,23 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'status')->textInput() ?>
 
-    <?= $form->field($model, 'deleted_at')->textInput() ?>
+<!--    --><?php //= $form->field($model, 'deleted_at')->textInput() ?>
 
-    <?= $form->field($model, 'search_model_run_result_view')->textInput(['maxlength' => true]) ?>
+<!--    --><?php //= $form->field($model, 'search_model_run_result_view')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'range_type')->textInput() ?>
+<!--    --><?php //= $form->field($model, 'range_type')->textInput() ?>
 
-    <?= $form->field($model, 'visibility')->textInput() ?>
+<!--    --><?php //= $form->field($model, 'visibility')->textInput() ?>
 
-    <?= $form->field($model, 'add_on')->textInput() ?>
+<!--    --><?php //= $form->field($model, 'add_on')->textInput() ?>
 
-    <?= $form->field($model, 'updated_at')->textInput() ?>
+<!--    --><?php //= $form->field($model, 'updated_at')->textInput() ?>
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
+<!--    --><?php //= $form->field($model, 'created_at')->textInput() ?>
 
-    <?= $form->field($model, 'updated_by')->textInput() ?>
+<!--    --><?php //= $form->field($model, 'updated_by')->textInput() ?>
 
-    <?= $form->field($model, 'created_by')->textInput() ?>
+<!--    --><?php //= $form->field($model, 'created_by')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>

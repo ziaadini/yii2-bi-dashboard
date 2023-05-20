@@ -100,6 +100,7 @@ class ReportWidgetController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $this->layout = 'bid_main';
         return $this->render('update', [
             'model' => $model,
         ]);

@@ -5,12 +5,12 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var sadi01\bidashboard\models\ReportWidget $model */
 
-$this->title = Yii::t('app', 'Update Report Widget: {name}', [
+$this->title = Yii::t('biDashboard', 'Update Report Widget: {name}', [
     'name' => $model->title,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Report Widgets'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'Report Widgets'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('biDashboard', 'Update');
 ?>
 
 <div class="report-widget-update">

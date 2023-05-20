@@ -17,5 +17,30 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Save' => 'ذخیره',
+    'delete' => 'حذف',
+    'Update' => 'ویرایش',
+    'Delete' => 'حذف',
+    'ID' => 'شناسه',
+    'Title' => 'عنوان',
+    'Description' => 'توضیحات',
+    'Search Model Class' => 'کلاس جستجو',
+    'Search Model Method' => 'کلاس متد',
+    'Status' => 'وضعیت',
+    'Deleted At' => 'تاریخ حذف',
+    'Search Model Run Result View' => '',
+    'Range Type' => '',
+    'Visibility' => '',
+    'Add On' => '',
+    'Updated At' => 'آخرین آپدیت',
+    'Created At' => 'تاریخ ایجاد',
+    'Updated By' => 'آپدیت توسط',
+    'Created By' => 'ایجاد توسط',
+    'Are you sure you want to delete this item?' => 'آیا از حذف این مورد اطمینان دارید؟',
+
+    'Create Report Widget' => 'ایجاد ویجت',
+    'Report Widgets' => 'ویجت‌ها',
+    'Update Report Widget: {name}' => 'ویرایش ویجت: {name}',
+
 
 ];

@@ -24,48 +24,49 @@ $this->params['breadcrumbs'][] = $this->title;
                         <i class="mdi mdi-search-web"></i> جستجو
                     </a>
                 </h4>
+
                 <div>
                     <?= Html::a(Yii::t('app', 'Create Report Widget'), ['create'], ['class' => 'btn btn-success']) ?>
+                </div>
+
             </div>
+            <div class="card-body">
+                <?php Pjax::begin(); ?>
+                <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false">
+                    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+                </div>
 
-        </div>
-        <div class="card-body">
-            <?php Pjax::begin(); ?>
-            <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false">
-                <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
-            </div>
+                <?= GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'filterModel' => $searchModel,
+                    'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],
 
-            <?= GridView::widget([
-                'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
-                'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
-
-                    'id',
-                    'title',
-                    'description',
-                    'search_model_class',
-                    'search_model_method',
-                    //'status',
-                    //'deleted_at',
-                    //'search_model_run_result_view',
-                    //'range_type',
-                    //'visibility',
-                    //'add_on',
-                    //'updated_at',
-                    //'created_at',
-                    //'updated_by',
-                    //'created_by',
-                    [
-                        'class' => ActionColumn::className(),
-                        'urlCreator' => function ($action, ReportWidget $model, $key, $index, $column) {
-                            return Url::toRoute([$action, 'id' => $model->id]);
-                        }
+                        'id',
+                        'title',
+                        'description',
+                        'search_model_class',
+                        'search_model_method',
+                        //'status',
+                        //'deleted_at',
+                        //'search_model_run_result_view',
+                        //'range_type',
+                        //'visibility',
+                        //'add_on',
+                        //'updated_at',
+                        //'created_at',
+                        //'updated_by',
+                        //'created_by',
+                        [
+                            'class' => ActionColumn::className(),
+                            'urlCreator' => function ($action, ReportWidget $model, $key, $index, $column) {
+                                return Url::toRoute([$action, 'id' => $model->id]);
+                            }
+                        ],
                     ],
-                ],
-            ]); ?>
+                ]); ?>
 
-            <?php Pjax::end(); ?>
+                <?php Pjax::end(); ?>
+            </div>
         </div>
     </div>
-</div>
