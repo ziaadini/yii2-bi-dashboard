@@ -11,10 +11,6 @@ use yii\db\ActiveQuery;
  */
 class ReportPageQuery extends ActiveQuery
 {
-    /*public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }*/
 
     /**
      * {@inheritdoc}
@@ -32,5 +28,10 @@ class ReportPageQuery extends ActiveQuery
     public function one($db = null)
     {
         return parent::one($db);
+    }
+
+    public function active()
+    {
+        return $this->andWhere('[[status]]=1');
     }
 }

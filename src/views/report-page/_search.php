@@ -18,16 +18,19 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="row">
+        <div class="col-3">
+            <?= $form->field($model, 'title') ?>
+        </div>
+        <div class="col-3">
+            <?= $form->field($model, 'add_on') ?>
+        </div>
+    </div>
+<!--    --><?php //= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'title') ?>
+<!--    --><?php //= $form->field($model, 'status') ?>
 
-    <?= $form->field($model, 'status') ?>
-
-    <?= $form->field($model, 'range_type') ?>
-
-    <?= $form->field($model, 'add_on') ?>
-
+<!--    --><?php //= $form->field($model, 'range_type') ?>
     <?php // echo $form->field($model, 'created_at') ?>
 
     <?php // echo $form->field($model, 'updated_at') ?>

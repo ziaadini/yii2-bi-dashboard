@@ -88,7 +88,8 @@ class ReportPage extends ActiveRecord
      */
     public static function find()
     {
-        return new ReportPageQuery(get_called_class());
+        $query=new ReportPageQuery(get_called_class());
+        return $query->active();
     }
     public static function itemAlias($type, $code = NULL)
     {
@@ -144,6 +145,11 @@ class ReportPage extends ActiveRecord
                 'invokeDeleteEvents' => false
             ],
         ];
+    }
+
+    public function canDelete()
+    {
+        return true;
     }
 
 }

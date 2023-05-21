@@ -20,24 +20,16 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?= $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
             'title',
             'status',
             'range_type',
             'add_on',
-            //'created_at',
-            //'updated_at',
-            //'deleted_at',
-            //'updated_by',
-            //'created_by',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, ReportPage $model, $key, $index, $column) {
