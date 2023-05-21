@@ -43,5 +43,5 @@ How To Use
 -------------
 
 ```php
-
+<?= ReportWidgetWidget::widget(['params' => $params, 'searchModel' => $searchModel]) ?>
 ```

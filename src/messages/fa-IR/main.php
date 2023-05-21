@@ -29,8 +29,8 @@ return [
     'Status' => 'وضعیت',
     'Deleted At' => 'تاریخ حذف',
     'Search Model Run Result View' => '',
-    'Range Type' => '',
-    'Visibility' => '',
+    'Range Type' => 'دوره نمایش',
+    'Visibility' => 'قابل نمایش',
     'Add On' => '',
     'Updated At' => 'آخرین آپدیت',
     'Created At' => 'تاریخ ایجاد',
@@ -41,6 +41,9 @@ return [
     'Create Report Widget' => 'ایجاد ویجت',
     'Report Widgets' => 'ویجت‌ها',
     'Update Report Widget: {name}' => 'ویرایش ویجت: {name}',
+
+    'daily' => 'روزانه',
+    'monthly' => 'ماهانه',
 
 
 ];

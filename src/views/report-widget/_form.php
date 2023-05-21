@@ -9,36 +9,29 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="report-widget-form">
+    <?php $form = ActiveForm::begin(['action' => ['/bidashboard/report-widget/create']]); ?>
 
-    <?php $form = ActiveForm::begin(); ?>
+    <div class="row">
+        <div class="col-sm-6">
+            <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'range_type')->dropDownList([0 => (Yii::t('biDashboard', 'daily')), 1 => (Yii::t('biDashboard', 'monthly'))]) ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'search_model_class')->hiddenInput(['value' => $searchModel::class])->label(false) ?>
+    <?= $form->field($model, 'search_model_method')->hiddenInput(['value' => 'search'])->label(false) ?>
+    <?php
+    foreach ($params as $Pkey => $Pvalue) {
+        echo $form->field($model, 'params[' . $Pkey . ']')->hiddenInput(['value' => $Pvalue])->label(false);
+    }
 
-    <?= $form->field($model, 'search_model_class')->textInput() ?>
-
-    <?= $form->field($model, 'search_model_method')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
-
-<!--    --><?php //= $form->field($model, 'deleted_at')->textInput() ?>
-
-<!--    --><?php //= $form->field($model, 'search_model_run_result_view')->textInput(['maxlength' => true]) ?>
-
-<!--    --><?php //= $form->field($model, 'range_type')->textInput() ?>
-
-<!--    --><?php //= $form->field($model, 'visibility')->textInput() ?>
-
-<!--    --><?php //= $form->field($model, 'add_on')->textInput() ?>
-
-<!--    --><?php //= $form->field($model, 'updated_at')->textInput() ?>
-
-<!--    --><?php //= $form->field($model, 'created_at')->textInput() ?>
-
-<!--    --><?php //= $form->field($model, 'updated_by')->textInput() ?>
-
-<!--    --><?php //= $form->field($model, 'created_by')->textInput() ?>
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>

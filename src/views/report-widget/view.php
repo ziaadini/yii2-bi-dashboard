@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'search_model_run_result_view',
                             'range_type',
                             'visibility',
-                            'add_on',
+//                            'add_on',
                             'updated_at',
                             'created_at',
                             'updated_by',

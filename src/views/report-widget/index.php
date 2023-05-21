@@ -24,11 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         <i class="mdi mdi-search-web"></i> جستجو
                     </a>
                 </h4>
-
-                <div>
-                    <?= Html::a(Yii::t('app', 'Create Report Widget'), ['create'], ['class' => 'btn btn-success']) ?>
-                </div>
-
             </div>
             <div class="card-body">
                 <?php Pjax::begin(); ?>
@@ -41,15 +36,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     'filterModel' => $searchModel,
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-
                         'id',
                         'title',
                         'description',
                         'search_model_class',
                         'search_model_method',
-                        //'status',
-                        //'deleted_at',
-                        //'search_model_run_result_view',
                         //'range_type',
                         //'visibility',
                         //'add_on',

@@ -22,7 +22,7 @@ class ReportWidgetController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -70,10 +70,20 @@ class ReportWidgetController extends Controller
     public function actionCreate()
     {
         $model = new ReportWidget();
-
+        $request = $this->request->post();
+        $add_on = [];
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                $model->status = 1;
+                if (key_exists('params',$request['ReportWidget'])){
+                    $params = array_filter($request['ReportWidget']['params']);
+                    $params = json_encode($params);
+                    $add_on['params'] = json_decode($params);
+                    $model->add_on = $add_on;
+                }
+                if ($model->save()){
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
         } else {
             $model->loadDefaultValues();
