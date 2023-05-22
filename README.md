@@ -43,5 +43,7 @@ How To Use
 -------------
 
 ```php
+php yii migrate --migrationPath=@sadi01/bidashboard/migrations
+
 <?= ReportWidgetWidget::widget(['queryParams' => $queryParams, 'searchModel' => $searchModel]) ?>
 ```
