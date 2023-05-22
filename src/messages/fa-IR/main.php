@@ -28,7 +28,7 @@ return [
     'Search Model Method' => 'کلاس متد',
     'Status' => 'وضعیت',
     'Deleted At' => 'تاریخ حذف',
-    'Search Model Run Result View' => '',
+    'Search Model Run Result View' => 'صفحه نمایش مدل جستجو',
     'Range Type' => 'دوره نمایش',
     'Visibility' => 'قابل نمایش',
     'Updated At' => 'آخرین آپدیت',
@@ -56,4 +56,7 @@ return [
     'attribute' => 'ویژگی',
     'value' => 'مقدار',
 
+    'Report Model Classes' => 'مدل کلاس های سیستم',
+    'Create Report Model Class' => 'ایجاد مدل کلاس',
+    'Update Report Model Class: {name}' => 'ویرایش مدل کلاس: {name}',
 ];

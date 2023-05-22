@@ -1,7 +1,5 @@
 <?php
 
-namespace sadi01\bidashboard\migrations;
-
 use yii\db\Migration;
 
 class m230522_094157_create_table_report_model_class extends Migration
@@ -17,6 +15,7 @@ class m230522_094157_create_table_report_model_class extends Migration
             '{{%report_model_class}}',
             [
                 'id' => $this->primaryKey()->unsigned(),
+                'title' => $this->string(128)->notNull(),
                 'search_model_class' => $this->string(128)->notNull(),
                 'search_model_method' => $this->string(128),
                 'search_model_run_result_view' => $this->string(128),

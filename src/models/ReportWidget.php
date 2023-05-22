@@ -153,8 +153,6 @@ class ReportWidget extends \yii\db\ActiveRecord
             ],
         ];
 
-//        dd($_items,$type,$code);
-
         if (isset($code))
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
         else
