@@ -2,12 +2,12 @@
 
 namespace sadi01\bidashboard\controllers;
 
-use yii\web\Controller;
-
-class IndexController extends Controller
+class DefaultController extends \yii\web\Controller
 {
-    public function actionIndex(){
+    public function actionIndex()
+    {
         $this->layout = 'bid_main';
         return $this->render('index');
     }
+
 }
