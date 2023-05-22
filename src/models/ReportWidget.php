@@ -2,6 +2,7 @@
 
 namespace sadi01\bidashboard\models;
 
+use app\models\search\InvoiceSearch;
 use Yii;
 
 /**
@@ -125,4 +126,44 @@ class ReportWidget extends \yii\db\ActiveRecord
 
         return parent::beforeSave($insert);
     }
+
+
+    const STATUS_ACTIVE = 1;
+    const STATUS_DELETED = 0;
+
+//    ------------ SEARCH_MODEL_CLASS
+    const SEARCH_MODEL_CLASS_INVOICE = 1;
+
+    const RANGE_TYPE_DAILY = 1;
+    const RANGE_TYPE_MONTHLY = 2;
+    const VISIBILITY_PUBLIC = 1;
+    const VISIBILITY_PRIVATE = 2;
+
+    public static function itemAlias($type, $code = NULL)
+    {
+        $_items = [
+            'Status' => [
+                self::STATUS_ACTIVE => Yii::t('biDashboard', 'Active'),
+                self::STATUS_DELETED => Yii::t('biDashboard', 'Deleted')
+            ],
+            'SearchModelClass' => [
+                self::SEARCH_MODEL_CLASS_INVOICE => InvoiceSearch::class,
+            ],
+            'RangeTypes' => [
+                self::RANGE_TYPE_DAILY => Yii::t('biDashboard', 'Daily'),
+                self::RANGE_TYPE_MONTHLY => Yii::t('biDashboard', 'Monthly'),
+            ],
+            'Visibility' => [
+                self::VISIBILITY_PUBLIC => Yii::t('biDashboard', 'Public'),
+                self::VISIBILITY_PRIVATE => Yii::t('biDashboard', 'Private'),
+            ],
+        ];
+
+        if (isset($code))
+            return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
+        else
+            return isset($_items[$type]) ? $_items[$type] : false;
+    }
+
+
 }

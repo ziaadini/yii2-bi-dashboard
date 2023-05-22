@@ -21,7 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= Html::encode($this->title) ?>
                     </h4>
                     <div>
-                        <?= Html::a(Yii::t('biDashboard', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                         <?= Html::a(Yii::t('biDashboard', 'Delete'), ['delete', 'id' => $model->id], [
                             'class' => 'btn btn-danger',
                             'data' => [
@@ -38,18 +37,33 @@ $this->params['breadcrumbs'][] = $this->title;
                             'id',
                             'title',
                             'description',
-                            'search_model_class',
+                            [
+                                'attribute' => 'search_model_class',
+                                'value' => function ($data) {
+                                    return $data->itemAlias('SearchModelClass',$data->search_model_class);
+                                },
+                            ],
                             'search_model_method',
-                            'status',
-                            'deleted_at',
-                            'search_model_run_result_view',
-                            'range_type',
-                            'visibility',
-//                            'add_on',
+                            [
+                                'attribute' => 'status',
+                                'value' => function ($data) {
+                                    return $data->itemAlias('Status',$data->status);
+                                },
+                            ],
+                            [
+                                'attribute' => 'range_type',
+                                'value' => function ($data) {
+                                    return $data->itemAlias('RangeTypes',$data->range_type);
+                                },
+                            ],
+                            [
+                                'attribute' => 'visibility',
+                                'value' => function ($data) {
+                                    return $data->itemAlias('Visibility',$data->visibility);
+                                },
+                            ],
                             'updated_at',
                             'created_at',
-                            'updated_by',
-                            'created_by',
                         ],
                     ]) ?>
                 </div>

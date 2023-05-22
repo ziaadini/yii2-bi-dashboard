@@ -20,14 +20,14 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="card-header d-flex justify-content-between">
                 <h4 class="panel-title">
                     <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion"
-                       href="#collapseOne" aria-expanded="false">
+                       href="#collapseSearch" aria-expanded="false">
                         <i class="mdi mdi-search-web"></i> جستجو
                     </a>
                 </h4>
             </div>
             <div class="card-body">
                 <?php Pjax::begin(); ?>
-                <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false">
+                <div id="collapseSearch" class="panel-collapse collapse" aria-expanded="false">
                     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
                 </div>
 
@@ -41,15 +41,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'description',
                         'search_model_class',
                         'search_model_method',
-                        //'range_type',
-                        //'visibility',
-                        //'add_on',
-                        //'updated_at',
-                        //'created_at',
-                        //'updated_by',
-                        //'created_by',
                         [
-                            'class' => ActionColumn::className(),
+                            'class' => ActionColumn::class,
+                            'template' => '{view} {delete}',
                             'urlCreator' => function ($action, ReportWidget $model, $key, $index, $column) {
                                 return Url::toRoute([$action, 'id' => $model->id]);
                             }

@@ -11,7 +11,7 @@ use yii\helpers\Html;
 class ReportWidgetWidget extends Widget
 {
 
-    public $params;
+    public $queryParams;
     public $searchModel;
 
     public function init()
@@ -25,7 +25,7 @@ class ReportWidgetWidget extends Widget
 
         return $this->render('ReportWidgetWidget',[
             'model' => $model,
-            'params' => $this->params,
+            'queryParams' => $this->queryParams,
             'searchModel' => $this->searchModel,
         ]);
     }

@@ -14,23 +14,24 @@ use yii\widgets\ActiveForm;
     <div class="row">
         <div class="col-sm-6">
             <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-
         </div>
         <div class="col-sm-6">
             <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'range_type')->dropDownList([0 => (Yii::t('biDashboard', 'daily')), 1 => (Yii::t('biDashboard', 'monthly'))]) ?>
+            <?= $form->field($model, 'range_type')->dropDownList([1 => (Yii::t('biDashboard', 'Daily')), 2 => (Yii::t('biDashboard', 'Monthly'))]) ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'visibility')->dropDownList([1 => (Yii::t('biDashboard', 'Public')), 2 => (Yii::t('biDashboard', 'Private'))]) ?>
         </div>
     </div>
 
     <?= $form->field($model, 'search_model_class')->hiddenInput(['value' => $searchModel::class])->label(false) ?>
     <?= $form->field($model, 'search_model_method')->hiddenInput(['value' => 'search'])->label(false) ?>
     <?php
-    foreach ($params as $Pkey => $Pvalue) {
+    foreach ($queryParams as $Pkey => $Pvalue) {
         echo $form->field($model, 'params[' . $Pkey . ']')->hiddenInput(['value' => $Pvalue])->label(false);
     }
-
     ?>
 
     <div class="form-group">

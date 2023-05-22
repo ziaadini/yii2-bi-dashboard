@@ -23,7 +23,7 @@ Modal::begin([
 <?= $this->render('@sadi01/bidashboard/views/report-widget/_form', [
     'model' => $model,
     'searchModel' => $searchModel,
-    'params' => $params
+    'queryParams' => $queryParams
 ]) ?>
 
 <div class="table-responsive">
@@ -35,7 +35,7 @@ Modal::begin([
         </tr>
         </thead>
         <tbody>
-        <?php foreach ($params as $Pkey => $Pvalue): ?>
+        <?php foreach ($queryParams as $Pkey => $Pvalue): ?>
             <tr>
                 <td>
                     <?= Yii::t('app', $Pkey) ?>

@@ -31,7 +31,6 @@ return [
     'Search Model Run Result View' => '',
     'Range Type' => 'دوره نمایش',
     'Visibility' => 'قابل نمایش',
-    'Add On' => '',
     'Updated At' => 'آخرین آپدیت',
     'Created At' => 'تاریخ ایجاد',
     'Updated By' => 'آپدیت توسط',
@@ -42,8 +41,15 @@ return [
     'Report Widgets' => 'ویجت‌ها',
     'Update Report Widget: {name}' => 'ویرایش ویجت: {name}',
 
-    'daily' => 'روزانه',
-    'monthly' => 'ماهانه',
-
+    'Daily' => 'روزانه',
+    'Monthly' => 'ماهانه',
+    'visibility' => 'نمایش',
+    'invisibility' => 'غیر قابل نمایش',
+    'Public' => 'عمومی',
+    'Private' => 'خصوصی',
+    'Active' => 'فعال',
+    'Deleted' => 'حذف شده',
+    'Search' => 'جستجو',
+    'Reset' => 'ریست',
 
 ];
