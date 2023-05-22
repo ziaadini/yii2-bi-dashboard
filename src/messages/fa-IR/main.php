@@ -52,4 +52,8 @@ return [
     'Search' => 'جستجو',
     'Reset' => 'ریست',
 
+    'add widget' => 'افزودن ویجت',
+    'attribute' => 'ویژگی',
+    'value' => 'مقدار',
+
 ];

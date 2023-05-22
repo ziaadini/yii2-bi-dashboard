@@ -5,15 +5,21 @@ namespace sadi01\bidashboard\components\views;
 use yii\bootstrap4\Modal;
 use yii\helpers\Url;
 use yii\web\View;
+use yii\widgets\Pjax;
 use Yii;
 
 $this->title = 'Bi dashboard widget';
+if (!$queryParams){
+    return false;
+}
+Pjax::begin(['id' => 'modal_create_bidashboard_widget']);
 
 Modal::begin([
-    'title' => '<h2>افزودن ویجت</h2>',
+    'title' => Yii::t('biDashboard', 'add widget'),
+    'id' => 'bidashboard_modal',
     'toggleButton' => [
-        'label' => 'افزودن ویجت',
-        'class' => 'btn btn-info'
+        'label' => Yii::t('biDashboard', 'add widget'),
+        'class' => 'btn btn-info',
     ],
     'centerVertical' => false,
     'size' => 'modal-xl',
@@ -25,13 +31,12 @@ Modal::begin([
     'searchModel' => $searchModel,
     'queryParams' => $queryParams
 ]) ?>
-
 <div class="table-responsive">
     <table class="table table-striped table-bordered">
         <thead>
         <tr>
-            <th>ویژگی</th>
-            <th>مقدار</th>
+            <th><?= Yii::t('biDashboard', 'attribute') ?></th>
+            <th><?= Yii::t('biDashboard', 'value') ?></th>
         </tr>
         </thead>
         <tbody>
@@ -50,3 +55,4 @@ Modal::begin([
 </div>
 
 <?php Modal::end(); ?>
+<?php Pjax::end(); ?>

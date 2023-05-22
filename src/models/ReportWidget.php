@@ -32,10 +32,20 @@ class ReportWidget extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+
     public $params;
-    public $class_method_number = [
-      'app\models\search\InvoiceSearch' => 1,
-    ];
+
+    const STATUS_ACTIVE = 1;
+    const STATUS_DELETED = 0;
+
+//  SEARCH_MODEL_CLASS
+    const SEARCH_MODEL_CLASS_INVOICE = 1;
+
+    const RANGE_TYPE_DAILY = 1;
+    const RANGE_TYPE_MONTHLY = 2;
+    const VISIBILITY_PUBLIC = 1;
+    const VISIBILITY_PRIVATE = 2;
+
     public static function tableName()
     {
         return 'report_widget';
@@ -126,18 +136,6 @@ class ReportWidget extends \yii\db\ActiveRecord
 
         return parent::beforeSave($insert);
     }
-
-
-    const STATUS_ACTIVE = 1;
-    const STATUS_DELETED = 0;
-
-//    ------------ SEARCH_MODEL_CLASS
-    const SEARCH_MODEL_CLASS_INVOICE = 1;
-
-    const RANGE_TYPE_DAILY = 1;
-    const RANGE_TYPE_MONTHLY = 2;
-    const VISIBILITY_PUBLIC = 1;
-    const VISIBILITY_PRIVATE = 2;
 
     public static function itemAlias($type, $code = NULL)
     {
