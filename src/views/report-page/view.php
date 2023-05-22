@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use sa\widgets\DetailView;
+
 
 /** @var yii\web\View $this */
 /** @var \ReportPage $model */

@@ -15,6 +15,9 @@ class Bootstrap implements BootstrapInterface
      */
     public function bootstrap($app)
     {
+        $app->set('pdate', [
+            'class' => \sadi01\bidashboard\components\Pdate::class,
+        ]);
         if (!isset($app->get('i18n')->translations['biDashboard*'])) {
             $app->get('i18n')->translations['biDashboard*'] = [
                 'class' => PhpMessageSource::className(),
