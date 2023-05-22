@@ -19,10 +19,10 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'range_type')->dropDownList([1 => (Yii::t('biDashboard', 'Daily')), 2 => (Yii::t('biDashboard', 'Monthly'))]) ?>
+            <?= $form->field($model, 'range_type')->dropDownList($model->itemAlias('RangeTypes')) ?>
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'visibility')->dropDownList([1 => (Yii::t('biDashboard', 'Public')), 2 => (Yii::t('biDashboard', 'Private'))]) ?>
+            <?= $form->field($model, 'visibility')->dropDownList($model->itemAlias('Visibility')) ?>
         </div>
     </div>
 

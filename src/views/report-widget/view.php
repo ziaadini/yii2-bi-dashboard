@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute' => 'search_model_class',
                                 'value' => function ($data) {
-                                    return $data->itemAlias('SearchModelClass',$data->search_model_class);
+                                    return $data->search_model_class;
                                 },
                             ],
                             'search_model_method',

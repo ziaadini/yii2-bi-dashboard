@@ -128,11 +128,7 @@ class ReportWidget extends \yii\db\ActiveRecord
         $this->updated_at = $nowDate->getTimestamp();
         $this->updated_by = Yii::$app->user->id;
 
-        if(key_exists($this->search_model_class,$this->class_method_number)){
-            $this->search_model_class = $this->class_method_number[$this->search_model_class];
-        }else{
-            $this->search_model_class = null;
-        }
+        $this->search_model_class = $this->itemAlias('SearchModelClass',$this->search_model_class);
 
         return parent::beforeSave($insert);
     }
@@ -145,7 +141,7 @@ class ReportWidget extends \yii\db\ActiveRecord
                 self::STATUS_DELETED => Yii::t('biDashboard', 'Deleted')
             ],
             'SearchModelClass' => [
-                self::SEARCH_MODEL_CLASS_INVOICE => InvoiceSearch::class,
+                'app\models\search\InvoiceSearch' => self::SEARCH_MODEL_CLASS_INVOICE,
             ],
             'RangeTypes' => [
                 self::RANGE_TYPE_DAILY => Yii::t('biDashboard', 'Daily'),
@@ -156,6 +152,8 @@ class ReportWidget extends \yii\db\ActiveRecord
                 self::VISIBILITY_PRIVATE => Yii::t('biDashboard', 'Private'),
             ],
         ];
+
+//        dd($_items,$type,$code);
 
         if (isset($code))
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
