@@ -16,7 +16,7 @@ use  yii\helpers\Url;
                     </a>
                     <ul aria-expanded="false" class="collapse  first-level">
                         <li class="sidebar-item">
-                            <a href="<?= Url::to(['/bidashboard/index']) ?>" class="sidebar-link">
+                            <a href="<?= Url::to(['/bidashboard']) ?>" class="sidebar-link">
                                 <i class="mdi mdi-adjust"></i>
                                 <span class="hide-menu"> هوش تجاری </span>
                             </a>
