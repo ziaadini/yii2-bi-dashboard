@@ -13,6 +13,7 @@ use yii\filters\VerbFilter;
  */
 class ReportWidgetController extends Controller
 {
+    public $layout = 'bid_main';
     /**
      * @inheritDoc
      */
@@ -41,7 +42,6 @@ class ReportWidgetController extends Controller
         $searchModel = new SearchReportWidget();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        $this->layout = 'bid_main';
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -56,7 +56,6 @@ class ReportWidgetController extends Controller
      */
     public function actionView($id)
     {
-        $this->layout = 'bid_main';
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -81,6 +80,7 @@ class ReportWidgetController extends Controller
                     $add_on['params'] = json_decode($params);
                     $model->add_on = $add_on;
                 }
+//                dd($model);
                 if ($model->save()){
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
@@ -89,7 +89,6 @@ class ReportWidgetController extends Controller
             $model->loadDefaultValues();
         }
 
-        $this->layout = 'bid_main';
         return $this->render('create', [
             'model' => $model,
         ]);

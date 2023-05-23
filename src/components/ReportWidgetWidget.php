@@ -13,6 +13,8 @@ class ReportWidgetWidget extends Widget
 
     public $queryParams;
     public $searchModel;
+    public $searchRoute;
+    public $searchModelFormName;
 
     public function init()
     {
@@ -27,6 +29,8 @@ class ReportWidgetWidget extends Widget
             'model' => $model,
             'queryParams' => $this->queryParams,
             'searchModel' => $this->searchModel,
+            'searchRoute' => $this->searchRoute,
+            'searchModelFormName' => $this->searchModelFormName,
         ]);
     }
 

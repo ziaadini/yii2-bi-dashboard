@@ -2,7 +2,6 @@
 
 namespace sadi01\bidashboard\models;
 
-use app\models\search\InvoiceSearch;
 use Yii;
 
 /**
@@ -11,7 +10,7 @@ use Yii;
  * @property int $id
  * @property string $title
  * @property string|null $description
- * @property int|null $search_model_class
+ * @property string|null $search_model_class
  * @property string $search_model_method
  * @property int $status
  * @property int $deleted_at
@@ -23,6 +22,8 @@ use Yii;
  * @property int $created_at
  * @property int $updated_by
  * @property int $created_by
+ * @property string $search_route
+ * @property string $search_model_form_name
  *
  * @property ReportPageWidget[] $reportPageWidgets
  * @property ReportWidgetResult[] $reportWidgetResults
@@ -60,8 +61,8 @@ class ReportWidget extends \yii\db\ActiveRecord
             [['title', 'search_model_method'], 'required'],
             [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by'], 'integer'],
             [['add_on','search_model_class'], 'safe'],
-            [['title', 'search_model_method', 'search_model_run_result_view'], 'string', 'max' => 128],
-            [['description'], 'string', 'max' => 255],
+            [['title', 'search_model_method', 'search_model_run_result_view','search_route', 'search_model_form_name'], 'string', 'max' => 128],
+            [['description', 'search_model_class'], 'string', 'max' => 255],
         ];
     }
 
@@ -86,6 +87,8 @@ class ReportWidget extends \yii\db\ActiveRecord
             'created_at' => Yii::t('biDashboard', 'Created At'),
             'updated_by' => Yii::t('biDashboard', 'Updated By'),
             'created_by' => Yii::t('biDashboard', 'Created By'),
+            'search_route' => Yii::t('biDashboard', 'Search Route'),
+            'search_model_form_name' => Yii::t('biDashboard', 'Search Model Form Name'),
         ];
     }
 
@@ -128,8 +131,6 @@ class ReportWidget extends \yii\db\ActiveRecord
         $this->updated_at = $nowDate->getTimestamp();
         $this->updated_by = Yii::$app->user->id;
 
-        $this->search_model_class = $this->itemAlias('SearchModelClass',$this->search_model_class);
-
         return parent::beforeSave($insert);
     }
 
@@ -139,9 +140,6 @@ class ReportWidget extends \yii\db\ActiveRecord
             'Status' => [
                 self::STATUS_ACTIVE => Yii::t('biDashboard', 'Active'),
                 self::STATUS_DELETED => Yii::t('biDashboard', 'Deleted')
-            ],
-            'SearchModelClass' => [
-                'app\models\search\InvoiceSearch' => self::SEARCH_MODEL_CLASS_INVOICE,
             ],
             'RangeTypes' => [
                 self::RANGE_TYPE_DAILY => Yii::t('biDashboard', 'Daily'),

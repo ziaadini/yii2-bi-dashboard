@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use sadi01\bidashboard\models\ReportModelClass;
 /** @var yii\web\View $this */
 /** @var sadi01\bidashboard\models\ReportWidget $model */
 
@@ -37,12 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'id',
                             'title',
                             'description',
-                            [
-                                'attribute' => 'search_model_class',
-                                'value' => function ($data) {
-                                    return $data->search_model_class;
-                                },
-                            ],
+                            'search_model_class',
                             'search_model_method',
                             [
                                 'attribute' => 'status',
