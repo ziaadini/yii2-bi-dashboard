@@ -34,7 +34,7 @@ class ReportPage extends ActiveRecord
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 2;
     const RANGE_DAY = 1;
-    const RANGE_MUNTH = 0;
+    const RANGE_MONTH = 0;
     public static function tableName()
     {
         return 'report_page';
@@ -94,9 +94,9 @@ class ReportPage extends ActiveRecord
     public static function itemAlias($type, $code = NULL)
     {
         $_items = [
-            'RANGE'=>[
+            'range_type' => [
                 self::RANGE_DAY => Yii::t('app', 'DAY'),
-                self::RANGE_MUNTH => Yii::t('app', 'MONTH'),
+                self::RANGE_MONTH => Yii::t('app', 'MONTH'),
             ],
             'Status' => [
                 self::STATUS_DELETED => Yii::t('app', 'DELETED'),

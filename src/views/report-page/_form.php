@@ -11,13 +11,13 @@ use yii\widgets\ActiveForm;
 
 <div class="report-page-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'page-form']); ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'status')->dropDownList(ReportPage::itemAlias('Status'),['prompt'=>Yii::t('app','Select Status')]) ?>
 
-    <?= $form->field($model, 'range_type')->dropDownList(ReportPage::itemAlias('RANGE'),['prompt'=>Yii::t('app','Select RANGE')]) ?>
+    <?= $form->field($model, 'range_type')->dropDownList(ReportPage::itemAlias('range_type'),['prompt'=>Yii::t('app','Select RANGE')]) ?>
 
     <?= $form->field($model, 'add_on')->textInput() ?>
 

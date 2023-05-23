@@ -1,6 +1,8 @@
 <?php
 
 use sadi01\bidashboard\models\ReportPage;
+
+
 use yii\bootstrap4\Modal;
 use yii\grid\ActionColumn;
 
@@ -13,58 +15,117 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('app', 'Report Pages');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="report-page-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="page-content container-fluid text-left pt-5">
+    <?php Pjax::begin(['id' => 'p-jax-report-page', 'enablePushState' => false]); ?>
 
-    <p>
-        <?= Html::button(Yii::t('app', 'Create Report Page'), ['class' => 'btn btn-success', 'id' => 'create-report-page-btn']) ?>
-    </p>
-
-    <?php Pjax::begin(); ?>
-    <?= $this->render('_search', ['model' => $searchModel]); ?>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'title',
-            'status',
-            'range_type',
-            'add_on',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, ReportPage $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                }
-            ],
+    <?php
+    Modal::begin([
+        'headerOptions' => ['id' => 'modalPjaxHeader'],
+        'id' => 'modal-pjax',
+        'bodyOptions' => [
+            'id' => 'modalPjaxContent',
+            'class' => 'p-3',
+            'data' => ['show-preloader' => 0]
         ],
+        'options' => ['tabindex' => false]
     ]); ?>
 
-    <?php Pjax::end(); ?>
+    <?php Modal::end() ?>
+    <?= Html::a(Yii::t('app', 'create'), "javascript:void(0)",
+        [
+            'data-pjax' => '0',
+            'class' => "btn btn-primary",
+            'data-size' => 'modal-xl',
+            'data-title' => Yii::t('app', 'create'),
+            'data-toggle' => 'modal',
+            'data-target' => '#modal-pjax',
+            'data-url' => Url::to(['report-page/create']),
+            'data-handle-form-submit' => 1,
+            'data-show-loading' => 0,
+            'data-reload-pjax-container' => 'p-jax-report-page',
+            'data-reload-pjax-container-on-show' => 0
+        ]) ?>
+    <div class="work-report-index card">
+        <div class="panel-group m-bot20" id="accordion">
+            <div class="card-header d-flex justify-content-between">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion"
+                       href="#collapseSearch" aria-expanded="false">
+                        <i class="mdi mdi-search-web"></i> جستجو
+                    </a>
+                </h4>
+                <div>
+                    <?= Html::a(Yii::t('app', 'Create Report Page'), ['create'], ['class' => 'btn btn-success']) ?>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="modal fade top-modal-with-space" id="quickAccessModal" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content-wrap">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title">
+                                        <span class="modal-title fas fa-rabbit-fast fa-2x text-danger"></span>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="accordionHelp" class="card material-card mt-3 mb-0 panel-group">
+                                        <div id="collapseHelp" class="card-body panel-collapse collapse"
+                                             aria-expanded="false">
+                                            <div class="feed-widget d-flex justify-content-between">
+                                                <ul class="feed-body list-style-none w-100">
+                                                    <li class="feed-item d-flex align-items-center justify-content-between py-2">
+                                                    </li>
+                                                    <li class="feed-item d-flex align-items-center justify-content-between py-2">
 
+                                                    </li>
+                                                    <hr>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="collapseSearch" class="panel-collapse collapse" aria-expanded="false">
+                  <?= $this->render('_search', ['model' => $searchModel]); ?>
+                </div>
+
+                <?= GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],
+                        'title',
+                        [
+                            'attribute' => 'status',
+                            'value' => function ($model) {
+
+                                return ReportPage::itemAlias('Status',$model->status);
+                            },
+                        ],
+                        [
+                            'attribute' => 'range_type',
+                            'value' => function ($model) {
+                                return ReportPage::itemAlias('range_type',$model->range_type);
+                            },
+                        ],
+                        'add_on',
+                        [
+                            'class' => ActionColumn::class,
+                            'urlCreator' => function ($action, ReportPage $model, $key, $index, $column) {
+                                return Url::toRoute([$action, 'id' => $model->id]);
+                            }
+                        ],
+                    ],
+                ]); ?>
+
+            </div>
+        </div>
+    </div>
+<?php Pjax::end(); ?>
 </div>
-
-<?php
-Modal::begin([
-    'id' => 'create-report-page-modal',
-]);
-
-Pjax::begin(['id' => 'create-report-page-pjax']);
-echo "jjdjdd";
-Pjax::end();
-
-Modal::end();
-
-$this->registerJs('
-    $(document).on("click", "#create-report-page-btn", function(e) {
-        e.preventDefault();
-        $("#create-report-page-modal").modal("show");
-    });
-
-    $(document).on("submit", "#create-report-page-pjax form", function(e) {
-        e.preventDefault();
-        $.pjax.submit(event, "#create-report-page-pjax");
-    });
-');
-?>

@@ -3,8 +3,10 @@
 namespace sadi01\bidashboard\controllers;
 
 
+
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageSearch;
+use sadi01\bidashboard\traits\AjaxValidationTrait;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -15,6 +17,7 @@ use yii\web\NotFoundHttpException;
  */
 class ReportPageController extends Controller
 {
+    use AjaxValidationTrait;
     /**
      * @inheritDoc
      */
@@ -70,19 +73,23 @@ class ReportPageController extends Controller
      */
     public function actionCreate()
     {
+
         $model = new ReportPage();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
+            if ($model->load($this->request->post()) && $model->validate()) {
                 $model->save(false);
-                var_dump($model->getErrors());
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->asJson([
+                    'success' => true,
+                    'msg' => Yii::t("app", 'Success')
+                ]);
+
             }
         } else {
             $model->loadDefaultValues();
         }
-
-        return $this->render('create', [
+        $this->performAjaxValidation($model);
+        return $this->renderAjax('create', [
             'model' => $model,
         ]);
     }
