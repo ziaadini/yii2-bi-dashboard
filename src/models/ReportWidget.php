@@ -39,8 +39,6 @@ class ReportWidget extends \yii\db\ActiveRecord
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
 
-//  SEARCH_MODEL_CLASS
-    const SEARCH_MODEL_CLASS_INVOICE = 1;
 
     const RANGE_TYPE_DAILY = 1;
     const RANGE_TYPE_MONTHLY = 2;

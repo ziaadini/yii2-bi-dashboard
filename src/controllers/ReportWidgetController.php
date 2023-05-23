@@ -80,7 +80,6 @@ class ReportWidgetController extends Controller
                     $add_on['params'] = json_decode($params);
                     $model->add_on = $add_on;
                 }
-//                dd($model);
                 if ($model->save()){
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
