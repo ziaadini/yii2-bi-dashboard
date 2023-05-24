@@ -22,7 +22,6 @@ class BiAssets extends AssetBundle
         'bidashboard/dist/js/custom.min.js',
         'bidashboard/dist/js/pjax-utility.js',
         'bidashboard/dist/js/jquery.pjax.js',
-        'bidashboard/dist/js/SweetAlert.js',
         'bidashboard/dist/js/sweetalert2.min.js',
         'bidashboard/dist/js/sweetalert2.all.min.js',
         'bidashboard/dist/js/sweet-alert.init.js',

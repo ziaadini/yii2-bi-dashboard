@@ -83,7 +83,6 @@ class ReportPageController extends Controller
                     'success' => true,
                     'msg' => Yii::t("app", 'Success')
                 ]);
-
             }
         } else {
             $model->loadDefaultValues();
@@ -123,6 +122,7 @@ class ReportPageController extends Controller
      */
     public function actionDelete($id)
     {
+        dd($id);
         $model = $this->findModel($id);
         if ($model->canDelete() && $model->softDelete()) {
             $this->flash('success', Yii::t('app', 'Item Deleted'));

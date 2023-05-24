@@ -32,20 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
 
     <?php Modal::end() ?>
-    <?= Html::a(Yii::t('app', 'create'), "javascript:void(0)",
-        [
-            'data-pjax' => '0',
-            'class' => "btn btn-primary",
-            'data-size' => 'modal-xl',
-            'data-title' => Yii::t('app', 'create'),
-            'data-toggle' => 'modal',
-            'data-target' => '#modal-pjax',
-            'data-url' => Url::to(['report-page/create']),
-            'data-handle-form-submit' => 1,
-            'data-show-loading' => 0,
-            'data-reload-pjax-container' => 'p-jax-report-page',
-            'data-reload-pjax-container-on-show' => 0
-        ]) ?>
     <div class="work-report-index card">
         <div class="panel-group m-bot20" id="accordion">
             <div class="card-header d-flex justify-content-between">
@@ -56,7 +42,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     </a>
                 </h4>
                 <div>
-                    <?= Html::a(Yii::t('app', 'Create Report Page'), ['create'], ['class' => 'btn btn-success']) ?>
+                    <?= Html::a(Yii::t('app', 'create'), "javascript:void(0)",
+                        [
+                            'data-pjax' => '0',
+                            'class' => "btn btn-primary",
+                            'data-size' => 'modal-xl',
+                            'data-title' => Yii::t('app', 'create'),
+                            'data-toggle' => 'modal',
+                            'data-target' => '#modal-pjax',
+                            'data-url' => Url::to(['report-page/create']),
+                            'data-handle-form-submit' => 1,
+                            'data-show-loading' => 0,
+                            'data-reload-pjax-container' => 'p-jax-report-page',
+                            'data-reload-pjax-container-on-show' => 0
+                        ]) ?>
                 </div>
             </div>
             <div class="card-body">
@@ -117,9 +116,25 @@ $this->params['breadcrumbs'][] = $this->title;
                         'add_on',
                         [
                             'class' => ActionColumn::class,
+                            'template' => '{view} {update} {delete}', // Specify the buttons you want to display
+                            'buttons' => [
+                                'delete' => function ($url, $model, $key) {
+                                    return Html::a(Html::tag('span', Yii::t('app', 'Delete'), ['class' => "btn btn-sm"]), 'javascript:void(0)', [
+                                        'title' => Yii::t('yii', 'Delete'),
+                                        'aria-label' => Yii::t('yii', 'Delete'),
+                                        'data-reload-pjax-container' => 'p-jax-report-page',
+                                        'data-pjax' => '0',
+                                        'data-url' => Url::to(['/report-page/delete', 'id' => $model->id]),
+                                        'class' => "p-jax-btn",
+                                        'data-title' => Yii::t('yii', 'Delete'),
+                                        'data-toggle' => 'tooltip',
+                                        'data-method' => '',
+                                    ]);
+                                },
+                            ],
                             'urlCreator' => function ($action, ReportPage $model, $key, $index, $column) {
                                 return Url::toRoute([$action, 'id' => $model->id]);
-                            }
+                            },
                         ],
                     ],
                 ]); ?>

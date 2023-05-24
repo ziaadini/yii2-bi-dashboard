@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use sa\widgets\DetailView;
+use yii\widgets\DetailView;
 
 
 /** @var yii\web\View $this */
