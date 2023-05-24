@@ -13,10 +13,19 @@ use yii\helpers\ArrayHelper;
 use sadi01\bidashboard\models\ReportModelClass;
 
 $this->title = 'Bi dashboard widget';
-if (!$queryParams){
-    return false;
-}
-Pjax::begin(['id' => 'modal_create_bidashboard_widget']);
+
+
+$script = <<< JS
+    $(document).on('pjax:success', function(event, data, status, xhr, options) {
+        if (options.container != '#bidashboard_modal_create_widget'){
+            $.pjax.reload({container: '#bidashboard_modal_create_widget'});
+        }
+    });
+JS;
+$this->registerJs($script, View::POS_READY);
+
+Pjax::begin(['id' => 'bidashboard_modal_create_widget']);
+if ($queryParams):
 
 Modal::begin([
     'title' => Yii::t('biDashboard', 'add widget'),
@@ -90,4 +99,5 @@ Modal::begin([
 </div>
 
 <?php Modal::end(); ?>
+<?php endif; ?>
 <?php Pjax::end(); ?>
