@@ -3,7 +3,7 @@
 namespace sadi01\bidashboard\controllers;
 
 use sadi01\bidashboard\models\ReportWidget;
-use sadi01\bidashboard\models\search\SearchReportWidget;
+use sadi01\bidashboard\models\SearchReportWidget;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -56,6 +56,12 @@ class ReportWidgetController extends Controller
      */
     public function actionView($id)
     {
+
+        $model = $this->findModel($id);
+
+        $model->softDelete();
+        dd($id,$model,$model);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);

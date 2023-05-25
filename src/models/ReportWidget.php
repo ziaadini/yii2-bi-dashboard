@@ -3,12 +3,14 @@
 namespace sadi01\bidashboard\models;
 
 use Yii;
+use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use sadi01\bidashboard\models\ReportPageWidgetQuery;
 use sadi01\bidashboard\models\ReportWidgetResultQuery;
 use yii\db\Expression;
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
 
 /**
  * This is the model class for table "report_widget".
@@ -45,7 +47,6 @@ class ReportWidget extends ActiveRecord
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
 
-
     const RANGE_TYPE_DAILY = 1;
     const RANGE_TYPE_MONTHLY = 2;
     const VISIBILITY_PUBLIC = 1;
@@ -59,14 +60,30 @@ class ReportWidget extends ActiveRecord
     public function behaviors()
     {
         return [
+            'timestamp' => [
+                'class' => TimestampBehavior::class
+            ],
             [
-                'class' => TimestampBehavior::class,
-                'createdAtAttribute' => 'create_at',
-                'updatedAtAttribute' => 'update_at',
-                'value' => new Expression('NOW()'),
+                'class' => BlameableBehavior::class,
+                'createdByAttribute' => 'created_by',
+                'updatedByAttribute' => 'updated_by',
+            ],
+            'softDeleteBehavior' => [
+                'class' => SoftDeleteBehavior::class,
+                'softDeleteAttributeValues' => [
+                    'deleted_at' => time(),
+                    'status' => self::STATUS_DELETED
+                ],
+                'restoreAttributeValues' => [
+                    'deleted_at' => 0,
+                    'status' => self::STATUS_ACTIVE
+                ],
+                'replaceRegularDelete' => false, // mutate native `delete()` method
+                'invokeDeleteEvents' => false
             ],
         ];
     }
+
 
     /**
      * {@inheritdoc}
@@ -76,8 +93,8 @@ class ReportWidget extends ActiveRecord
         return [
             [['title', 'search_model_method'], 'required'],
             [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by'], 'integer'],
-            [['add_on','search_model_class'], 'safe'],
-            [['title', 'search_model_method', 'search_model_run_result_view','search_route', 'search_model_form_name'], 'string', 'max' => 128],
+            [['add_on', 'search_model_class'], 'safe'],
+            [['title', 'search_model_method', 'search_model_run_result_view', 'search_route', 'search_model_form_name'], 'string', 'max' => 128],
             [['description', 'search_model_class'], 'string', 'max' => 255],
         ];
     }
@@ -135,19 +152,6 @@ class ReportWidget extends ActiveRecord
     public static function find()
     {
         return new ReportWidgetQuery(get_called_class());
-    }
-    
-    public function beforeSave($insert)
-    {
-//        $nowDate = new \DateTime('UTC');
-//        if ($this->isNewRecord){
-//            $this->created_by = Yii::$app->user->id;
-//            $this->created_at = $nowDate->getTimestamp();
-//        }
-//        $this->updated_at = $nowDate->getTimestamp();
-//        $this->updated_by = Yii::$app->user->id;
-
-        return parent::beforeSave($insert);
     }
 
     public static function itemAlias($type, $code = NULL)
