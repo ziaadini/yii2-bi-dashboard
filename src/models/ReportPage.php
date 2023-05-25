@@ -90,7 +90,7 @@ class ReportPage extends ActiveRecord
      */
     public static function find()
     {
-        $query= new ItemQuery(get_called_class());
+        $query= new ReportPageQuery(get_called_class());
         $query->notDeleted();
         return $query;
     }
@@ -160,15 +160,4 @@ class ReportPage extends ActiveRecord
     }
 
 }
-class ItemQuery extends \yii\db\ActiveQuery
-{
 
-    public function behaviors()
-    {
-        return [
-            'softDelete' => [
-                'class' => SoftDeleteQueryBehavior::className(),
-            ],
-        ];
-    }
-}

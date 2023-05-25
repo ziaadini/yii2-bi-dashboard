@@ -1,8 +1,7 @@
 <?php
 
 namespace sadi01\bidashboard\models;
-
-
+use yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
 use yii\db\ActiveQuery;
 /**
  * This is the ActiveQuery class for [[ReportPage]].
@@ -11,6 +10,14 @@ use yii\db\ActiveQuery;
  */
 class ReportPageQuery extends ActiveQuery
 {
+    public function behaviors()
+    {
+        return [
+            'softDelete' => [
+                'class' => SoftDeleteQueryBehavior::className(),
+            ],
+        ];
+    }
 
     /**
      * {@inheritdoc}
