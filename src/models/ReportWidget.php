@@ -151,7 +151,9 @@ class ReportWidget extends ActiveRecord
      */
     public static function find()
     {
-        return new ReportWidgetQuery(get_called_class());
+        $query= new ReportWidgetQuery(get_called_class());
+        $query->notDeleted();
+        return $query;
     }
 
     public static function itemAlias($type, $code = NULL)

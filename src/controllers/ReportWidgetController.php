@@ -56,12 +56,6 @@ class ReportWidgetController extends Controller
      */
     public function actionView($id)
     {
-
-        $model = $this->findModel($id);
-
-        $model->softDelete();
-        dd($id,$model,$model);
-
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -128,8 +122,8 @@ class ReportWidgetController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id);
+        $model->softDelete();
         return $this->redirect(['index']);
     }
 

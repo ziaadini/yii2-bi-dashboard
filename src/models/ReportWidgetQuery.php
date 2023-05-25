@@ -5,6 +5,7 @@ namespace sadi01\bidashboard\models;
 use yii\db\ActiveQuery;
 use sadi01\bidashboard\models\ReportWidget;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
+use yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
 
 /**
  * This is the ActiveQuery class for [[\sadi01\bidashboard\models\ReportWidget]].
@@ -21,6 +22,9 @@ class ReportWidgetQuery extends ActiveQuery
     public function behaviors()
     {
         return [
+            'softDelete' => [
+                'class' => SoftDeleteQueryBehavior::class,
+            ],
             'softDeleteBehavior' => [
                 'class' => SoftDeleteBehavior::class,
                 'softDeleteAttributeValues' => [
@@ -36,7 +40,6 @@ class ReportWidgetQuery extends ActiveQuery
      */
     public function all($db = null)
     {
-
         return parent::all($db);
     }
 
