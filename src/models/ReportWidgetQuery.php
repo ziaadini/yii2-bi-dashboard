@@ -1,13 +1,15 @@
 <?php
 
-namespace sadi01\bidashboard\models\query;
+namespace sadi01\bidashboard\models;
 
+use yii\db\ActiveQuery;
+use sadi01\bidashboard\models\ReportWidget;
 /**
  * This is the ActiveQuery class for [[\sadi01\bidashboard\models\ReportWidget]].
  *
- * @see \sadi01\bidashboard\models\ReportWidget
+ * @see ReportWidget
  */
-class ReportWidgetQuery extends \yii\db\ActiveQuery
+class ReportWidgetQuery extends ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +18,7 @@ class ReportWidgetQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \sadi01\bidashboard\models\ReportWidget[]|array
+     * @return ReportWidget[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +27,7 @@ class ReportWidgetQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \sadi01\bidashboard\models\ReportWidget|array|null
+     * @return ReportWidget|array|null
      */
     public function one($db = null)
     {

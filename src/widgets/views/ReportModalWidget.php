@@ -1,6 +1,6 @@
 <?php
 
-namespace sadi01\bidashboard\components\views;
+namespace sadi01\bidashboard\widgets\views;
 
 use Yii;
 use yii\bootstrap4\Modal;
@@ -13,7 +13,6 @@ use yii\helpers\ArrayHelper;
 use sadi01\bidashboard\models\ReportModelClass;
 
 $this->title = 'Bi dashboard widget';
-
 
 $script = <<< JS
     $(document).on('pjax:success', function(event, data, status, xhr, options) {
@@ -40,7 +39,7 @@ Modal::begin([
 ?>
 
 <div class="report-widget-form">
-    <?php $form = ActiveForm::begin(['action' => ['/bidashboard/report-widget/create']]); ?>
+    <?php $form = ActiveForm::begin(['action' => ['/bidashboard/report-widget/create-pjax']]); ?>
 
     <div class="row">
         <div class="col-sm-6">

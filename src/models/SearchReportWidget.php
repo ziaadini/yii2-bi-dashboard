@@ -1,6 +1,6 @@
 <?php
 
-namespace sadi01\bidashboard\models\search;
+namespace sadi01\bidashboard\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;

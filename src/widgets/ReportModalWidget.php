@@ -1,6 +1,6 @@
 <?php
 
-namespace sadi01\bidashboard\components;
+namespace sadi01\bidashboard\widgets;
 
 use Yii;
 use app\models\UserModel;
@@ -8,7 +8,7 @@ use sadi01\bidashboard\models\ReportWidget;
 use yii\base\Widget;
 use yii\helpers\Html;
 
-class ReportWidgetWidget extends Widget
+class ReportModalWidget extends Widget
 {
 
     public $queryParams;
@@ -25,7 +25,7 @@ class ReportWidgetWidget extends Widget
     {
         $model = new ReportWidget();
 
-        return $this->render('ReportWidgetWidget',[
+        return $this->render('ReportModalWidget',[
             'model' => $model,
             'queryParams' => $this->queryParams,
             'searchModel' => $this->searchModel,

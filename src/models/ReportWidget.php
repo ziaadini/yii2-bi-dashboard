@@ -3,6 +3,12 @@
 namespace sadi01\bidashboard\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
+use sadi01\bidashboard\models\ReportPageWidgetQuery;
+use sadi01\bidashboard\models\ReportWidgetResultQuery;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "report_widget".
@@ -28,7 +34,7 @@ use Yii;
  * @property ReportPageWidget[] $reportPageWidgets
  * @property ReportWidgetResult[] $reportWidgetResults
  */
-class ReportWidget extends \yii\db\ActiveRecord
+class ReportWidget extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -48,6 +54,18 @@ class ReportWidget extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'report_widget';
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'create_at',
+                'updatedAtAttribute' => 'update_at',
+                'value' => new Expression('NOW()'),
+            ],
+        ];
     }
 
     /**
@@ -93,7 +111,7 @@ class ReportWidget extends \yii\db\ActiveRecord
     /**
      * Gets query for [[ReportPageWidgets]].
      *
-     * @return \yii\db\ActiveQuery|\sadi01\bidashboard\models\query\ReportPageWidgetQuery
+     * @return ActiveQuery|ReportPageWidgetQuery
      */
     public function getReportPageWidgets()
     {
@@ -103,7 +121,7 @@ class ReportWidget extends \yii\db\ActiveRecord
     /**
      * Gets query for [[ReportWidgetResults]].
      *
-     * @return \yii\db\ActiveQuery|\sadi01\bidashboard\models\query\ReportWidgetResultQuery
+     * @return ActiveQuery|ReportWidgetResultQuery
      */
     public function getReportWidgetResults()
     {
@@ -112,22 +130,22 @@ class ReportWidget extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return \sadi01\bidashboard\models\query\ReportWidgetQuery the active query used by this AR class.
+     * @return ReportWidgetQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \sadi01\bidashboard\models\query\ReportWidgetQuery(get_called_class());
+        return new ReportWidgetQuery(get_called_class());
     }
     
     public function beforeSave($insert)
     {
-        $nowDate = new \DateTime('UTC');
-        if ($this->isNewRecord){
-            $this->created_by = Yii::$app->user->id;
-            $this->created_at = $nowDate->getTimestamp();
-        }
-        $this->updated_at = $nowDate->getTimestamp();
-        $this->updated_by = Yii::$app->user->id;
+//        $nowDate = new \DateTime('UTC');
+//        if ($this->isNewRecord){
+//            $this->created_by = Yii::$app->user->id;
+//            $this->created_at = $nowDate->getTimestamp();
+//        }
+//        $this->updated_at = $nowDate->getTimestamp();
+//        $this->updated_by = Yii::$app->user->id;
 
         return parent::beforeSave($insert);
     }
