@@ -8,6 +8,8 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
+use yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
+
 
 /**
  * This is the model class for table "report_page".
@@ -88,8 +90,9 @@ class ReportPage extends ActiveRecord
      */
     public static function find()
     {
-        $query=new ReportPageQuery(get_called_class());
-        return $query->active();
+        $query= new ItemQuery(get_called_class());
+        $query->notDeleted();
+        return $query;
     }
     public static function itemAlias($type, $code = NULL)
     {
@@ -141,15 +144,31 @@ class ReportPage extends ActiveRecord
                     'deleted_at' => 0,
                     'status' => self::STATUS_ACTIVE
                 ],
-                'replaceRegularDelete' => false, // mutate native `delete()` method
+                'replaceRegularDelete' => false,
                 'invokeDeleteEvents' => false
+            ],
+            'softDelete' => [
+                'class' => SoftDeleteQueryBehavior::className(),
             ],
         ];
     }
+
 
     public function canDelete()
     {
         return true;
     }
 
+}
+class ItemQuery extends \yii\db\ActiveQuery
+{
+
+    public function behaviors()
+    {
+        return [
+            'softDelete' => [
+                'class' => SoftDeleteQueryBehavior::className(),
+            ],
+        ];
+    }
 }

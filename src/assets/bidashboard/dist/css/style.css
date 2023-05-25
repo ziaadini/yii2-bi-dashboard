@@ -12947,12 +12947,20 @@ ul.list-style-none {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
-  -webkit-transition: background-color 0.2s linear, height 0.2s linear, width 0.2s ease-in-out, -webkit-border-radius 0.2s ease-in-out;
-  transition: background-color 0.2s linear, height 0.2s linear, width 0.2s ease-in-out, -webkit-border-radius 0.2s ease-in-out;
-  -o-transition: background-color 0.2s linear, height 0.2s linear, width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
-  -moz-transition: background-color 0.2s linear, height 0.2s linear, width 0.2s ease-in-out, border-radius 0.2s ease-in-out, -moz-border-radius 0.2s ease-in-out;
-  transition: background-color 0.2s linear, height 0.2s linear, width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
-  transition: background-color 0.2s linear, height 0.2s linear, width 0.2s ease-in-out, border-radius 0.2s ease-in-out, -webkit-border-radius 0.2s ease-in-out, -moz-border-radius 0.2s ease-in-out;
+  -webkit-transition: background-color 0.2s linear, height 0.2s linear,
+ width 0.2s ease-in-out, -webkit-border-radius 0.2s ease-in-out;
+  transition: background-color 0.2s linear, height 0.2s linear,
+ width 0.2s ease-in-out, -webkit-border-radius 0.2s ease-in-out;
+  -o-transition: background-color 0.2s linear, height 0.2s linear,
+ width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+  -moz-transition: background-color 0.2s linear, height 0.2s linear,
+ width 0.2s ease-in-out, border-radius 0.2s ease-in-out,
+ -moz-border-radius 0.2s ease-in-out;
+  transition: background-color 0.2s linear, height 0.2s linear,
+ width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+  transition: background-color 0.2s linear, height 0.2s linear,
+ width 0.2s ease-in-out, border-radius 0.2s ease-in-out,
+ -webkit-border-radius 0.2s ease-in-out, -moz-border-radius 0.2s ease-in-out;
   bottom: 2px;
   height: 6px; }
 
@@ -12977,12 +12985,20 @@ ul.list-style-none {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
-  -webkit-transition: background-color 0.2s linear, height 0.2s linear, width 0.2s ease-in-out, -webkit-border-radius 0.2s ease-in-out;
-  transition: background-color 0.2s linear, height 0.2s linear, width 0.2s ease-in-out, -webkit-border-radius 0.2s ease-in-out;
-  -o-transition: background-color 0.2s linear, height 0.2s linear, width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
-  -moz-transition: background-color 0.2s linear, height 0.2s linear, width 0.2s ease-in-out, border-radius 0.2s ease-in-out, -moz-border-radius 0.2s ease-in-out;
-  transition: background-color 0.2s linear, height 0.2s linear, width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
-  transition: background-color 0.2s linear, height 0.2s linear, width 0.2s ease-in-out, border-radius 0.2s ease-in-out, -webkit-border-radius 0.2s ease-in-out, -moz-border-radius 0.2s ease-in-out;
+  -webkit-transition: background-color 0.2s linear, height 0.2s linear,
+ width 0.2s ease-in-out, -webkit-border-radius 0.2s ease-in-out;
+  transition: background-color 0.2s linear, height 0.2s linear,
+ width 0.2s ease-in-out, -webkit-border-radius 0.2s ease-in-out;
+  -o-transition: background-color 0.2s linear, height 0.2s linear,
+ width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+  -moz-transition: background-color 0.2s linear, height 0.2s linear,
+ width 0.2s ease-in-out, border-radius 0.2s ease-in-out,
+ -moz-border-radius 0.2s ease-in-out;
+  transition: background-color 0.2s linear, height 0.2s linear,
+ width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+  transition: background-color 0.2s linear, height 0.2s linear,
+ width 0.2s ease-in-out, border-radius 0.2s ease-in-out,
+ -webkit-border-radius 0.2s ease-in-out, -moz-border-radius 0.2s ease-in-out;
   right: 2px;
   width: 6px; }
 
@@ -14727,3 +14743,6 @@ This is for the horizontal layout
     ***************************/
   [data-sidebar-position="fixed"] .left-sidebar {
     overflow: auto; } }
+.modal-backdrop.fade.show {
+  opacity: 0 !important;
+}

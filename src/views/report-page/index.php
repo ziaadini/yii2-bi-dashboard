@@ -9,6 +9,7 @@ use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\View;
 use yii\widgets\Pjax;
 
 
@@ -44,6 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div>
                     <?= Html::a(Yii::t('app', 'create'), "javascript:void(0)",
                         [
+                            'data-pjax' => '0',
                             'data-pjax' => '0',
                             'class' => "btn btn-primary",
                             'data-size' => 'modal-xl',
@@ -124,7 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'aria-label' => Yii::t('yii', 'Delete'),
                                         'data-reload-pjax-container' => 'p-jax-report-page',
                                         'data-pjax' => '0',
-                                        'data-url' => Url::to(['/report-page/delete', 'id' => $model->id]),
+                                        'data-url' => Url::to(['report-page/delete', 'id' => $model->id]),
                                         'class' => "p-jax-btn",
                                         'data-title' => Yii::t('yii', 'Delete'),
                                         'data-toggle' => 'tooltip',

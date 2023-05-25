@@ -20,7 +20,7 @@ class BiAssets extends AssetBundle
         'bidashboard/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js',
         'bidashboard/dist/js/sidebarmenu.js',
         'bidashboard/dist/js/custom.min.js',
-        'bidashboard/dist/js/pjax-utility.js',
+        'bidashboard/dist/js/pjax-utility.js?v=1.2',
         'bidashboard/dist/js/jquery.pjax.js',
         'bidashboard/dist/js/sweetalert2.min.js',
         'bidashboard/dist/js/sweetalert2.all.min.js',

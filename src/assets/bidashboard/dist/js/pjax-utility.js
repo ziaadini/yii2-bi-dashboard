@@ -72,7 +72,6 @@ $(function () {
             }
             modalPjax.off('submit', 'form');
             modalPjax.on('submit', 'form', function (e) {
-                console.log("skskskj");
                 if (!handleFormSubmit) {
                     return true;
                 }
