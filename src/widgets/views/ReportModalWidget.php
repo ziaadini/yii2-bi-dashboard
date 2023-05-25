@@ -39,7 +39,7 @@ Modal::begin([
 ?>
 
 <div class="report-widget-form">
-    <?php $form = ActiveForm::begin(['action' => ['/bidashboard/report-widget/create-pjax']]); ?>
+    <?php $form = ActiveForm::begin(['action' => ['/bidashboard/report-widget/create']]); ?>
 
     <div class="row">
         <div class="col-sm-6">
