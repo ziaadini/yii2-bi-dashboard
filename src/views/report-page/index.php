@@ -17,22 +17,8 @@ $this->title = Yii::t('app', 'Report Pages');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="page-content container-fluid text-left pt-5">
+<div class="page-content container-fluid text-left pt-5" id="main-wrapper">
     <?php Pjax::begin(['id' => 'p-jax-report-page', 'enablePushState' => false]); ?>
-
-    <?php
-    Modal::begin([
-        'headerOptions' => ['id' => 'modalPjaxHeader'],
-        'id' => 'modal-pjax',
-        'bodyOptions' => [
-            'id' => 'modalPjaxContent',
-            'class' => 'p-3',
-            'data' => ['show-preloader' => 0]
-        ],
-        'options' => ['tabindex' => false]
-    ]); ?>
-
-    <?php Modal::end() ?>
     <div class="work-report-index card">
         <div class="panel-group m-bot20" id="accordion">
             <div class="card-header d-flex justify-content-between">
@@ -60,43 +46,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]) ?>
                 </div>
             </div>
-            <div class="card-body">
-                <div class="modal fade top-modal-with-space" id="quickAccessModal" tabindex="-1" role="dialog"
-                     aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-md">
-                        <div class="modal-content-wrap">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                    <h4 class="modal-title">
-                                        <span class="modal-title fas fa-rabbit-fast fa-2x text-danger"></span>
-                                    </h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div id="accordionHelp" class="card material-card mt-3 mb-0 panel-group">
-                                        <div id="collapseHelp" class="card-body panel-collapse collapse"
-                                             aria-expanded="false">
-                                            <div class="feed-widget d-flex justify-content-between">
-                                                <ul class="feed-body list-style-none w-100">
-                                                    <li class="feed-item d-flex align-items-center justify-content-between py-2">
-                                                    </li>
-                                                    <li class="feed-item d-flex align-items-center justify-content-between py-2">
-
-                                                    </li>
-                                                    <hr>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="card-body page-content container-fluid text-left">
                 <div id="collapseSearch" class="panel-collapse collapse" aria-expanded="false">
                   <?= $this->render('_search', ['model' => $searchModel]); ?>
                 </div>
-
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'columns' => [
@@ -115,31 +68,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return ReportPage::itemAlias('range_type',$model->range_type);
                             },
                         ],
-                        'add_on',
                         [
                             'class' => ActionColumn::class,
-                            'template' => '{view} {update} {delete}', // Specify the buttons you want to display
-                            'buttons' => [
-                                'delete' => function ($url, $model, $key) {
-                                    return Html::a(Html::tag('span', Yii::t('app', 'Delete'), ['class' => "btn btn-sm"]), 'javascript:void(0)', [
-                                        'title' => Yii::t('yii', 'Delete'),
-                                        'aria-label' => Yii::t('yii', 'Delete'),
-                                        'data-reload-pjax-container' => 'p-jax-report-page',
-                                        'data-pjax' => '0',
-                                        'data-url' => Url::to(['report-page/delete', 'id' => $model->id]),
-                                        'class' => "p-jax-btn",
-                                        'data-title' => Yii::t('yii', 'Delete'),
-                                        'data-toggle' => 'tooltip',
-                                        'data-method' => '',
-                                    ]);
-                                },
-                            ],
                             'urlCreator' => function ($action, ReportPage $model, $key, $index, $column) {
                                 return Url::toRoute([$action, 'id' => $model->id]);
-                            },
+                            }
                         ],
                     ],
                 ]); ?>
+
 
             </div>
         </div>

@@ -36,9 +36,4 @@ class ReportPageQuery extends ActiveQuery
     {
         return parent::one($db);
     }
-
-    public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }
 }

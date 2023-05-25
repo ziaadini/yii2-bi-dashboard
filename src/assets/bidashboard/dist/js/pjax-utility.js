@@ -87,6 +87,8 @@ $(function () {
                     contentType: false,
                     type: 'POST',
                     success: function (data) {
+                        modalPjax.modal('hide');
+                        console.log( modalPjax.modal('hide'))
                         if (data.success === true) {
                             swal({
                                 position: 'top-end',
