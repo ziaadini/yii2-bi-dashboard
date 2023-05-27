@@ -74,7 +74,6 @@ class ReportWidgetController extends Controller
         $requestPost = $this->request->post();
         if ($this->request->isPost) {
             if ($model->load($requestPost)) {
-                $model->add_on = $requestPost['ReportWidget']['params'];
                 if ($model->validate()) {
                     $model->save();
                     return $this->redirect(['view', 'id' => $model->id]);

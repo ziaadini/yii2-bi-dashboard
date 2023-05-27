@@ -2,7 +2,7 @@
 
 namespace sadi01\bidashboard\behaviors;
 
-use common\components\ActiveQueryJson;
+use sadi01\bidashboard\components\ActiveQueryJson;
 use ReflectionProperty;
 use Yii;
 use yii\base\Behavior;

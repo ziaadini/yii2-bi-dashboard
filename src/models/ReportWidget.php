@@ -58,41 +58,6 @@ class ReportWidget extends ActiveRecord
         return 'report_widget';
     }
 
-    public function behaviors()
-    {
-        return [
-            'timestamp' => [
-                'class' => TimestampBehavior::class
-            ],
-            [
-                'class' => BlameableBehavior::class,
-                'createdByAttribute' => 'created_by',
-                'updatedByAttribute' => 'updated_by',
-            ],
-            'softDeleteBehavior' => [
-                'class' => SoftDeleteBehavior::class,
-                'softDeleteAttributeValues' => [
-                    'deleted_at' => time(),
-                    'status' => self::STATUS_DELETED
-                ],
-                'restoreAttributeValues' => [
-                    'deleted_at' => 0,
-                    'status' => self::STATUS_ACTIVE
-                ],
-                'replaceRegularDelete' => false, // mutate native `delete()` method
-                'invokeDeleteEvents' => false
-            ],
-//            'jsonable' => [
-//                'class' => Jsonable::class,
-//                'jsonAttributes' => [
-//                    'add_on' => [
-//                        'params',
-//                    ],
-//                ],
-//            ],
-        ];
-    }
-
 
     /**
      * {@inheritdoc}
@@ -102,7 +67,7 @@ class ReportWidget extends ActiveRecord
         return [
             [['title', 'search_model_method'], 'required'],
             [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by'], 'integer'],
-            [['add_on', 'search_model_class'], 'safe'],
+            [['add_on', 'search_model_class','params'], 'safe'],
             [['title', 'search_model_method', 'search_model_run_result_view', 'search_route', 'search_model_form_name'], 'string', 'max' => 128],
             [['description', 'search_model_class'], 'string', 'max' => 255],
         ];
@@ -189,4 +154,38 @@ class ReportWidget extends ActiveRecord
     }
 
 
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::class
+            ],
+            [
+                'class' => BlameableBehavior::class,
+                'createdByAttribute' => 'created_by',
+                'updatedByAttribute' => 'updated_by',
+            ],
+            'softDeleteBehavior' => [
+                'class' => SoftDeleteBehavior::class,
+                'softDeleteAttributeValues' => [
+                    'deleted_at' => time(),
+                    'status' => self::STATUS_DELETED
+                ],
+                'restoreAttributeValues' => [
+                    'deleted_at' => 0,
+                    'status' => self::STATUS_ACTIVE
+                ],
+                'replaceRegularDelete' => false, // mutate native `delete()` method
+                'invokeDeleteEvents' => false
+            ],
+            'jsonable' => [
+                'class' => Jsonable::class,
+                'jsonAttributes' => [
+                    'add_on' => [
+                        'params',
+                    ],
+                ],
+            ],
+        ];
+    }
 }
