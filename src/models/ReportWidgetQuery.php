@@ -2,6 +2,7 @@
 
 namespace sadi01\bidashboard\models;
 
+use sadi01\bidashboard\behaviors\Jsonable;
 use yii\db\ActiveQuery;
 use sadi01\bidashboard\models\ReportWidget;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;

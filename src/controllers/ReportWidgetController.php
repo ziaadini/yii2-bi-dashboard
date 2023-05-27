@@ -2,6 +2,7 @@
 
 namespace sadi01\bidashboard\controllers;
 
+use sadi01\bidashboard\behaviors\Jsonable;
 use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\models\SearchReportWidget;
 use yii\web\Controller;
@@ -14,6 +15,7 @@ use yii\filters\VerbFilter;
 class ReportWidgetController extends Controller
 {
     public $layout = 'bid_main';
+
     /**
      * @inheritDoc
      */
@@ -69,18 +71,12 @@ class ReportWidgetController extends Controller
     public function actionCreate()
     {
         $model = new ReportWidget();
-        $request = $this->request->post();
-        $add_on = [];
+        $requestPost = $this->request->post();
         if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                $model->status = 1;
-                if (key_exists('params',$request['ReportWidget'])){
-                    $params = array_filter($request['ReportWidget']['params']);
-                    $params = json_encode($params);
-                    $add_on['params'] = json_decode($params);
-                    $model->add_on = $add_on;
-                }
-                if ($model->save()){
+            if ($model->load($requestPost)) {
+                $model->add_on = $requestPost['ReportWidget']['params'];
+                if ($model->validate()) {
+                    $model->save();
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             }

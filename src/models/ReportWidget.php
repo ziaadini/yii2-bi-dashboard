@@ -2,6 +2,7 @@
 
 namespace sadi01\bidashboard\models;
 
+use sadi01\bidashboard\behaviors\Jsonable;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -81,6 +82,14 @@ class ReportWidget extends ActiveRecord
                 'replaceRegularDelete' => false, // mutate native `delete()` method
                 'invokeDeleteEvents' => false
             ],
+//            'jsonable' => [
+//                'class' => Jsonable::class,
+//                'jsonAttributes' => [
+//                    'add_on' => [
+//                        'params',
+//                    ],
+//                ],
+//            ],
         ];
     }
 
