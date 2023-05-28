@@ -66,7 +66,7 @@ class ReportWidget extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'search_model_method'], 'required'],
+            [['title', 'search_model_method', 'search_model_class', 'search_route', 'search_model_form_name', 'range_type'], 'required'],
             [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by'], 'integer'],
             [['add_on', 'search_model_class', 'params'], 'safe'],
             [['title', 'search_model_method', 'search_model_run_result_view', 'search_route', 'search_model_form_name'], 'string', 'max' => 128],

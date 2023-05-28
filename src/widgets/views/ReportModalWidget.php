@@ -13,6 +13,13 @@ use yii\helpers\ArrayHelper;
 
 $this->title = 'Bi dashboard widget';
 
+/**
+ * @var $searchModel string
+ * @var $searchRoute string
+ * @var $searchModelFormName string
+ * @var $queryParams array
+ */
+
 $script = <<< JS
     $(document).on('pjax:success', function(event, data, status, xhr, options) {
         if (options.container != '#bidashboard_modal_create_widget'){
