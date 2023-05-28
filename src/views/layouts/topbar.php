@@ -1,21 +1,24 @@
 <?php
 
-use  yii\helpers\Url;
+use yii\helpers\Url;
 
+/**@var $url string */
 ?>
 <header class="topbar">
     <nav class="navbar top-navbar navbar-expand-md navbar-dark">
         <div class="navbar-header">
             <!-- This is for the sidebar toggle which is visible on mobile only -->
-            <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+            <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
+                        class="ti-menu ti-close"></i></a>
             <a class="navbar-brand" href="<?php Url::to(['/bidashboard/index']) ?>">
                 <!-- Logo icon -->
                 <b class="logo-icon">
                     <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                     <!-- Dark Logo icon -->
-                    <img src="<?=$url?>/bidashboard/images/logos/logo-icon.png" alt="homepage" class="dark-logo" />
+                    <img src="<?= $url ?>/bidashboard/images/logos/logo-icon.png" alt="homepage" class="dark-logo"/>
                     <!-- Light Logo icon -->
-                    <img src="<?=$url?>/bidashboard/images/logos/logo-light-icon.png" alt="homepage" class="light-logo" />
+                    <img src="<?= $url ?>/bidashboard/images/logos/logo-light-icon.png" alt="homepage"
+                         class="light-logo"/>
                 </b>
                 <!--End Logo icon -->
                 <!-- Logo text -->
@@ -31,7 +34,9 @@ use  yii\helpers\Url;
             <!-- ============================================================== -->
             <!-- Toggle which is visible on mobile only -->
             <!-- ============================================================== -->
-            <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
+            <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
+               data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+               aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
         </div>
         <!-- ============================================================== -->
         <!-- End Logo -->
@@ -41,7 +46,9 @@ use  yii\helpers\Url;
             <!-- toggle and nav items -->
             <!-- ============================================================== -->
             <ul class="navbar-nav float-left mr-auto">
-                <li class="nav-item d-none d-md-block"><a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-18"></i></a></li>
+                <li class="nav-item d-none d-md-block"><a class="nav-link sidebartoggler waves-effect waves-light"
+                                                          href="javascript:void(0)" data-sidebartype="mini-sidebar"><i
+                                class="mdi mdi-menu font-18"></i></a></li>
 
             </ul>
             <!-- ============================================================== -->
