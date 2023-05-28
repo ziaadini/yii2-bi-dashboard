@@ -3,13 +3,13 @@
 namespace sadi01\bidashboard\models;
 
 use sadi01\bidashboard\behaviors\Jsonable;
+use sadi01\bidashboard\models\ReportPageQuery;
+use sadi01\bidashboard\models\ReportWidgetResultQuery;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use sadi01\bidashboard\models\ReportPageWidgetQuery;
-use sadi01\bidashboard\models\ReportWidgetResultQuery;
 use yii\db\Expression;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 
@@ -34,17 +34,13 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @property string $search_route
  * @property string $search_model_form_name
  *
- * @property ReportPageWidget[] $reportPageWidgets
+ * @property ReportPage[] $reportPages
  * @property ReportWidgetResult[] $reportWidgetResults
+ *
+ * @mixin SoftDeleteBehavior
  */
 class ReportWidget extends ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
-
-    public $params;
-
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
 
@@ -53,11 +49,16 @@ class ReportWidget extends ActiveRecord
     const VISIBILITY_PUBLIC = 1;
     const VISIBILITY_PRIVATE = 2;
 
+    public $params;
+
+    /**
+     * {@inheritdoc}
+     */
+
     public static function tableName()
     {
         return 'report_widget';
     }
-
 
     /**
      * {@inheritdoc}
@@ -67,7 +68,7 @@ class ReportWidget extends ActiveRecord
         return [
             [['title', 'search_model_method'], 'required'],
             [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by'], 'integer'],
-            [['add_on', 'search_model_class','params'], 'safe'],
+            [['add_on', 'search_model_class', 'params'], 'safe'],
             [['title', 'search_model_method', 'search_model_run_result_view', 'search_route', 'search_model_form_name'], 'string', 'max' => 128],
             [['description', 'search_model_class'], 'string', 'max' => 255],
         ];
@@ -100,13 +101,13 @@ class ReportWidget extends ActiveRecord
     }
 
     /**
-     * Gets query for [[ReportPageWidgets]].
+     * Gets query for [[ReportPages]].
      *
-     * @return ActiveQuery|ReportPageWidgetQuery
+     * @return ActiveQuery|ReportPageQuery
      */
-    public function getReportPageWidgets()
+    public function getReportPages()
     {
-        return $this->hasMany(ReportPageWidget::class, ['widget_id' => 'id']);
+        return $this->hasMany(ReportPage::class, ['widget_id' => 'id']);
     }
 
     /**
@@ -125,7 +126,7 @@ class ReportWidget extends ActiveRecord
      */
     public static function find()
     {
-        $query= new ReportWidgetQuery(get_called_class());
+        $query = new ReportWidgetQuery(get_called_class());
         $query->notDeleted();
         return $query;
     }
@@ -152,7 +153,6 @@ class ReportWidget extends ActiveRecord
         else
             return isset($_items[$type]) ? $_items[$type] : false;
     }
-
 
     public function behaviors()
     {

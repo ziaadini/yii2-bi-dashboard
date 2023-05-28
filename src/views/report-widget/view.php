@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use sadi01\bidashboard\models\ReportModelClass;
+
 /** @var yii\web\View $this */
 /** @var sadi01\bidashboard\models\ReportWidget $model */
 

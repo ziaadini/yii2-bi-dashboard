@@ -39,11 +39,36 @@ return [
 ];
 ```
 
+DB Migrations
+-------------
+
+Run module migrations:
+```php
+php yii migrate --migrationPath=@sadi01/bidashboard/migrations
+```
+
+Or, Add migrations path in console application config:
+```php
+    'controllerMap' => [
+          'migrate' => [
+            'class' => 'yii\console\controllers\MigrateController',
+              'migrationNamespaces' => [
+                  'sadi01\bidashboard\migrations',
+              ],
+        ],
+    ],
+```
+
 How To Use
 -------------
 
 ```php
-php yii migrate --migrationPath=@sadi01/bidashboard/migrations
+use sadi01\bidashboard\widgets\ReportModalWidget;
 
-<?= ReportWidgetWidget::widget(['queryParams' => $queryParams, 'searchModel' => $searchModel]) ?>
+<?= ReportModalWidget::widget([
+    'queryParams' => $queryParams,
+    'searchModel' => $searchModel,
+    'searchRoute' => $searchRoute,
+    'searchModelFormName' => $searchModelFormName,
+]) ?>
 ```

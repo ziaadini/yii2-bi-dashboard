@@ -10,7 +10,6 @@ use yii\helpers\Html;
 
 class ReportModalWidget extends Widget
 {
-
     public $queryParams;
     public $searchModel;
     public $searchRoute;
@@ -25,7 +24,7 @@ class ReportModalWidget extends Widget
     {
         $model = new ReportWidget();
 
-        return $this->render('ReportModalWidget',[
+        return $this->render('ReportModalWidget', [
             'model' => $model,
             'queryParams' => $this->queryParams,
             'searchModel' => $this->searchModel,
@@ -33,5 +32,4 @@ class ReportModalWidget extends Widget
             'searchModelFormName' => $this->searchModelFormName,
         ]);
     }
-
 }

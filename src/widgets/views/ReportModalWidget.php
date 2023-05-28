@@ -8,9 +8,8 @@ use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\Pjax;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 use yii\helpers\ArrayHelper;
-use sadi01\bidashboard\models\ReportModelClass;
 
 $this->title = 'Bi dashboard widget';
 

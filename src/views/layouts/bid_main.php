@@ -1,12 +1,13 @@
 <?php
 
+use sadi01\bidashboard\BiAssets;
 use Yii;
 use yii\bootstrap4\Html;
-use sadi01\bidashboard\BiAssets;
 
 $biAssets = BiAssets::register($this);
 $url = $biAssets->baseUrl;
 
+/**@var $content string */
 ?>
 <?php $this->beginPage() ?>
     <!DOCTYPE html>
@@ -43,11 +44,9 @@ $url = $biAssets->baseUrl;
             <?= $content ?>
             <?php $this->endBody() ?>
             <footer class="footer text-center">
-                هوش تجاری
-                <a href="https://mobit.ir">مبیت</a>
+                <?= Yii::t('biDashboard', 'BI Dashboard') ?>
             </footer>
         </div>
 
     </html>
-<?php $this->endPage();
-
+<?php $this->endPage(); ?>

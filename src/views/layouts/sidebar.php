@@ -2,6 +2,7 @@
 
 use  yii\helpers\Url;
 
+/**@var $url string */
 ?>
 <aside class="left-sidebar">
     <!-- Sidebar scroll-->

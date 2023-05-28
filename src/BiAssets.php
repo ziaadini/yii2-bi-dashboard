@@ -3,6 +3,7 @@
 namespace sadi01\bidashboard;
 
 use yii\web\AssetBundle;
+
 class BiAssets extends AssetBundle
 {
     public $sourcePath = '@sadi01/bidashboard/assets';
@@ -11,6 +12,7 @@ class BiAssets extends AssetBundle
         'bidashboard/dist/css/style.min.css',
         'bidashboard/dist/css/iranSansNumber.css',
     ];
+
     public $js = [
         'bidashboard/libs/jquery/dist/jquery.min.js',
         'bidashboard/libs/bootstrap/dist/js/bootstrap.min.js',
@@ -20,10 +22,10 @@ class BiAssets extends AssetBundle
         'bidashboard/dist/js/sidebarmenu.js',
         'bidashboard/dist/js/custom.min.js',
     ];
+
     public $depends = [
         'yii\web\YiiAsset',
         'yii\widgets\ActiveFormAsset',
         'yii\validators\ValidationAsset',
     ];
-
 }

@@ -7,9 +7,9 @@ use yii\data\ActiveDataProvider;
 use sadi01\bidashboard\models\ReportWidget;
 
 /**
- * SearchReportWidget represents the model behind the search form of `sadi01\bidashboard\models\ReportWidget`.
+ * ReportWidgetSearch represents the model behind the search form of `sadi01\bidashboard\models\ReportWidget`.
  */
-class SearchReportWidget extends ReportWidget
+class ReportWidgetSearch extends ReportWidget
 {
     /**
      * {@inheritdoc}
@@ -52,7 +52,7 @@ class SearchReportWidget extends ReportWidget
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 

@@ -8,7 +8,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\search\SearchReportWidget $searchModel */
+/** @var sadi01\bidashboard\models\search\ReportWidgetSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = Yii::t('biDashboard', 'Report Widgets');

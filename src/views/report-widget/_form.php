@@ -1,12 +1,15 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
+use yii\web\View;
 use yii\helpers\ArrayHelper;
 use sadi01\bidashboard\models\ReportModelClass;
-/** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\ReportWidget $model */
-/** @var yii\widgets\ActiveForm $form */
+use sadi01\bidashboard\models\ReportWidget;
+
+/** @var View $this */
+/** @var ReportWidget $model */
+/** @var ActiveForm $form */
 ?>
 
 <div class="report-widget-form">

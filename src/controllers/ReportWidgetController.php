@@ -2,12 +2,11 @@
 
 namespace sadi01\bidashboard\controllers;
 
-use sadi01\bidashboard\behaviors\Jsonable;
 use sadi01\bidashboard\models\ReportWidget;
-use sadi01\bidashboard\models\SearchReportWidget;
+use sadi01\bidashboard\models\ReportWidgetSearch;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * ReportWidgetController implements the CRUD actions for ReportWidget model.
@@ -41,7 +40,7 @@ class ReportWidgetController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new SearchReportWidget();
+        $searchModel = new ReportWidgetSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -71,16 +70,13 @@ class ReportWidgetController extends Controller
     public function actionCreate()
     {
         $model = new ReportWidget();
-        $requestPost = $this->request->post();
-        if ($this->request->isPost) {
-            if ($model->load($requestPost)) {
-                if ($model->validate()) {
-                    $model->save();
-                    return $this->redirect(['view', 'id' => $model->id]);
-                }
-            }
+        $model->loadDefaultValues();
+
+        if ($model->load($this->request->post()) && $model->validate()) {
+            $model->save();
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            $model->loadDefaultValues();
+            $model->validate();
         }
 
         return $this->render('create', [
