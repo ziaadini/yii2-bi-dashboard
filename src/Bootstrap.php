@@ -2,7 +2,9 @@
 
 namespace sadi01\bidashboard;
 
+use sadi01\bidashboard\components\Pdate;
 use WebApplication;
+use Yii;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 use yii\i18n\PhpMessageSource;
@@ -16,8 +18,11 @@ class Bootstrap implements BootstrapInterface
     public function bootstrap($app)
     {
         $app->set('pdate', [
-            'class' => \sadi01\bidashboard\components\Pdate::class,
+            'class' => Pdate::class,
         ]);
+
+        Yii::$app->params['bsVersion'] = 4;
+
         if (!isset($app->get('i18n')->translations['biDashboard*'])) {
             $app->get('i18n')->translations['biDashboard*'] = [
                 'class' => PhpMessageSource::className(),

@@ -95,4 +95,3 @@ $url = $biAssets->baseUrl;
         </div>
     </html>
 <?php $this->endPage();
-

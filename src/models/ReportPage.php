@@ -2,14 +2,12 @@
 
 namespace sadi01\bidashboard\models;
 
-
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
-use yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
-
 
 /**
  * This is the model class for table "report_page".
@@ -26,6 +24,8 @@ use yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
  * @property int|null $created_by
  *
  * @property \app\models\ReportPageWidget $reportPageWidgets
+ *
+ * @mixin SoftDeleteBehavior
  */
 class ReportPage extends ActiveRecord
 {
@@ -37,6 +37,7 @@ class ReportPage extends ActiveRecord
     const STATUS_INACTIVE = 2;
     const RANGE_DAY = 1;
     const RANGE_MONTH = 0;
+
     public static function tableName()
     {
         return 'report_page';
@@ -77,7 +78,7 @@ class ReportPage extends ActiveRecord
     /**
      * Gets query for [[ReportPageWidgets]].
      *
-     * @return \yii\db\ActiveQuery|\app\models\ReportPageWidgetQuery
+     * @return ActiveQuery|ReportPageWidgetQuery
      */
     public function getReportPageWidgets()
     {
@@ -90,10 +91,11 @@ class ReportPage extends ActiveRecord
      */
     public static function find()
     {
-        $query= new ReportPageQuery(get_called_class());
+        $query = new ReportPageQuery(get_called_class());
         $query->notDeleted();
         return $query;
     }
+
     public static function itemAlias($type, $code = NULL)
     {
         $_items = [
@@ -122,7 +124,6 @@ class ReportPage extends ActiveRecord
             return isset($_items[$type]) ? $_items[$type] : false;
     }
 
-
     public function behaviors()
     {
         return [
@@ -147,17 +148,11 @@ class ReportPage extends ActiveRecord
                 'replaceRegularDelete' => false,
                 'invokeDeleteEvents' => false
             ],
-            'softDelete' => [
-                'class' => SoftDeleteQueryBehavior::className(),
-            ],
         ];
     }
-
 
     public function canDelete()
     {
         return true;
     }
-
 }
-

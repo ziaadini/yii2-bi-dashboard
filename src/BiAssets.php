@@ -12,6 +12,7 @@ class BiAssets extends AssetBundle
         'bidashboard/dist/css/iranSansNumber.css',
         'bidashboard/dist/css/sweetalert2.min.css',
     ];
+
     public $js = [
         'bidashboard/dist/js/jquery.sparkline.min.js',
         'bidashboard/libs/jquery/dist/jquery.min.js',
@@ -28,10 +29,10 @@ class BiAssets extends AssetBundle
         'bidashboard/dist/js/custom.min.js?v=1.2',
 
     ];
+
     public $depends = [
         'yii\widgets\ActiveFormAsset',
         'yii\web\YiiAsset',
         'yii\validators\ValidationAsset',
     ];
-
 }

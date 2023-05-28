@@ -1,12 +1,14 @@
 <?php
 
 use sadi01\bidashboard\models\ReportPage;
+use Yii;
+use yii\bootstrap4\ActiveForm;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\web\View;
 
-/** @var yii\web\View $this */
-/** @var \ReportPage $model */
-/** @var yii\widgets\ActiveForm $form */
+/** @var View $this */
+/** @var ReportPage $model */
+/** @var ActiveForm $form */
 ?>
 
 <div class="report-page-form">
@@ -15,9 +17,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->dropDownList(ReportPage::itemAlias('Status'),['prompt'=>Yii::t('app','Select Status')]) ?>
+    <?= $form->field($model, 'status')->dropDownList(ReportPage::itemAlias('Status'), ['prompt' => Yii::t('app', 'Select Status')]) ?>
 
-    <?= $form->field($model, 'range_type')->dropDownList(ReportPage::itemAlias('range_type'),['prompt'=>Yii::t('app','Select RANGE')]) ?>
+    <?= $form->field($model, 'range_type')->dropDownList(ReportPage::itemAlias('range_type'), ['prompt' => Yii::t('app', 'Select RANGE')]) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

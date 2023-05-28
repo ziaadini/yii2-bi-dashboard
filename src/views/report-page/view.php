@@ -1,16 +1,17 @@
 <?php
 
 use yii\helpers\Html;
+use sadi01\bidashboard\models\ReportPage;
+use yii\web\View;
 use yii\widgets\DetailView;
+use Yii;
 
-
-/** @var yii\web\View $this */
-/** @var \ReportPage $model */
+/** @var View $this */
+/** @var ReportPage $model */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Report Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
 ?>
 <div class="report-page-view">
 

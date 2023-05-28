@@ -8,7 +8,6 @@ $url = Yii::$app->assetManager->getPublishedUrl('@sadi01/bidashboard/assets');
 
 ?>
 
-
 <div class="page-breadcrumb bg-light">
     <div class="row">
         <div class="col-lg-3 col-md-4 col-xs-12 align-self-center text-left">

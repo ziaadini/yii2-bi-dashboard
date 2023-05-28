@@ -1,20 +1,23 @@
 <?php
 
 use sadi01\bidashboard\models\ReportPage;
-
-
+use sadi01\bidashboard\models\ReportPageSearch;
+use yii\data\ActiveDataProvider;
 use yii\bootstrap4\Modal;
 use yii\grid\ActionColumn;
-
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\Pjax;
 
+/** @var View $this */
+/** @var ReportPageSearch $searchModel */
+/** @var ActiveDataProvider $dataProvider */
 
 $this->title = Yii::t('app', 'Report Pages');
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <div class="page-content container-fluid text-left pt-5" id="main-wrapper">
@@ -76,8 +79,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                     ],
                 ]); ?>
-
-
             </div>
         </div>
     </div>

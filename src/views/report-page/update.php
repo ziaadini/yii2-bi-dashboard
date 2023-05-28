@@ -1,9 +1,12 @@
 <?php
 
 use yii\helpers\Html;
+use yii\web\View;
+use sadi01\bidashboard\models\ReportPage;
+use Yii;
 
-/** @var yii\web\View $this */
-/** @var \ReportPage $model */
+/** @var View $this */
+/** @var ReportPage $model */
 
 $this->title = Yii::t('app', 'Update Report Page: {name}', [
     'name' => $model->title,
