@@ -166,7 +166,6 @@ class ReportWidgetController extends Controller
         if (($model = ReportWidget::findOne(['id' => $id])) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException(Yii::t('biDashboard', 'The requested page does not exist.'));
     }
     

@@ -5,7 +5,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
-use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
 /** @var sadi01\bidashboard\models\search\ReportWidgetSearch $searchModel */
