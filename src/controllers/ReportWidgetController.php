@@ -2,8 +2,10 @@
 
 namespace sadi01\bidashboard\controllers;
 
+use Yii;
 use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\models\ReportWidgetSearch;
+use sadi01\bidashboard\traits\AjaxValidationTrait;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -13,6 +15,7 @@ use yii\web\NotFoundHttpException;
  */
 class ReportWidgetController extends Controller
 {
+    use AjaxValidationTrait;
     public $layout = 'bid_main';
 
     /**
@@ -57,8 +60,21 @@ class ReportWidgetController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $params = $model->add_on['params'];
+
+//---- create url search
+        $modelRoute = "/".$model->search_route."?";
+        $modalRouteParams = "";
+        foreach ($params as $key => $param){
+            $modalRouteParams .= $model->search_model_form_name."[".$key."]=".$param."&";
+        }
+        $modelRoute .= $modalRouteParams;
+//---- end
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'modelRoute' => $modelRoute,
         ]);
     }
 
@@ -72,15 +88,35 @@ class ReportWidgetController extends Controller
         $model = new ReportWidget();
         $model->loadDefaultValues();
 
-        if ($model->load($this->request->post()) && $model->validate()) {
-            $model->save();
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            $model->validate();
-        }
+        $request = $this->request->get();
+        $searchModelClass = $this->requestGet($request,'searchModelClass');
+        $searchModelMethod = $this->requestGet($request,'searchModelMethod');
+        $searchModelRunResultView = $this->requestGet($request,'searchModelRunResultView');
+        $search_route = $this->requestGet($request,'search_route');
+        $search_model_form_name = $this->requestGet($request,'search_model_form_name');
+        $queryParams = $this->requestGet($request,'queryParams');
 
-        return $this->render('create', [
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->validate()) {
+                $model->save(false);
+                return $this->asJson([
+                    'success' => true,
+                    'msg' => Yii::t('biDashboard', 'Saved successfully'),
+                ]);
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+        $this->performAjaxValidation($model);
+
+        return $this->renderAjax('create', [
             'model' => $model,
+            'searchModelClass' => $searchModelClass,
+            'searchModelMethod' => $searchModelMethod,
+            'searchModelRunResultView' => $searchModelRunResultView,
+            'search_route' => $search_route,
+            'search_model_form_name' => $search_model_form_name,
+            'queryParams' => $queryParams,
         ]);
     }
 
@@ -132,5 +168,12 @@ class ReportWidgetController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    public function requestGet($request,$key){
+        if (key_exists($key,$request)){
+            return $request[$key];
+        }
+        return null;
     }
 }

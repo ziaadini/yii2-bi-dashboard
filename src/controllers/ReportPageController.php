@@ -2,8 +2,6 @@
 
 namespace sadi01\bidashboard\controllers;
 
-
-
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;

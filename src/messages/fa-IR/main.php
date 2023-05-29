@@ -38,6 +38,8 @@ return [
     'Are you sure you want to delete this item?' => 'آیا از حذف این مورد اطمینان دارید؟',
 
     'Create Report Widget' => 'ایجاد ویجت',
+    'Save As Report Widget' => 'ایجاد ویجت',
+    'Saved successfully' => 'با موفقیت ذخیره شد',
     'Report Widgets' => 'ویجت‌ها',
     'Update Report Widget: {name}' => 'ویرایش ویجت: {name}',
 
@@ -59,4 +61,9 @@ return [
     'Report Model Classes' => 'مدل کلاس های سیستم',
     'Create Report Model Class' => 'ایجاد مدل کلاس',
     'Update Report Model Class: {name}' => 'ویرایش مدل کلاس: {name}',
+    'create' => 'ایجاد',
+
+    'Select Status' => 'انتخاب وضعیت',
+    'Select RANGE' => 'انتخاب دوره',
+
 ];

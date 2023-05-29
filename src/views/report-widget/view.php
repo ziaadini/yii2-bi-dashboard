@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 use sadi01\bidashboard\models\ReportModelClass;
 
@@ -22,6 +23,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= Html::encode($this->title) ?>
                     </h4>
                     <div>
+                        <?= Html::a(Html::tag('span', 'نمایش مدل', ['class' => ['btn btn-info']]),$modelRoute) ?>
+
                         <?= Html::a(Yii::t('biDashboard', 'Delete'), ['delete', 'id' => $model->id], [
                             'class' => 'btn btn-danger',
                             'data' => [

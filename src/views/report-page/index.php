@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </a>
                 </h4>
                 <div>
-                    <?= Html::a(Yii::t('app', 'create'), "javascript:void(0)",
+                    <?= Html::a(Yii::t('biDashboard', 'create'), "javascript:void(0)",
                         [
                             'data-pjax' => '0',
                             'data-pjax' => '0',

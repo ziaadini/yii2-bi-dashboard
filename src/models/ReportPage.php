@@ -62,16 +62,16 @@ class ReportPage extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'title' => Yii::t('app', 'Title'),
-            'status' => Yii::t('app', 'Status'),
-            'range_type' => Yii::t('app', 'Range Type'),
-            'add_on' => Yii::t('app', 'Add On'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
-            'deleted_at' => Yii::t('app', 'Deleted At'),
-            'updated_by' => Yii::t('app', 'Updated By'),
-            'created_by' => Yii::t('app', 'Created By'),
+            'id' => Yii::t('biDashboard', 'ID'),
+            'title' => Yii::t('biDashboard', 'Title'),
+            'status' => Yii::t('biDashboard', 'Status'),
+            'range_type' => Yii::t('biDashboard', 'Range Type'),
+            'add_on' => Yii::t('biDashboard', 'Add On'),
+            'created_at' => Yii::t('biDashboard', 'Created At'),
+            'updated_at' => Yii::t('biDashboard', 'Updated At'),
+            'deleted_at' => Yii::t('biDashboard', 'Deleted At'),
+            'updated_by' => Yii::t('biDashboard', 'Updated By'),
+            'created_by' => Yii::t('biDashboard', 'Created By'),
         ];
     }
 
@@ -100,13 +100,13 @@ class ReportPage extends ActiveRecord
     {
         $_items = [
             'range_type' => [
-                self::RANGE_DAY => Yii::t('app', 'DAY'),
-                self::RANGE_MONTH => Yii::t('app', 'MONTH'),
+                self::RANGE_DAY => Yii::t('biDashboard', 'DAY'),
+                self::RANGE_MONTH => Yii::t('biDashboard', 'MONTH'),
             ],
             'Status' => [
-                self::STATUS_DELETED => Yii::t('app', 'DELETED'),
-                self::STATUS_ACTIVE => Yii::t('app', 'ACTIVE'),
-                self::STATUS_INACTIVE => Yii::t('app', 'INACTIVE'),
+                self::STATUS_DELETED => Yii::t('biDashboard', 'DELETED'),
+                self::STATUS_ACTIVE => Yii::t('biDashboard', 'ACTIVE'),
+                self::STATUS_INACTIVE => Yii::t('biDashboard', 'INACTIVE'),
             ],
             'StatusClass' => [
                 self::STATUS_DELETED => 'danger',

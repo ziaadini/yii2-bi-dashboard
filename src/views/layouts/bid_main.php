@@ -89,8 +89,7 @@ $url = $biAssets->baseUrl;
             <?= $content ?>
             <?php $this->endBody() ?>
             <footer class="footer text-center">
-                هوش تجاری
-                <a href="https://mobit.ir">مبیت</a>
+                BI Dashboard
             </footer>
         </div>
     </html>

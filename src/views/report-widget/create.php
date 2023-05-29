@@ -13,14 +13,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="page-content container-fluid text-left pt-5">
         <div class="work-report-index card">
             <div class="panel-group m-bot20" id="accordion">
-                <div class="card-header d-flex justify-content-between">
-                    <h4 class="panel-title">
-                        <?= Html::encode($this->title) ?>
-                    </h4>
-                </div>
                 <div class="card-body">
                     <?= $this->render('_form', [
                         'model' => $model,
+                        'searchModelClass' => $searchModelClass,
+                        'searchModelMethod' => $searchModelMethod,
+                        'searchModelRunResultView' => $searchModelRunResultView,
+                        'searchRoute' => $search_route,
+                        'searchModelFormName' => $search_model_form_name,
+                        'queryParams' => json_decode($queryParams),
                     ]) ?>
                 </div>
             </div>

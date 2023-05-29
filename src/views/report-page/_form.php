@@ -17,12 +17,12 @@ use yii\web\View;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->dropDownList(ReportPage::itemAlias('Status'), ['prompt' => Yii::t('app', 'Select Status')]) ?>
+    <?= $form->field($model, 'status')->dropDownList(ReportPage::itemAlias('Status'), ['prompt' => Yii::t('biDashboard', 'Select Status')]) ?>
 
-    <?= $form->field($model, 'range_type')->dropDownList(ReportPage::itemAlias('range_type'), ['prompt' => Yii::t('app', 'Select RANGE')]) ?>
+    <?= $form->field($model, 'range_type')->dropDownList(ReportPage::itemAlias('range_type'), ['prompt' => Yii::t('biDashboard', 'Select RANGE')]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -23,7 +23,6 @@ class ReportModalWidget extends Widget
     public function run()
     {
         $model = new ReportWidget();
-
         return $this->render('ReportModalWidget', [
             'model' => $model,
             'queryParams' => $this->queryParams,
