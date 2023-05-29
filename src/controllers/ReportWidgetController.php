@@ -167,7 +167,18 @@ class ReportWidgetController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('biDashboard', 'The requested page does not exist.'));
+    }
+    
+    public function actionOpenModal(){
+
+        $searchModel = new ReportWidgetSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->renderAjax('list-widget', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     public function requestGet($request,$key){

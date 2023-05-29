@@ -17,8 +17,8 @@ class ReportWidgetSearch extends ReportWidget
     public function rules()
     {
         return [
-            [['id', 'search_model_class', 'status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by'], 'integer'],
-            [['title', 'description', 'search_model_method', 'search_model_run_result_view', 'add_on'], 'safe'],
+            [['id', 'status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by'], 'integer'],
+            [['title', 'description', 'search_model_method', 'search_model_run_result_view', 'add_on', 'search_model_class'], 'safe'],
         ];
     }
 

@@ -37,7 +37,7 @@ $this->title = 'Bi dashboard widget';
             '/bidashboard/report-widget/create',
             'searchModelClass' => $searchModel::class,
             'searchModelMethod' => 'serach',
-            'searchModelRunResultView' => '----',
+            'searchModelRunResultView' => '---',
             'search_route' => $searchRoute,
             'search_model_form_name' => $searchModelFormName,
             'queryParams' => json_encode($queryParams),
@@ -55,8 +55,8 @@ $this->title = 'Bi dashboard widget';
         'data-target' => '#modal-pjax',
         'data-url' => Url::to([
             '/bidashboard/report-widget/open-modal',
-            'ReportWidgetSearch[search_model_class]' => $searchModel,
-            'ReportWidgetSearch[search_model_method]' => '$searchModelMethod',
+            'ReportWidgetSearch[search_model_class]' => $searchModel::class,
+            'ReportWidgetSearch[search_model_method]' => 'search',
         ]),
         'data-handle-form-submit' => 0
     ]) ?>
