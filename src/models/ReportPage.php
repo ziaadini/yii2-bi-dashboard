@@ -23,7 +23,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @property int|null $updated_by
  * @property int|null $created_by
  *
- * @property \app\models\ReportPageWidget $reportPageWidgets
+ * @property \sadi01\bidashboard\models\ReportPageWidget $reportPageWidgets
  *
  * @mixin SoftDeleteBehavior
  */
@@ -82,7 +82,12 @@ class ReportPage extends ActiveRecord
      */
     public function getReportPageWidgets()
     {
-        return $this->hasMany(\app\models\ReportPageWidget::class, ['page_id' => 'id']);
+        return $this->hasMany(\sadi01\bidashboard\models\ReportPageWidget::class, ['page_id' => 'id']);
+    }
+    public function getWidgets()
+    {
+        return $this->hasMany(ReportWidget::class, ['id' => 'widget_id'])
+            ->viaTable('report_page_widget', ['page_id' => 'id']);
     }
 
     /**

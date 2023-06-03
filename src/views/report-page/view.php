@@ -1,10 +1,13 @@
 <?php
 
+use sadi01\bidashboard\models\ReportPageWidget;
 use yii\helpers\Html;
 use sadi01\bidashboard\models\ReportPage;
+use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\DetailView;
-use Yii;
+use yii\widgets\Pjax;
+
 
 /** @var View $this */
 /** @var ReportPage $model */
@@ -13,11 +16,9 @@ $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Report Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="report-page-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
+<div class="report-page-view ">
+    <div>
+        <?php Pjax::begin(['id' => 'p-jax-report-page-add', 'enablePushState' => false]); ?>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -26,22 +27,46 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
-    </p>
+        <?= Html::a(Yii::t('biDashboard', 'create'), "javascript:void(0)",
+            [
+                'data-pjax' => '0',
+                'data-pjax' => '0',
+                'class' => "btn btn-primary",
+                'data-size' => 'modal-xl',
+                'data-title' => Yii::t('app', 'create'),
+                'data-toggle' => 'modal',
+                'data-target' => '#modal-pjax',
+                'data-url' => Url::to(['report-page/add', 'id' => $model->id]),
+                'data-handle-form-submit' => 1,
+                'data-show-loading' => 0,
+                'data-reload-pjax-container' => 'p-jax-report-page-add',
+                'data-reload-pjax-container-on-show' => 0
+            ]) ?>
+        <?php Pjax::end(); ?>
+    </div>
+    <div class="text-left">
+        <div class="">
+            <h6>عنوان</h6>
+            <span><?= $model->title ?></span>
+            <h6>نوع نمایش</h6>
+            <span><?= $model->range_type ?></span>
+        </div>
+        <div>
+            <div class="row">
+                <?php foreach ($widgets as $widget): ?>
+                    <div class="col-sm-3 m-1 p-2  bg-white">
+                        <div class="">
+                            <h4>:WidgetResult</h4>
+                            <?php foreach ($widget->widget->reportWidgetResults as $item): ?>
+                                <div><?= $item['id'] ?></div>
+                            <?php endforeach; ?>
+                            <h4>:widget</h4>
+                            <div><?= $widget->widget['id'] ?></div>
+                        </div>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'title',
-            'status',
-            'range_type',
-            'add_on',
-            'created_at',
-            'updated_at',
-            'deleted_at',
-            'updated_by',
-            'created_by',
-        ],
-    ]) ?>
-
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
 </div>
