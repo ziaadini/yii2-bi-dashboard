@@ -60,6 +60,7 @@ class ReportWidgetSearch extends ReportWidget
         $query->andFilterWhere([
             'id' => $this->id,
             'search_model_class' => $this->search_model_class,
+            'search_model_method'=>$this->search_model_method,
             'status' => $this->status,
             'deleted_at' => $this->deleted_at,
             'range_type' => $this->range_type,
@@ -72,6 +73,7 @@ class ReportWidgetSearch extends ReportWidget
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'search_model_class', $this->search_model_class])
             ->andFilterWhere(['like', 'search_model_method', $this->search_model_method])
             ->andFilterWhere(['like', 'search_model_run_result_view', $this->search_model_run_result_view])
             ->andFilterWhere(['like', 'add_on', $this->add_on]);

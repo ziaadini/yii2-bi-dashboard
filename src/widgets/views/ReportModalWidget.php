@@ -36,7 +36,7 @@ $this->title = 'Bi dashboard widget';
         'data-url' => Url::to([
             '/bidashboard/report-widget/create',
             'searchModelClass' => $searchModel::class,
-            'searchModelMethod' => 'serach',
+            'searchModelMethod' => 'search',
             'searchModelRunResultView' => '---',
             'search_route' => $searchRoute,
             'search_model_form_name' => $searchModelFormName,

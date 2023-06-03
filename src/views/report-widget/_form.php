@@ -35,6 +35,7 @@ use sadi01\bidashboard\models\ReportWidget;
     <?= $form->field($model, 'search_model_run_result_view')->hiddenInput(['value' => $searchModelRunResultView])->label(false) ?>
     <?= $form->field($model, 'search_route')->hiddenInput(['value' => $searchRoute])->label(false) ?>
     <?= $form->field($model, 'search_model_form_name')->hiddenInput(['value' => $searchModelFormName])->label(false) ?>
+
     <?php
     foreach ($queryParams as $Pkey => $Pvalue) {
         echo $form->field($model, 'params[' . $Pkey . ']')->hiddenInput(['value' => $Pvalue])->label(false);

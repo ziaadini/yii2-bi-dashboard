@@ -103,6 +103,11 @@ class ReportWidgetController extends Controller
                     'success' => true,
                     'msg' => Yii::t('biDashboard', 'Saved successfully'),
                 ]);
+            }else{
+                return $this->asJson([
+                    'success' => false,
+                    'msg' => Yii::t('biDashboard', 'There was a problem saving'),
+                ]);
             }
         } else {
             $model->loadDefaultValues();
@@ -170,7 +175,6 @@ class ReportWidgetController extends Controller
     }
     
     public function actionOpenModal(){
-
         $searchModel = new ReportWidgetSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 

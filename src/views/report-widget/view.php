@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= Html::encode($this->title) ?>
                     </h4>
                     <div>
-                        <?= Html::a(Html::tag('span', 'نمایش مدل', ['class' => ['btn btn-info']]),$modelRoute) ?>
+                        <?= Html::a(Html::tag('span', 'نمایش مدل', ['class' => ['btn btn-info']]), $modelRoute) ?>
 
                         <?= Html::a(Yii::t('biDashboard', 'Delete'), ['delete', 'id' => $model->id], [
                             'class' => 'btn btn-danger',
@@ -46,19 +46,19 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute' => 'status',
                                 'value' => function ($data) {
-                                    return $data->itemAlias('Status',$data->status);
+                                    return $data->itemAlias('Status', $data->status);
                                 },
                             ],
                             [
                                 'attribute' => 'range_type',
                                 'value' => function ($data) {
-                                    return $data->itemAlias('RangeTypes',$data->range_type);
+                                    return $data->itemAlias('RangeTypes', $data->range_type);
                                 },
                             ],
                             [
                                 'attribute' => 'visibility',
                                 'value' => function ($data) {
-                                    return $data->itemAlias('Visibility',$data->visibility);
+                                    return $data->itemAlias('Visibility', $data->visibility);
                                 },
                             ],
                             'updated_at',
