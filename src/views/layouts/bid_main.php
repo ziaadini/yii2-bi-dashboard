@@ -34,9 +34,6 @@ $url = $biAssets->baseUrl;
         <?= $this->render('@sadi01/bidashboard/views/layouts/sidebar.php', ['url' => $url]) ?>
         <div class="page-wrapper">
             <div>
-                <div>
-                    <?= Alert::widget() ?>
-                </div>
                 <?php
                 Modal::begin([
                     'headerOptions' => ['id' => 'modalPjaxHeader'],
