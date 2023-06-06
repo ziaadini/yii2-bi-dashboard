@@ -13,7 +13,7 @@ use yii\web\View;
 
 <div class="report-page-form">
 
-    <?php $form = ActiveForm::begin(['id' => 'page-form']); ?>
+    <?php $form = ActiveForm::begin(['id' => 'page-form','enableClientValidation' => true]); ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 

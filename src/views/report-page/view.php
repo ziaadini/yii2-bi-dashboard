@@ -17,8 +17,8 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Report Pages'), 'url
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="report-page-view ">
+    <?php Pjax::begin(['id' => 'p-jax-report-page-add', 'enablePushState' => false]); ?>
     <div>
-        <?php Pjax::begin(['id' => 'p-jax-report-page-add', 'enablePushState' => false]); ?>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -42,7 +42,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'data-reload-pjax-container' => 'p-jax-report-page-add',
                 'data-reload-pjax-container-on-show' => 0
             ]) ?>
-        <?php Pjax::end(); ?>
     </div>
     <div class="text-left">
         <div class="">
@@ -69,4 +68,5 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
+    <?php Pjax::end(); ?>
 </div>

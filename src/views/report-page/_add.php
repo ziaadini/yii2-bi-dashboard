@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
 
 <div class="report-page-widget-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'page-widget-form']); ?>
 
     <?=
     $form->field($model, 'widget_id')->widget(Select2::class, [
