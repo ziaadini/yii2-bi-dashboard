@@ -80,9 +80,11 @@ $url = $biAssets->baseUrl;
                     </div>
                 </div>
             </div>
-            <?php $this->beginBody() ?>
-            <?= $content ?>
-            <?php $this->endBody() ?>
+            <div style="height: 900px;">
+                <?php $this->beginBody() ?>
+                <?= $content ?>
+                <?php $this->endBody() ?>
+            </div>
             <footer class="footer text-center">
                 BI Dashboard
             </footer>
