@@ -16,9 +16,9 @@ $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Report Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="report-page-view ">
+<div class="report-page-view">
     <?php Pjax::begin(['id' => 'p-jax-report-page-add', 'enablePushState' => false]); ?>
-    <div>
+    <div class="p-3 bg-white">
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -42,14 +42,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'data-reload-pjax-container' => 'p-jax-report-page-add',
                 'data-reload-pjax-container-on-show' => 0
             ]) ?>
-    </div>
-    <div class="text-left">
-        <div class="">
-            <h6>عنوان</h6>
+        <div class="float-left">
+            <span>عنوان  : </span>
             <span><?= $model->title ?></span>
-            <h6>نوع نمایش</h6>
-            <span><?= $model->range_type ?></span>
+            <span>/</span>
+            <span class="text-muted"><?= ReportPage::itemAlias('range_type',$model->range_type) ?></span>
         </div>
+    </div>
+    <div>
         <div>
             <div class="row">
                 <?php foreach ($widgets as $widget): ?>
