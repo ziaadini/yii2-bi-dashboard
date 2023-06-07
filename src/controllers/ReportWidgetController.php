@@ -190,4 +190,23 @@ class ReportWidgetController extends Controller
         }
         return null;
     }
+
+    /**
+     * @param int $id ID
+     */
+    public function actionRunWidget($id){
+        $model = $this->findModel($id);
+
+        $params = $model->add_on['params'];
+        $searchModel = new ($model->search_model_class);
+        $methodExists = method_exists($searchModel,'search');
+        if ($methodExists){
+            $dataProvider = $searchModel->{$model->search_model_method}($params);
+        }else{
+            //TODO: error
+        }
+        $models = array_values($dataProvider->getModels());
+
+        dd('models',$models);
+    }
 }
