@@ -4,6 +4,7 @@ namespace sadi01\bidashboard\controllers;
 
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageSearch;
+use sadi01\bidashboard\models\ReportPageWidget;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use Yii;
 use yii\filters\VerbFilter;
@@ -15,6 +16,7 @@ use yii\web\NotFoundHttpException;
  */
 class ReportPageController extends Controller
 {
+    public  $layout = 'bid_main';
     use AjaxValidationTrait;
     /**
      * @inheritDoc
@@ -41,7 +43,7 @@ class ReportPageController extends Controller
      */
     public function actionIndex()
     {
-        $this->layout = 'bid_main';
+
         $searchModel = new ReportPageSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -59,8 +61,10 @@ class ReportPageController extends Controller
      */
     public function actionView($id)
     {
+        $model=$this->findModel($id);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'widgets'=>$model->reportPageWidgets,
         ]);
     }
 
@@ -158,5 +162,32 @@ class ReportPageController extends Controller
     private function flash($type, $message)
     {
         Yii::$app->getSession()->setFlash($type == 'error' ? 'danger' : $type, $message);
+    }
+    public function actionAdd($id)
+    {
+        $model = new ReportPageWidget();
+        $model->page_id=$id;
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->validate()) {
+
+                if($model->save(false)){
+                    return $this->asJson([
+                        'success' => true,
+                        'msg' => Yii::t("app", 'Success')
+                    ]);
+                }else{
+                    return $this->asJson([
+                        'success' => false,
+                        'msg' => Yii::t("app", 'fail')
+                    ]);
+                }
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+        $this->performAjaxValidation($model);
+        return $this->renderAjax('_add', [
+            'model' => $model,
+        ]);
     }
 }
