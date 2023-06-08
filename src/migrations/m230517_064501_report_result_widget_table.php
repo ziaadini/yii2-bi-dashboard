@@ -26,7 +26,7 @@ class m230517_064501_report_result_widget_table extends Migration
             'updated_at' => $this->integer()->unsigned()->notNull(),
             'created_at' => $this->integer()->unsigned()->notNull(),
             'deleted_at' => $this->integer()->unsigned()->notNull()->defaultValue(0),
-            'update_by' => $this->integer()->unsigned()->notNull(),
+            'updated_by' => $this->integer()->unsigned()->notNull(),
             'created_by' => $this->integer()->unsigned()->notNull(),
         ]);
         $this->createIndex('widget_result_ibfk_1', '{{%report_widget_result}}', ['widget_id']);

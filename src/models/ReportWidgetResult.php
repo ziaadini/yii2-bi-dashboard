@@ -2,7 +2,14 @@
 
 namespace sadi01\bidashboard\models;
 
+use sadi01\bidashboard\behaviors\Jsonable;
 use Yii;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
 
 /**
  * This is the model class for table "report_widget_result".
@@ -18,13 +25,18 @@ use Yii;
  * @property int $updated_at
  * @property int $created_at
  * @property int $deleted_at
- * @property int $update_by
+ * @property int $updated_by
  * @property int $created_by
  *
  * @property ReportWidget $widget
  */
-class ReportWidgetResult extends \yii\db\ActiveRecord
+class ReportWidgetResult extends ActiveRecord
 {
+    const STATUS_ACTIVE = 1;
+    const STATUS_DELETED = 0;
+
+    public $result;
+
     /**
      * {@inheritdoc}
      */
@@ -39,9 +51,9 @@ class ReportWidgetResult extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['add_on'], 'safe'],
-            [['widget_id', 'start_range', 'end_range', 'updated_at', 'created_at', 'update_by', 'created_by'], 'required'],
-            [['widget_id', 'start_range', 'end_range', 'status', 'updated_at', 'created_at', 'deleted_at', 'update_by', 'created_by'], 'integer'],
+            [['widget_id'], 'required'],
+            [['widget_id', 'start_range', 'end_range', 'status', 'updated_at', 'created_at', 'deleted_at', 'updated_by', 'created_by'], 'integer'],
+            [['add_on','params'], 'safe'],
             [['run_controller'], 'string', 'max' => 256],
             [['run_action'], 'string', 'max' => 128],
             [['widget_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportWidget::class, 'targetAttribute' => ['widget_id' => 'id']],
@@ -65,7 +77,7 @@ class ReportWidgetResult extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('biDashboard', 'Updated At'),
             'created_at' => Yii::t('biDashboard', 'Created At'),
             'deleted_at' => Yii::t('biDashboard', 'Deleted At'),
-            'update_by' => Yii::t('biDashboard', 'Update By'),
+            'updated_by' => Yii::t('biDashboard', 'Updated By'),
             'created_by' => Yii::t('biDashboard', 'Created By'),
         ];
     }
@@ -73,7 +85,7 @@ class ReportWidgetResult extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Widget]].
      *
-     * @return \yii\db\ActiveQuery|ReportWidgetQuery
+     * @return ActiveQuery|ReportWidgetQuery
      */
     public function getWidget()
     {
@@ -87,5 +99,39 @@ class ReportWidgetResult extends \yii\db\ActiveRecord
     public static function find()
     {
         return new ReportWidgetResultQuery(get_called_class());
+    }
+    public function behaviors()
+    {
+         return [
+            'timestamp' => [
+                'class' => TimestampBehavior::class
+            ],
+            [
+                'class' => BlameableBehavior::class,
+                'createdByAttribute' => 'created_by',
+                'updatedByAttribute' => 'updated_by',
+            ],
+            'softDeleteBehavior' => [
+                'class' => SoftDeleteBehavior::class,
+                'softDeleteAttributeValues' => [
+                    'deleted_at' => time(),
+                    'status' => self::STATUS_DELETED
+                ],
+                'restoreAttributeValues' => [
+                    'deleted_at' => 0,
+                    'status' => self::STATUS_ACTIVE
+                ],
+                'replaceRegularDelete' => false, // mutate native `delete()` method
+                'invokeDeleteEvents' => false
+            ],
+            'jsonable' => [
+                'class' => Jsonable::class,
+                'jsonAttributes' => [
+                    'add_on' => [
+                        'result',
+                    ],
+                ],
+            ],
+        ];
     }
 }
