@@ -87,8 +87,6 @@ $(function () {
                     contentType: false,
                     type: 'POST',
                     success: function (data) {
-                        modalPjax.modal('hide');
-                        console.log( modalPjax.modal('hide'))
                         if (data.success === true) {
                             swal({
                                 position: 'top-end',
@@ -141,7 +139,21 @@ $(function () {
                         }
                         // errors handling
                         else {
-                            $form.yiiActiveForm('updateMessages', data, true);
+                            if (data.errors) {
+                                $.each(data.errors, function (id, messages) {
+                                    var input = $form.find('#' + id);
+                                    input.removeClass('has-success').addClass('has-error');
+                                    input.parent().find('.invalid-feedback').html(messages.join('<br>')).show();
+                                });
+                            } else {
+                                $form.yiiActiveForm('updateMessages', data, true);
+                                $.each(data, function (id, messages) {
+                                    var msgs = messages[0];
+                                    var input = $form.find('#' + id);
+                                    input.removeClass('has-success').addClass('has-error');
+                                    input.parent().parent().parent().find('.invalid-feedback').html(msgs).show();
+                                });
+                            }
                         }
                     }
                 }).fail(function (xhr, status, error) {
