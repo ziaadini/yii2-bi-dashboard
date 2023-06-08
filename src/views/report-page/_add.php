@@ -10,6 +10,7 @@ use yii\widgets\ActiveForm;
 /** @var yii\web\View $this */
 /** @var sadi01\bidashboard\models\ReportPageWidget $model */
 /** @var yii\widgets\ActiveForm $form */
+/** @var sadi01\bidashboard\models\ReportPage $page */
 ?>
 
 <div class="report-page-widget-form">
@@ -18,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?=
     $form->field($model, 'widget_id')->widget(Select2::class, [
-        'data' => ArrayHelper::map(ReportWidget::find()->all(), 'id', 'title'),
+        'data' => ArrayHelper::map(ReportWidget::find()->where(['range_type' => $page->range_type])->all(), 'id', 'title'),
         'options' => ['placeholder' => Yii::t('app', 'Select user')],
         'pluginOptions' => [
             'allowClear' => true
