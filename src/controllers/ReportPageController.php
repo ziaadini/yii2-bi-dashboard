@@ -2,15 +2,17 @@
 
 namespace sadi01\bidashboard\controllers;
 
+use DateTime;
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageSearch;
 use sadi01\bidashboard\models\ReportPageWidget;
+use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-
+use sadi01\bidashboard\components\jdate;
 /**
  * ReportPageController implements the CRUD actions for ReportPage model.
  */
@@ -62,10 +64,18 @@ class ReportPageController extends Controller
     public function actionView($id)
     {
         $model=$this->findModel($id);
-        return $this->render('view', [
-            'model' => $model,
-            'widgets'=>$model->reportPageWidgets,
-        ]);
+        if ($model->range_type){
+            return $this->render('view', [
+                'model' => $model,
+                'widgets'=>$model->reportPageWidgets,
+            ]);
+        }else{
+            return $this->render('monthly', [
+                'model' => $model,
+                'widgets'=>$model->reportPageWidgets,
+            ]);
+        }
+
     }
 
     /**
@@ -166,10 +176,10 @@ class ReportPageController extends Controller
     public function actionAdd($id)
     {
         $model = new ReportPageWidget();
+        $page = $this->findModel($id);
         $model->page_id=$id;
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->validate()) {
-
                 if($model->save(false)){
                     return $this->asJson([
                         'success' => true,
@@ -188,6 +198,8 @@ class ReportPageController extends Controller
         $this->performAjaxValidation($model);
         return $this->renderAjax('_add', [
             'model' => $model,
+            'page' =>$page
         ]);
     }
+
 }
