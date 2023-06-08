@@ -18,7 +18,9 @@ $url = $biAssets->baseUrl;
 $this->title = 'Bi dashboard widget';
 
 /**
+ * @var $searchModel object
  * @var $searchRoute string
+ * @var $searchModelMethod string
  * @var $searchModelFormName string
  * @var $queryParams array
  */
@@ -36,7 +38,7 @@ $this->title = 'Bi dashboard widget';
         'data-url' => Url::to([
             '/bidashboard/report-widget/create',
             'searchModelClass' => $searchModel::class,
-            'searchModelMethod' => 'search',
+            'searchModelMethod' => $searchModelMethod,
             'searchModelRunResultView' => '---',
             'search_route' => $searchRoute,
             'search_model_form_name' => $searchModelFormName,

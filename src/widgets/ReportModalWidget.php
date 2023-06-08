@@ -12,6 +12,7 @@ class ReportModalWidget extends Widget
 {
     public $queryParams;
     public $searchModel;
+    public $searchModelMethod;
     public $searchRoute;
     public $searchModelFormName;
 
@@ -27,6 +28,7 @@ class ReportModalWidget extends Widget
             'model' => $model,
             'queryParams' => $this->queryParams,
             'searchModel' => $this->searchModel,
+            'searchModelMethod' => $this->searchModelMethod,
             'searchRoute' => $this->searchRoute,
             'searchModelFormName' => $this->searchModelFormName,
         ]);
