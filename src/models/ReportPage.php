@@ -105,8 +105,8 @@ class ReportPage extends ActiveRecord
     {
         $_items = [
             'range_type' => [
-                self::RANGE_DAY => Yii::t('biDashboard', 'DAY'),
-                self::RANGE_MONTH => Yii::t('biDashboard', 'MONTH'),
+                self::RANGE_DAY => Yii::t('biDashboard', 'روزانه'),
+                self::RANGE_MONTH => Yii::t('biDashboard', 'ماهانه'),
             ],
             'Status' => [
                 self::STATUS_DELETED => Yii::t('biDashboard', 'DELETED'),
