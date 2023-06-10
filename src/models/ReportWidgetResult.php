@@ -86,6 +86,8 @@ class ReportWidgetResult extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new ReportWidgetResultQuery(get_called_class());
+        $query = new ReportWidgetResultQuery(get_called_class());
+        $query->notDeleted();
+        return $query;
     }
 }

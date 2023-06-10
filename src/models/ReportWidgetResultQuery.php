@@ -2,6 +2,8 @@
 
 namespace sadi01\bidashboard\models;
 
+use yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
+
 /**
  * This is the ActiveQuery class for [[ReportWidgetResult]].
  *
@@ -9,10 +11,14 @@ namespace sadi01\bidashboard\models;
  */
 class ReportWidgetResultQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
+    public function behaviors()
     {
-        return $this->andWhere('[[status]]=1');
-    }*/
+        return [
+            'softDelete' => [
+                'class' => SoftDeleteQueryBehavior::class,
+            ],
+        ];
+    }
 
     /**
      * {@inheritdoc}
