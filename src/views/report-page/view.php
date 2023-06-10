@@ -21,7 +21,20 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="report-page-view">
     <?php Pjax::begin(['id' => 'p-jax-report-page-add', 'enablePushState' => false]); ?>
     <div class="p-3 bg-white">
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('biDashboard', 'Update'), "javascript:void(0)",
+            [
+                'data-pjax' => '0',
+                'class' => "btn btn-primary",
+                'data-size' => 'modal-xl',
+                'data-title' => Yii::t('app', 'update'),
+                'data-toggle' => 'modal',
+                'data-target' => '#modal-pjax',
+                'data-url' => Url::to(['report-page/update', 'id' => $model->id]),
+                'data-handle-form-submit' => 1,
+                'data-show-loading' => 0,
+                'data-reload-pjax-container' => 'p-jax-report-page-add',
+                'data-reload-pjax-container-on-show' => 0
+            ]) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -29,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a(Yii::t('biDashboard', 'create'), "javascript:void(0)",
+        <?= Html::a(Yii::t('biDashboard', 'اضافه کردن ویجت'), "javascript:void(0)",
             [
                 'data-pjax' => '0',
                 'class' => "btn btn-primary",
@@ -145,11 +158,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'aria-label' => Yii::t('yii', 'delete'),
                                                 'data-reload-pjax-container' => 'p-jax-report-page-add',
                                                 'data-pjax' => '0',
-                                                'data-url' => Url::to(['/bidashboard/report-widget/delete', 'id' => $widget->widget['id']]),
+                                                'data-url' => Url::to(['/bidashboard/report-page-widget/delete', 'id_widget' => $widget->widget['id'], 'id_page' => $model->id]),
                                                 'class' => " p-jax-btn btn-sm text-danger",
                                                 'data-title' => Yii::t('yii', 'delete'),
                                                 'data-toggle' => 'tooltip',
-                                                'data-method' => ''
                                             ]); ?>
 
                                     </div>
