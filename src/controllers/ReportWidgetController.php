@@ -104,8 +104,6 @@ class ReportWidgetController extends Controller
         $model = new ReportWidget();
         $model->loadDefaultValues();
 
-        $request = $this->request->get();
-
         $searchModelClass = $this->request->get( 'searchModelClass',null);
         $searchModelMethod = $this->request->get('searchModelMethod',null);
         $searchModelRunResultView = $this->request->get('searchModelRunResultView',null);

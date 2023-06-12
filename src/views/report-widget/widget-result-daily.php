@@ -47,23 +47,33 @@ use Yii;
     <script>
         const ctx = document.getElementById('myChart');
 
-        new Chart(ctx, {
-            type: 'bar',
+        const mixedChart = new Chart(ctx, {
             data: {
-                labels: [
-                    <?php foreach ($runWidget->add_on['result'] as $item): ?>
-                    <?= $item['year']."/".$item['month']."/".$item['day']; ?>,
-                    <?php endforeach; ?>
-                ],
-                datasets: [{
-                    label: '# of Votes',
+                datasets: [
+                    {
+                    type: 'bar',
+                    label: 'Bar Dataset',
                     data: [
                         <?php foreach ($runWidget->add_on['result'] as $item): ?>
                         <?= $item['total_amount']; ?>,
                         <?php endforeach; ?>
                     ],
-                    borderWidth: 1
-                }]
+                    },
+                    {
+                        type: 'line',
+                        label: 'line Dataset',
+                        data: [
+                            <?php foreach ($runWidget->add_on['result'] as $item): ?>
+                            <?= $item['total_amount']; ?>,
+                            <?php endforeach; ?>
+                        ],
+                    }
+                ],
+                labels: [
+                    <?php foreach ($runWidget->add_on['result'] as $item): ?>
+                    "<?= $item['year']."/".$item['month']."/".$item['day']; ?>",
+                    <?php endforeach; ?>
+                ],
             },
             options: {
                 scales: {
@@ -73,6 +83,9 @@ use Yii;
                 }
             }
         });
+
+
+
     </script>
 
 </div>
