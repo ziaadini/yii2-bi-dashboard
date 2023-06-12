@@ -13,18 +13,13 @@ class m230608_091647_database_function_pdate extends Migration
     public function safeUp()
     {
 
-
-$this->execute("
+        $sql = "
 DROP FUNCTION IF EXISTS `__mydiv`;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `__mydiv`(`a` int, `b` int) RETURNS bigint(20)
 READS SQL DATA
 DETERMINISTIC
 BEGIN
-# Copyright (C) 2009-2019 Mohammad Saleh Souzanchi
-# WebLog : www.saleh.soozanchi.ir
-# Version V2.0.0
-
 	return FLOOR(a / b);
 END;;
 DELIMITER ;
@@ -611,6 +606,7 @@ BEGIN
 		WHEN 10 THEN IF jd > _jdmarray2(jm) or jd <= 0 THEN SET e=1; end IF;
 		WHEN 11 THEN IF jd > _jdmarray2(jm) or jd <= 0 THEN SET e=1; end IF;
 		WHEN 12 THEN IF jd > _jdmarray2(jm)+j or jd <= 0 THEN SET e=1; end IF;
+		ELSE IF jd > _jdmarray2(jm) or jd <= 0 THEN SET e=1; end IF;
 	END CASE;
   IF jm > 12 or jm <= 0 THEN SET e=1; end IF;
   IF jy <= 0 THEN SET e=1; end IF;
@@ -671,8 +667,10 @@ BEGIN
 
   RETURN CONCAT_WS('-',gy,gm,gd);
 END;;
-DELIMITER ;            
-");
+DELIMITER ;
+";
+
+        $this->execute($sql);
 
     }
 
@@ -683,6 +681,21 @@ DELIMITER ;
     {
         echo "m230608_091647_database_function_pdate cannot be reverted.\n";
 
+$sql = "
+DROP FUNCTION IF EXISTS `__mydiv`;
+DROP FUNCTION IF EXISTS `__mymod`;
+DROP FUNCTION IF EXISTS `_gdmarray`;
+DROP FUNCTION IF EXISTS `_jdmarray`;
+DROP FUNCTION IF EXISTS `_jdmarray2`;
+DROP FUNCTION IF EXISTS `pdate`;
+DROP FUNCTION IF EXISTS `PMONTH`;
+DROP FUNCTION IF EXISTS `pmonthname`;
+DROP FUNCTION IF EXISTS `pyear`;
+DROP FUNCTION IF EXISTS `pday`;
+DROP FUNCTION IF EXISTS `_gdmarray2`;
+DROP FUNCTION IF EXISTS `gdate`;
+DROP FUNCTION IF EXISTS `gdatestr`;
+";
         return false;
     }
 
