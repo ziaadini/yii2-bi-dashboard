@@ -4,6 +4,10 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 use sadi01\bidashboard\models\ReportModelClass;
+use sadi01\bidashboard\models\ReportPage;
+use yii\web\View;
+
+use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
 /** @var sadi01\bidashboard\models\ReportWidget $model */
@@ -70,4 +74,15 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
+    <?php Pjax::begin(['id' => 'p-jax-report-page-add', 'enablePushState' => false]); ?>
+    <div class="col">
+        <div>
+            <?php if ($model->range_type == $model::RANGE_TYPE_DAILY): ?>
+                <?= $this->render('@sadi01/bidashboard/views/report-widget/widget-result-daily.php', ['runWidget' => $runWidget]) ?>
+            <?php else: ?>
+                <?= $this->render('@sadi01/bidashboard/views/report-widget/widget-result-monthly.php', ['runWidget' => $runWidget]) ?>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php Pjax::end(); ?>
 </div>

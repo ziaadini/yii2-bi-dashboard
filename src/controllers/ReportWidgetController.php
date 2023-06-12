@@ -64,6 +64,8 @@ class ReportWidgetController extends Controller
      */
     public function actionView($id)
     {
+        $method = $this->request->get( 'method',null);
+
         $model = $this->findModel($id);
         $params = $model->add_on['params'];
 
@@ -76,14 +78,19 @@ class ReportWidgetController extends Controller
         $modelRoute .= $modalRouteParams;
 //---- end
 
-        $runWidget = ReportWidgetResult::findOne(['widget_id' => $id]);
-        if (!$runWidget) {
+        $runWidget = ReportWidgetResult::find()
+            ->where(['widget_id' => $model->id])
+            ->orderBy(['id' => SORT_DESC])
+            ->one();
+
+        if (!$runWidget or $method == 'new') {
             $runWidget = $this->runWidget($id, null, null);
         }
 
         return $this->render('view', [
             'model' => $model,
             'modelRoute' => $modelRoute,
+            'runWidget' => $runWidget,
         ]);
     }
 
@@ -215,9 +222,8 @@ class ReportWidgetController extends Controller
         $nowDate = new \DateTime('UTC');
         /**@var $pDate Pdate */
         $pDate = \Yii::$app->pdate;
-        $jNowDate = $pDate->jgetdate();
 
-        if ($start_range) {
+        if ($start_range and $end_range) {
             if ($widget->range_type == $widget::RANGE_TYPE_DAILY){
                 $start_range = $pDate->jmktime('','','',$start_range['mon'], $start_range['day'], $start_range['year']);
                 $end_range = $pDate->jmktime('','','',$end_range['mon'], $end_range['day'], $end_range['year']);
@@ -248,10 +254,7 @@ class ReportWidgetController extends Controller
         $reportWidgetResult->result = $modelQueryResults;
         $reportWidgetResult->save();
 
-        return [
-            'success' => true,
-            'msg' => Yii::t('biDashboard', 'Saved successfully'),
-        ];
+        return $reportWidgetResult;
     }
 
     public function findSearchModelWidget($model, $startDate, $endDate)
