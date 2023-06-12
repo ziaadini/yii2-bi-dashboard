@@ -2,7 +2,9 @@
 
 namespace sadi01\bidashboard\controllers;
 
+use sadi01\bidashboard\components\Pdate;
 use sadi01\bidashboard\models\ReportWidgetResult;
+use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
 use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\models\ReportWidgetSearch;
@@ -17,6 +19,7 @@ use yii\web\NotFoundHttpException;
 class ReportWidgetController extends Controller
 {
     use AjaxValidationTrait;
+    use CoreTrait;
     public $layout = 'bid_main';
 
     /**
@@ -75,7 +78,7 @@ class ReportWidgetController extends Controller
 
         $runWidget = ReportWidgetResult::findOne(['widget_id' => $id]);
         if (!$runWidget) {
-            $runWidget = $this->actionRunWidget($id, null, null);
+            $runWidget = $this->runWidget($id, null, null);
         }
 
         return $this->render('view', [
@@ -95,12 +98,13 @@ class ReportWidgetController extends Controller
         $model->loadDefaultValues();
 
         $request = $this->request->get();
-        $searchModelClass = $this->requestGet($request, 'searchModelClass');
-        $searchModelMethod = $this->requestGet($request, 'searchModelMethod');
-        $searchModelRunResultView = $this->requestGet($request, 'searchModelRunResultView');
-        $search_route = $this->requestGet($request, 'search_route');
-        $search_model_form_name = $this->requestGet($request, 'search_model_form_name');
-        $queryParams = $this->requestGet($request, 'queryParams');
+
+        $searchModelClass = $this->request->get( 'searchModelClass',null);
+        $searchModelMethod = $this->request->get('searchModelMethod',null);
+        $searchModelRunResultView = $this->request->get('searchModelRunResultView',null);
+        $search_route = $this->request->get('search_route',null);
+        $search_model_form_name = $this->request->get('search_model_form_name',null);
+        $queryParams = $this->request->get('queryParams',null);
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->validate()) {
@@ -205,67 +209,40 @@ class ReportWidgetController extends Controller
      * @return mixed
      * @throws \Exception
      */
-    public function actionRunWidget($id, $start_range=null, $end_range=null)
+    public function runWidget($id, $start_range = null, $end_range = null)
     {
         $widget = $this->findModel($id);
         $nowDate = new \DateTime('UTC');
+        /**@var $pDate Pdate */
         $pDate = \Yii::$app->pdate;
         $jNowDate = $pDate->jgetdate();
-        $CNTmonthDay = (int)$jNowDate['mon'] <= 6 ? 31 : 30;
 
-        $j_year_start_range = $jNowDate['year'];
-        $j_month_start_range = $jNowDate['mon'];
-        if ($widget->range_type == $widget::RANGE_TYPE_DAILY) {
-            if (!$start_range) {
-                $start_range_datetime = new \DateTime($pDate->jalali_to_gregorian($j_year_start_range, $j_month_start_range, '1', '/'));
-            } else {
-                $start_range_datetime = new \DateTime($pDate->jalali_to_gregorian($start_range['year'], $start_range['month'], $start_range['day'], '/'));
+        if ($start_range) {
+            if ($widget->range_type == $widget::RANGE_TYPE_DAILY){
+                $start_range = $pDate->jmktime('','','',$start_range['mon'], $start_range['day'], $start_range['year']);
+                $end_range = $pDate->jmktime('','','',$end_range['mon'], $end_range['day'], $end_range['year']);
+            }else{
+                $start_range = $this->getStartAndEndOfMonth($start_range['year']."/".$start_range['mon'])['start'];
+                $end_range = $this->getStartAndEndOfMonth($end_range['year']."/".$end_range['mon'])['end'];
             }
-            if (!$end_range) {
-                $j_day_range = $jNowDate['mday'];
-                $end_range_datetime = new \DateTime($pDate->jalali_to_gregorian($j_year_start_range, $j_month_start_range, $j_day_range, '/'));
-            } else {
-                $end_range_datetime = new \DateTime($pDate->jalali_to_gregorian($end_range['year'], $end_range['month'], $end_range['day'], '/'));
+        }else{
+            if ($widget->range_type == $widget::RANGE_TYPE_DAILY){
+                $dateTemp = $this->getStartAndEndOfMonth();
+            }else{
+                $dateTemp = $this->getStartAndEndOfYear();
             }
-        } else {
-            if (!$start_range) {
-                $start_range_datetime = new \DateTime($pDate->jalali_to_gregorian($j_year_start_range, '1', '1', '/'));
-            } else {
-                $start_range_datetime = new \DateTime($pDate->jalali_to_gregorian($start_range['year'], $start_range['month'], '1', '/'));
-            }
-            if (!$end_range) {
-                $end_range_datetime = new \DateTime($pDate->jalali_to_gregorian($j_year_start_range, $j_month_start_range, $CNTmonthDay, '/'));
-            } else {
-                $end_range_datetime = new \DateTime($pDate->jalali_to_gregorian($end_range['year'], $end_range['month'], $CNTmonthDay, '/'));
-            }
+            $start_range = $dateTemp['start'];
+            $end_range = $dateTemp['end'];
         }
 
-        $modelQueryResults = [];
-        if ($widget->range_type == $widget::RANGE_TYPE_DAILY) {
-            for ($i = 1; $i <= $CNTmonthDay; $i++) {
-                $startDate = new \DateTime($pDate->jalali_to_gregorian($j_year_start_range, $j_month_start_range, $i, '/'));
-                $endDate = $startDate->setTime(23, 23, 59);
-                $modelQueryResults[$i] = $this->findSearchModelWidget($widget, $startDate, $endDate, 'm')[0];
-                $modelQueryResults[$i]['title'] = $i;
-            }
-        } else {
-            $months = [1 => 'فروردین', 2 => 'اردیبشهت', 3 => 'خرداد', 4 => 'تیر', 5 => 'مرداد', 6 => 'شهریور', 7 => 'مهر', 8 => 'آبان', 9 => 'آذر', 10 => 'دی', 11 => 'بهمن', 12 => 'اسفند'];
-            foreach ($months as $key => $month) {
-                $startDate = new \DateTime($pDate->jalali_to_gregorian($j_year_start_range, $key, '1', '/'));
-                $endDate = new \DateTime($pDate->jalali_to_gregorian($j_year_start_range, $key, $key <= 6 ? '31' : '30', '/'));
-
-                $modelQueryResults[$key] = $this->findSearchModelWidget($widget, $startDate, $endDate, 'm')[0];
-                $modelQueryResults[$key]['title'] = $month;
-            }
-        }
-
+        $modelQueryResults = $this->findSearchModelWidget($widget, $start_range, $end_range);
 
         // -- create Report Widget Result
         $reportWidgetResult = new ReportWidgetResult();
         $reportWidgetResult->widget_id = $id;
         $reportWidgetResult->status = 10;
-        $reportWidgetResult->start_range = $start_range_datetime->getTimestamp();
-        $reportWidgetResult->end_range = $end_range_datetime->getTimestamp();
+        $reportWidgetResult->start_range = $start_range;
+        $reportWidgetResult->end_range = $end_range;
         $reportWidgetResult->run_action = Yii::$app->controller->action->id;
         $reportWidgetResult->run_controller = Yii::$app->controller->id;
         $reportWidgetResult->result = $modelQueryResults;
@@ -283,7 +260,7 @@ class ReportWidgetController extends Controller
         $searchModel = new ($model->search_model_class);
         $methodExists = method_exists($searchModel, 'search');
         if ($methodExists) {
-            $dataProvider = $searchModel->{$model->search_model_method}($params, $startDate, $endDate);
+            $dataProvider = $searchModel->{$model->search_model_method}($params,$model->range_type, $startDate, $endDate);
         } else {
             //TODO: error
         }
