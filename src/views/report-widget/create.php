@@ -5,11 +5,7 @@ use yii\helpers\Html;
 /**
  * @var yii\web\View $this
  * @var sadi01\bidashboard\models\ReportWidget $model
- * @var $searchModelClass object
- * @var $search_route string
- * @var $searchModelRunResultView string
- * @var $searchModelMethod string
- * @var $search_model_form_name string
+ * @var $queryString string
  * @var $queryParams array
  */
 $this->title = Yii::t('biDashboard', 'Create Report Widget');
@@ -23,11 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card-body">
                     <?= $this->render('_form', [
                         'model' => $model,
-                        'searchModelClass' => $searchModelClass,
-                        'searchModelMethod' => $searchModelMethod,
-                        'searchModelRunResultView' => $searchModelRunResultView,
-                        'searchRoute' => $search_route,
-                        'searchModelFormName' => $search_model_form_name,
+                        'queryString' => $queryString,
                         'queryParams' => json_decode($queryParams),
                     ]) ?>
                 </div>

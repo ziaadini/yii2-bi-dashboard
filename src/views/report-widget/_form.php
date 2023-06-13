@@ -9,11 +9,14 @@ use sadi01\bidashboard\models\ReportWidget;
 
 /** @var View $this */
 /** @var ReportWidget $model */
-/** @var ActiveForm $form */
+/** @var ActiveForm $form
+ * @var $queryString string
+ * @var $queryParams array
+ */
 ?>
 
 <div class="report-widget-form">
-    <?php $form = ActiveForm::begin(['action' => ['/bidashboard/report-widget/create']]); ?>
+    <?php $form = ActiveForm::begin(['action' => ['/bidashboard/report-widget/create?'.$queryString]]); ?>
 
     <div class="row">
         <div class="col-sm-6">
@@ -29,18 +32,6 @@ use sadi01\bidashboard\models\ReportWidget;
             <?= $form->field($model, 'visibility')->dropDownList($model->itemAlias('Visibility')) ?>
         </div>
     </div>
-
-    <?= $form->field($model, 'search_model_class')->hiddenInput(['value' => $searchModelClass])->label(false) ?>
-    <?= $form->field($model, 'search_model_method')->hiddenInput(['value' => $searchModelMethod])->label(false) ?>
-    <?= $form->field($model, 'search_model_run_result_view')->hiddenInput(['value' => $searchModelRunResultView])->label(false) ?>
-    <?= $form->field($model, 'search_route')->hiddenInput(['value' => $searchRoute])->label(false) ?>
-    <?= $form->field($model, 'search_model_form_name')->hiddenInput(['value' => $searchModelFormName])->label(false) ?>
-
-    <?php
-    foreach ($queryParams as $Pkey => $Pvalue) {
-        echo $form->field($model, 'params[' . $Pkey . ']')->hiddenInput(['value' => $Pvalue])->label(false);
-    }
-    ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>

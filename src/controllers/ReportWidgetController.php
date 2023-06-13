@@ -91,19 +91,24 @@ class ReportWidgetController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+    public function actionCreate($searchModelClass=null,
+                                 $searchModelMethod=null,
+                                 $searchModelRunResultView=null,
+                                 $search_route=null,
+                                 $search_model_form_name=null,
+                                 $queryParams=null)
     {
+
         $model = new ReportWidget();
         $model->loadDefaultValues();
 
-        $searchModelClass = $this->request->get('searchModelClass', null);
-        $searchModelMethod = $this->request->get('searchModelMethod', null);
-        $searchModelRunResultView = $this->request->get('searchModelRunResultView', null);
-        $search_route = $this->request->get('search_route', null);
-        $search_model_form_name = $this->request->get('search_model_form_name', null);
-        $queryParams = $this->request->get('queryParams', null);
-
         if ($this->request->isPost) {
+            $model->search_model_method = $searchModelMethod;
+            $model->search_route = $search_route;
+            $model->search_model_class = $searchModelClass;
+            $model->search_model_form_name = $search_model_form_name;
+            $model->search_model_run_result_view = $searchModelRunResultView;
+            $model->params = $queryParams;
             if ($model->load($this->request->post()) && $model->validate()) {
                 $model->save(false);
                 return $this->asJson([
@@ -123,11 +128,7 @@ class ReportWidgetController extends Controller
 
         return $this->renderAjax('create', [
             'model' => $model,
-            'searchModelClass' => $searchModelClass,
-            'searchModelMethod' => $searchModelMethod,
-            'searchModelRunResultView' => $searchModelRunResultView,
-            'search_route' => $search_route,
-            'search_model_form_name' => $search_model_form_name,
+            'queryString' => $this->request->queryString,
             'queryParams' => $queryParams,
         ]);
     }
