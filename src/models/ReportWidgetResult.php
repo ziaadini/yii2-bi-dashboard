@@ -136,4 +136,11 @@ class ReportWidgetResult extends ActiveRecord
             ],
         ];
     }
+    public function beforeSave($insert)
+    {
+        if($this->isNewRecord){
+            $this->status = 10;
+        }
+        return parent::beforeSave($insert);
+    }
 }

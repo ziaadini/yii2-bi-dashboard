@@ -67,16 +67,8 @@ class ReportWidgetController extends Controller
     public function actionView($id, $method = null)
     {
         $model = $this->findModel($id);
-        $params = $model->params;
 
-//---- create url search
-        $modelRoute = "/" . $model->search_route . "?";
-        $modalRouteParams = "";
-        foreach ($params as $key => $param) {
-            $modalRouteParams .= $model->search_model_form_name . "[" . $key . "]=" . $param . "&";
-        }
-        $modelRoute .= $modalRouteParams;
-//---- end
+        $modelRoute = $model->getModelRoute();
 
         $runWidget = ReportWidgetResult::find()
             ->where(['widget_id' => $model->id])
@@ -84,7 +76,7 @@ class ReportWidgetController extends Controller
             ->one();
 
         if (!$runWidget || $method == 'new') {
-            $runWidget = $this->runWidget($id, null, null);
+            $runWidget = $model->runWidget($id, null, null);
         }
 
         return $this->render('view', [
@@ -201,65 +193,4 @@ class ReportWidgetController extends Controller
         ]);
     }
 
-    /**
-     * @param $id
-     * @param $start_range
-     * @param $end_rage
-     * @return mixed
-     * @throws \Exception
-     */
-    public function runWidget($id, $start_range = null, $end_range = null)
-    {
-        $widget = $this->findModel($id);
-        /**@var $pDate Pdate */
-        $pDate = \Yii::$app->pdate;
-
-        if ($start_range and $end_range) {
-            if ($widget->range_type == $widget::RANGE_TYPE_DAILY) {
-                $start_range = $pDate->jmktime('', '', '', $start_range['mon'], $start_range['day'], $start_range['year']);
-                $end_range = $pDate->jmktime('', '', '', $end_range['mon'], $end_range['day'], $end_range['year']);
-            } else {
-                $start_range = $this->getStartAndEndOfMonth($start_range['year'] . "/" . $start_range['mon'])['start'];
-                $end_range = $this->getStartAndEndOfMonth($end_range['year'] . "/" . $end_range['mon'])['end'];
-            }
-        } else {
-            if ($widget->range_type == $widget::RANGE_TYPE_DAILY) {
-                $dateTemp = $this->getStartAndEndOfMonth();
-            } else {
-                $dateTemp = $this->getStartAndEndOfYear();
-            }
-            $start_range = $dateTemp['start'];
-            $end_range = $dateTemp['end'];
-        }
-
-        $modelQueryResults = $this->findSearchModelWidget($widget, $start_range, $end_range);
-
-        // -- create Report Widget Result
-        $reportWidgetResult = new ReportWidgetResult();
-        $reportWidgetResult->widget_id = $id;
-        $reportWidgetResult->status = 10;
-        $reportWidgetResult->start_range = $start_range;
-        $reportWidgetResult->end_range = $end_range;
-        $reportWidgetResult->run_action = Yii::$app->controller->action->id;
-        $reportWidgetResult->run_controller = Yii::$app->controller->id;
-        $reportWidgetResult->result = $modelQueryResults;
-        $reportWidgetResult->save();
-
-        return $reportWidgetResult;
-    }
-
-    public function findSearchModelWidget($model, $startDate, $endDate)
-    {
-        $params = $model->add_on['params'];
-        $searchModel = new ($model->search_model_class);
-        $methodExists = method_exists($searchModel, 'search');
-        if ($methodExists) {
-            $dataProvider = $searchModel->{$model->search_model_method}($params, $model->range_type, $startDate, $endDate);
-            $modelQueryResults = array_values($dataProvider->query->asArray()->all());
-        } else {
-            $modelQueryResults = null;
-        }
-
-        return $modelQueryResults;
-    }
 }
