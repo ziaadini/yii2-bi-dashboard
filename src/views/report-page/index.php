@@ -32,9 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     </a>
                 </h4>
                 <div>
-                    <?= Html::a(Yii::t('app', 'create'), "javascript:void(0)",
+                    <?= Html::a(Yii::t('biDashboard', 'create'), "javascript:void(0)",
                         [
-                            'data-pjax' => '0',
                             'data-pjax' => '0',
                             'class' => "btn btn-primary",
                             'data-size' => 'modal-xl',
@@ -43,9 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-target' => '#modal-pjax',
                             'data-url' => Url::to(['report-page/create']),
                             'data-handle-form-submit' => 1,
-                            'data-show-loading' => 0,
-                            'data-reload-pjax-container' => 'p-jax-report-page',
-                            'data-reload-pjax-container-on-show' => 0
+                            'data-reload-pjax-container' => 'p-jax-report-page'
                         ]) ?>
                 </div>
             </div>

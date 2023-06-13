@@ -70,37 +70,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     <thead class="table-dark">
                     <tr>
                         <th scope="col">ویجت</th>
-                        <th scope="col">1</th>
-                        <th scope="col">2</th>
-                        <th scope="col">3</th>
-                        <th scope="col">4</th>
-                        <th scope="col">5</th>
-                        <th scope="col">6</th>
-                        <th scope="col">7</th>
-                        <th scope="col">8</th>
-                        <th scope="col">9</th>
-                        <th scope="col">10</th>
-                        <th scope="col">11</th>
-                        <th scope="col">12</th>
-                        <th scope="col">13</th>
-                        <th scope="col">14</th>
-                        <th scope="col">15</th>
-                        <th scope="col">16</th>
-                        <th scope="col">17</th>
-                        <th scope="col">18</th>
-                        <th scope="col">19</th>
-                        <th scope="col">20</th>
-                        <th scope="col">21</th>
-                        <th scope="col">22</th>
-                        <th scope="col">23</th>
-                        <th scope="col">24</th>
-                        <th scope="col">25</th>
-                        <th scope="col">26</th>
-                        <th scope="col">27</th>
-                        <th scope="col">28</th>
-                        <th scope="col">29</th>
-                        <th scope="col">30</th>
-                        <th scope="col">31</th>
+                        <th scope="col">فروردین</th>
+                        <th scope="col">اردیبهشت</th>
+                        <th scope="col">خرداد</th>
+                        <th scope="col">تیر</th>
+                        <th scope="col">مرداد</th>
+                        <th scope="col">شهریور</th>
+                        <th scope="col">مهر</th>
+                        <th scope="col">آبان</th>
+                        <th scope="col">آذر</th>
+                        <th scope="col">دی</th>
+                        <th scope="col">بهمن</th>
+                        <th scope="col">اسفند</th>
 
                     </tr>
                     </thead>
@@ -108,22 +89,22 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php foreach ($widgets as $widget): ?>
                         <tr>
                             <th>
-                            <div class="">
-                                <div class="border-bottom">
-                                    <?= Html::a('<i class="mdi mdi-launch"></i>', "javascript:void(0)",
-                                        [
-                                            'data-pjax' => '0',
-                                            'class' => "btn btn-sm text-primary",
-                                            'data-size' => 'modal-xl',
-                                            'data-title' => '<i class="mdi mdi-launch"></i>',
-                                            'data-toggle' => 'modal',
-                                            'data-target' => '#modal-pjax',
-                                            'data-url' => Url::to(['/bidashboard/report-widget/view', 'id' => $widget->widget['id']]),
-                                            'data-handle-form-submit' => 1,
-                                            'data-show-loading' => 0,
-                                            'data-reload-pjax-container' => 'p-jax-report-page-add',
-                                            'data-reload-pjax-container-on-show' => 0
-                                        ]) ?>
+                                <div class="">
+                                    <div class="border-bottom">
+                                        <?= Html::a('<i class="mdi mdi-launch"></i>', "javascript:void(0)",
+                                            [
+                                                'data-pjax' => '0',
+                                                'class' => "btn btn-sm text-primary",
+                                                'data-size' => 'modal-xl',
+                                                'data-title' => '<i class="mdi mdi-launch"></i>',
+                                                'data-toggle' => 'modal',
+                                                'data-target' => '#modal-pjax',
+                                                'data-url' => Url::to(['/bidashboard/report-widget/view', 'id' => $widget->widget['id']]),
+                                                'data-handle-form-submit' => 1,
+                                                'data-show-loading' => 0,
+                                                'data-reload-pjax-container' => 'p-jax-report-page-add',
+                                                'data-reload-pjax-container-on-show' => 0
+                                            ]) ?>
                                         <?= Html::a('<i class="mdi mdi-reload"></i>', "javascript:void(0)",
                                             [
                                                 'data-pjax' => '0',
@@ -158,7 +139,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'aria-label' => Yii::t('yii', 'delete'),
                                                 'data-reload-pjax-container' => 'p-jax-report-page-add',
                                                 'data-pjax' => '0',
-                                                'data-url' => Url::to(['/bidashboard/report-page-widget/delete', 'id_widget' => $widget->widget['id'], 'id_page' => $model->id]),
+                                                'data-url' => Url::to(['/bidashboard/report-page-widget/delete']),
                                                 'class' => " p-jax-btn btn-sm text-danger",
                                                 'data-title' => Yii::t('yii', 'delete'),
                                                 'data-toggle' => 'tooltip',

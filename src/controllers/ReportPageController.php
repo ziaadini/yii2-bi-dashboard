@@ -2,12 +2,13 @@
 
 namespace sadi01\bidashboard\controllers;
 
-
-
+use sadi01\bidashboard\components\jdate;
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageSearch;
+use sadi01\bidashboard\models\ReportPageWidget;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use Yii;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -18,6 +19,9 @@ use yii\web\NotFoundHttpException;
 class ReportPageController extends Controller
 {
     use AjaxValidationTrait;
+
+    public $layout = 'bid_main';
+
     /**
      * @inheritDoc
      */
@@ -26,10 +30,23 @@ class ReportPageController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
-                        'delete' => ['POST'],
+                        'index' => ['GET'],
+                        'view' => ['GET'],
+                        'create' => ['GET', 'POST'],
+                        'update' => ['GET', 'PUT', 'POST'],
+                        'delete' => ['POST', 'DELETE'],
                     ],
                 ],
             ]
@@ -43,7 +60,6 @@ class ReportPageController extends Controller
      */
     public function actionIndex()
     {
-        $this->layout = 'bid_main';
         $searchModel = new ReportPageSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -61,9 +77,19 @@ class ReportPageController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model = $this->findModel($id);
+
+        if ($model->range_type) {
+            return $this->render('view', [
+                'model' => $model,
+                'widgets' => $model->reportPageWidgets,
+            ]);
+        } else {
+            return $this->render('monthly', [
+                'model' => $model,
+                'widgets' => $model->reportPageWidgets,
+            ]);
+        }
     }
 
     /**
@@ -73,7 +99,6 @@ class ReportPageController extends Controller
      */
     public function actionCreate()
     {
-
         $model = new ReportPage();
 
         if ($this->request->isPost) {
@@ -104,11 +129,15 @@ class ReportPageController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->validate() && $model->save()) {
+            return $this->asJson([
+                'success' => true,
+                'msg' => Yii::t("app", 'Success')
+            ]);
         }
 
-        return $this->render('update', [
+        $this->performAjaxValidation($model);
+        return $this->renderAjax('update', [
             'model' => $model,
         ]);
     }
@@ -122,7 +151,6 @@ class ReportPageController extends Controller
      */
     public function actionDelete($id)
     {
-
         $model = $this->findModel($id);
 
         if ($model->canDelete() && $model->softDelete()) {
@@ -133,13 +161,8 @@ class ReportPageController extends Controller
 
             $this->flash('error', $model->errors ? array_values($model->errors)[0][0] : Yii::t('app', 'Error In Delete Action'));
         }
-        return $this->redirect(['index']);
-    }
-    public function beforeAction($action)
-    {
-        Yii::$app->controller->enableCsrfValidation = false;
 
-        return parent::beforeAction($action);
+        return $this->redirect(['index']);
     }
 
     /**
@@ -157,6 +180,38 @@ class ReportPageController extends Controller
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
+
+    public function actionAdd($id)
+    {
+        $model = new ReportPageWidget();
+        $page = $this->findModel($id);
+        $model->page_id = $id;
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->validate()) {
+                if ($model->save(false)) {
+                    return $this->asJson([
+                        'success' => true,
+                        'msg' => Yii::t("app", 'Success')
+                    ]);
+                } else {
+                    return $this->asJson([
+                        'success' => false,
+                        'msg' => Yii::t("app", 'fail')
+                    ]);
+                }
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        $this->performAjaxValidation($model);
+        return $this->renderAjax('_add', [
+            'model' => $model,
+            'page' => $page
+        ]);
+    }
+
     private function flash($type, $message)
     {
         Yii::$app->getSession()->setFlash($type == 'error' ? 'danger' : $type, $message);

@@ -2,18 +2,14 @@
 
 namespace sadi01\bidashboard\components;
 
-
 use Yii;
 use yii\base\Component;
-
 //use yii\base\InvalidConfigException;
 
 class Pdate extends Component
 {
-
     function jdate($format, $timestamp = '', $none = '', $time_zone = 'Asia/Tehran', $tr_num = 'fa')
     {
-
         $T_sec = 0;/* <= رفع خطاي زمان سرور ، با اعداد '+' و '-' بر حسب ثانيه */
 
         if ($time_zone != 'local') date_default_timezone_set(($time_zone === '') ? 'Asia/Tehran' : $time_zone);
@@ -230,7 +226,6 @@ class Pdate extends Component
     /*	F	*/
     function jstrftime($format, $timestamp = '', $none = '', $time_zone = 'Asia/Tehran', $tr_num = 'fa')
     {
-
         $T_sec = 0;/* <= رفع خطاي زمان سرور ، با اعداد '+' و '-' بر حسب ثانيه */
 
         if ($time_zone != 'local') date_default_timezone_set(($time_zone === '') ? 'Asia/Tehran' : $time_zone);

@@ -13,7 +13,6 @@ $url = $biAssets->baseUrl;
 <?php $this->beginPage() ?>
     <!DOCTYPE html>
     <html dir="rtl" lang="en">
-
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,7 +22,6 @@ $url = $biAssets->baseUrl;
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?php $this->head() ?>
     </head>
-
     <body>
     <div class="preloader">
         <div class="lds-ripple">
@@ -36,9 +34,6 @@ $url = $biAssets->baseUrl;
         <?= $this->render('@sadi01/bidashboard/views/layouts/sidebar.php', ['url' => $url]) ?>
         <div class="page-wrapper">
             <div>
-                <div>
-                    <?= Alert::widget() ?>
-                </div>
                 <?php
                 Modal::begin([
                     'headerOptions' => ['id' => 'modalPjaxHeader'],
@@ -85,12 +80,13 @@ $url = $biAssets->baseUrl;
                     </div>
                 </div>
             </div>
-            <?php $this->beginBody() ?>
-            <?= $content ?>
-            <?php $this->endBody() ?>
+            <div style="height: 900px;">
+                <?php $this->beginBody() ?>
+                <?= $content ?>
+                <?php $this->endBody() ?>
+            </div>
             <footer class="footer text-center">
-                هوش تجاری
-                <a href="https://mobit.ir">مبیت</a>
+                BI Dashboard
             </footer>
         </div>
     </html>

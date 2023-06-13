@@ -23,7 +23,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @property int|null $updated_by
  * @property int|null $created_by
  *
- * @property \app\models\ReportPageWidget $reportPageWidgets
+ * @property \sadi01\bidashboard\models\ReportPageWidget $reportPageWidgets
  *
  * @mixin SoftDeleteBehavior
  */
@@ -62,16 +62,16 @@ class ReportPage extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'title' => Yii::t('app', 'Title'),
-            'status' => Yii::t('app', 'Status'),
-            'range_type' => Yii::t('app', 'Range Type'),
-            'add_on' => Yii::t('app', 'Add On'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
-            'deleted_at' => Yii::t('app', 'Deleted At'),
-            'updated_by' => Yii::t('app', 'Updated By'),
-            'created_by' => Yii::t('app', 'Created By'),
+            'id' => Yii::t('biDashboard', 'ID'),
+            'title' => Yii::t('biDashboard', 'Title'),
+            'status' => Yii::t('biDashboard', 'Status'),
+            'range_type' => Yii::t('biDashboard', 'Range Type'),
+            'add_on' => Yii::t('biDashboard', 'Add On'),
+            'created_at' => Yii::t('biDashboard', 'Created At'),
+            'updated_at' => Yii::t('biDashboard', 'Updated At'),
+            'deleted_at' => Yii::t('biDashboard', 'Deleted At'),
+            'updated_by' => Yii::t('biDashboard', 'Updated By'),
+            'created_by' => Yii::t('biDashboard', 'Created By'),
         ];
     }
 
@@ -82,7 +82,12 @@ class ReportPage extends ActiveRecord
      */
     public function getReportPageWidgets()
     {
-        return $this->hasMany(\app\models\ReportPageWidget::class, ['page_id' => 'id']);
+        return $this->hasMany(\sadi01\bidashboard\models\ReportPageWidget::class, ['page_id' => 'id']);
+    }
+    public function getWidgets()
+    {
+        return $this->hasMany(ReportWidget::class, ['id' => 'widget_id'])
+            ->viaTable('report_page_widget', ['page_id' => 'id']);
     }
 
     /**
@@ -100,13 +105,13 @@ class ReportPage extends ActiveRecord
     {
         $_items = [
             'range_type' => [
-                self::RANGE_DAY => Yii::t('app', 'DAY'),
-                self::RANGE_MONTH => Yii::t('app', 'MONTH'),
+                self::RANGE_DAY => Yii::t('biDashboard', 'روزانه'),
+                self::RANGE_MONTH => Yii::t('biDashboard', 'ماهانه'),
             ],
             'Status' => [
-                self::STATUS_DELETED => Yii::t('app', 'DELETED'),
-                self::STATUS_ACTIVE => Yii::t('app', 'ACTIVE'),
-                self::STATUS_INACTIVE => Yii::t('app', 'INACTIVE'),
+                self::STATUS_DELETED => Yii::t('biDashboard', 'DELETED'),
+                self::STATUS_ACTIVE => Yii::t('biDashboard', 'ACTIVE'),
+                self::STATUS_INACTIVE => Yii::t('biDashboard', 'INACTIVE'),
             ],
             'StatusClass' => [
                 self::STATUS_DELETED => 'danger',

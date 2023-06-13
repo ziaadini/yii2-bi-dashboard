@@ -8,8 +8,8 @@ use yii\web\View;
 /** @var View $this */
 /** @var ReportPage $model */
 
-$this->title = Yii::t('app', 'Create Report Page');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Report Pages'), 'url' => ['index']];
+$this->title = Yii::t('biDashboard', 'Create Report Page');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'Report Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="report-page-create">

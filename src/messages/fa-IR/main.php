@@ -17,5 +17,53 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Save' => 'ذخیره',
+    'delete' => 'حذف',
+    'Update' => 'ویرایش',
+    'Delete' => 'حذف',
+    'ID' => 'شناسه',
+    'Title' => 'عنوان',
+    'Description' => 'توضیحات',
+    'Search Model Class' => 'کلاس جستجو',
+    'Search Model Method' => 'کلاس متد',
+    'Status' => 'وضعیت',
+    'Deleted At' => 'تاریخ حذف',
+    'Search Model Run Result View' => 'صفحه نمایش مدل جستجو',
+    'Range Type' => 'دوره نمایش',
+    'Visibility' => 'قابل نمایش',
+    'Updated At' => 'آخرین آپدیت',
+    'Created At' => 'تاریخ ایجاد',
+    'Updated By' => 'آپدیت توسط',
+    'Created By' => 'ایجاد توسط',
+    'Are you sure you want to delete this item?' => 'آیا از حذف این مورد اطمینان دارید؟',
+
+    'Create Report Widget' => 'ایجاد ویجت',
+    'Save As Report Widget' => 'ایجاد ویجت',
+    'Saved successfully' => 'با موفقیت ذخیره شد',
+    'Report Widgets' => 'ویجت‌ها',
+    'Update Report Widget: {name}' => 'ویرایش ویجت: {name}',
+
+    'Daily' => 'روزانه',
+    'Monthly' => 'ماهانه',
+    'visibility' => 'نمایش',
+    'invisibility' => 'غیر قابل نمایش',
+    'Public' => 'عمومی',
+    'Private' => 'خصوصی',
+    'Active' => 'فعال',
+    'Deleted' => 'حذف شده',
+    'Search' => 'جستجو',
+    'Reset' => 'ریست',
+
+    'add widget' => 'افزودن ویجت',
+    'attribute' => 'ویژگی',
+    'value' => 'مقدار',
+
+    'Report Model Classes' => 'مدل کلاس های سیستم',
+    'Create Report Model Class' => 'ایجاد مدل کلاس',
+    'Update Report Model Class: {name}' => 'ویرایش مدل کلاس: {name}',
+    'create' => 'ایجاد',
+
+    'Select Status' => 'انتخاب وضعیت',
+    'Select RANGE' => 'انتخاب دوره',
 
 ];
