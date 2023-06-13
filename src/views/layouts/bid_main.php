@@ -34,9 +34,6 @@ $url = $biAssets->baseUrl;
         <?= $this->render('@sadi01/bidashboard/views/layouts/sidebar.php', ['url' => $url]) ?>
         <div class="page-wrapper">
             <div>
-                <div>
-                    <?= Alert::widget() ?>
-                </div>
                 <?php
                 Modal::begin([
                     'headerOptions' => ['id' => 'modalPjaxHeader'],
@@ -83,9 +80,11 @@ $url = $biAssets->baseUrl;
                     </div>
                 </div>
             </div>
-            <?php $this->beginBody() ?>
-            <?= $content ?>
-            <?php $this->endBody() ?>
+            <div style="height: 900px;">
+                <?php $this->beginBody() ?>
+                <?= $content ?>
+                <?php $this->endBody() ?>
+            </div>
             <footer class="footer text-center">
                 BI Dashboard
             </footer>

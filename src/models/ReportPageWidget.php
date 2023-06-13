@@ -98,7 +98,9 @@ class ReportPageWidget extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new ReportPageWidgetQuery(get_called_class());
+        $query = new ReportPageWidgetQuery(get_called_class());
+        $query->notDeleted();
+        return $query;
     }
     public function behaviors()
     {
@@ -126,6 +128,7 @@ class ReportPageWidget extends \yii\db\ActiveRecord
             ],
         ];
     }
+
     public static function itemAlias($type, $code = NULL)
     {
         $_items = [
@@ -148,6 +151,11 @@ class ReportPageWidget extends \yii\db\ActiveRecord
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
         else
             return isset($_items[$type]) ? $_items[$type] : false;
+    }
+
+    public function canDelete()
+    {
+        return true;
     }
 
 }
