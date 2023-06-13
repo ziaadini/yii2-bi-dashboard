@@ -217,7 +217,6 @@ class ReportWidgetController extends Controller
     public function runWidget($id, $start_range = null, $end_range = null)
     {
         $widget = $this->findModel($id);
-        $nowDate = new \DateTime('UTC');
         /**@var $pDate Pdate */
         $pDate = \Yii::$app->pdate;
 
@@ -262,10 +261,10 @@ class ReportWidgetController extends Controller
         $methodExists = method_exists($searchModel, 'search');
         if ($methodExists) {
             $dataProvider = $searchModel->{$model->search_model_method}($params,$model->range_type, $startDate, $endDate);
+            $modelQueryResults = array_values($dataProvider->query->asArray()->all());
         } else {
-            //TODO: error
+            $modelQueryResults = null;
         }
-        $modelQueryResults = array_values($dataProvider->query->asArray()->all());
 
         return $modelQueryResults;
     }

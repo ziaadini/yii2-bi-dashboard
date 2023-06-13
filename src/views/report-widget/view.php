@@ -6,11 +6,16 @@ use yii\widgets\DetailView;
 use sadi01\bidashboard\models\ReportModelClass;
 use sadi01\bidashboard\models\ReportPage;
 use yii\web\View;
+use sadi01\bidashboard\models\ReportWidgetResult;
 
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\ReportWidget $model */
+/**
+ * @var $modelRoute string
+ * @var $runWidget ReportWidgetResult
+ * @var sadi01\bidashboard\models\ReportWidget $model
+ */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Report Widgets'), 'url' => ['index']];
