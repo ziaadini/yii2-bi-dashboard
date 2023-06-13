@@ -2,25 +2,26 @@
 
 namespace sadi01\bidashboard\controllers;
 
-use DateTime;
+use sadi01\bidashboard\components\jdate;
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageSearch;
 use sadi01\bidashboard\models\ReportPageWidget;
-use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use sadi01\bidashboard\components\jdate;
+
 /**
  * ReportPageController implements the CRUD actions for ReportPage model.
  */
 class ReportPageController extends Controller
 {
-    public  $layout = 'bid_main';
     use AjaxValidationTrait;
+
+    public $layout = 'bid_main';
+
     /**
      * @inheritDoc
      */
@@ -41,8 +42,8 @@ class ReportPageController extends Controller
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
-                        'index'  => ['GET'],
-                        'view'   => ['GET'],
+                        'index' => ['GET'],
+                        'view' => ['GET'],
                         'create' => ['GET', 'POST'],
                         'update' => ['GET', 'PUT', 'POST'],
                         'delete' => ['POST', 'DELETE'],
@@ -59,7 +60,6 @@ class ReportPageController extends Controller
      */
     public function actionIndex()
     {
-
         $searchModel = new ReportPageSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -77,19 +77,19 @@ class ReportPageController extends Controller
      */
     public function actionView($id)
     {
-        $model=$this->findModel($id);
-        if ($model->range_type){
+        $model = $this->findModel($id);
+
+        if ($model->range_type) {
             return $this->render('view', [
                 'model' => $model,
-                'widgets'=>$model->reportPageWidgets,
+                'widgets' => $model->reportPageWidgets,
             ]);
-        }else{
+        } else {
             return $this->render('monthly', [
                 'model' => $model,
-                'widgets'=>$model->reportPageWidgets,
+                'widgets' => $model->reportPageWidgets,
             ]);
         }
-
     }
 
     /**
@@ -99,7 +99,6 @@ class ReportPageController extends Controller
      */
     public function actionCreate()
     {
-
         $model = new ReportPage();
 
         if ($this->request->isPost) {
@@ -136,6 +135,7 @@ class ReportPageController extends Controller
                 'msg' => Yii::t("app", 'Success')
             ]);
         }
+
         $this->performAjaxValidation($model);
         return $this->renderAjax('update', [
             'model' => $model,
@@ -161,6 +161,7 @@ class ReportPageController extends Controller
 
             $this->flash('error', $model->errors ? array_values($model->errors)[0][0] : Yii::t('app', 'Error In Delete Action'));
         }
+
         return $this->redirect(['index']);
     }
 
@@ -179,23 +180,21 @@ class ReportPageController extends Controller
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
-    private function flash($type, $message)
-    {
-        Yii::$app->getSession()->setFlash($type == 'error' ? 'danger' : $type, $message);
-    }
+
     public function actionAdd($id)
     {
         $model = new ReportPageWidget();
         $page = $this->findModel($id);
-        $model->page_id=$id;
+        $model->page_id = $id;
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->validate()) {
-                if($model->save(false)){
+                if ($model->save(false)) {
                     return $this->asJson([
                         'success' => true,
                         'msg' => Yii::t("app", 'Success')
                     ]);
-                }else{
+                } else {
                     return $this->asJson([
                         'success' => false,
                         'msg' => Yii::t("app", 'fail')
@@ -205,11 +204,16 @@ class ReportPageController extends Controller
         } else {
             $model->loadDefaultValues();
         }
+
         $this->performAjaxValidation($model);
         return $this->renderAjax('_add', [
             'model' => $model,
-            'page' =>$page
+            'page' => $page
         ]);
     }
 
+    private function flash($type, $message)
+    {
+        Yii::$app->getSession()->setFlash($type == 'error' ? 'danger' : $type, $message);
+    }
 }

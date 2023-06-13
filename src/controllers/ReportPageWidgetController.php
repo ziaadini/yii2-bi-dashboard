@@ -1,6 +1,7 @@
 <?php
 
 namespace sadi01\bidashboard\controllers;
+
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageWidget;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
@@ -8,17 +9,19 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use sadi01\bidashboard\components\jdate;
+
 /**
  * ReportPageController implements the CRUD actions for ReportPage model.
  */
 class ReportPageWidgetController extends Controller
 {
-    public  $layout = 'bid_main';
     use AjaxValidationTrait;
-    public function actionDelete($id_widget,$id_page)
+
+    public $layout = 'bid_main';
+
+    public function actionDelete($id_widget, $id_page)
     {
-        $model = ReportPageWidget::findOne(['widget_id' => $id_widget,'page_id' =>$id_page]);
+        $model = ReportPageWidget::findOne(['widget_id' => $id_widget, 'page_id' => $id_page]);
 
         if ($model->canDelete() && $model->softDelete()) {
             return $this->asJson([
@@ -33,6 +36,7 @@ class ReportPageWidgetController extends Controller
             ]);
         }
     }
+
     public function beforeAction($action)
     {
         Yii::$app->controller->enableCsrfValidation = false;
@@ -55,5 +59,4 @@ class ReportPageWidgetController extends Controller
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
-
 }
