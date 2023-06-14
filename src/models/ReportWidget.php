@@ -47,7 +47,6 @@ class ReportWidget extends ActiveRecord
     use CoreTrait;
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
-
     const RANGE_TYPE_DAILY = 1;
     const RANGE_TYPE_MONTHLY = 2;
     const VISIBILITY_PUBLIC = 1;
@@ -228,7 +227,7 @@ class ReportWidget extends ActiveRecord
             $end_range = $dateTemp['end'];
         }
 
-        $modelQueryResults = $this->findSearchModelWidget($widget, $start_range, $end_range);
+        $modelQueryResults = $this->findSearchModelWidget($start_range, $end_range);
 
         // -- create Report Widget Result
         $reportWidgetResult = new ReportWidgetResult();
@@ -250,7 +249,7 @@ class ReportWidget extends ActiveRecord
         $methodExists = method_exists($searchModel, $this->search_model_method);
         if ($methodExists) {
             $dataProvider = $searchModel->{$this->search_model_method}($params, $this->range_type, $startDate, $endDate);
-            $modelQueryResults = array_values($dataProvider->query->asArray()->all());
+            $modelQueryResults = $dataProvider->query->asArray()->all();
         } else {
             $modelQueryResults = null;
         }
@@ -260,7 +259,8 @@ class ReportWidget extends ActiveRecord
     public function getModelRoute(){
         $modelRoute = "/" . $this->search_route . "?";
         $modalRouteParams = "";
-        foreach ($this->params as $key => $param) {
+        $params = json_decode($this->params,true);
+        foreach ($params as $key => $param) {
             $modalRouteParams .= $this->search_model_form_name . "[" . $key . "]=" . $param . "&";
         }
         $modelRoute .= $modalRouteParams;
