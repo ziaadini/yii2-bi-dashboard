@@ -16,6 +16,7 @@ use sadi01\bidashboard\models\ReportWidget;
 ?>
 
 <div class="report-widget-form">
+    <?php $queryString = \Yii::$app->request->queryString; ?>
     <?php $form = ActiveForm::begin(['action' => ['/bidashboard/report-widget/create?' . $queryString]]); ?>
 
     <div class="row">

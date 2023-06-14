@@ -132,7 +132,6 @@ class ReportWidgetController extends Controller
 
         return $this->renderAjax('create', [
             'model' => $model,
-            'queryString' => $this->request->queryString,
             'queryParams' => $queryParams,
         ]);
     }
