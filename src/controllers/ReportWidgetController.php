@@ -96,7 +96,7 @@ class ReportWidgetController extends Controller
                                  $searchModelRunResultView=null,
                                  $search_route=null,
                                  $search_model_form_name=null,
-                                 $queryParams=null)
+                                 $queryParams=null,$output_column=null)
     {
 
         $model = new ReportWidget();
@@ -109,6 +109,10 @@ class ReportWidgetController extends Controller
             $model->search_model_form_name = $search_model_form_name;
             $model->search_model_run_result_view = $searchModelRunResultView;
             $model->params = $queryParams;
+
+            $output_column = $this->request->post('output_column',null);
+            $model->outputColumn = json_encode(array_filter($output_column, fn($value) => array_filter($value)));
+
             if ($model->load($this->request->post()) && $model->validate()) {
                 $model->save(false);
                 return $this->asJson([

@@ -16,7 +16,7 @@ use sadi01\bidashboard\models\ReportWidget;
 ?>
 
 <div class="report-widget-form">
-    <?php $form = ActiveForm::begin(['action' => ['/bidashboard/report-widget/create?'.$queryString]]); ?>
+    <?php $form = ActiveForm::begin(['action' => ['/bidashboard/report-widget/create?' . $queryString]]); ?>
 
     <div class="row">
         <div class="col-sm-6">
@@ -33,33 +33,75 @@ use sadi01\bidashboard\models\ReportWidget;
         </div>
     </div>
 
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>
+    <div class="repeater">
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th colspan="2">فیلد‌های خروجی از دیتابیس</th>
+                <th>
+                    <input data-repeater-create type="button" value="افزودن" class="btn btn-success"/>
+                </th>
+            </tr>
+            </thead>
+            <tbody data-repeater-list="output_column">
+                <tr data-repeater-item>
+                    <th>
+                        <div class="form-group">
+                            <label>Field Name</label>
+                            <input type="text" name="column_name" class="form-control"/>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="form-group">
+                            <label>عنوان</label>
+                            <input type="text" name="column_title" class="form-control"/>
+                        </div>
+                    </th>
+                    <th class="col-sm-1">
+                        <div class="form-group mt-2">
+                            <input data-repeater-delete type="button" value="حذف" class="btn btn-danger mt-4"/>
+                        </div>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
-    <?php ActiveForm::end(); ?>
-
-</div>
-
-<div class="table-responsive">
-    <table class="table table-striped table-bordered">
-        <thead>
-        <tr>
-            <th><?= Yii::t('biDashboard', 'attribute') ?></th>
-            <th><?= Yii::t('biDashboard', 'value') ?></th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($queryParams as $Pkey => $Pvalue): ?>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
             <tr>
-                <td>
-                    <?= Yii::t('app', $Pkey) ?>
-                </td>
-                <td>
-                    <?= $Pvalue ?>
-                </td>
+                <th><?= Yii::t('biDashboard', 'attribute') ?></th>
+                <th><?= Yii::t('biDashboard', 'value') ?></th>
             </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <?php foreach ($queryParams as $Pkey => $Pvalue): ?>
+                <tr>
+                    <td>
+                        <?= Yii::t('app', $Pkey) ?>
+                    </td>
+                    <td>
+                        <?= $Pvalue ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-group text-center">
+        <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success col-sm-4']) ?>
+    </div>
+    <?php ActiveForm::end(); ?>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('.repeater').repeater({
+            show: function () {
+                $(this).slideDown();
+            },
+        })
+    });
+</script>
