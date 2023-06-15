@@ -101,7 +101,6 @@ class ReportWidgetController extends Controller
 
         $model = new ReportWidget();
         $model->loadDefaultValues();
-
         if ($this->request->isPost) {
             $model->search_model_method = $searchModelMethod;
             $model->search_route = $search_route;
@@ -133,6 +132,7 @@ class ReportWidgetController extends Controller
         return $this->renderAjax('create', [
             'model' => $model,
             'queryParams' => $queryParams,
+            'output_column' => $output_column,
         ]);
     }
 

@@ -20,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $this->render('_form', [
                         'model' => $model,
                         'queryParams' => json_decode($queryParams),
+                        'output_column' => json_decode($output_column),
                     ]) ?>
                 </div>
             </div>

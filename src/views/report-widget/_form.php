@@ -34,6 +34,32 @@ use sadi01\bidashboard\models\ReportWidget;
         </div>
     </div>
 
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th colspan="2">پارامتر‌های جستجوی</th>
+            </tr>
+            <tr>
+                <th><?= Yii::t('biDashboard', 'attribute') ?></th>
+                <th><?= Yii::t('biDashboard', 'value') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($queryParams as $Pkey => $Pvalue): ?>
+                <tr>
+                    <td>
+                        <?= Yii::t('app', $Pkey) ?>
+                    </td>
+                    <td>
+                        <?= $Pvalue ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
     <div class="repeater">
         <table class="table table-striped table-bordered">
             <thead>
@@ -68,28 +94,6 @@ use sadi01\bidashboard\models\ReportWidget;
         </table>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered">
-            <thead>
-            <tr>
-                <th><?= Yii::t('biDashboard', 'attribute') ?></th>
-                <th><?= Yii::t('biDashboard', 'value') ?></th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php foreach ($queryParams as $Pkey => $Pvalue): ?>
-                <tr>
-                    <td>
-                        <?= Yii::t('app', $Pkey) ?>
-                    </td>
-                    <td>
-                        <?= $Pvalue ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
 
     <div class="form-group text-center">
         <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success col-sm-4']) ?>
@@ -99,10 +103,19 @@ use sadi01\bidashboard\models\ReportWidget;
 
 <script>
     $(document).ready(function () {
-        $('.repeater').repeater({
+        var outPutColumn = $('.repeater').repeater({
             show: function () {
                 $(this).slideDown();
             },
-        })
+        });
+
+        outPutColumn.setList([
+            <?php foreach ($output_column as $Kcolumn => $Vcolumn): ?>
+            {
+                "column_name":"<?= $Kcolumn ?>",
+                "column_title":"<?= $Vcolumn ?>",
+            },
+            <?php endforeach; ?>
+        ])
     });
 </script>
