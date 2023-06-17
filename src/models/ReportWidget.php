@@ -45,6 +45,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
 class ReportWidget extends ActiveRecord
 {
     use CoreTrait;
+
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
     const RANGE_TYPE_DAILY = 1;
@@ -72,7 +73,7 @@ class ReportWidget extends ActiveRecord
         return [
             [['title', 'search_model_method', 'search_model_class', 'search_route', 'search_model_form_name', 'range_type'], 'required'],
             [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by'], 'integer'],
-            [['add_on', 'search_model_class', 'params','outputColumn'], 'safe'],
+            [['add_on', 'search_model_class', 'params', 'outputColumn'], 'safe'],
             [['title', 'search_model_method', 'search_model_run_result_view', 'search_route', 'search_model_form_name'], 'string', 'max' => 128],
             [['description', 'search_model_class'], 'string', 'max' => 255],
         ];
@@ -210,12 +211,14 @@ class ReportWidget extends ActiveRecord
         $pDate = \Yii::$app->pdate;
 
         if ($start_range and $end_range) {
-            if ($widget->range_type == $widget::RANGE_TYPE_DAILY) {
-                $start_range = $pDate->jmktime('', '', '', $start_range['mon'], $start_range['day'], $start_range['year']);
-                $end_range = $pDate->jmktime('', '', '', $end_range['mon'], $end_range['day'], $end_range['year']);
-            } else {
-                $start_range = $this->getStartAndEndOfMonth($start_range['year'] . "/" . $start_range['mon'])['start'];
-                $end_range = $this->getStartAndEndOfMonth($end_range['year'] . "/" . $end_range['mon'])['end'];
+            if (gettype($start_range) != 'integer') {
+                if ($widget->range_type == $widget::RANGE_TYPE_DAILY) {
+                    $start_range = $pDate->jmktime('', '', '', $start_range['mon'], $start_range['day'], $start_range['year']);
+                    $end_range = $pDate->jmktime('', '', '', $end_range['mon'], $end_range['day'], $end_range['year']);
+                } else {
+                    $start_range = $this->getStartAndEndOfMonth($start_range['year'] . "/" . $start_range['mon'])['start'];
+                    $end_range = $this->getStartAndEndOfMonth($end_range['year'] . "/" . $end_range['mon'])['end'];
+                }
             }
         } else {
             if ($widget->range_type == $widget::RANGE_TYPE_DAILY) {
@@ -256,14 +259,42 @@ class ReportWidget extends ActiveRecord
         return $modelQueryResults;
     }
 
-    public function getModelRoute(){
+    public function getModelRoute()
+    {
         $modelRoute = "/" . $this->search_route . "?";
         $modalRouteParams = "";
-        $params = json_decode($this->params,true);
+        $params = json_decode($this->params, true);
         foreach ($params as $key => $param) {
             $modalRouteParams .= $this->search_model_form_name . "[" . $key . "]=" . $param . "&";
         }
         $modelRoute .= $modalRouteParams;
         return $modelRoute;
     }
+
+    public function lastResult($startRange = null, $endRange = null)
+    {
+        if (!$startRange || !$endRange) {
+            if ($this->range_type == $this::RANGE_TYPE_DAILY) {
+                $dateTemp = $this->getStartAndEndOfMonth();
+            } else {
+                $dateTemp = $this->getStartAndEndOfYear();
+            }
+            $start_range = $dateTemp['start'];
+            $end_range = $dateTemp['end'];
+        }
+
+        $runWidget = ReportWidgetResult::find()
+            ->where(['widget_id' => $this->id])
+            ->andWhere(['start_range' => $startRange])
+            ->andWhere(['end_range' => $endRange])
+            ->one();
+
+        if (!$runWidget) {
+            $runWidget = $this->runWidget($this->id, $startRange, $endRange);
+        }
+
+        return $runWidget;
+    }
+
+
 }
