@@ -31,18 +31,19 @@ class ReportPageWidgetController extends Controller
 
         } else {
             return $this->asJson([
+                'status' => true,
                 'success' => false,
                 'msg' => Yii::t("app", 'Error')
             ]);
         }
     }
 
-    public function beforeAction($action)
-    {
-        Yii::$app->controller->enableCsrfValidation = false;
-
-        return parent::beforeAction($action);
-    }
+//    public function beforeAction($action)
+//    {
+//        Yii::$app->controller->enableCsrfValidation = false;
+//
+//        return parent::beforeAction($action);
+//    }
 
     /**
      * Finds the ReportPage model based on its primary key value.

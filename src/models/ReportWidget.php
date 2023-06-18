@@ -287,6 +287,7 @@ class ReportWidget extends ActiveRecord
             ->where(['widget_id' => $this->id])
             ->andWhere(['start_range' => $startRange])
             ->andWhere(['end_range' => $endRange])
+            ->orderBy(['id' => SORT_DESC])
             ->one();
 
         if (!$runWidget) {

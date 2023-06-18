@@ -19,6 +19,7 @@
 return [
     'Save' => 'ذخیره',
     'delete' => 'حذف',
+    'update' => 'ویرایش',
     'Update' => 'ویرایش',
     'Delete' => 'حذف',
     'ID' => 'شناسه',
@@ -68,6 +69,8 @@ return [
 
     'Report Widget Field Format' => 'نوع نمایش فیلد',
     'Number' => 'عدد',
-    'Curency' => 'مبلغ',
+    'Currency' => 'مبلغ',
+    'Success' => 'موفق'
+
 
 ];

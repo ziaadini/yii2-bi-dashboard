@@ -21,6 +21,7 @@ class ReportWidgetController extends Controller
     use AjaxValidationTrait;
     use CoreTrait;
 
+    public $enableCsrfValidation = false;
     public $layout = 'bid_main';
 
     /**
@@ -194,6 +195,17 @@ class ReportWidgetController extends Controller
         return $this->renderAjax('list-widget', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionReload($id){
+        $model = $this->findModel($id);
+        $model->runWidget($id,null,null);
+
+        return $this->asJson([
+            'status' => true,
+            'success' => true,
+            'msg' => Yii::t("biDashboard", 'Success'),
         ]);
     }
 

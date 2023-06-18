@@ -25,6 +25,8 @@ $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Report Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $pdate = Yii::$app->pdate;
+$allMonthTitle = [1=>'فروردین', 2=>'اردیبهشت', 3=>'خرداد',4=> 'تیر',5=> 'مرداد',6=> 'شهریور',7=> 'مهر',8=> 'آبان',9=> 'آذر',10=> 'دی',11=> 'بهمن',12=> 'اسفند'];
+
 
 
 ?>
@@ -32,12 +34,35 @@ $pdate = Yii::$app->pdate;
 <div class="report-page-view">
     <?php Pjax::begin(['id' => 'p-jax-report-page-add', 'enablePushState' => false]); ?>
     <div class="p-3 bg-white">
+
+        <?php if ($model->range_type == $model::RANGE_DAY): ?>
+            <span class="btn btn-success">
+                روزانه
+            </span>
+
+        <?php else: ?>
+            <span class="btn btn-success">
+                ماهانه
+            </span>
+        <?= Html::dropDownList('انتخاب',
+                null,
+                $allMonthTitle,
+                [
+                    'class' => "",
+                ]
+            );
+
+        ?>
+
+        <?php endif; ?>
+
+
         <?= Html::a(Yii::t('biDashboard', 'Update'), "javascript:void(0)",
             [
                 'data-pjax' => '0',
                 'class' => "btn btn-primary",
                 'data-size' => 'modal-xl',
-                'data-title' => Yii::t('app', 'update'),
+                'data-title' => Yii::t('biDashboard', 'update'),
                 'data-toggle' => 'modal',
                 'data-target' => '#modal-pjax',
                 'data-url' => Url::to(['report-page/update', 'id' => $model->id]),
@@ -46,14 +71,14 @@ $pdate = Yii::$app->pdate;
                 'data-reload-pjax-container' => 'p-jax-report-page-add',
                 'data-reload-pjax-container-on-show' => 0
             ]) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+        <?= Html::a(Yii::t('biDashboard', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a(Yii::t('biDashboard', 'اضافه کردن ویجت'), "javascript:void(0)",
+        <?= Html::a(Yii::t('biDashboard', 'add widget'), "javascript:void(0)",
             [
                 'data-pjax' => '0',
                 'class' => "btn btn-primary",
@@ -87,12 +112,10 @@ $pdate = Yii::$app->pdate;
                             if ($model->range_type == $model::RANGE_DAY) {
                                 echo '<th scope="col" class="text-center">'.$i.'</th>';
                             }else{
-                                $key = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
-                                echo '<th scope="col" class="text-center">'.$key[$i-1].'</th>';
+                                echo '<th scope="col" class="text-center">'.$allMonthTitle[$i].'</th>';
                             }
                         }
                         ?>
-
                     </tr>
                     </thead>
                     <tbody>
@@ -100,36 +123,19 @@ $pdate = Yii::$app->pdate;
                     <?php $runWidget = $pageWidget->widget->lastResult($startRange, $endRange); ?>
                         <tr>
                             <th style="width: 17%">
-                                <div class="">
                                     <div class="border-bottom">
-                                        <?= Html::a('<i class="mdi mdi-launch"></i>', "javascript:void(0)",
+                                        <?= Html::a('<i class="mdi mdi-launch"></i>', [$pageWidget->widget->getModelRoute()],['target'=>'_blank']) ?>
+
+                                        <?= Html::a('<i class="mdi mdi-reload"></i>', 'javascript:void(0)',
                                             [
-                                                'data-pjax' => '0',
-                                                'class' => "btn btn-sm text-primary",
-                                                'data-size' => 'modal-xl',
-                                                'data-title' => '<i class="mdi mdi-launch"></i>',
-                                                'data-toggle' => 'modal',
-                                                'data-target' => '#modal-pjax',
-                                                'data-url' => Url::to(['/bidashboard/report-widget/view', 'id' => $pageWidget->widget->id]),
-                                                'data-handle-form-submit' => 1,
-                                                'data-show-loading' => 0,
+                                                'title' => Yii::t('yii', 'reload'),
+                                                'aria-label' => Yii::t('yii', 'reload'),
                                                 'data-reload-pjax-container' => 'p-jax-report-page-add',
-                                                'data-reload-pjax-container-on-show' => 0
-                                            ]) ?>
-                                        <?= Html::a('<i class="mdi mdi-reload"></i>', "javascript:void(0)",
-                                            [
                                                 'data-pjax' => '0',
-                                                'class' => "btn btn-sm text-success",
-                                                'data-size' => 'modal-xl',
-                                                'data-title' => '<i class="mdi mdi-reload"></i>',
-                                                'data-toggle' => 'modal',
-                                                'data-target' => '#modal-pjax',
-                                                'data-url' => Url::to(['/report-widget/create', 'id' => $model->id]),
-                                                'data-handle-form-submit' => 1,
-                                                'data-show-loading' => 0,
-                                                'data-reload-pjax-container' => 'p-jax-report-page-add',
-                                                'data-reload-pjax-container-on-show' => 0
-                                            ]) ?>
+                                                'data-url' => Url::to(['/bidashboard/report-widget/reload', 'id' => $pageWidget->widget->id]),
+                                                'class' => " p-jax-btn btn-sm text-info",
+                                                'data-title' => Yii::t('yii', 'reload'),
+                                            ]); ?>
                                         <?= Html::a('<i class="mdi mdi-pencil"></i>', "javascript:void(0)",
                                             [
                                                 'data-pjax' => '0',
@@ -155,16 +161,19 @@ $pdate = Yii::$app->pdate;
                                                 'data-title' => Yii::t('yii', 'delete'),
                                                 'data-toggle' => 'tooltip',
                                             ]); ?>
-                                    </div>
                                 </div>
-                                <div class="border-bottom text-left row p-3">
+                                <div class=" text-left row p-3">
                                     <div class="col-12">
                                         <span>ویجت گزارش :</span>
                                         <span class="bg-warning"><?php echo $pageWidget->widget->title ?></span>
                                     </div>
                                     <div class="col-sm-6">
                                         <label>فیلد ویجت گزارش :</label>
-                                        <span class="bg-warning"><?php echo $pageWidget->report_widget_field ?></span>
+                                        <span class="bg-warning">
+                                            <?=
+                                                $pageWidget->report_widget_field
+                                            ?>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="text-center text-info">
@@ -189,7 +198,7 @@ $pdate = Yii::$app->pdate;
                                             if ($pageWidget->report_widget_field_format == $pageWidget::FORMAT_CURRENCY){
                                                 $resultData = $formatter->asCurrency($resultData);
                                             }
-                                            echo '<th scope="col" class="text-center">' . $resultData . '</th>';
+                                            echo '<th scope="col" class="text-center" style="font-size: 20px;">' . $resultData . '</th>';
                                         }
                                     }
                                 }
