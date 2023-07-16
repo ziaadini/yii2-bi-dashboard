@@ -694,8 +694,6 @@ class m230608_091647_database_function_pdate extends Migration
      */
     public function safeDown()
     {
-        echo "m230608_091647_database_function_pdate cannot be reverted.\n";
-
 $sql = "
 DROP FUNCTION IF EXISTS `__mydiv`;
 DROP FUNCTION IF EXISTS `__mymod`;
@@ -716,18 +714,4 @@ DROP FUNCTION IF EXISTS `gdatestr`;
         return true;
     }
 
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m230608_091647_database_function_pdate cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }
