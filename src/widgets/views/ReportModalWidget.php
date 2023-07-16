@@ -21,8 +21,10 @@ $this->title = 'Bi dashboard widget';
  * @var $searchModel object
  * @var $searchRoute string
  * @var $searchModelMethod string
+ * @var $searchModelRunResultView string
  * @var $searchModelFormName string
  * @var $queryParams array
+ * @var $outputColumn array
  */
 
 ?>
@@ -59,7 +61,7 @@ $this->title = 'Bi dashboard widget';
         'data-url' => Url::to([
             '/bidashboard/report-widget/open-modal',
             'ReportWidgetSearch[search_model_class]' => $searchModel::class,
-            'ReportWidgetSearch[search_model_method]' => 'search',
+            'ReportWidgetSearch[search_model_method]' => $searchModelMethod,
         ]),
         'data-handle-form-submit' => 0
     ]) ?>
