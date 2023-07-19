@@ -76,6 +76,7 @@ return [
     'Select widget' => 'انتخاب ویجت',
     'Widget' => 'ویجت',
     'Report Widget Field' => 'فیلد نمایش  ویجت',
+    'Show' => 'نمایش',
 
 
 ];

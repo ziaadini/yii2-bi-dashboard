@@ -66,7 +66,7 @@ $year = Yii::$app->request->get('year', null);
                                 <?php endif; ?>
                                 <div class="px-1">
                                     <input type="hidden" name="id" value="<?= $modelId ?>">
-                                    <input type="submit" value="اجرا" class="btn btn-success">
+                                    <input type="submit" value="<?= Yii::t('biDashboard','Show'); ?>" class="btn btn-success">
                                 </div>
                             </div>
                         </form>

@@ -200,7 +200,6 @@ class ReportWidget extends ActiveRecord
      * @param $id
      * @param $start_range
      * @param $end_rage
-     * @return mixed
      * @throws \Exception
      */
     public function runWidget($start_range = null, $end_range = null)
@@ -279,8 +278,8 @@ class ReportWidget extends ActiveRecord
             } else {
                 $dateTemp = $this->getStartAndEndOfYear();
             }
-            $start_range = $dateTemp['start'];
-            $end_range = $dateTemp['end'];
+            $startRange = $dateTemp['start'];
+            $endRange = $dateTemp['end'];
         }
 
         $runWidget = ReportWidgetResult::find()
