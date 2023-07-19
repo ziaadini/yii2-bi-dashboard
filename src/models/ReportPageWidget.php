@@ -6,6 +6,7 @@ use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "report_page_widget".
@@ -25,7 +26,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @property ReportPage $page
  * @property ReportWidget $widget
  */
-class ReportPageWidget extends \yii\db\ActiveRecord
+class ReportPageWidget extends ActiveRecord
 {
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
@@ -60,17 +61,17 @@ class ReportPageWidget extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'page_id' => Yii::t('app', 'Page ID'),
-            'widget_id' => Yii::t('app', 'Widget ID'),
-            'report_widget_field' => Yii::t('app', 'Report Widget Field'),
-            'report_widget_field_format' => Yii::t('app', 'Report Widget Field Format'),
-            'status' => Yii::t('app', 'Status'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
-            'deleted_at' => Yii::t('app', 'Deleted At'),
-            'updated_by' => Yii::t('app', 'Updated By'),
-            'created_by' => Yii::t('app', 'Created By'),
+            'id' => Yii::t('biDashboard', 'ID'),
+            'page_id' => Yii::t('biDashboard', 'Page ID'),
+            'widget_id' => Yii::t('biDashboard', 'Widget'),
+            'report_widget_field' => Yii::t('biDashboard', 'Report Widget Field'),
+            'report_widget_field_format' => Yii::t('biDashboard', 'Report Widget Field Format'),
+            'status' => Yii::t('biDashboard', 'Status'),
+            'created_at' => Yii::t('biDashboard', 'Created At'),
+            'updated_at' => Yii::t('biDashboard', 'Updated At'),
+            'deleted_at' => Yii::t('biDashboard', 'Deleted At'),
+            'updated_by' => Yii::t('biDashboard', 'Updated By'),
+            'created_by' => Yii::t('biDashboard', 'Created By'),
         ];
     }
 

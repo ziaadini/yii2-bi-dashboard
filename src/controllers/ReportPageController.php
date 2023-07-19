@@ -80,13 +80,23 @@ class ReportPageController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id,$year=null,$month=null)
     {
         $model = $this->findModel($id);
+        $dateDetail = Yii::$app->pdate->jgetdate();
         if ($model->range_type == $model::RANGE_DAY){
-            $date_array = $this->getStartAndEndOfMonth();
+            if ($month){
+                $year = $year ? $year : $dateDetail['year'];
+                $date_array = $this->getStartAndEndOfMonth($year.'/'.$month);
+            }else{
+                $date_array = $this->getStartAndEndOfMonth();
+            }
         }else{
-            $date_array = $this->getStartAndEndOfYear();
+            if ($year){
+                $date_array = $this->getStartAndEndOfYear($year);
+            }else{
+                $date_array = $this->getStartAndEndOfYear();
+            }
         }
         $startRange = $date_array['start'];
         $endRange = $date_array['end'];
@@ -107,15 +117,14 @@ class ReportPageController extends Controller
     /**
      * Creates a new ReportPage model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
+     * @return string|Response
      */
     public function actionCreate()
     {
         $model = new ReportPage();
-
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->validate()) {
-                $model->save(false);
+                $model->save();
                 return $this->asJson([
                     'success' => true,
                     'msg' => Yii::t("app", 'Success')
@@ -253,4 +262,27 @@ class ReportPageController extends Controller
         }
         return ['output'=>'', 'selected'=>''];
     }
+
+    /**
+     * @param $id
+     * @param $start_range
+     * @param $end_range
+     * @var $widget ReportWidget
+     * @return mixed
+     */
+    public function actionReloadAllWidgets($id,$start_range=null,$end_range=null){
+        $model = $this->findModel($id);
+        $widgets = $model->getWidgets()->all();
+        $start_range = $start_range ? (int)$start_range : null;
+        $end_range = $end_range ? (int)$end_range : null;
+        foreach ($widgets as $widget){
+            $widget->runWidget($start_range,$end_range);
+        }
+        return $this->asJson([
+            'status' => true,
+            'success' => true,
+            'msg' => Yii::t("biDashboard", 'Success'),
+        ]);
+    }
+
 }

@@ -200,16 +200,17 @@ class ReportWidget extends ActiveRecord
      * @param $id
      * @param $start_range
      * @param $end_rage
-     * @return mixed
      * @throws \Exception
+     * @var $pDate Pdate
      */
-    public function runWidget($id, $start_range = null, $end_range = null)
+    public function runWidget($start_range = null, $end_range = null)
     {
 
         $widget = $this;
         /**@var $pDate Pdate */
-        $pDate = \Yii::$app->pdate;
+        $pDate = Yii::$app->pdate;
 
+        // -- check and convert time
         if ($start_range and $end_range) {
             if (gettype($start_range) != 'integer') {
                 if ($widget->range_type == $widget::RANGE_TYPE_DAILY) {
@@ -230,11 +231,12 @@ class ReportWidget extends ActiveRecord
             $end_range = $dateTemp['end'];
         }
 
+        // -- call search model and get response ActiveRecord
         $modelQueryResults = $this->findSearchModelWidget($start_range, $end_range);
 
         // -- create Report Widget Result
         $reportWidgetResult = new ReportWidgetResult();
-        $reportWidgetResult->widget_id = $id;
+        $reportWidgetResult->widget_id = $this->id;
         $reportWidgetResult->start_range = $start_range;
         $reportWidgetResult->end_range = $end_range;
         $reportWidgetResult->run_action = Yii::$app->controller->action->id;
@@ -279,8 +281,8 @@ class ReportWidget extends ActiveRecord
             } else {
                 $dateTemp = $this->getStartAndEndOfYear();
             }
-            $start_range = $dateTemp['start'];
-            $end_range = $dateTemp['end'];
+            $startRange = $dateTemp['start'];
+            $endRange = $dateTemp['end'];
         }
 
         $runWidget = ReportWidgetResult::find()
@@ -291,11 +293,28 @@ class ReportWidget extends ActiveRecord
             ->one();
 
         if (!$runWidget) {
-            $runWidget = $this->runWidget($this->id, $startRange, $endRange);
+            $runWidget = $this->runWidget($startRange, $endRange);
         }
 
         return $runWidget;
     }
 
+    public function validate($attributeNames = null, $clearErrors = true)
+    {
+        $isValid =  parent::validate($attributeNames, $clearErrors);
+        $searchModel = new ($this->search_model_class);
+        $methodExists = method_exists($searchModel, $this->search_model_method);
+        if ($methodExists) {
+            $reflection = new \ReflectionMethod($searchModel, $this->search_model_method);
+            $parameters = $reflection->getParameters();
+            if (count($parameters) <= 3){
+                $isValid = false;
+            }
+        } else {
+            $isValid = false;
+        }
+
+        return $isValid;
+    }
 
 }

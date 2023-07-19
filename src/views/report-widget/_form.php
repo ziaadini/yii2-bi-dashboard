@@ -7,11 +7,12 @@ use yii\helpers\ArrayHelper;
 use sadi01\bidashboard\models\ReportModelClass;
 use sadi01\bidashboard\models\ReportWidget;
 
-/** @var View $this */
-/** @var ReportWidget $model */
-/** @var ActiveForm $form
+/** @var View $this
+ * @var ReportWidget $model
+ * @var ActiveForm $form
  * @var $queryString string
  * @var $queryParams array
+ * @var $output_column array
  */
 ?>
 
