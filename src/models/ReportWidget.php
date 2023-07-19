@@ -203,7 +203,7 @@ class ReportWidget extends ActiveRecord
      * @return mixed
      * @throws \Exception
      */
-    public function runWidget($id, $start_range = null, $end_range = null)
+    public function runWidget($start_range = null, $end_range = null)
     {
 
         $widget = $this;
@@ -234,7 +234,7 @@ class ReportWidget extends ActiveRecord
 
         // -- create Report Widget Result
         $reportWidgetResult = new ReportWidgetResult();
-        $reportWidgetResult->widget_id = $id;
+        $reportWidgetResult->widget_id = $this->id;
         $reportWidgetResult->start_range = $start_range;
         $reportWidgetResult->end_range = $end_range;
         $reportWidgetResult->run_action = Yii::$app->controller->action->id;
@@ -291,11 +291,28 @@ class ReportWidget extends ActiveRecord
             ->one();
 
         if (!$runWidget) {
-            $runWidget = $this->runWidget($this->id, $startRange, $endRange);
+            $runWidget = $this->runWidget($startRange, $endRange);
         }
 
         return $runWidget;
     }
 
+    public function validate($attributeNames = null, $clearErrors = true)
+    {
+        $isValid =  parent::validate($attributeNames, $clearErrors);
+        $searchModel = new ($this->search_model_class);
+        $methodExists = method_exists($searchModel, $this->search_model_method);
+        if ($methodExists) {
+            $reflection = new \ReflectionMethod($searchModel, $this->search_model_method);
+            $parameters = $reflection->getParameters();
+            if (count($parameters) <= 3){
+                $isValid = false;
+            }
+        } else {
+            $isValid = false;
+        }
+
+        return $isValid;
+    }
 
 }

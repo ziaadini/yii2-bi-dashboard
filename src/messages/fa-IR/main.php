@@ -70,7 +70,9 @@ return [
     'Report Widget Field Format' => 'نوع نمایش فیلد',
     'Number' => 'عدد',
     'Currency' => 'مبلغ',
-    'Success' => 'موفق'
+    'Success' => 'موفق',
+    'run all widget' => 'اجرای تمام ویجت‌ها',
+    'run' => 'اجرا',
 
 
 ];

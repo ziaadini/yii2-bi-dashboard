@@ -77,7 +77,7 @@ class ReportWidgetController extends Controller
             ->one();
 
         if (!$runWidget || $method == 'new') {
-            $runWidget = $model->runWidget($id, null, null);
+            $runWidget = $model->runWidget(null, null);
         }
 
         return $this->render('view', [
@@ -112,9 +112,8 @@ class ReportWidgetController extends Controller
 
             $output_column = $this->request->post('output_column',null);
             $model->outputColumn = json_encode(array_filter($output_column, fn($value) => array_filter($value)));
-
             if ($model->load($this->request->post()) && $model->validate()) {
-                $model->save(false);
+                $model->save();
                 return $this->asJson([
                     'success' => true,
                     'msg' => Yii::t('biDashboard', 'Saved successfully'),
@@ -122,6 +121,7 @@ class ReportWidgetController extends Controller
             } else {
                 return $this->asJson([
                     'success' => false,
+                    'errors' => $model->errors,
                     'msg' => Yii::t('biDashboard', 'There was a problem saving'),
                 ]);
             }
@@ -200,7 +200,7 @@ class ReportWidgetController extends Controller
 
     public function actionReload($id){
         $model = $this->findModel($id);
-        $model->runWidget($id,null,null);
+        $model->runWidget(null,null);
 
         return $this->asJson([
             'status' => true,
