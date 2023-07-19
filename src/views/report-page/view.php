@@ -78,7 +78,7 @@ $year = Yii::$app->request->get('year', null);
                                 'aria-label' => Yii::t('biDashboard', 'run all widget'),
                                 'data-reload-pjax-container' => 'p-jax-report-page-add',
                                 'data-pjax' => '0',
-                                'data-url' => Url::to(['/bidashboard/report-page/reload-all-widget', 'id' => $model->id, 'start_range' => $startRange, 'end_range' => $endRange]),
+                                'data-url' => Url::to(['/bidashboard/report-page/reload-all-widgets', 'id' => $model->id, 'start_range' => $startRange, 'end_range' => $endRange]),
                                 'class' => " p-jax-btn btn btn-info",
                                 'data-title' => Yii::t('biDashboard', 'run all widget'),
                             ]); ?>

@@ -7,6 +7,7 @@ use yii\helpers\Html;
  * @var sadi01\bidashboard\models\ReportWidget $model
  * @var $queryString string
  * @var $queryParams array
+ * @var $output_column array
  */
 $this->title = Yii::t('biDashboard', 'Create Report Widget');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'Report Widgets'), 'url' => ['index']];

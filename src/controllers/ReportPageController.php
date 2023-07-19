@@ -270,7 +270,7 @@ class ReportPageController extends Controller
      * @var $widget ReportWidget
      * @return mixed
      */
-    public function actionReloadAllWidget($id,$start_range=null,$end_range=null){
+    public function actionReloadAllWidgets($id,$start_range=null,$end_range=null){
         $model = $this->findModel($id);
         $widgets = $model->getWidgets()->all();
         $start_range = $start_range ? (int)$start_range : null;

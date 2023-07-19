@@ -73,6 +73,9 @@ return [
     'Success' => 'موفق',
     'run all widget' => 'اجرای تمام ویجت‌ها',
     'run' => 'اجرا',
+    'Select widget' => 'انتخاب ویجت',
+    'Widget' => 'ویجت',
+    'Report Widget Field' => 'فیلد نمایش  ویجت',
 
 
 ];
