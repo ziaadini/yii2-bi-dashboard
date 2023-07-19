@@ -78,16 +78,4 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
-
-    <?php Pjax::begin(['id' => 'p-jax-report-page-add', 'enablePushState' => false]); ?>
-    <div class="col">
-        <div>
-            <?php if ($model->range_type == $model::RANGE_TYPE_DAILY): ?>
-                <?= $this->render('@sadi01/bidashboard/views/report-widget/widget-result-daily.php', ['runWidget' => $runWidget]) ?>
-            <?php else: ?>
-                <?= $this->render('@sadi01/bidashboard/views/report-widget/widget-result-monthly.php', ['runWidget' => $runWidget]) ?>
-            <?php endif; ?>
-        </div>
-    </div>
-    <?php Pjax::end(); ?>
 </div>

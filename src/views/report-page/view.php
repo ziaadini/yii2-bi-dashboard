@@ -22,7 +22,7 @@ use yii\widgets\Pjax;
  */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Report Pages'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'Report Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $pdate = Yii::$app->pdate;
 
@@ -89,7 +89,7 @@ $year = Yii::$app->request->get('year', null);
                                 'data-pjax' => '0',
                                 'class' => "btn btn-primary",
                                 'data-size' => 'modal-xl',
-                                'data-title' => Yii::t('app', 'create'),
+                                'data-title' => Yii::t('biDashboard', 'create'),
                                 'data-toggle' => 'modal',
                                 'data-target' => '#modal-pjax',
                                 'data-url' => Url::to(['report-page/add', 'id' => $model->id]),
@@ -103,7 +103,7 @@ $year = Yii::$app->request->get('year', null);
                             <?= Html::a(Yii::t('biDashboard', 'Delete'), ['delete', 'id' => $model->id], [
                                 'class' => 'btn btn-danger',
                                 'data' => [
-                                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                                    'confirm' => Yii::t('biDashboard', 'Are you sure you want to delete this item?'),
                                     'method' => 'post',
                                 ],
                             ]) ?>
@@ -150,7 +150,7 @@ $year = Yii::$app->request->get('year', null);
                                         'data-pjax' => '0',
                                         'class' => "btn btn-sm text-info",
                                         'data-size' => 'modal-xl',
-                                        'data-title' => Yii::t('app', 'update',),
+                                        'data-title' => Yii::t('biDashboard', 'update',),
                                         'data-toggle' => 'modal',
                                         'data-target' => '#modal-pjax',
                                         'data-url' => Url::to(['/report-widget/update', 'id' => $pageWidget->widget->id]),
