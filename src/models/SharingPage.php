@@ -53,6 +53,11 @@ class SharingPage extends \yii\db\ActiveRecord
             [['page_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportPage::class, 'targetAttribute' => ['page_id' => 'id']],
         ];
     }
+    public function beforeValidate()
+    {
+        $this->expire_time = $this->jalaliToTimestamp($this->expire_time, "Y/m/d H:i:s");
+        return parent::beforeValidate();
+    }
 
     /**
      * {@inheritdoc}

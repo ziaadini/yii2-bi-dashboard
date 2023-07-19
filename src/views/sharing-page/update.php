@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Sharing Pages'), 'ur
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
-<div class="sharing-page-update">
+<div class="sharing-page-update bg-white">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

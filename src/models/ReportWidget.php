@@ -41,6 +41,8 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @property ReportWidgetResult[] $reportWidgetResults
  *
  * @mixin SoftDeleteBehavior
+ * @mixin BlameableBehavior
+ * @mixin TimestampBehavior
  */
 class ReportWidget extends ActiveRecord
 {

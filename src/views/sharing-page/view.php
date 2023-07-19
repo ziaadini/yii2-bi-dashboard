@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Sharing Pages'), 'ur
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="sharing-page-view">
+<div class="sharing-page-view bg-white">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -29,7 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'page_id',
             'access_key',
             'expire_time:datetime',

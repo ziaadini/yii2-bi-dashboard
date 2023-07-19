@@ -1,9 +1,9 @@
 <?php
 
+use sadi01\dateRangePicker\dateRangePicker;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use sadi01\dateRangePicker\dateRangePicker;
 
 /** @var yii\web\View $this */
 /** @var app\models\SharingPage $model */
@@ -17,7 +17,6 @@ use sadi01\dateRangePicker\dateRangePicker;
         ArrayHelper::map(\sadi01\bidashboard\models\ReportPage::find()->all(), 'id', 'title'),
         ['prompt' => 'Select a page']
     ) ?>
-
     <?= $form->field($model, 'expire_time')->widget(dateRangePicker::class,[
         'options'  => [
             'drops' => 'down',
@@ -32,7 +31,7 @@ use sadi01\dateRangePicker\dateRangePicker;
             'timePicker24Hour' => true,
             'timePickerSeconds' => true,
             'locale'=> [
-                'format'=> 'jYYYY/jMM/jDD',
+                'format' => 'jYYYY/jMM/jDD HH:mm:ss',
 
             ],
         ],

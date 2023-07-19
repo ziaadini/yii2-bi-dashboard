@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'timePicker24Hour' => true,
                                 'timePickerSeconds' => true,
                                 'locale'=> [
-                                    'format'=> 'jYYYY/jMM/jDD',
+                                    'format' => 'jYYYY/jMM/jDD HH:mm:ss',
 
                                 ],
                             ],

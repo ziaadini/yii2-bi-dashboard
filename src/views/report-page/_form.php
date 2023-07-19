@@ -13,14 +13,12 @@ use yii\web\View;
 
 <div class="report-page-form">
 
-    <?php $form = ActiveForm::begin(['id' => 'page-form','enableClientValidation' => true]); ?>
+    <?php $form = ActiveForm::begin(['id' => 'page-form', 'enableClientValidation' => true]); ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'status')->dropDownList(ReportPage::itemAlias('Status'), ['prompt' => Yii::t('biDashboard', 'Select Status')]) ?>
-
-    <?= $form->field($model, 'range_type')->dropDownList(ReportPage::itemAlias('range_type'), ['prompt' => Yii::t('biDashboard', 'Select RANGE')]) ?>
-
+    <?php if (!isset($model->range_type)): ?>
+        <?= $form->field($model, 'range_type')->dropDownList(ReportPage::itemAlias('range_type'), ['prompt' => Yii::t('biDashboard', 'Select RANGE')]) ?>
+    <?php endif; ?>
     <div class="form-group">
         <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>

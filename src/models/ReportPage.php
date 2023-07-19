@@ -90,6 +90,10 @@ class ReportPage extends ActiveRecord
         return $this->hasMany(ReportWidget::class, ['id' => 'widget_id'])
             ->viaTable('report_page_widget', ['page_id' => 'id']);
     }
+    public function getKey()
+    {
+        return $this->hasMany(SharingPage::class, ['page_id' => 'id']);
+    }
 
     /**
      * {@inheritdoc}

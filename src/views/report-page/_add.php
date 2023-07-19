@@ -4,7 +4,6 @@ use sadi01\bidashboard\models\ReportPageWidget;
 use sadi01\bidashboard\models\ReportWidget;
 use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
-use kartik\depdrop\DepDrop;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\web\View;

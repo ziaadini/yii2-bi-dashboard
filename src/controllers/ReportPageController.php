@@ -201,7 +201,26 @@ class ReportPageController extends Controller
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
+    public function actionUpdateWidget($id){
+        $model = ReportPageWidget::find()->where(['widget_id' => $id])->one();
+        $add_on=json_decode($model->widget->add_on["outputColumn"]);
 
+        foreach ($add_on as $value) {
+           $column_name[$value->column_name]=$value->column_title;
+        }
+
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->validate() && $model->save()) {
+            return $this->asJson([
+                'success' => true,
+                'msg' => Yii::t("app", 'Success')
+            ]);
+        }
+        $this->performAjaxValidation($model);
+        return $this->renderAjax('_edit', [
+            'model' => $model,
+            'column_name'=>$column_name,
+        ]);
+    }
     public function actionAdd($id)
     {
         $model = new ReportPageWidget();
@@ -215,6 +234,7 @@ class ReportPageController extends Controller
                         'success' => true,
                         'msg' => Yii::t("app", 'Success')
                     ]);
+
                 } else {
                     return $this->asJson([
                         'success' => false,

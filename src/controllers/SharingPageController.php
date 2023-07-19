@@ -139,14 +139,12 @@ class SharingPageController extends Controller
         $share_page_model->page_id = $page_id;
         $share_page_model->access_key = Yii::$app->security->generateRandomString();
         $page_model = ReportPage::findOne(['id' => $page_id])->key;
-
         if ($share_page_model->load(Yii::$app->request->post()) && $share_page_model->save()) {
             return $this->asJson([
                 'success' => true,
                 'msg' => Yii::t("biDashboard", 'Success')
             ]);
         }
-
         $this->performAjaxValidation($share_page_model);
         return $this->renderAjax('management', [
             'model' => $share_page_model,

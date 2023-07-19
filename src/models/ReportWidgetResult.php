@@ -40,7 +40,6 @@ class ReportWidgetResult extends ActiveRecord
     const FORMAT_CURRENCY = 2;
 
     public $result;
-
     /**
      * {@inheritdoc}
      */
