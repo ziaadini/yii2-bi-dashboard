@@ -18,7 +18,7 @@ use yii\helpers\Url;
 /** @var sadi01\bidashboard\models\ReportWidget $widgets */
 ?>
 <div class="report-widget-create">
-    <div class="page-content container-fluid text-left pt-5">
+    <div class="page-content container-fluid text-left ">
         <div class="work-report-index card">
             <div class="panel-group m-bot20" id="accordion">
                 <div class="card-body">

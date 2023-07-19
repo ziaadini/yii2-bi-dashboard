@@ -51,7 +51,7 @@ $year = Yii::$app->request->get('year', null);
                                     <select name="year" class="form-control">
                                         <option value="1402" <?= $year == '1402' ? 'selected' : '' ?> >1402</option>
                                         <option value="1401" <?= $year == '1401' ? 'selected' : '' ?> >1401</option>
-                                        <option value="1400" <?= $year == '1400' ? 'selected' : '' ?> >1400</option>
+                                        <option value="140K0" <?= $year == '1400' ? 'selected' : '' ?> >1400</option>
                                     </select>
                                 </div>
                                 <?php if ($model->range_type == $model::RANGE_DAY): ?>

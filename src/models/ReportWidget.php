@@ -201,14 +201,16 @@ class ReportWidget extends ActiveRecord
      * @param $start_range
      * @param $end_rage
      * @throws \Exception
+     * @var $pDate Pdate
      */
     public function runWidget($start_range = null, $end_range = null)
     {
 
         $widget = $this;
         /**@var $pDate Pdate */
-        $pDate = \Yii::$app->pdate;
+        $pDate = Yii::$app->pdate;
 
+        // -- check and convert time
         if ($start_range and $end_range) {
             if (gettype($start_range) != 'integer') {
                 if ($widget->range_type == $widget::RANGE_TYPE_DAILY) {
@@ -229,6 +231,7 @@ class ReportWidget extends ActiveRecord
             $end_range = $dateTemp['end'];
         }
 
+        // -- call search model and get response ActiveRecord
         $modelQueryResults = $this->findSearchModelWidget($start_range, $end_range);
 
         // -- create Report Widget Result

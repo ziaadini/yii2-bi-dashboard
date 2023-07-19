@@ -6,6 +6,7 @@ use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "report_page_widget".
@@ -25,7 +26,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @property ReportPage $page
  * @property ReportWidget $widget
  */
-class ReportPageWidget extends \yii\db\ActiveRecord
+class ReportPageWidget extends ActiveRecord
 {
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
