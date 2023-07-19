@@ -309,9 +309,11 @@ class ReportWidget extends ActiveRecord
             $parameters = $reflection->getParameters();
             if (count($parameters) <= 3){
                 $isValid = false;
+                $this->addError('column_name','تعداد پارامترهای ورودی مجاز نیست');
             }
         } else {
             $isValid = false;
+            $this->addError('column_name','search_model_method یافت نشد');
         }
 
         return $isValid;
