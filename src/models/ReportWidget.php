@@ -302,18 +302,18 @@ class ReportWidget extends ActiveRecord
     public function validate($attributeNames = null, $clearErrors = true)
     {
         $isValid =  parent::validate($attributeNames, $clearErrors);
-        $searchModel = new ($this->search_model_class);
-        $methodExists = method_exists($searchModel, $this->search_model_method);
-        if ($methodExists) {
-            $reflection = new \ReflectionMethod($searchModel, $this->search_model_method);
-            $parameters = $reflection->getParameters();
-            if (count($parameters) <= 3){
+        if ($this->search_model_class){
+            $searchModel = new ($this->search_model_class);
+            $methodExists = method_exists($searchModel, $this->search_model_method);
+            if ($methodExists) {
+                $reflection = new \ReflectionMethod($searchModel, $this->search_model_method);
+                $parameters = $reflection->getParameters();
+                if (count($parameters) <= 3){
+                    $isValid = false;
+                }
+            } else {
                 $isValid = false;
-                $this->addError('column_name','تعداد پارامترهای ورودی مجاز نیست');
             }
-        } else {
-            $isValid = false;
-            $this->addError('column_name','search_model_method یافت نشد');
         }
 
         return $isValid;
