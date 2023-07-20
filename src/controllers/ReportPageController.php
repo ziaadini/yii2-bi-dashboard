@@ -80,30 +80,30 @@ class ReportPageController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id,$year=null,$month=null)
+    public function actionView($id, $year = null, $month = null)
     {
         $model = $this->findModel($id);
         $dateDetail = Yii::$app->pdate->jgetdate();
-        if ($model->range_type == $model::RANGE_DAY){
-            if ($month){
+        if ($model->range_type == $model::RANGE_DAY) {
+            if ($month) {
                 $year = $year ? $year : $dateDetail['year'];
-                $date_array = $this->getStartAndEndOfMonth($year.'/'.$month);
-            }else{
+                $date_array = $this->getStartAndEndOfMonth($year . '/' . $month);
+            } else {
                 $date_array = $this->getStartAndEndOfMonth();
             }
-        }else{
-            if ($year){
+        } else {
+            if ($year) {
                 $date_array = $this->getStartAndEndOfYear($year);
-            }else{
+            } else {
                 $date_array = $this->getStartAndEndOfYear();
             }
         }
         $startRange = $date_array['start'];
         $endRange = $date_array['end'];
-        if ($model->range_type == $model::RANGE_DAY){
+        if ($model->range_type == $model::RANGE_DAY) {
             $rangeDateNumber = count($this->getCurrentMonthDays());
-        }else{
-            $rangeDateNumber  = 12;
+        } else {
+            $rangeDateNumber = 12;
         }
         return $this->render('view', [
             'model' => $model,
@@ -241,8 +241,8 @@ class ReportPageController extends Controller
     }
 
     /** @var $widget ReportWidget */
-    public function actionGetwidgetcolumn(){
-
+    public function actionGetwidgetcolumn()
+    {
         Yii::$app->response->format = Response::FORMAT_JSON;
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
@@ -250,33 +250,34 @@ class ReportPageController extends Controller
             if ($parents != null) {
                 $widget_id = $parents[0];
                 $widget = ReportWidget::findOne(['id' => $widget_id]);
-                if (!$widget){
-                    return ['output'=>[], 'selected'=>''];
+                if (!$widget) {
+                    return ['output' => [], 'selected' => ''];
                 }
                 $outputColumns = json_decode($widget->outputColumn);
-                foreach ($outputColumns as $item){
-                    $out[] = ['id'=>$item->column_name, 'name'=>$item->column_title];
+                foreach ($outputColumns as $item) {
+                    $out[] = ['id' => $item->column_name, 'name' => $item->column_title];
                 }
-                return ['output'=>$out, 'selected'=>''];
+                return ['output' => $out, 'selected' => ''];
             }
         }
-        return ['output'=>'', 'selected'=>''];
+        return ['output' => '', 'selected' => ''];
     }
 
     /**
      * @param $id
      * @param $start_range
      * @param $end_range
-     * @var $widget ReportWidget
      * @return mixed
+     * @var $widget ReportWidget
      */
-    public function actionReloadAllWidgets($id,$start_range=null,$end_range=null){
+    public function actionReloadAllWidgets($id, $start_range = null, $end_range = null)
+    {
         $model = $this->findModel($id);
         $widgets = $model->getWidgets()->all();
         $start_range = $start_range ? (int)$start_range : null;
         $end_range = $end_range ? (int)$end_range : null;
-        foreach ($widgets as $widget){
-            $widget->runWidget($start_range,$end_range);
+        foreach ($widgets as $widget) {
+            $widget->runWidget($start_range, $end_range);
         }
         return $this->asJson([
             'status' => true,
@@ -284,5 +285,4 @@ class ReportPageController extends Controller
             'msg' => Yii::t("biDashboard", 'Success'),
         ]);
     }
-
 }

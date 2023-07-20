@@ -2,7 +2,6 @@
 
 namespace sadi01\bidashboard\controllers;
 
-use sadi01\bidashboard\components\Pdate;
 use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\models\ReportWidgetResult;
 use sadi01\bidashboard\models\ReportWidgetSearch;
@@ -74,6 +73,7 @@ class ReportWidgetController extends Controller
         $runWidget = ReportWidgetResult::find()
             ->where(['widget_id' => $model->id])
             ->orderBy(['id' => SORT_DESC])
+            ->limit(1)
             ->one();
 
         if (!$runWidget || $method == 'new') {
@@ -92,12 +92,12 @@ class ReportWidgetController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate($searchModelClass=null,
-                                 $searchModelMethod=null,
-                                 $searchModelRunResultView=null,
-                                 $search_route=null,
-                                 $search_model_form_name=null,
-                                 $queryParams=null,$output_column=null)
+    public function actionCreate($searchModelClass = null,
+                                 $searchModelMethod = null,
+                                 $searchModelRunResultView = null,
+                                 $search_route = null,
+                                 $search_model_form_name = null,
+                                 $queryParams = null, $output_column = null)
     {
 
         $model = new ReportWidget();
@@ -110,7 +110,7 @@ class ReportWidgetController extends Controller
             $model->search_model_run_result_view = $searchModelRunResultView;
             $model->params = $queryParams;
 
-            $output_column = $this->request->post('output_column',null);
+            $output_column = $this->request->post('output_column', null);
             $model->outputColumn = json_encode(array_filter($output_column, fn($value) => array_filter($value)));
             if ($model->load($this->request->post()) && $model->validate()) {
                 $model->save();
@@ -198,9 +198,10 @@ class ReportWidgetController extends Controller
         ]);
     }
 
-    public function actionReload($id){
+    public function actionReload($id)
+    {
         $model = $this->findModel($id);
-        $model->runWidget(null,null);
+        $model->runWidget();
 
         return $this->asJson([
             'status' => true,
@@ -208,5 +209,4 @@ class ReportWidgetController extends Controller
             'msg' => Yii::t("biDashboard", 'Success'),
         ]);
     }
-
 }

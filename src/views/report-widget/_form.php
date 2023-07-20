@@ -65,7 +65,7 @@ use sadi01\bidashboard\models\ReportWidget;
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
-                <th colspan="2">فیلد‌های خروجی از دیتابیس</th>
+                <th colspan="2">فیلد‌های خروجی گزارش ویجت</th>
                 <th>
                     <input data-repeater-create type="button" value="افزودن" class="btn btn-success"/>
                 </th>
@@ -94,7 +94,6 @@ use sadi01\bidashboard\models\ReportWidget;
             </tbody>
         </table>
     </div>
-
 
     <div class="form-group text-center">
         <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success col-sm-4']) ?>
