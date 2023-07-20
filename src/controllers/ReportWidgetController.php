@@ -49,6 +49,7 @@ class ReportWidgetController extends Controller
      */
     public function actionIndex()
     {
+
         $searchModel = new ReportWidgetSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 

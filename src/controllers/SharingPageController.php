@@ -154,11 +154,11 @@ class SharingPageController extends Controller
 
 
 
-    public function actionExpire($id_key, $page_id)
+    public function actionExpire($id_key)
     {
         $model = SharingPage::findOne($id_key);
         if ($model) {
-            $model->expire_time = strtotime('-1 minute');
+            $model->expire_time = time();
             $model->save();
             return $this->asJson([
                 'status' => true,

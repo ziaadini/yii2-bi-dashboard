@@ -5,19 +5,26 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\SharingPage $model */
 
-$this->title = Yii::t('app', 'Update Sharing Page: {name}', [
+$this->title = Yii::t('biDashboard', 'Update Sharing Page: {name}', [
     'name' => $model->id,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Sharing Pages'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'Sharing Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('biDashboard', 'Update');
 ?>
-<div class="sharing-page-update bg-white">
+<div class="report-widget-create">
+    <div class="page-content container-fluid text-left">
+        <div class="work-report-index card">
+            <div class="panel-group m-bot20" id="accordion">
+                <div class="card-body container">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+                    <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
+                    <?= $this->render('_form', [
+                        'model' => $model,
+                    ]) ?>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

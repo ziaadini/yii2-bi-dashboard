@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\SharingPage $model */
 
-$this->title = Yii::t('app', 'Create Sharing Page');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Sharing Pages'), 'url' => ['index']];
+$this->title = Yii::t('biDashboard', 'Create Sharing Page');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'Sharing Pages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="report-widget-create">

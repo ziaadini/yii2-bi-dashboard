@@ -4,7 +4,9 @@ namespace sadi01\bidashboard\models;
 
 use sadi01\bidashboard\behaviors\Jsonable;
 use sadi01\bidashboard\components\Pdate;
+use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageQuery;
+use sadi01\bidashboard\models\ReportWidgetResult;
 use sadi01\bidashboard\models\ReportWidgetResultQuery;
 use sadi01\bidashboard\traits\CoreTrait;
 
