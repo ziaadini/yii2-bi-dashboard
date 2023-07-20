@@ -186,21 +186,6 @@ class ReportPageController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the ReportPage model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return ReportPage the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = ReportPage::findOne(['id' => $id])) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
-    }
     public function actionUpdateWidget($id){
         $model = ReportPageWidget::find()->where(['widget_id' => $id])->one();
         $add_on=json_decode($model->widget->add_on["outputColumn"]);
@@ -221,6 +206,7 @@ class ReportPageController extends Controller
             'column_name'=>$column_name,
         ]);
     }
+
     public function actionAdd($id)
     {
         $model = new ReportPageWidget();
@@ -253,11 +239,6 @@ class ReportPageController extends Controller
             'page' => $page,
             'widgets' => $widgets,
         ]);
-    }
-
-    private function flash($type, $message)
-    {
-        Yii::$app->getSession()->setFlash($type == 'error' ? 'danger' : $type, $message);
     }
 
     /** @var $widget ReportWidget */
@@ -305,4 +286,24 @@ class ReportPageController extends Controller
         ]);
     }
 
+    /**
+     * Finds the ReportPage model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param int $id ID
+     * @return ReportPage the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = ReportPage::findOne(['id' => $id])) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    private function flash($type, $message)
+    {
+        Yii::$app->getSession()->setFlash($type == 'error' ? 'danger' : $type, $message);
+    }
 }

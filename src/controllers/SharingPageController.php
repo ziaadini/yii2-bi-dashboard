@@ -7,9 +7,9 @@ use sadi01\bidashboard\models\SharingPage;
 use sadi01\bidashboard\models\SharingPageSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * SharingPageController implements the CRUD actions for SharingPage model.
@@ -44,6 +44,7 @@ class SharingPageController extends Controller
         Yii::$app->controller->enableCsrfValidation = false;
         return parent::beforeAction($action);
     }
+
     /**
      * Lists all SharingPage models.
      *
@@ -62,7 +63,7 @@ class SharingPageController extends Controller
 
     /**
      * Displays a single SharingPage model.
-     * @param int $id شناسه
+     * @param int $id
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -102,7 +103,7 @@ class SharingPageController extends Controller
     /**
      * Updates an existing SharingPage model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id شناسه
+     * @param int $id
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -122,7 +123,7 @@ class SharingPageController extends Controller
     /**
      * Deletes an existing SharingPage model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id شناسه
+     * @param int $id
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -135,10 +136,14 @@ class SharingPageController extends Controller
 
     public function actionManagement($page_id)
     {
-        $share_page_model = new SharingPage();
-        $share_page_model->page_id = $page_id;
-        $share_page_model->access_key = Yii::$app->security->generateRandomString();
-        $page_model = ReportPage::findOne(['id' => $page_id])->key;
+        $page = $this->findModelPage($page_id);
+
+        $share_page_model = new SharingPage([
+            'page_id' => $page->id,
+            'access_key' => Yii::$app->security->generateRandomString()
+        ]);
+
+        $page_model = $page->accessKeys;
         if ($share_page_model->load(Yii::$app->request->post()) && $share_page_model->save()) {
             return $this->asJson([
                 'success' => true,
@@ -152,14 +157,17 @@ class SharingPageController extends Controller
         ]);
     }
 
-
-
-    public function actionExpire($id_key)
+    /**
+     * @param $id
+     * @return void
+     */
+    public function actionExpire($id)
     {
-        $model = SharingPage::findOne($id_key);
+        $model = $this->findModel($id);
         if ($model) {
+            $model->expire();
             $model->expire_time = time();
-            $model->save();
+            $model->save(false, ['expire_time']);
             return $this->asJson([
                 'status' => true,
                 'success' => true,
@@ -171,13 +179,29 @@ class SharingPageController extends Controller
     /**
      * Finds the SharingPage model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id شناسه
+     * @param int $id
      * @return SharingPage the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
         if (($model = SharingPage::findOne(['id' => $id])) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    /**
+     * Finds the ReportPage model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param int $id ID
+     * @return ReportPage the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModelPage($id)
+    {
+        if (($model = ReportPage::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

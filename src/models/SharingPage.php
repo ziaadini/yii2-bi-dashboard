@@ -97,6 +97,7 @@ class SharingPage extends \yii\db\ActiveRecord
         $query->notDeleted();
         return $query;
     }
+
     public function behaviors()
     {
         return [
