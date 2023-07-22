@@ -13,12 +13,13 @@ class m230717_115527_sharing_page_table extends Migration
         $this->createTable('sharing_page', [
             'id' => $this->primaryKey()->unsigned(),
             'page_id' => $this->integer()->unsigned()->notNull(),
-            'access_key' => $this->string(64)->notNull(),
+            'access_key' => $this->string(64)->notNull()->unique(),
             'expire_time' => $this->integer()->unsigned()->defaultValue(0),
-            'created_by' => $this->integer()->unsigned(),
-            'updated_by' => $this->integer()->unsigned(),
-            'created_at' => $this->integer()->unsigned(),
-            'updated_at' => $this->integer()->unsigned(),
+            'status' => $this->tinyInteger()->notNull()->defaultValue(1),
+            'created_by' => $this->integer()->unsigned()->notNull(),
+            'updated_by' => $this->integer()->unsigned()->notNull(),
+            'created_at' => $this->integer()->unsigned()->notNull(),
+            'updated_at' => $this->integer()->unsigned()->notNull(),
             'deleted_at' => $this->integer()->unsigned()->defaultValue(0),
         ]);
 

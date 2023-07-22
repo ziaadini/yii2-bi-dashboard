@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'aria-label' => Yii::t('yii', 'Expired'),
                                             'data-reload-pjax-container' => 'p-jax-sharing-page',
                                             'data-pjax' => '0',
-                                            'data-url' => Url::to(['/bidashboard/sharing-page/expire','id_key' => $key['id'], 'page_id'=> $key['page_id']]),
+                                            'data-url' => Url::to(['/bidashboard/sharing-page/expire','id' => $key['id']]),
                                             'class' => " p-jax-btn btn-sm text-info",
                                             'data-title' => Yii::t('yii', 'Expired'),
                                         ]); ?>

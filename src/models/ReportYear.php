@@ -19,12 +19,15 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @property int|null $updated_by
  * @property int $deleted_at
  *
- *  @mixin SoftDeleteBehavior
+ * @mixin SoftDeleteBehavior
  * @mixin BlameableBehavior
  * @mixin TimestampBehavior
  */
 class ReportYear extends \yii\db\ActiveRecord
 {
+
+    const STATUS_ACTIVE = 1;
+    const STATUS_DELETED = 0;
     /**
      * {@inheritdoc}
      */
@@ -40,6 +43,7 @@ class ReportYear extends \yii\db\ActiveRecord
     {
         return [
             [['year'], 'required'],
+            [['year'], 'unique'],
             [['year', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at'], 'integer'],
         ];
     }
@@ -70,6 +74,7 @@ class ReportYear extends \yii\db\ActiveRecord
         $query->notDeleted();
         return $query;
     }
+
     public function behaviors()
     {
         return [
@@ -85,11 +90,13 @@ class ReportYear extends \yii\db\ActiveRecord
                 'class' => SoftDeleteBehavior::class,
                 'softDeleteAttributeValues' => [
                     'deleted_at' => time(),
+                    'status' => self::STATUS_DELETED
                 ],
                 'restoreAttributeValues' => [
                     'deleted_at' => 0,
+                    'status' => self::STATUS_ACTIVE
                 ],
-                'replaceRegularDelete' => false,
+                'replaceRegularDelete' => false, // mutate native `delete()` method
                 'invokeDeleteEvents' => false
             ],
         ];

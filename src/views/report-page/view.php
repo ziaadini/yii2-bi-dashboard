@@ -107,7 +107,7 @@ $year = Yii::$app->request->get('year', null);
                                 'data-title' => Yii::t('app', 'create'),
                                 'data-toggle' => 'modal',
                                 'data-target' => '#modal-pjax',
-                                'data-url' => Url::to(['sharing-page/management', 'page_id' => $model->id]),
+                                'data-url' => Url::to(['sharing-page/management', 'id' => $model->id]),
                                 'data-handle-form-submit' => 1,
                                 'data-show-loading' => 0,
                                 'data-reload-pjax-container' => 'p-jax-report-page-add',

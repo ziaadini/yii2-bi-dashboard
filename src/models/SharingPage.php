@@ -2,6 +2,7 @@
 
 namespace sadi01\bidashboard\models;
 
+use sadi01\bidashboard\behaviors\Jsonable;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
@@ -34,6 +35,8 @@ class SharingPage extends \yii\db\ActiveRecord
     use AjaxValidationTrait;
     use CoreTrait;
 
+    const STATUS_ACTIVE = 1;
+    const STATUS_DELETED = 0;
     /**
      * {@inheritdoc}
      */
@@ -50,6 +53,7 @@ class SharingPage extends \yii\db\ActiveRecord
         return [
             [['page_id', 'expire_time'], 'integer'],
             [['access_key'], 'string', 'max' => 64],
+            [['access_key'], 'unique'],
             [['page_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportPage::class, 'targetAttribute' => ['page_id' => 'id']],
         ];
     }
@@ -86,7 +90,10 @@ class SharingPage extends \yii\db\ActiveRecord
     {
         return $this->hasOne(ReportPage::class, ['id' => 'page_id']);
     }
-
+    public function expire()
+    {
+        $this->expire_time = time();
+    }
     /**
      * {@inheritdoc}
      * @return SharingPageQuery the active query used by this AR class.
@@ -113,13 +120,16 @@ class SharingPage extends \yii\db\ActiveRecord
                 'class' => SoftDeleteBehavior::class,
                 'softDeleteAttributeValues' => [
                     'deleted_at' => time(),
+                    'status' => self::STATUS_DELETED
                 ],
                 'restoreAttributeValues' => [
                     'deleted_at' => 0,
+                    'status' => self::STATUS_ACTIVE
                 ],
                 'replaceRegularDelete' => false,
                 'invokeDeleteEvents' => false
             ],
         ];
     }
+
 }

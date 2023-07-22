@@ -7,6 +7,8 @@ use sadi01\bidashboard\models\SharingPage;
 use sadi01\bidashboard\models\SharingPageSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use Yii;
+use yii\base\Exception;
+use Yii\base\ExitException;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -44,7 +46,12 @@ class SharingPageController extends Controller
         Yii::$app->controller->enableCsrfValidation = false;
         return parent::beforeAction($action);
     }
-
+    public function beforeInsert()
+    {
+        // Generate a random access key
+        $this->access_key = Yii::$app->security->generateRandomString();
+        return parent::beforeInsert();
+    }
     /**
      * Lists all SharingPage models.
      *
@@ -84,7 +91,6 @@ class SharingPageController extends Controller
         $model = new SharingPage();
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-                $model->access_key = Yii::$app->security->generateRandomString();
                 $model->save();
                 return $this->asJson([
                     'success' => true,
@@ -134,15 +140,19 @@ class SharingPageController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionManagement($page_id)
+    /**
+     * @throws ExitException
+     * @throws Exception
+     * @throws NotFoundHttpException
+     */
+    public function actionManagement($id)
     {
-        $page = $this->findModelPage($page_id);
+        $page = $this->findModelPage($id);
 
         $share_page_model = new SharingPage([
             'page_id' => $page->id,
             'access_key' => Yii::$app->security->generateRandomString()
         ]);
-
         $page_model = $page->accessKeys;
         if ($share_page_model->load(Yii::$app->request->post()) && $share_page_model->save()) {
             return $this->asJson([
@@ -156,26 +166,31 @@ class SharingPageController extends Controller
             'page_model' => $page_model,
         ]);
     }
-
     /**
      * @param $id
-     * @return void
+     * @return \yii\web\Response
      */
     public function actionExpire($id)
     {
         $model = $this->findModel($id);
         if ($model) {
             $model->expire();
-            $model->expire_time = time();
-            $model->save(false, ['expire_time']);
+            $model->save(false);
             return $this->asJson([
                 'status' => true,
                 'success' => true,
                 'msg' => Yii::t("biDashboard", 'Success')
             ]);
+
+        }
+        else{
+            return $this->asJson([
+                'status' => false,
+                'success' => false,
+                'msg' => Yii::t("biDashboard", 'fail to update')
+            ]);
         }
     }
-
     /**
      * Finds the SharingPage model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -204,7 +219,6 @@ class SharingPageController extends Controller
         if (($model = ReportPage::findOne(['id' => $id])) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 }

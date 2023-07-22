@@ -1,6 +1,5 @@
 <?php
 
-use yii;
 use yii\db\Migration;
 
 /**
@@ -12,10 +11,11 @@ class m230719_072523_report_year extends Migration
     {
         $this->createTable('report_year', [
             'id' => $this->primaryKey()->unsigned(),
-            'year' => $this->integer()->unsigned()->notNull(),
-            'created_at' => $this->integer()->unsigned()->notNull()->defaultValue(time()), // Set default value as current time
+            'year' => $this->integer()->unsigned()->notNull()->unique(),
+            'status' => $this->tinyInteger()->notNull()->defaultValue(1),
+            'created_at' => $this->integer()->unsigned()->notNull()->defaultValue(time()),
             'created_by' => $this->integer()->unsigned()->null(),
-            'updated_at' => $this->integer()->unsigned()->notNull()->defaultValue(time()), // Set default value as current time
+            'updated_at' => $this->integer()->unsigned()->notNull()->defaultValue(time()),
             'updated_by' => $this->integer()->unsigned()->null(),
             'deleted_at' => $this->integer()->unsigned()->notNull()->defaultValue(0),
         ]);
