@@ -2,6 +2,7 @@
 
 use sadi01\bidashboard\models\ReportPageWidget;
 use sadi01\bidashboard\models\ReportWidget;
+use sadi01\bidashboard\models\ReportPage;
 use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
 use kartik\depdrop\DepDrop;
@@ -38,10 +39,11 @@ use yii\helpers\Url;
                             'pluginOptions' => [
                                 'depends' => ['reportpagewidget-widget_id'],
                                 'placeholder' => Yii::t('biDashboard', 'Select...'),
-                                'url' => Url::to(['report-page/getwidgetcolumn'])
+                                'url' => Url::to(['report-page/get-widget-column'])
                             ]
                         ]); ?>
-                        <?= $form->field($model, 'report_widget_field_format')->dropDownList(['1' => Yii::t('biDashboard', 'Number'), '2' => Yii::t('biDashboard', 'Currency')]); ?>
+                        <?= $form->field($model, 'report_widget_field_format')
+                            ->dropDownList(ReportPage::itemAlias('Status')); ?>
                         <div class="form-group">
                             <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>
                         </div>

@@ -3,6 +3,7 @@
 namespace sadi01\bidashboard\controllers;
 
 use sadi01\bidashboard\components\jdate;
+use sadi01\bidashboard\helpers\CoreHelper;
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageSearch;
 use sadi01\bidashboard\models\ReportPageWidget;
@@ -105,12 +106,18 @@ class ReportPageController extends Controller
         } else {
             $rangeDateNumber = 12;
         }
+
+        $month = Yii::$app->request->get('month', null);
+        $year = Yii::$app->request->get('year', null);
+
         return $this->render('view', [
             'model' => $model,
             'pageWidgets' => $model->reportPageWidgets,
             'startRange' => $startRange,
             'endRange' => $endRange,
             'rangeDateNumber' => $rangeDateNumber,
+            'month' => $month ?: CoreHelper::getCurrentMonth(),
+            'year' => $year ?: CoreHelper::getCurrentYear(),
         ]);
     }
 
@@ -241,8 +248,8 @@ class ReportPageController extends Controller
     }
 
     /** @var $widget ReportWidget */
-    public function actionGetwidgetcolumn()
-    {
+    public function actionGetWidgetColumn(){
+
         Yii::$app->response->format = Response::FORMAT_JSON;
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
@@ -267,11 +274,10 @@ class ReportPageController extends Controller
      * @param $id
      * @param $start_range
      * @param $end_range
-     * @return mixed
      * @var $widget ReportWidget
+     * @return mixed
      */
-    public function actionReloadAllWidgets($id, $start_range = null, $end_range = null)
-    {
+    public function actionRunAllWidgets($id,$start_range=null,$end_range=null){
         $model = $this->findModel($id);
         $widgets = $model->getWidgets()->all();
         $start_range = $start_range ? (int)$start_range : null;
@@ -285,4 +291,5 @@ class ReportPageController extends Controller
             'msg' => Yii::t("biDashboard", 'Success'),
         ]);
     }
+
 }

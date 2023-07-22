@@ -11,6 +11,7 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * ReportWidgetController implements the CRUD actions for ReportWidget model.
@@ -110,8 +111,8 @@ class ReportWidgetController extends Controller
             $model->search_model_run_result_view = $searchModelRunResultView;
             $model->params = $queryParams;
 
-            $output_column = $this->request->post('output_column', null);
-            $model->outputColumn = json_encode(array_filter($output_column, fn($value) => array_filter($value)));
+            $output_column = $this->request->post('output_column',null);
+            $model->outputColumn = array_filter($output_column, fn($value) => array_filter($value));
             if ($model->load($this->request->post()) && $model->validate()) {
                 $model->save();
                 return $this->asJson([
@@ -141,7 +142,7 @@ class ReportWidgetController extends Controller
      * Updates an existing ReportWidget model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
-     * @return string|\yii\web\Response
+     * @return string|Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -209,4 +210,5 @@ class ReportWidgetController extends Controller
             'msg' => Yii::t("biDashboard", 'Success'),
         ]);
     }
+
 }

@@ -4,7 +4,10 @@ namespace sadi01\bidashboard\models;
 
 use sadi01\bidashboard\behaviors\Jsonable;
 use sadi01\bidashboard\components\Pdate;
+use sadi01\bidashboard\models\ReportPageQuery;
+use sadi01\bidashboard\models\ReportWidgetResultQuery;
 use sadi01\bidashboard\traits\CoreTrait;
+
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;

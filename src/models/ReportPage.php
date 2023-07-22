@@ -110,9 +110,9 @@ class ReportPage extends ActiveRecord
                 self::RANGE_MONTH => Yii::t('biDashboard', 'ماهانه'),
             ],
             'Status' => [
-                self::STATUS_DELETED => Yii::t('biDashboard', 'DELETED'),
-                self::STATUS_ACTIVE => Yii::t('biDashboard', 'ACTIVE'),
-                self::STATUS_INACTIVE => Yii::t('biDashboard', 'INACTIVE'),
+                self::STATUS_ACTIVE => Yii::t('biDashboard', 'Active'),
+                self::STATUS_INACTIVE => Yii::t('biDashboard', 'InActive'),
+                self::STATUS_DELETED => Yii::t('biDashboard', 'Deleted'),
             ],
             'StatusClass' => [
                 self::STATUS_DELETED => 'danger',

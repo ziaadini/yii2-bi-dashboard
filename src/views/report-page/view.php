@@ -26,10 +26,10 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'Report Pages
 $this->params['breadcrumbs'][] = $this->title;
 $pdate = Yii::$app->pdate;
 
-
-$modelId = Yii::$app->request->get('id', null);
-$month = Yii::$app->request->get('month', null);
-$year = Yii::$app->request->get('year', null);
+/**
+ * @var $year string
+ * @var $month string
+ */
 
 ?>
 
@@ -51,7 +51,7 @@ $year = Yii::$app->request->get('year', null);
                                 <select name="year" class="form-control">
                                     <option value="1402" <?= $year == '1402' ? 'selected' : '' ?> >1402</option>
                                     <option value="1401" <?= $year == '1401' ? 'selected' : '' ?> >1401</option>
-                                    <option value="140K0" <?= $year == '1400' ? 'selected' : '' ?> >1400</option>
+                                    <option value="1400" <?= $year == '1400' ? 'selected' : '' ?> >1400</option>
                                 </select>
                             </div>
                             <?php if ($model->range_type == $model::RANGE_DAY): ?>
@@ -60,81 +60,80 @@ $year = Yii::$app->request->get('year', null);
                                         <?php for ($i = 1; $i <= 12; $i++): ?>
                                             <option
                                                     value="<?= $i ?>" <?= $month == $i ? 'selected' : '' ?> ><?= $i ?></option>
-                                        <?php endfor; ?>
-                                    </select>
+                                            <?php endfor; ?>
+                                        </select>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="px-1">
+                                    <input type="hidden" name="id" value="<?= $model->id ?>">
+                                    <input type="submit" value="<?= Yii::t('biDashboard','Show'); ?>" class="btn btn-success">
                                 </div>
-                            <?php endif; ?>
-                            <div class="px-1">
-                                <input type="hidden" name="id" value="<?= $modelId ?>">
-                                <input type="submit" value="<?= Yii::t('biDashboard', 'Show'); ?>"
-                                       class="btn btn-success">
                             </div>
+                        </form>
+                    </div>
+                    <div class="px-1">
+                        <?= Html::a(Yii::t('biDashboard', 'run all widget'), 'javascript:void(0)',
+                            [
+                                'title' => Yii::t('biDashboard', 'run all widget'),
+                                'aria-label' => Yii::t('biDashboard', 'run all widget'),
+                                'data-reload-pjax-container' => 'p-jax-report-page-add',
+                                'data-pjax' => '0',
+                                'data-url' => Url::to(['/bidashboard/report-page/reload-all-widgets', 'id' => $model->id, 'start_range' => $startRange, 'end_range' => $endRange]),
+                                'class' => " p-jax-btn btn btn-info",
+                                'data-title' => Yii::t('biDashboard', 'run all widget'),
+                            ]); ?>
+                    </div>
+                    <div class="px-1">
+                        <?= Html::a(Yii::t('biDashboard', 'add widget'), "javascript:void(0)",
+                            [
+                                'data-pjax' => '0',
+                                'class' => "btn btn-primary",
+                                'data-size' => 'modal-xl',
+                                'data-title' => Yii::t('biDashboard', 'create'),
+                                'data-toggle' => 'modal',
+                                'data-target' => '#modal-pjax',
+                                'data-url' => Url::to(['report-page/add', 'id' => $model->id]),
+                                'data-handle-form-submit' => 1,
+                                'data-show-loading' => 0,
+                                'data-reload-pjax-container' => 'p-jax-report-page-add',
+                                'data-reload-pjax-container-on-show' => 0
+                            ]) ?>
+                    </div>
+                    <div class="px-1">
+                            <?= Html::a(Yii::t('biDashboard', 'Delete'), ['delete', 'id' => $model->id], [
+                                'class' => 'btn btn-danger',
+                                'data' => [
+                                    'confirm' => Yii::t('biDashboard', 'Are you sure you want to delete this item?'),
+                                    'method' => 'post',
+                                ],
+                            ]) ?>
                         </div>
-                    </form>
-                </div>
-                <div class="px-1">
-                    <?= Html::a(Yii::t('biDashboard', 'run all widget'), 'javascript:void(0)',
-                        [
-                            'title' => Yii::t('biDashboard', 'run all widget'),
-                            'aria-label' => Yii::t('biDashboard', 'run all widget'),
-                            'data-reload-pjax-container' => 'p-jax-report-page-add',
-                            'data-pjax' => '0',
-                            'data-url' => Url::to(['/bidashboard/report-page/reload-all-widgets', 'id' => $model->id, 'start_range' => $startRange, 'end_range' => $endRange]),
-                            'class' => " p-jax-btn btn btn-info",
-                            'data-title' => Yii::t('biDashboard', 'run all widget'),
-                        ]); ?>
-                </div>
-                <div class="px-1">
-                    <?= Html::a(Yii::t('biDashboard', 'add widget'), "javascript:void(0)",
-                        [
-                            'data-pjax' => '0',
-                            'class' => "btn btn-primary",
-                            'data-size' => 'modal-xl',
-                            'data-title' => Yii::t('biDashboard', 'create'),
-                            'data-toggle' => 'modal',
-                            'data-target' => '#modal-pjax',
-                            'data-url' => Url::to(['report-page/add', 'id' => $model->id]),
-                            'data-handle-form-submit' => 1,
-                            'data-show-loading' => 0,
-                            'data-reload-pjax-container' => 'p-jax-report-page-add',
-                            'data-reload-pjax-container-on-show' => 0
-                        ]) ?>
-                </div>
-                <div class="px-1">
-                    <?= Html::a(Yii::t('biDashboard', 'Delete'), ['delete', 'id' => $model->id], [
-                        'class' => 'btn btn-danger',
-                        'data' => [
-                            'confirm' => Yii::t('biDashboard', 'Are you sure you want to delete this item?'),
-                            'method' => 'post',
-                        ],
-                    ]) ?>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="table-responsive text-nowrap">
-        <table class="table table-bordered bg-white">
-            <thead class="table-dark">
-            <tr>
-                <th scope="col" class="text-center">ویجت</th>
-                <?php
-                for ($i = 1; $i <= $rangeDateNumber; $i++) {
-                    if ($model->range_type == $model::RANGE_DAY) {
-                        echo '<th scope="col" class="text-center">' . $i . '</th>';
-                    } else {
-                        echo '<th scope="col" class="text-center">' . $pdate->jdate_words(['mm' => $i], ' ') . '</th>';
-                    }
-                }
-                ?>
-            </tr>
-            </thead>
-            <tbody>
-            <?php foreach ($pageWidgets as $pageWidget): ?>
-                <?php $runWidget = $pageWidget->widget->lastResult($startRange, $endRange); ?>
+        <div class="table-responsive text-nowrap">
+            <table class="table table-bordered bg-white">
+                <thead class="table-dark">
                 <tr>
-                    <th style="width: 17%">
-                        <div class="border-bottom">
-                            <?= Html::a('<i class="mdi mdi-launch"></i>', [$pageWidget->widget->getModelRoute()], ['target' => '_blank']) ?>
+                    <th scope="col" class="text-center">ویجت</th>
+                    <?php
+                    for ($i = 1; $i <= $rangeDateNumber; $i++) {
+                        if ($model->range_type == $model::RANGE_DAY) {
+                            echo '<th scope="col" class="text-center">' . $i . '</th>';
+                        } else {
+                            echo '<th scope="col" class="text-center">' . $pdate->jdate_words(['mm' => $i],' ') . '</th>';
+                        }
+                    }
+                    ?>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($pageWidgets as $pageWidget): ?>
+                    <?php $runWidget = $pageWidget->widget->lastResult($startRange, $endRange); ?>
+                    <tr>
+                        <th style="width: 17%">
+                            <div class="border-bottom">
+                                <?= Html::a('<i class="mdi mdi-launch"></i>', [$pageWidget->widget->getModelRoute()], ['target' => '_blank']) ?>
 
                             <?= Html::a('<i class="mdi mdi-reload"></i>', 'javascript:void(0)',
                                 [
