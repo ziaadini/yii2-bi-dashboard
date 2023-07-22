@@ -52,6 +52,7 @@ return [
     'Private' => 'خصوصی',
     'Active' => 'فعال',
     'Deleted' => 'حذف شده',
+    'InActive' => 'غیرفعال',
     'Search' => 'جستجو',
     'Reset' => 'ریست',
 
