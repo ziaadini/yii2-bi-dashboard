@@ -9,6 +9,9 @@ use yii\bootstrap4\Modal;
 $biAssets = BiAssets::register($this);
 $url = $biAssets->baseUrl;
 
+/**
+ * @var $content string
+ */
 ?>
 <?php $this->beginPage() ?>
     <!DOCTYPE html>
@@ -33,6 +36,7 @@ $url = $biAssets->baseUrl;
         <?= $this->render('@sadi01/bidashboard/views/layouts/topbar.php', ['url' => $url]) ?>
         <?= $this->render('@sadi01/bidashboard/views/layouts/sidebar.php', ['url' => $url]) ?>
         <div class="page-wrapper">
+
             <div>
                 <?php
                 Modal::begin([

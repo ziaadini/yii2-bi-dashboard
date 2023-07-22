@@ -78,6 +78,7 @@ return [
     'Widget' => 'ویجت',
     'Report Widget Field' => 'فیلد نمایش  ویجت',
     'Show' => 'نمایش',
+    '{modelTitle} data is invalid' => ' دیتای ارسالی ویجت {modelTitle} نامعتبر است',
 
 
 ];

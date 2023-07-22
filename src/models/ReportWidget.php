@@ -242,6 +242,7 @@ class ReportWidget extends ActiveRecord
             $modelQueryResults['status'] = true;
         }else{
             $modelQueryResults['status'] = false;
+            $this->flash('error',Yii::t('biDashboard','{modelTitle} data is invalid',['modelTitle' => $this->title]));
         }
 
         // -- create Report Widget Result
@@ -327,6 +328,11 @@ class ReportWidget extends ActiveRecord
         }
 
         return $isValid;
+    }
+
+    public function flash($type, $message)
+    {
+        \Yii::$app->getSession()->setFlash($type == 'error' ? 'danger' : $type, $message);
     }
 
 }

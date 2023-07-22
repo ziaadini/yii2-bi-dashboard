@@ -1,6 +1,6 @@
 <?php
 
-
+use Yii;
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageWidget;
 use yii\helpers\Html;
@@ -9,7 +9,6 @@ use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\DetailView;
 use yii\widgets\Pjax;
-use Yii;
 
 /**
  * @var View $this
@@ -36,6 +35,7 @@ $pdate = Yii::$app->pdate;
 <div class="report-page-view">
     <?php Pjax::begin(['id' => 'p-jax-report-page-add', 'enablePushState' => false]); ?>
     <div class="p-3 bg-white">
+        <?= \sadi01\bidashboard\widgets\Alert::widget() ?>
         <div class="row d-flex">
             <div class="pt-2 col-sm-2 text-left mr-auto">
                 <span>عنوان  : </span>
