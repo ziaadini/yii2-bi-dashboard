@@ -9,7 +9,7 @@ use yii\helpers\Url;
 use yii\web\View;
 use yii\widgets\DetailView;
 use yii\widgets\Pjax;
-
+use Yii;
 
 /**
  * @var View $this
@@ -78,7 +78,7 @@ $pdate = Yii::$app->pdate;
                                 'aria-label' => Yii::t('biDashboard', 'run all widget'),
                                 'data-reload-pjax-container' => 'p-jax-report-page-add',
                                 'data-pjax' => '0',
-                                'data-url' => Url::to(['/bidashboard/report-page/reload-all-widgets', 'id' => $model->id, 'start_range' => $startRange, 'end_range' => $endRange]),
+                                'data-url' => Url::to(['/bidashboard/report-page/run-all-widgets', 'id' => $model->id, 'start_range' => $startRange, 'end_range' => $endRange]),
                                 'class' => " p-jax-btn btn btn-info",
                                 'data-title' => Yii::t('biDashboard', 'run all widget'),
                             ]); ?>
@@ -130,6 +130,7 @@ $pdate = Yii::$app->pdate;
                 <tbody>
                 <?php foreach ($pageWidgets as $pageWidget): ?>
                     <?php $runWidget = $pageWidget->widget->lastResult($startRange, $endRange); ?>
+<!--                    --><?php //if ($runWidget['status']): ?>
                     <tr>
                         <th style="width: 17%">
                             <div class="border-bottom">
@@ -179,10 +180,10 @@ $pdate = Yii::$app->pdate;
                             <div class="col-sm-6">
                                 <label>فیلد ویجت گزارش :</label>
                                 <span class="bg-warning">
-                                            <?=
-                                            $pageWidget->report_widget_field
-                                            ?>
-                                        </span>
+                                    <?=
+                                    $pageWidget->report_widget_field
+                                    ?>
+                                </span>
                             </div>
                         </div>
                         <div class="text-center text-info">
@@ -192,7 +193,7 @@ $pdate = Yii::$app->pdate;
                         </div>
                     </th>
                     <?php
-                    $formatter = \Yii::$app->formatter;
+                    $formatter = Yii::$app->formatter;
                     if ($runWidget) {
                         for ($i = 1; $i <= $rangeDateNumber; $i++) {
                             if ($model->range_type == $model::RANGE_DAY) {
@@ -202,6 +203,8 @@ $pdate = Yii::$app->pdate;
                             }
                             if ($key === false) {
                                 echo '<th scope="col"></th>';
+                            }elseif(!$runWidget->result['status']){
+                                echo '<th scope="col " class="text-center">Data Structure Error</th>';
                             } else {
                                 $resultData = key_exists($pageWidget->report_widget_field, $runWidget->result[$key]) ? $runWidget->result[$key][$pageWidget->report_widget_field] : '.::field error(1)::.';
                                 if ($pageWidget->report_widget_field_format == $pageWidget::FORMAT_CURRENCY) {
@@ -213,6 +216,9 @@ $pdate = Yii::$app->pdate;
                     }
                     ?>
                 </tr>
+<!--                --><?php //endif; ?>
+
+
             <?php endforeach; ?>
             </tbody>
         </table>

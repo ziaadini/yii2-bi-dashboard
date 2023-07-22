@@ -233,6 +233,17 @@ class ReportWidget extends ActiveRecord
         // -- call search model and get response ActiveRecord
         $modelQueryResults = $this->findSearchModelWidget($start_range, $end_range);
 
+        $isValid = true;
+        if ($modelQueryResults){
+            $isValid = key_exists('month',$modelQueryResults[0]) and key_exists('year',$modelQueryResults[0]);
+        }
+
+        if ($isValid){
+            $modelQueryResults['status'] = true;
+        }else{
+            $modelQueryResults['status'] = false;
+        }
+
         // -- create Report Widget Result
         $reportWidgetResult = new ReportWidgetResult();
         $reportWidgetResult->widget_id = $this->id;

@@ -98,11 +98,12 @@ class ReportWidgetController extends Controller
                                  $searchModelRunResultView = null,
                                  $search_route = null,
                                  $search_model_form_name = null,
-                                 $queryParams = null, $output_column = null)
+                                 $queryParams = null,
+                                 $output_column = null)
     {
-
         $model = new ReportWidget();
         $model->loadDefaultValues();
+
         if ($this->request->isPost) {
             $model->search_model_method = $searchModelMethod;
             $model->search_route = $search_route;

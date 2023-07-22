@@ -260,9 +260,9 @@ class ReportPageController extends Controller
                 if (!$widget) {
                     return ['output' => [], 'selected' => ''];
                 }
-                $outputColumns = json_decode($widget->outputColumn);
+                $outputColumns = $widget->outputColumn;
                 foreach ($outputColumns as $item) {
-                    $out[] = ['id' => $item->column_name, 'name' => $item->column_title];
+                    $out[] = ['id' => $item['column_name'], 'name' => $item['column_title']];
                 }
                 return ['output' => $out, 'selected' => ''];
             }
