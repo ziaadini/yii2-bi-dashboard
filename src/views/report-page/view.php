@@ -130,7 +130,6 @@ $pdate = Yii::$app->pdate;
                 <tbody>
                 <?php foreach ($pageWidgets as $pageWidget): ?>
                     <?php $runWidget = $pageWidget->widget->lastResult($startRange, $endRange); ?>
-<!--                    --><?php //if ($runWidget['status']): ?>
                     <tr>
                         <th style="width: 17%">
                             <div class="border-bottom">
@@ -216,8 +215,6 @@ $pdate = Yii::$app->pdate;
                     }
                     ?>
                 </tr>
-<!--                --><?php //endif; ?>
-
 
             <?php endforeach; ?>
             </tbody>
