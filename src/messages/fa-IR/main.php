@@ -94,8 +94,8 @@ return [
     "Update Sharing Page: {name}"=>"ویرایش کلید اشتراک گذاری: {name}",
     "create year"=>"ایجاد سال ",
     "Report Years"=>"سال ها",
-    ""=>"",
-    ""=>"",
+    "DELETED"=>"حذف شده",
+    "ACTIVE"=>"فعال",
     ""=>"",
     ""=>"",
 

@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'data-reload-pjax-container' => 'p-jax-sharing-page'
                     ]) ?>
             </p>
-            <?php  $this->render('_search', ['model' => $searchModel]); ?>
+            <?php $this->render('_search', ['model' => $searchModel]); ?>
             <div class="card-body">
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -43,6 +43,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'page_id',
                             'value' => function ($model) {
                                 return $model->page->title;
+                            },
+                        ],
+                        [
+                            'attribute' => 'status',
+                            'value' => function ($model) {
+
+                                return SharingPage::itemAlias('Status',$model->status);
                             },
                         ],
                         'access_key',
@@ -56,13 +63,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             'buttons' => [
                                 'expire' => function ($url, $model, $key) {
                                     if ($model->expire_time > time()) {
-                                        return Html::a('Expire', 'javascript:void(0)', [
+                                        return Html::a('<i class="mdi mdi-clock"></i>', 'javascript:void(0)', [
                                             'title' => Yii::t('yii', 'Expired'),
                                             'aria-label' => Yii::t('yii', 'Expired'),
                                             'data-reload-pjax-container' => 'p-jax-sharing-page',
                                             'data-pjax' => '0',
-                                            'data-url' => Url::to(['/bidashboard/sharing-page/expire', 'id_key' => $model->id, 'page_id' => $model->page_id]),
-                                            'class' => 'p-jax-btn btn-sm text-info',
+                                            'data-url' => Url::to(['/bidashboard/sharing-page/expire', 'id' => $model->id]),
+                                            'class' => 'p-jax-btn text-primary',
                                             'data-title' => Yii::t('yii', 'Expired'),
                                         ]);
                                     } else {

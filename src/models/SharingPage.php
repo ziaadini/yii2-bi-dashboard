@@ -104,7 +104,26 @@ class SharingPage extends \yii\db\ActiveRecord
         $query->notDeleted();
         return $query;
     }
-
+    public static function itemAlias($type, $code = NULL)
+    {
+        $_items = [
+            'Status' => [
+                self::STATUS_DELETED => Yii::t('biDashboard', 'DELETED'),
+                self::STATUS_ACTIVE => Yii::t('biDashboard', 'ACTIVE'),
+            ],
+            'StatusClass' => [
+                self::STATUS_DELETED => 'danger',
+                self::STATUS_ACTIVE => 'success',
+            ],
+            'StatusColor' => [
+                self::STATUS_DELETED => '#ff5050',
+                self::STATUS_ACTIVE => '#04AA6D',
+            ],];
+        if (isset($code))
+            return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
+        else
+            return isset($_items[$type]) ? $_items[$type] : false;
+    }
     public function behaviors()
     {
         return [
