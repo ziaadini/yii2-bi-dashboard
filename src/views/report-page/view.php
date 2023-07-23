@@ -48,7 +48,7 @@ $pdate = Yii::$app->pdate;
                     <form>
                         <div class="d-flex justify-content-end">
                             <div class="px-1">
-                                <select name="year" class="form-control">
+                                <select name="year" class="form-control" onchange="this.form.submit()">
                                     <option value="1402" <?= $year == '1402' ? 'selected' : '' ?> >1402</option>
                                     <option value="1401" <?= $year == '1401' ? 'selected' : '' ?> >1401</option>
                                     <option value="1400" <?= $year == '1400' ? 'selected' : '' ?> >1400</option>
@@ -56,7 +56,7 @@ $pdate = Yii::$app->pdate;
                             </div>
                             <?php if ($model->range_type == $model::RANGE_DAY): ?>
                                 <div class="px-1">
-                                    <select name="month" class="form-control">
+                                    <select name="month" class="form-control" onchange="this.form.submit()">
                                         <?php for ($i = 1; $i <= 12; $i++): ?>
                                             <option
                                                     value="<?= $i ?>" <?= $month == $i ? 'selected' : '' ?> ><?= $i ?></option>
@@ -66,7 +66,6 @@ $pdate = Yii::$app->pdate;
                                 <?php endif; ?>
                                 <div class="px-1">
                                     <input type="hidden" name="id" value="<?= $model->id ?>">
-                                    <input type="submit" value="<?= Yii::t('biDashboard','Show'); ?>" class="btn btn-success">
                                 </div>
                             </div>
                         </form>
