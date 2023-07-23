@@ -2,6 +2,7 @@
 
 
 use sadi01\bidashboard\models\ReportPageWidget;
+use sadi01\bidashboard\models\ReportYear;
 use yii\helpers\Html;
 use yii\helpers\Time;
 use sadi01\bidashboard\models\ReportPage;
@@ -19,6 +20,7 @@ use yii\widgets\Pjax;
  * @var $startRange int
  * @var $endRange int
  * @var $rangeDateNumber int
+ * @var  ReportYear $years
  */
 
 $this->title = $model->title;
@@ -49,10 +51,10 @@ $year = Yii::$app->request->get('year', null);
                         <form>
                             <div class="d-flex justify-content-end">
                                 <div class="px-1">
-                                    <select name="year" class="form-control">
-                                        <option value="1402" <?= $year == '1402' ? 'selected' : '' ?> >1402</option>
-                                        <option value="1401" <?= $year == '1401' ? 'selected' : '' ?> >1401</option>
-                                        <option value="140K0" <?= $year == '1400' ? 'selected' : '' ?> >1400</option>
+                                    <select name="year" class="form-control select2">
+                                        <?php foreach ($years as $Year): ?>
+                                        <option <?= $Year->year?> <?= $year == $Year->year ? 'selected' : '' ?> ><?= $Year->year?></option>
+                                        <?php endforeach;?>
                                     </select>
                                 </div>
                                 <?php if ($model->range_type == $model::RANGE_DAY): ?>
