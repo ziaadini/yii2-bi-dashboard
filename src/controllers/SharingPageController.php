@@ -31,7 +31,7 @@ class SharingPageController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                         'expire' => ['POST']
@@ -44,14 +44,10 @@ class SharingPageController extends Controller
     public function beforeAction($action)
     {
         Yii::$app->controller->enableCsrfValidation = false;
+
         return parent::beforeAction($action);
     }
-    public function beforeInsert()
-    {
-        // Generate a random access key
-        $this->access_key = Yii::$app->security->generateRandomString();
-        return parent::beforeInsert();
-    }
+
     /**
      * Lists all SharingPage models.
      *
@@ -100,6 +96,7 @@ class SharingPageController extends Controller
         } else {
             $model->loadDefaultValues();
         }
+
         $this->performAjaxValidation($model);
         return $this->renderAjax('create', [
             'model' => $model,
@@ -113,7 +110,7 @@ class SharingPageController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
 
@@ -133,7 +130,7 @@ class SharingPageController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id)
     {
         $this->findModel($id)->delete();
 
@@ -166,6 +163,7 @@ class SharingPageController extends Controller
             'page_model' => $page_model,
         ]);
     }
+
     /**
      * @param $id
      * @return \yii\web\Response
@@ -176,6 +174,7 @@ class SharingPageController extends Controller
         if ($model) {
             $model->expire();
             $model->save(false);
+
             return $this->asJson([
                 'status' => true,
                 'success' => true,
@@ -198,7 +197,7 @@ class SharingPageController extends Controller
      * @return SharingPage the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel(int $id): SharingPage
     {
         if (($model = SharingPage::findOne(['id' => $id])) !== null) {
             return $model;

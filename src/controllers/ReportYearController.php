@@ -16,7 +16,9 @@ use yii\filters\VerbFilter;
 class ReportYearController extends Controller
 {
     use AjaxValidationTrait;
+
     public $layout = 'bid_main';
+
     /**
      * @inheritDoc
      */
@@ -26,7 +28,7 @@ class ReportYearController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -53,7 +55,7 @@ class ReportYearController extends Controller
 
     /**
      * Displays a single ReportYear model.
-     * @param int $id شناسه
+     * @param int $id
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -99,7 +101,7 @@ class ReportYearController extends Controller
     /**
      * Updates an existing ReportYear model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id شناسه
+     * @param int $id
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -119,7 +121,7 @@ class ReportYearController extends Controller
     /**
      * Deletes an existing ReportYear model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id شناسه
+     * @param int $id
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -133,7 +135,7 @@ class ReportYearController extends Controller
     /**
      * Finds the ReportYear model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id شناسه
+     * @param int $id
      * @return ReportYear the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

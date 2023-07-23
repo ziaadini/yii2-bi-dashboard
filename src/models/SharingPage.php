@@ -90,10 +90,12 @@ class SharingPage extends \yii\db\ActiveRecord
     {
         return $this->hasOne(ReportPage::class, ['id' => 'page_id']);
     }
+
     public function expire()
     {
         $this->expire_time = time();
     }
+
     /**
      * {@inheritdoc}
      * @return SharingPageQuery the active query used by this AR class.
@@ -104,6 +106,7 @@ class SharingPage extends \yii\db\ActiveRecord
         $query->notDeleted();
         return $query;
     }
+
     public static function itemAlias($type, $code = NULL)
     {
         $_items = [
@@ -124,6 +127,7 @@ class SharingPage extends \yii\db\ActiveRecord
         else
             return isset($_items[$type]) ? $_items[$type] : false;
     }
+
     public function behaviors()
     {
         return [
@@ -150,5 +154,4 @@ class SharingPage extends \yii\db\ActiveRecord
             ],
         ];
     }
-
 }
