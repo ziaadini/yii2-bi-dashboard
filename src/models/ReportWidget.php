@@ -237,7 +237,7 @@ class ReportWidget extends ActiveRecord
             $isValid = false;
         }
 
-        if (!$isValid or true) {
+        if (!$isValid) {
             $modelQueryResults['status'] = false;
             $this->addError('status', Yii::t('app', 'Error In Run Widget'));
             return $modelQueryResults;
@@ -296,7 +296,7 @@ class ReportWidget extends ActiveRecord
             ->limit(1)
             ->one();
 
-        if (!$runWidget or 1) {
+        if (!$runWidget) {
             $runWidget = $this->runWidget($startRange, $endRange);
         }
 
