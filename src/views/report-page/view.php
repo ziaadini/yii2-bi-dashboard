@@ -128,7 +128,9 @@ $pdate = Yii::$app->pdate;
                 </thead>
                 <tbody>
                 <?php foreach ($pageWidgets as $pageWidget): ?>
-                    <?php $runWidget = $pageWidget->widget->lastResult($startRange, $endRange); ?>
+                    <?php $runWidget = $pageWidget->widget->lastResult($startRange, $endRange);
+                    if ($runWidget['status']):
+                    ?>
                     <tr>
                         <th style="width: 17%">
                             <div class="border-bottom">
@@ -140,7 +142,7 @@ $pdate = Yii::$app->pdate;
                                     'aria-label' => Yii::t('yii', 'reload'),
                                     'data-reload-pjax-container' => 'p-jax-report-page-add',
                                     'data-pjax' => '0',
-                                    'data-url' => Url::to(['/bidashboard/report-widget/reload', 'id' => $pageWidget->widget->id, $year => $year, $month => $month]),
+                                    'data-url' => Url::to(['/bidashboard/report-widget/run', 'id' => $pageWidget->widget->id, $year => $year, $month => $month]),
                                     'class' => " p-jax-btn btn-sm text-info",
                                     'data-title' => Yii::t('yii', 'reload'),
                                 ]); ?>
@@ -173,21 +175,17 @@ $pdate = Yii::$app->pdate;
                         <div class=" text-left row p-3">
                             <div class="col-12">
                                 <span>ویجت گزارش :</span>
-                                <span class="bg-warning"><?php echo $pageWidget->widget->title ?></span>
+                                <span class="bg-warning"><?= $pageWidget->widget->title ?></span>
                             </div>
                             <div class="col-sm-6">
                                 <label>فیلد ویجت گزارش :</label>
                                 <span class="bg-warning">
-                                    <?=
-                                    $pageWidget->report_widget_field
-                                    ?>
+                                    <?= $pageWidget->report_widget_field ?>
                                 </span>
                             </div>
                         </div>
                         <div class="text-center text-info">
-                            <?=
-                            Yii::$app->formatter->asRelativeTime($runWidget->created_at, 'now');
-                            ?>
+                            <?= Yii::$app->formatter->asRelativeTime($runWidget->created_at, 'now'); ?>
                         </div>
                     </th>
                     <?php
@@ -215,6 +213,7 @@ $pdate = Yii::$app->pdate;
                     ?>
                 </tr>
 
+            <?php endif; ?>
             <?php endforeach; ?>
             </tbody>
         </table>

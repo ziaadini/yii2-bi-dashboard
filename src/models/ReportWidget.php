@@ -227,36 +227,30 @@ class ReportWidget extends ActiveRecord
             $end_range = $dateTemp['end'];
         }
 
-        // -- call search model and get response ActiveRecord
-        $modelQueryResults = $this->findSearchModelWidget($start_range, $end_range);
+        $modelQueryResults = $this->findAndRunSearchModelWidget($start_range, $end_range);
 
-        $isValid = true;
-        if ($modelQueryResults) {
+        if ($modelQueryResults and $this->range_type == $this::RANGE_TYPE_DAILY) {
+            $isValid = key_exists('day', $modelQueryResults[0]) && key_exists('month', $modelQueryResults[0]) && key_exists('year', $modelQueryResults[0]);
+        }elseif($modelQueryResults and $this->range_type == $this::RANGE_TYPE_MONTHLY) {
             $isValid = key_exists('month', $modelQueryResults[0]) && key_exists('year', $modelQueryResults[0]);
+        }else{
+            $isValid = false;
         }
 
-        if ($isValid) {
-            $modelQueryResults['status'] = true;
-        } else {
+        if (!$isValid or true) {
             $modelQueryResults['status'] = false;
-            $this->addError('status', Yii::t('biDashboard', '{modelTitle} data is invalid', ['modelTitle' => $this->title]));
+            $this->addError('status', Yii::t('app', 'Error In Run Widget'));
+            return $modelQueryResults;
         }
 
-        // -- create Report Widget Result
-        $this->createReportWidgetResult();
-//        $reportWidgetResult = new ReportWidgetResult();
-//        $reportWidgetResult->widget_id = $this->id;
-//        $reportWidgetResult->start_range = $start_range;
-//        $reportWidgetResult->end_range = $end_range;
-//        $reportWidgetResult->run_action = Yii::$app->controller->action->id;
-//        $reportWidgetResult->run_controller = Yii::$app->controller->id;
-//        $reportWidgetResult->result = $modelQueryResults;
-//        $reportWidgetResult->save();
+        $modelQueryResults['status'] = true;
+
+        $reportWidgetResult = $this->createReportWidgetResult($modelQueryResults,$start_range,$end_range);
 
         return $reportWidgetResult;
     }
 
-    public function findSearchModelWidget($startDate, $endDate)
+    public function findAndRunSearchModelWidget($startDate, $endDate)
     {
         $params = $this->params;
         $searchModel = new ($this->search_model_class);
@@ -299,9 +293,10 @@ class ReportWidget extends ActiveRecord
             ->andWhere(['start_range' => $startRange])
             ->andWhere(['end_range' => $endRange])
             ->orderBy(['id' => SORT_DESC])
+            ->limit(1)
             ->one();
 
-        if (!$runWidget) {
+        if (!$runWidget or 1) {
             $runWidget = $this->runWidget($startRange, $endRange);
         }
 
@@ -326,5 +321,17 @@ class ReportWidget extends ActiveRecord
         }
 
         return $isValid;
+    }
+
+    public function createReportWidgetResult($modelQueryResults,$start_range,$end_range){
+        $reportWidgetResult = new ReportWidgetResult();
+        $reportWidgetResult->widget_id = $this->id;
+        $reportWidgetResult->start_range = $start_range;
+        $reportWidgetResult->end_range = $end_range;
+        $reportWidgetResult->run_action = Yii::$app->controller->action->id;
+        $reportWidgetResult->run_controller = Yii::$app->controller->id;
+        $reportWidgetResult->result = $modelQueryResults;
+        $reportWidgetResult->save();
+        return $reportWidgetResult;
     }
 }

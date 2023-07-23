@@ -72,20 +72,9 @@ class ReportWidgetController extends Controller
 
         $modelRoute = $model->getModelRoute();
 
-        $runWidget = ReportWidgetResult::find()
-            ->where(['widget_id' => $model->id])
-            ->orderBy(['id' => SORT_DESC])
-            ->limit(1)
-            ->one();
-
-        if (!$runWidget || $method == 'new') {
-            $runWidget = $model->runWidget(null, null);
-        }
-
         return $this->render('view', [
             'model' => $model,
             'modelRoute' => $modelRoute,
-            'runWidget' => $runWidget,
         ]);
     }
 
@@ -201,28 +190,24 @@ class ReportWidgetController extends Controller
         ]);
     }
 
-    public function actionReload($id)
+    public function actionRun($id)
     {
         $model = $this->findModel($id);
         $model->runWidget();
 
-        return $this->asJson([
-            'status' => true,
-            'success' => true,
-            'msg' => Yii::t("biDashboard", 'Success'),
-        ]);
-
-        return $this->asJson([
-            'status' => false,
-            'success' => false,
-            'msg' => ($model->errors ? Html::errorSummary([$model]) : Yii::t('app', 'Error In Run Widget')),
-            'msg' => $model->errors ? array_values($model->errors)[0][0] : Yii::t("app", 'It is not possible to perform this operation'),
-        ]);
-    }
-
-    public function flash($type, $message)
-    {
-        \Yii::$app->getSession()->setFlash($type == 'error' ? 'danger' : $type, $message);
+        if (!count($model->errors)){
+            return $this->asJson([
+                'status' => true,
+                'success' => true,
+                'msg' => Yii::t("biDashboard", 'Success'),
+            ]);
+        }else{
+            return $this->asJson([
+                'status' => false,
+                'success' => false,
+                'msg' => ($model->errors ? Html::errorSummary([$model]) : Yii::t('app', 'Error In Run Widget')),
+            ]);
+        }
     }
 
 }
