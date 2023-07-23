@@ -38,6 +38,9 @@ class ReportPage extends ActiveRecord
     const RANGE_DAY = 1;
     const RANGE_MONTH = 2;
 
+    const FORMAT_NUMBER = 1;
+    const FORMAT_CURRENCY = 2;
+
     public static function tableName()
     {
         return 'report_page';
@@ -105,9 +108,13 @@ class ReportPage extends ActiveRecord
     public static function itemAlias($type, $code = NULL)
     {
         $_items = [
-            'range_type' => [
+            'RangeType' => [
                 self::RANGE_DAY => Yii::t('biDashboard', 'روزانه'),
                 self::RANGE_MONTH => Yii::t('biDashboard', 'ماهانه'),
+            ],
+            'Format' => [
+                self::FORMAT_CURRENCY => Yii::t('biDashboard', 'Currency'),
+                self::FORMAT_NUMBER => Yii::t('biDashboard', 'Number'),
             ],
             'Status' => [
                 self::STATUS_ACTIVE => Yii::t('biDashboard', 'Active'),
