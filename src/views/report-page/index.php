@@ -70,6 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         [
                             'class' => ActionColumn::class,
+                            'template'=>'{view} {delete}',
                             'urlCreator' => function ($action, ReportPage $model, $key, $index, $column) {
                                 return Url::toRoute([$action, 'id' => $model->id]);
                             }
