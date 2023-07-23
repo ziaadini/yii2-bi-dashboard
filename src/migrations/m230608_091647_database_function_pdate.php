@@ -1,5 +1,6 @@
 <?php
 
+
 use yii\db\Migration;
 
 /**
@@ -12,7 +13,6 @@ class m230608_091647_database_function_pdate extends Migration
      */
     public function safeUp()
     {
-
         $sql__mydiv = "
             DROP FUNCTION IF EXISTS `__mydiv`;
             CREATE DEFINER=`root`@`localhost` FUNCTION `__mydiv`(`a` int, `b` int) RETURNS bigint(20)

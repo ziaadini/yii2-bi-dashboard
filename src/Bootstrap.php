@@ -33,5 +33,9 @@ class Bootstrap implements BootstrapInterface
                 ],
             ];
         }
+
+        Yii::$app->setComponents([
+            'biDB' => require __DIR__ . '/config/db.php',
+        ]);
     }
 }

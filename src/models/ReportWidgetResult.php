@@ -41,6 +41,11 @@ class ReportWidgetResult extends ActiveRecord
 
     public $result;
 
+    public static function getDb()
+    {
+        return Yii::$app->get('biDB');
+    }
+
     /**
      * {@inheritdoc}
      */

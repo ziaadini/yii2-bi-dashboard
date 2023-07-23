@@ -9,6 +9,11 @@ use yii\db\Expression;
  */
 class m230517_064501_report_result_widget_table extends Migration
 {
+    public function init()
+    {
+        $this->db = 'biDB';
+        parent::init();
+    }
     /**
      * {@inheritdoc}
      */

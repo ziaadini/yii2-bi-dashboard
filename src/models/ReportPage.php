@@ -41,6 +41,11 @@ class ReportPage extends ActiveRecord
     const FORMAT_NUMBER = 1;
     const FORMAT_CURRENCY = 2;
 
+    public static function getDb()
+    {
+        return Yii::$app->get('biDB');
+    }
+
     public static function tableName()
     {
         return 'report_page';

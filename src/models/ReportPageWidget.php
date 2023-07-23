@@ -33,6 +33,12 @@ class ReportPageWidget extends ActiveRecord
     const STATUS_INACTIVE = 2;
     const FORMAT_NUMBER = 1;
     const FORMAT_CURRENCY = 2;
+
+    public static function getDb()
+    {
+        return Yii::$app->get('biDB');
+    }
+
     /**
      * {@inheritdoc}
      */
