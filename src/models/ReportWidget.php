@@ -4,10 +4,7 @@ namespace sadi01\bidashboard\models;
 
 use sadi01\bidashboard\behaviors\Jsonable;
 use sadi01\bidashboard\components\Pdate;
-use sadi01\bidashboard\models\ReportPageQuery;
-use sadi01\bidashboard\models\ReportWidgetResultQuery;
 use sadi01\bidashboard\traits\CoreTrait;
-
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -234,26 +231,27 @@ class ReportWidget extends ActiveRecord
         $modelQueryResults = $this->findSearchModelWidget($start_range, $end_range);
 
         $isValid = true;
-        if ($modelQueryResults){
-            $isValid = key_exists('month',$modelQueryResults[0]) and key_exists('year',$modelQueryResults[0]);
+        if ($modelQueryResults) {
+            $isValid = key_exists('month', $modelQueryResults[0]) && key_exists('year', $modelQueryResults[0]);
         }
 
-        if ($isValid){
+        if ($isValid) {
             $modelQueryResults['status'] = true;
-        }else{
+        } else {
             $modelQueryResults['status'] = false;
-            $this->flash('error',Yii::t('biDashboard','{modelTitle} data is invalid',['modelTitle' => $this->title]));
+            $this->addError('status', Yii::t('biDashboard', '{modelTitle} data is invalid', ['modelTitle' => $this->title]));
         }
 
         // -- create Report Widget Result
-        $reportWidgetResult = new ReportWidgetResult();
-        $reportWidgetResult->widget_id = $this->id;
-        $reportWidgetResult->start_range = $start_range;
-        $reportWidgetResult->end_range = $end_range;
-        $reportWidgetResult->run_action = Yii::$app->controller->action->id;
-        $reportWidgetResult->run_controller = Yii::$app->controller->id;
-        $reportWidgetResult->result = $modelQueryResults;
-        $reportWidgetResult->save();
+        $this->createReportWidgetResult();
+//        $reportWidgetResult = new ReportWidgetResult();
+//        $reportWidgetResult->widget_id = $this->id;
+//        $reportWidgetResult->start_range = $start_range;
+//        $reportWidgetResult->end_range = $end_range;
+//        $reportWidgetResult->run_action = Yii::$app->controller->action->id;
+//        $reportWidgetResult->run_controller = Yii::$app->controller->id;
+//        $reportWidgetResult->result = $modelQueryResults;
+//        $reportWidgetResult->save();
 
         return $reportWidgetResult;
     }
@@ -329,10 +327,4 @@ class ReportWidget extends ActiveRecord
 
         return $isValid;
     }
-
-    public function flash($type, $message)
-    {
-        \Yii::$app->getSession()->setFlash($type == 'error' ? 'danger' : $type, $message);
-    }
-
 }

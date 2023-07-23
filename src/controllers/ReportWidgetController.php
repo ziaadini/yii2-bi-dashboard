@@ -9,6 +9,7 @@ use sadi01\bidashboard\traits\AjaxValidationTrait;
 use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -209,6 +210,13 @@ class ReportWidgetController extends Controller
             'status' => true,
             'success' => true,
             'msg' => Yii::t("biDashboard", 'Success'),
+        ]);
+
+        return $this->asJson([
+            'status' => false,
+            'success' => false,
+            'msg' => ($model->errors ? Html::errorSummary([$model]) : Yii::t('app', 'Error In Run Widget')),
+            'msg' => $model->errors ? array_values($model->errors)[0][0] : Yii::t("app", 'It is not possible to perform this operation'),
         ]);
     }
 

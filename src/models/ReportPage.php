@@ -88,6 +88,7 @@ class ReportPage extends ActiveRecord
     {
         return $this->hasMany(\sadi01\bidashboard\models\ReportPageWidget::class, ['page_id' => 'id']);
     }
+
     public function getWidgets()
     {
         return $this->hasMany(ReportWidget::class, ['id' => 'widget_id'])
