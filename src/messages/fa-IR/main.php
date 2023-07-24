@@ -79,7 +79,7 @@ return [
     'Report Widget Field' => 'فیلد نمایش  ویجت',
     'Show' => 'نمایش',
     '{modelTitle} data is invalid' => ' دیتای ارسالی ویجت {modelTitle} نامعتبر است',
-    'Database config not found!' => 'پیکربندی پایگاه داده یافت نشد',
+    'The {env_parameter} parameter is not set, add the parameter in the env file of the project.' => 'پارامتر {env_parameter} تنظیم نشده است، پارامتر را در فایل env پروژه اضافه نمایید.',
 
 
 ];
