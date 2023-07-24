@@ -79,6 +79,7 @@ return [
     'Report Widget Field' => 'فیلد نمایش  ویجت',
     'Show' => 'نمایش',
     '{modelTitle} data is invalid' => ' دیتای ارسالی ویجت {modelTitle} نامعتبر است',
+    'Database config not found!' => 'پیکربندی پایگاه داده یافت نشد',
 
 
 ];

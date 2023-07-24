@@ -2,12 +2,14 @@
 
 namespace sadi01\bidashboard;
 
+use sadi01\bidashboard\components\Env;
 use sadi01\bidashboard\components\Pdate;
 use WebApplication;
 use Yii;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 use yii\i18n\PhpMessageSource;
+use yii\web\HttpException;
 
 class Bootstrap implements BootstrapInterface
 {
@@ -37,5 +39,9 @@ class Bootstrap implements BootstrapInterface
         Yii::$app->setComponents([
             'biDB' => require __DIR__ . '/config/db.php',
         ]);
+
+        if (!Env::get('BI_DB_DSN') or !Env::get('BI_DB_USERNAME') or!Env::get('BI_DB_PASSWORD')){
+            throw new HttpException(404, Yii::t('biDashboard','Database config not found!'));
+        }
     }
 }
