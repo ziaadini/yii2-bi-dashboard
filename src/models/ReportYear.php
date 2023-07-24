@@ -33,7 +33,7 @@ class ReportYear extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'report_year';
+        return '{{%report_year}}';
     }
 
     /**
@@ -119,5 +119,10 @@ class ReportYear extends \yii\db\ActiveRecord
                 'invokeDeleteEvents' => false
             ],
         ];
+    }
+
+    public function canDelete()
+    {
+        return true;
     }
 }

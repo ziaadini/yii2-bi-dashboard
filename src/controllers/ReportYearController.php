@@ -35,6 +35,12 @@ class ReportYearController extends Controller
         );
     }
 
+    public function beforeAction($action)
+    {
+        Yii::$app->controller->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
+
     /**
      * Lists all ReportYear models.
      *
@@ -53,7 +59,7 @@ class ReportYearController extends Controller
 
     /**
      * Displays a single ReportYear model.
-     * @param int $id شناسه
+     * @param int $id
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -72,7 +78,6 @@ class ReportYearController extends Controller
     public function actionCreate()
     {
         $model = new ReportYear();
-
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) ) {
                 $model->save();
@@ -108,10 +113,20 @@ class ReportYearController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->asJson([
+                'status'=>true,
+                'success' => true,
+                'msg' => Yii::t("app", 'Success')
+            ]);
+        }else{
+            return $this->asJson([
+                'status'=>false,
+                'success' => false,
+                'msg' => Yii::t("app", 'Fails')
+            ]);
         }
-
-        return $this->render('update', [
+        $this->performAjaxValidation($model);
+        return $this->renderAjax('update', [
             'model' => $model,
         ]);
     }
@@ -125,9 +140,20 @@ class ReportYearController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+        if ($model->canDelete() && $model->softDelete()) {
+            return $this->asJson([
+                'status' => true,
+                'success' => true,
+                'msg' => Yii::t("biDashboard", 'Item Deleted')
+            ]);
+        } else {
+            return $this->asJson([
+                'status' => false,
+                'success' => false,
+                'msg' => Yii::t("biDashboard", 'Error In Delete Action')
+            ]);
+        }
     }
 
     /**

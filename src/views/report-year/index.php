@@ -14,7 +14,7 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('biDashboard', 'Report Years');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="page-content container-fluid text-left pt-5" id="main-wrapper">
+<div class="page-content container-fluid text-left pt-5  bg-white" id="main-wrapper">
     <?php Pjax::begin(['id' => 'p-jax-report-year', 'enablePushState' => false]); ?>
     <div class="work-report-index card">
         <div class="panel-group m-bot20" id="accordion">
@@ -42,32 +42,61 @@ $this->params['breadcrumbs'][] = $this->title;
                     ?>
                 </div>
             </div>
-            <div class="card-body page-content container-fluid text-left">
-                <div id="collapseSearch" class="panel-collapse collapse" aria-expanded="false">
-                    <?php $this->render('_search', ['model' => $searchModel]); ?>
-                </div>
-                <?= GridView::widget([
-                    'dataProvider' => $dataProvider,
-                    'columns' => [
-                        ['class' => 'yii\grid\SerialColumn'],
-                        'year',
-                        [
-                            'attribute' => 'status',
-                            'value' => function ($model) {
-
-                                return ReportYear::itemAlias('Status',$model->status);
-                            },
-                        ],
-                        [
-                            'class' => ActionColumn::class,
-                            'urlCreator' => function ($action, ReportYear $model, $key, $index, $column) {
-                                return Url::toRoute([$action, 'id' => $model->id]);
-                            }
-                        ],
-                    ],
-                ]); ?>
-            </div>
         </div>
+    </div>
+    <div class="card-body page-content container-fluid text-left">
+        <div id="collapseSearch" class="panel-collapse collapse" aria-expanded="false">
+            <?= $this->render('_search', ['model' => $searchModel]); ?>
+        </div>
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                'year',
+                [
+                    'attribute' => 'status',
+                    'value' => function ($model) {
+                        return ReportYear::itemAlias('Status', $model->status);
+                    },
+                ],
+                [
+                    'class' => ActionColumn::class,
+                    'urlCreator' => function ($action, ReportYear $model, $key, $index, $column) {
+                        return Url::toRoute([$action, 'id' => $model->id]);
+                    },
+                    'template' => '{custom-update} {custom-delete}', // Replace the default delete button with {custom-delete}
+                    'buttons' => [
+                        'custom-delete' => function ($url, $model, $key) {
+                            return Html::a('<i class="mdi mdi-delete"></i>', 'javascript:void(0)', [
+                                'title' => Yii::t('yii', 'Delete'),
+                                'aria-label' => Yii::t('yii', 'Delete'),
+                                'data-reload-pjax-container' => 'p-jax-report-year',
+                                'data-pjax' => '0',
+                                'data-url' => Url::to(['report-year/delete', 'id' => $model->id]),
+                                'class' => 'p-jax-btn text-danger',
+                                'data-title' => Yii::t('yii', 'Delete'),
+                                'data-toggle' => 'tooltip',
+                            ]);
+                        },
+                        'custom-update' => function ($url, $model, $key) {
+                            return Html::a('<i class="mdi mdi-update"></i>', "javascript:void(0)",
+                                [
+                                    'data-pjax' => '0',
+                                    'class' => "btn text-primary",
+                                    'data-size' => 'modal-xl',
+                                    'data-title' => Yii::t('app', 'create'),
+                                    'data-toggle' => 'modal',
+                                    'data-target' => '#modal-pjax',
+                                    'data-url' => Url::to(['report-year/update', 'id' => $model->id]),
+                                    'data-handle-form-submit' => 1,
+                                    'data-reload-pjax-container' => 'p-jax-report-year'
+                                ]
+                            );
+                        },
+                    ],
+                ],
+            ],
+        ]); ?>
     </div>
     <?php Pjax::end(); ?>
 </div>

@@ -40,7 +40,7 @@ class ReportPage extends ActiveRecord
 
     public static function tableName()
     {
-        return 'report_page';
+        return '{{%report_page}}';
     }
 
     /**
@@ -106,7 +106,7 @@ class ReportPage extends ActiveRecord
         return $query;
     }
 
-    public static function itemAlias($type, $code = NULL)
+    public static function itemAlias($type, $code = NULL, $years = [])
     {
         $_items = [
             'range_type' => [
@@ -127,7 +127,18 @@ class ReportPage extends ActiveRecord
                 self::STATUS_DELETED => '#ff5050',
                 self::STATUS_ACTIVE => '#04AA6D',
                 self::STATUS_INACTIVE => '#eea236',
-            ],];
+            ],
+        ];
+
+        if ($type === 'years') {
+            $result = [];
+            $years = ReportYear::find()->select('year')->column();
+            foreach ($years as $year) {
+                $result[] = $year;
+            }
+            return $result;
+        }
+
         if (isset($code))
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
         else
