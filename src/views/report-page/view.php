@@ -20,7 +20,6 @@ use yii\widgets\Pjax;
  * @var $startRange int
  * @var $endRange int
  * @var $rangeDateNumber int
- * @var  ReportYear $years
  */
 
 $this->title = $model->title;
@@ -52,8 +51,8 @@ $year = Yii::$app->request->get('year', null);
                             <div class="d-flex justify-content-end">
                                 <div class="px-1">
                                     <select name="year" class="form-control select2">
-                                        <?php foreach ($years as $Year): ?>
-                                        <option <?= $Year->year?> <?= $year == $Year->year ? 'selected' : '' ?> ><?= $Year->year?></option>
+                                        <?php foreach ( ReportPage::itemAlias('years') as $Year): ?>
+                                        <option <?= $Year ?> <?= $year == $Year ? 'selected' : '' ?> ><?= $Year?></option>
                                         <?php endforeach;?>
                                     </select>
                                 </div>

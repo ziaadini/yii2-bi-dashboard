@@ -85,7 +85,6 @@ class ReportPageController extends Controller
     public function actionView($id,$year=null,$month=null)
     {
         $model = $this->findModel($id);
-        $years = ReportYear::find()->all();
         $dateDetail = Yii::$app->pdate->jgetdate();
         if ($model->range_type == $model::RANGE_DAY){
             if ($month){
@@ -114,7 +113,6 @@ class ReportPageController extends Controller
             'startRange' => $startRange,
             'endRange' => $endRange,
             'rangeDateNumber' => $rangeDateNumber,
-            'years'=>$years,
         ]);
     }
 
