@@ -190,10 +190,10 @@ class ReportWidgetController extends Controller
         ]);
     }
 
-    public function actionRun($id)
+    public function actionRun($id, int $start_range = null, int $end_range = null)
     {
         $model = $this->findModel($id);
-        $model->runWidget();
+        $model->runWidget($start_range,$end_range);
 
         if (!count($model->errors)){
             return $this->asJson([

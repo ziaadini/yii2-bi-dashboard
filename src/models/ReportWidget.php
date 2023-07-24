@@ -234,13 +234,7 @@ class ReportWidget extends ActiveRecord
 
         $modelQueryResults = $this->findAndRunSearchModelWidget($start_range, $end_range);
 
-        if ($modelQueryResults and $this->range_type == $this::RANGE_TYPE_DAILY) {
-            $isValid = key_exists('day', $modelQueryResults[0]) && key_exists('month', $modelQueryResults[0]) && key_exists('year', $modelQueryResults[0]);
-        }elseif($modelQueryResults and $this->range_type == $this::RANGE_TYPE_MONTHLY) {
-            $isValid = key_exists('month', $modelQueryResults[0]) && key_exists('year', $modelQueryResults[0]);
-        }else{
-            $isValid = false;
-        }
+        $isValid = $this->validateResultWidget($modelQueryResults);
 
         if (!$isValid) {
             $modelQueryResults['status'] = false;
@@ -250,9 +244,22 @@ class ReportWidget extends ActiveRecord
 
         $modelQueryResults['status'] = true;
 
-        $reportWidgetResult = $this->createReportWidgetResult($modelQueryResults,$start_range,$end_range);
+        return $this->createReportWidgetResult($modelQueryResults,$start_range,$end_range);
+    }
 
-        return $reportWidgetResult;
+    public function validateResultWidget($modelQueryResults){
+
+        if (!$modelQueryResults){
+            $isValid = true;
+        }elseif ($modelQueryResults and $this->range_type == $this::RANGE_TYPE_DAILY) {
+            $isValid = key_exists('day', $modelQueryResults[0]) && key_exists('month', $modelQueryResults[0]) && key_exists('year', $modelQueryResults[0]);
+        }elseif($modelQueryResults and $this->range_type == $this::RANGE_TYPE_MONTHLY) {
+            $isValid = key_exists('month', $modelQueryResults[0]) && key_exists('year', $modelQueryResults[0]);
+        }else{
+            $isValid = false;
+        }
+
+        return $isValid;
     }
 
     public function findAndRunSearchModelWidget($startDate, $endDate)

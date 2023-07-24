@@ -142,7 +142,7 @@ $pdate = Yii::$app->pdate;
                                     'aria-label' => Yii::t('yii', 'reload'),
                                     'data-reload-pjax-container' => 'p-jax-report-page-add',
                                     'data-pjax' => '0',
-                                    'data-url' => Url::to(['/bidashboard/report-widget/run', 'id' => $pageWidget->widget->id, $year => $year, $month => $month]),
+                                    'data-url' => Url::to(['/bidashboard/report-widget/run', 'id' => $pageWidget->widget->id, 'start_range' => $startRange, 'end_range' => $endRange]),
                                     'class' => " p-jax-btn btn-sm text-info",
                                     'data-title' => Yii::t('yii', 'reload'),
                                 ]); ?>
