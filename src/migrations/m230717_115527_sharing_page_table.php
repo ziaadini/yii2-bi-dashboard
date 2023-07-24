@@ -10,7 +10,7 @@ class m230717_115527_sharing_page_table extends Migration
 
     public function safeUp()
     {
-        $this->createTable('sharing_page', [
+        $this->createTable('{{%report_sharing_page}}', [
             'id' => $this->primaryKey()->unsigned(),
             'page_id' => $this->integer()->unsigned()->notNull(),
             'access_key' => $this->string(64)->notNull()->unique(),
@@ -23,12 +23,13 @@ class m230717_115527_sharing_page_table extends Migration
             'deleted_at' => $this->integer()->unsigned()->defaultValue(0),
         ]);
 
-        $this->createIndex('idx-sharing_page-page_id', 'sharing_page', 'page_id');
+        $this->createIndex('id-sharing_page-page_id', '{{%report_sharing_page}}', 'page_id');
+        $this->createIndex('unique-access_key-deleted_at', '{{%report_sharing_page}}', ['access_key', 'deleted_at'], true);
         $this->addForeignKey(
             'fk-sharing_page-page_id',
-            'sharing_page',
+            '{{%report_sharing_page}}',
             'page_id',
-            'report_page',
+            '{{%report_page}}',
             'id',
             'CASCADE'
         );
@@ -36,9 +37,9 @@ class m230717_115527_sharing_page_table extends Migration
 
     public function safeDown()
     {
-        $this->dropIndex('idx-sharing_page-page_id', 'sharing_page');
-        $this->dropForeignKey('fk-sharing_page-page_id', 'sharing_page');
-        $this->dropTable('sharing_page');
-
+        $this->dropIndex('id-sharing_page-page_id', '{{%report_sharing_page}}');
+        $this->dropIndex('unique-access_key-deleted_at', '{{%report_sharing_page}}');
+        $this->dropForeignKey('fk-sharing_page-page_id', '{{%report_sharing_page}}');
+        $this->dropTable('{{%report_sharing_page}}');
     }
 }

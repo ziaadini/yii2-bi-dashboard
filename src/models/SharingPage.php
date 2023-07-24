@@ -42,7 +42,7 @@ class SharingPage extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'sharing_page';
+        return '{{%sharing_page}}';
     }
 
     /**
@@ -59,7 +59,10 @@ class SharingPage extends \yii\db\ActiveRecord
     }
     public function beforeValidate()
     {
+
+        $this->access_key = Yii::$app->security->generateRandomString();
         $this->expire_time = $this->jalaliToTimestamp($this->expire_time, "Y/m/d H:i:s");
+
         return parent::beforeValidate();
     }
 
@@ -93,7 +96,9 @@ class SharingPage extends \yii\db\ActiveRecord
     public function expire()
     {
         $this->expire_time = time();
+        $this->save(false);
     }
+
     /**
      * {@inheritdoc}
      * @return SharingPageQuery the active query used by this AR class.
@@ -149,6 +154,11 @@ class SharingPage extends \yii\db\ActiveRecord
                 'invokeDeleteEvents' => false
             ],
         ];
+    }
+
+    public function canDelete()
+    {
+        return true;
     }
 
 }

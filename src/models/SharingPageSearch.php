@@ -18,7 +18,7 @@ class SharingPageSearch extends SharingPage
     {
         return [
             [['id', 'page_id', 'expire_time', 'created_by', 'updated_by', 'created_at', 'updated_at', 'deleted_at'], 'integer'],
-            [['access_key'], 'safe'],
+            [['access_key','expire_time'], 'safe'],
         ];
     }
 
@@ -42,6 +42,7 @@ class SharingPageSearch extends SharingPage
     {
         $query = SharingPage::find();
 
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -51,10 +52,13 @@ class SharingPageSearch extends SharingPage
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+
+             $query->where('0=1');
             return $dataProvider;
         }
+
+
+
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -67,9 +71,6 @@ class SharingPageSearch extends SharingPage
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
         ]);
-
-        $query->andFilterWhere(['like', 'access_key', $this->access_key]);
-
         return $dataProvider;
     }
 }

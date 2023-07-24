@@ -46,12 +46,7 @@ class SharingPageController extends Controller
         Yii::$app->controller->enableCsrfValidation = false;
         return parent::beforeAction($action);
     }
-    public function beforeInsert()
-    {
-        // Generate a random access key
-        $this->access_key = Yii::$app->security->generateRandomString();
-        return parent::beforeInsert();
-    }
+
     /**
      * Lists all SharingPage models.
      *
@@ -76,7 +71,7 @@ class SharingPageController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -118,10 +113,20 @@ class SharingPageController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->asJson([
+                'status' => true,
+                'success' => true,
+                'msg' => Yii::t("biDashboard", 'Success')
+            ]);
+        }else{
+            return $this->asJson([
+                'status' => false,
+                'success' => false,
+                'msg' => Yii::t("biDashboard", 'fail to update')
+            ]);
         }
-
-        return $this->render('update', [
+        $this->performAjaxValidation($model);
+        return $this->renderAjax('update', [
             'model' => $model,
         ]);
     }
@@ -135,9 +140,20 @@ class SharingPageController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+        if ($model->canDelete() && $model->softDelete()) {
+            return $this->asJson([
+                'status' => true,
+                'success' => true,
+                'msg' => Yii::t("biDashboard", 'Item Deleted')
+            ]);
+        } else {
+            return $this->asJson([
+                'status' => false,
+                'success' => false,
+                'msg' => Yii::t("biDashboard", 'Error In Delete Action')
+            ]);
+        }
     }
 
     /**
@@ -175,7 +191,6 @@ class SharingPageController extends Controller
         $model = $this->findModel($id);
         if ($model) {
             $model->expire();
-            $model->save(false);
             return $this->asJson([
                 'status' => true,
                 'success' => true,
