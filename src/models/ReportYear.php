@@ -2,7 +2,6 @@
 
 namespace sadi01\bidashboard\models;
 
-use sadi01\bidashboard\behaviors\Jsonable;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -28,6 +27,7 @@ class ReportYear extends \yii\db\ActiveRecord
 
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
+
     /**
      * {@inheritdoc}
      */
@@ -74,8 +74,14 @@ class ReportYear extends \yii\db\ActiveRecord
         $query->notDeleted();
         return $query;
     }
+
     public static function itemAlias($type, $code = NULL)
     {
+        $data = [];
+        if ($type == 'List') {
+            $data = self::find()->select(['year'])->column();
+        }
+
         $_items = [
             'Status' => [
                 self::STATUS_DELETED => Yii::t('biDashboard', 'DELETED'),
@@ -88,12 +94,15 @@ class ReportYear extends \yii\db\ActiveRecord
             'StatusColor' => [
                 self::STATUS_DELETED => '#ff5050',
                 self::STATUS_ACTIVE => '#04AA6D',
-            ],];
+            ],
+            'list' => $data
+        ];
         if (isset($code))
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
         else
             return isset($_items[$type]) ? $_items[$type] : false;
     }
+
     public function behaviors()
     {
         return [

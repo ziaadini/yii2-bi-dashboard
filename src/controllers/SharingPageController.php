@@ -114,7 +114,6 @@ class SharingPageController extends Controller
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->asJson([
-                'status' => true,
                 'success' => true,
                 'msg' => Yii::t("biDashboard", 'Success')
             ]);
@@ -138,13 +137,11 @@ class SharingPageController extends Controller
         if ($model->canDelete() && $model->softDelete()) {
             return $this->asJson([
                 'status' => true,
-                'success' => true,
                 'msg' => Yii::t("biDashboard", 'Item Deleted')
             ]);
         } else {
             return $this->asJson([
                 'status' => false,
-                'success' => false,
                 'msg' => Yii::t("biDashboard", 'Error In Delete Action')
             ]);
         }
@@ -170,6 +167,7 @@ class SharingPageController extends Controller
                 'msg' => Yii::t("biDashboard", 'Success')
             ]);
         }
+
         $this->performAjaxValidation($share_page_model);
         return $this->renderAjax('management', [
             'model' => $share_page_model,
@@ -188,7 +186,6 @@ class SharingPageController extends Controller
             $model->expire();
             return $this->asJson([
                 'status' => true,
-                'success' => true,
                 'msg' => Yii::t("biDashboard", 'Success')
             ]);
 
@@ -196,7 +193,6 @@ class SharingPageController extends Controller
         else{
             return $this->asJson([
                 'status' => false,
-                'success' => false,
                 'msg' => Yii::t("biDashboard", 'fail to update')
             ]);
         }

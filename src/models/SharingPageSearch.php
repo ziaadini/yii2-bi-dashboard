@@ -42,7 +42,6 @@ class SharingPageSearch extends SharingPage
     {
         $query = SharingPage::find();
 
-
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -56,9 +55,6 @@ class SharingPageSearch extends SharingPage
              $query->where('0=1');
             return $dataProvider;
         }
-
-
-
 
         // grid filtering conditions
         $query->andFilterWhere([

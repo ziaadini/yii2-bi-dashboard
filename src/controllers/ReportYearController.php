@@ -6,9 +6,9 @@ use sadi01\bidashboard\models\ReportYear;
 use sadi01\bidashboard\models\ReportYearSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * ReportYearController implements the CRUD actions for ReportYear model.
@@ -81,14 +81,13 @@ class ReportYearController extends Controller
     {
         $model = new ReportYear();
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) ) {
+            if ($model->load($this->request->post())) {
                 $model->save();
                 return $this->asJson([
                     'success' => true,
                     'msg' => Yii::t("app", 'Success')
                 ]);
-            }
-            else{
+            } else {
                 return $this->asJson([
                     'success' => false,
                     'msg' => Yii::t("app", 'Fails')
@@ -97,6 +96,7 @@ class ReportYearController extends Controller
         } else {
             $model->loadDefaultValues();
         }
+
         $this->performAjaxValidation($model);
         return $this->renderAjax('create', [
             'model' => $model,
@@ -110,17 +110,18 @@ class ReportYearController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->asJson([
-                'status'=>true,
+                'status' => true,
                 'success' => true,
                 'msg' => Yii::t("app", 'Success')
             ]);
         }
+
         $this->performAjaxValidation($model);
         return $this->renderAjax('update', [
             'model' => $model,
@@ -140,13 +141,11 @@ class ReportYearController extends Controller
         if ($model->canDelete() && $model->softDelete()) {
             return $this->asJson([
                 'status' => true,
-                'success' => true,
                 'msg' => Yii::t("biDashboard", 'Item Deleted')
             ]);
         } else {
             return $this->asJson([
                 'status' => false,
-                'success' => false,
                 'msg' => Yii::t("biDashboard", 'Error In Delete Action')
             ]);
         }

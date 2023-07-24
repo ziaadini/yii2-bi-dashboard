@@ -85,11 +85,13 @@ class ReportPage extends ActiveRecord
     {
         return $this->hasMany(\sadi01\bidashboard\models\ReportPageWidget::class, ['page_id' => 'id']);
     }
+
     public function getWidgets()
     {
         return $this->hasMany(ReportWidget::class, ['id' => 'widget_id'])
             ->viaTable('report_page_widget', ['page_id' => 'id']);
     }
+
     public function getAccessKeys()
     {
         return $this->hasMany(SharingPage::class, ['page_id' => 'id']);
@@ -106,7 +108,7 @@ class ReportPage extends ActiveRecord
         return $query;
     }
 
-    public static function itemAlias($type, $code = NULL, $years = [])
+    public static function itemAlias($type, $code = NULL)
     {
         $_items = [
             'range_type' => [
@@ -129,15 +131,6 @@ class ReportPage extends ActiveRecord
                 self::STATUS_INACTIVE => '#eea236',
             ],
         ];
-
-        if ($type === 'years') {
-            $result = [];
-            $years = ReportYear::find()->select('year')->column();
-            foreach ($years as $year) {
-                $result[] = $year;
-            }
-            return $result;
-        }
 
         if (isset($code))
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;

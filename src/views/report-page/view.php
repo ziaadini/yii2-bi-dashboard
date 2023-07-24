@@ -52,7 +52,7 @@ $year = Yii::$app->request->get('year', null);
                             <div class="d-flex justify-content-end">
                                 <div class="px-1">
                                     <select name="year" class="form-control select2">
-                                        <?php foreach ( ReportPage::itemAlias('years') as $Year): ?>
+                                        <?php foreach ( ReportYear::itemAlias('List') as $Year): ?>
                                         <option <?= $Year ?> <?= $year == $Year ? 'selected' : '' ?> ><?= $Year?></option>
                                         <?php endforeach;?>
                                     </select>

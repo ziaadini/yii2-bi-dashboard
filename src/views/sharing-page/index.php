@@ -71,6 +71,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Url::toRoute([$action, 'id' => $model->id]);
                     },
                     'template' => '{custom-view} {custom-update} {custom-delete} {expire}', // Replace the default delete button with {custom-delete}
+                    'visibleButtons' => [
+                            'expire' => function($model) {
+
+                            }
+                    ],
                     'buttons' => [
                         'custom-delete' => function ($url, $model, $key) {
                             return Html::a('<i class="mdi mdi-delete"></i>', 'javascript:void(0)', [

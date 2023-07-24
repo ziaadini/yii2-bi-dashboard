@@ -24,7 +24,9 @@ class m230717_115527_sharing_page_table extends Migration
         ]);
 
         $this->createIndex('id-sharing_page-page_id', '{{%report_sharing_page}}', 'page_id');
+
         $this->createIndex('unique-access_key-deleted_at', '{{%report_sharing_page}}', ['access_key', 'deleted_at'], true);
+
         $this->addForeignKey(
             'fk-sharing_page-page_id',
             '{{%report_sharing_page}}',
