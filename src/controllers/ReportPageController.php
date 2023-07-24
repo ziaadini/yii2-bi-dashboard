@@ -85,8 +85,8 @@ class ReportPageController extends Controller
     {
         $model = $this->findModel($id);
 
-        $month = Yii::$app->request->get('month', null) ?: CoreHelper::getCurrentMonth();
-        $year = Yii::$app->request->get('year', null) ?: CoreHelper::getCurrentYear();;
+        $month = $month ?: CoreHelper::getCurrentMonth();
+        $year = $year?: CoreHelper::getCurrentYear();;
 
         if ($model->range_type == $model::RANGE_DAY) {
             if ($month) {
