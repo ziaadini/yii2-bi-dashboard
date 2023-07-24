@@ -13,7 +13,7 @@ class m230717_115527_sharing_page_table extends Migration
         $this->createTable('{{%report_sharing_page}}', [
             'id' => $this->primaryKey()->unsigned(),
             'page_id' => $this->integer()->unsigned()->notNull(),
-            'access_key' => $this->string(64)->notNull()->unique(),
+            'access_key' => $this->string(64)->notNull(),
             'expire_time' => $this->integer()->unsigned()->defaultValue(0),
             'status' => $this->tinyInteger()->notNull()->defaultValue(1),
             'created_by' => $this->integer()->unsigned()->notNull(),

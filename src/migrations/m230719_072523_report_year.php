@@ -9,13 +9,13 @@ class m230719_072523_report_year extends Migration
 {
     public function safeUp()
     {
-        $this->createTable('{{%report_report_year}}', [
+        $this->createTable('{{%report_year}}', [
             'id' => $this->primaryKey()->unsigned(),
-            'year' => $this->integer()->unsigned()->notNull()->unique(),
+            'year' => $this->integer()->unsigned()->notNull(),
             'status' => $this->tinyInteger()->notNull()->defaultValue(1),
-            'created_at' => $this->integer()->unsigned()->notNull()->defaultValue(time()),
+            'created_at' => $this->integer()->unsigned()->null(),
             'created_by' => $this->integer()->unsigned()->null(),
-            'updated_at' => $this->integer()->unsigned()->notNull()->defaultValue(time()),
+            'updated_at' => $this->integer()->unsigned()->null(),
             'updated_by' => $this->integer()->unsigned()->null(),
             'deleted_at' => $this->integer()->unsigned()->notNull()->defaultValue(0),
         ]);
@@ -24,14 +24,14 @@ class m230719_072523_report_year extends Migration
         $now = yii::$app->pdate->jgetdate();
         for ($i = 0; $i < 10; $i++) {
             $year = (int)$now['year'] - $i;
-            $this->insert('{{%report_report_year}}', ['year' => $year]);
+            $this->insert('{{%report_year}}', ['year' => $year]);
         }
-        $this->createIndex('unique-year-deleted_at', '{{%report_report_year}}', ['year', 'deleted_at'], true);
+        $this->createIndex('unique-year-deleted_at', '{{%report_year}}', ['year', 'deleted_at'], true);
     }
 
     public function safeDown()
     {
-        $this->dropIndex('unique-year-deleted_at', '{{%report_report_year}}');
-        $this->dropTable('{{%report_report_year}}');
+        $this->dropIndex('unique-year-deleted_at', '{{%report_year}}');
+        $this->dropTable('{{%report_year}}');
     }
 }

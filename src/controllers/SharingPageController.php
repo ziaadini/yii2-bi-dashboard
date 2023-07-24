@@ -118,12 +118,6 @@ class SharingPageController extends Controller
                 'success' => true,
                 'msg' => Yii::t("biDashboard", 'Success')
             ]);
-        }else{
-            return $this->asJson([
-                'status' => false,
-                'success' => false,
-                'msg' => Yii::t("biDashboard", 'fail to update')
-            ]);
         }
         $this->performAjaxValidation($model);
         return $this->renderAjax('update', [

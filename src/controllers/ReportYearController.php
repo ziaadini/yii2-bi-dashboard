@@ -120,12 +120,6 @@ class ReportYearController extends Controller
                 'success' => true,
                 'msg' => Yii::t("app", 'Success')
             ]);
-        }else{
-            return $this->asJson([
-                'status'=>false,
-                'success' => false,
-                'msg' => Yii::t("app", 'Fails')
-            ]);
         }
         $this->performAjaxValidation($model);
         return $this->renderAjax('update', [
