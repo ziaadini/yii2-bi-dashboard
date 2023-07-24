@@ -1,9 +1,10 @@
 <?php
+use sadi01\bidashboard\components\Env;
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=bidash',
-    'username' => 'root',
-    'password' => '123456',
+    'dsn' => Env::get('BI_DB_DSN',''),
+    'username' => Env::get('BI_DB_USERNAME',''),
+    'password' => Env::get('BI_DB_PASSWORD',''),
     'charset' => 'utf8',
 ];
