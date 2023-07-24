@@ -199,13 +199,13 @@ class ReportWidgetController extends Controller
             return $this->asJson([
                 'status' => true,
                 'success' => true,
-                'msg' => Yii::t("biDashboard", 'Success'),
+                'message' => Yii::t("biDashboard", 'Success'),
             ]);
         }else{
             return $this->asJson([
                 'status' => false,
                 'success' => false,
-                'msg' => ($model->errors ? Html::errorSummary([$model]) : Yii::t('app', 'Error In Run Widget')),
+                'message' => ($model->errors ? Html::errorSummary([$model]) : Yii::t('app', 'Error In Run Widget')),
             ]);
         }
     }

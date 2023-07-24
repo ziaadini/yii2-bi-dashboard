@@ -281,13 +281,17 @@ class ReportPageController extends Controller
         $widgets = $model->getWidgets()->all();
         $start_range = $start_range ? (int)$start_range : null;
         $end_range = $end_range ? (int)$end_range : null;
+        $errors = [];
         foreach ($widgets as $widget) {
             $widget->runWidget($start_range, $end_range);
+            if ($widget->errors){
+                $errors[] = $widget->errors;
+            }
         }
         return $this->asJson([
             'status' => true,
             'success' => true,
-            'msg' => Yii::t("biDashboard", 'Success'),
+            'message' => $errors ? Yii::t('app', 'Error In Run Widget') : Yii::t("biDashboard", 'Success'),
         ]);
     }
 
