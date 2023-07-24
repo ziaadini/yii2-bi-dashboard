@@ -84,10 +84,12 @@ class ReportPageController extends Controller
     public function actionView($id, $year = null, $month = null)
     {
         $model = $this->findModel($id);
-        $dateDetail = Yii::$app->pdate->jgetdate();
+
+        $month = Yii::$app->request->get('month', null) ?: CoreHelper::getCurrentMonth();
+        $year = Yii::$app->request->get('year', null) ?: CoreHelper::getCurrentYear();;
+
         if ($model->range_type == $model::RANGE_DAY) {
             if ($month) {
-                $year = $year ? $year : $dateDetail['year'];
                 $date_array = $this->getStartAndEndOfMonth($year . '/' . $month);
             } else {
                 $date_array = $this->getStartAndEndOfMonth();
@@ -107,17 +109,14 @@ class ReportPageController extends Controller
             $rangeDateNumber = 12;
         }
 
-        $month = Yii::$app->request->get('month', null);
-        $year = Yii::$app->request->get('year', null);
-
         return $this->render('view', [
             'model' => $model,
             'pageWidgets' => $model->reportPageWidgets,
             'startRange' => $startRange,
             'endRange' => $endRange,
             'rangeDateNumber' => $rangeDateNumber,
-            'month' => $month ?: CoreHelper::getCurrentMonth(),
-            'year' => $year ?: CoreHelper::getCurrentYear(),
+            'month' => $month,
+            'year' => $year,
         ]);
     }
 
