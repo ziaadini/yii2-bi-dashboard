@@ -299,7 +299,6 @@ class ReportWidget extends ActiveRecord
             $startRange = $dateTemp['start'];
             $endRange = $dateTemp['end'];
         }
-
         $runWidget = ReportWidgetResult::find()
             ->where(['widget_id' => $this->id])
             ->andWhere(['start_range' => $startRange])
