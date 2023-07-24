@@ -11,6 +11,7 @@ use yii\base\Application;
 use yii\base\BootstrapInterface;
 use yii\i18n\PhpMessageSource;
 use yii\web\HttpException;
+use yii\console\Application as YiiConsole;
 
 class Bootstrap implements BootstrapInterface
 {
@@ -41,15 +42,18 @@ class Bootstrap implements BootstrapInterface
             'biDB' => require __DIR__ . '/config/db.php',
         ]);
 
-        if (!Env::get('BI_DB_DSN') or !Env::get('BI_DB_USERNAME') or !Env::get('BI_DB_PASSWORD')){
-            if (!Env::get('BI_DB_DSN')){
-                $parameter = 'BI_DB_DSN';
-            }elseif (!Env::get('BI_DB_USERNAME')){
-                $parameter = 'BI_DB_USERNAME';
-            }elseif (!Env::get('BI_DB_PASSWORD')){
-                $parameter = 'BI_DB_PASSWORD';
+        if (!(Yii::$app instanceof YiiConsole)) {
+            if (!Env::get('BI_DB_DSN') or !Env::get('BI_DB_USERNAME') or !Env::get('BI_DB_PASSWORD')){
+                if (!Env::get('BI_DB_DSN')){
+                    $parameter = 'BI_DB_DSN';
+                }elseif (!Env::get('BI_DB_USERNAME')){
+                    $parameter = 'BI_DB_USERNAME';
+                }elseif (!Env::get('BI_DB_PASSWORD')){
+                    $parameter = 'BI_DB_PASSWORD';
+                }
+                throw new InvalidConfigException(Yii::t('biDashboard','The {env_parameter} parameter is not set, add the parameter in the env file of the project.',['env_parameter' => $parameter]));
             }
-            throw new InvalidConfigException(Yii::t('biDashboard','The {env_parameter} parameter is not set, add the parameter in the env file of the project.',['env_parameter' => $parameter]));
         }
+
     }
 }
