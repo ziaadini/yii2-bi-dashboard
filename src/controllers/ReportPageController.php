@@ -8,7 +8,6 @@ use sadi01\bidashboard\models\ReportPageSearch;
 use sadi01\bidashboard\models\ReportPageWidget;
 use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\models\ReportYear;
-use sadi01\bidashboard\models\ReportYearSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
@@ -82,30 +81,31 @@ class ReportPageController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id,$year=null,$month=null)
+    public function actionView($id, $year = null, $month = null)
     {
         $model = $this->findModel($id);
+        $years = ReportYear::find()->select(['year'])->column();
         $dateDetail = Yii::$app->pdate->jgetdate();
-        if ($model->range_type == $model::RANGE_DAY){
-            if ($month){
-                $year = $year ? $year : $dateDetail['year'];
-                $date_array = $this->getStartAndEndOfMonth($year.'/'.$month);
-            }else{
+        if ($model->range_type == $model::RANGE_DAY) {
+            if ($month) {
+                $year = $year ?: $dateDetail['year'];
+                $date_array = $this->getStartAndEndOfMonth($year . '/' . $month);
+            } else {
                 $date_array = $this->getStartAndEndOfMonth();
             }
-        }else{
-            if ($year){
+        } else {
+            if ($year) {
                 $date_array = $this->getStartAndEndOfYear($year);
-            }else{
+            } else {
                 $date_array = $this->getStartAndEndOfYear();
             }
         }
         $startRange = $date_array['start'];
         $endRange = $date_array['end'];
-        if ($model->range_type == $model::RANGE_DAY){
+        if ($model->range_type == $model::RANGE_DAY) {
             $rangeDateNumber = count($this->getCurrentMonthDays());
-        }else{
-            $rangeDateNumber  = 12;
+        } else {
+            $rangeDateNumber = 12;
         }
         return $this->render('view', [
             'model' => $model,
@@ -113,6 +113,7 @@ class ReportPageController extends Controller
             'startRange' => $startRange,
             'endRange' => $endRange,
             'rangeDateNumber' => $rangeDateNumber,
+            'years' => $years,
         ]);
     }
 
@@ -188,12 +189,13 @@ class ReportPageController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionUpdateWidget($id){
+    public function actionUpdateWidget($id)
+    {
         $model = ReportPageWidget::find()->where(['widget_id' => $id])->one();
-        $add_on=json_decode($model->widget->add_on["outputColumn"]);
+        $add_on = json_decode($model->widget->add_on["outputColumn"]);
 
         foreach ($add_on as $value) {
-           $column_name[$value->column_name]=$value->column_title;
+            $column_name[$value->column_name] = $value->column_title;
         }
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->validate() && $model->save()) {
@@ -205,7 +207,7 @@ class ReportPageController extends Controller
         $this->performAjaxValidation($model);
         return $this->renderAjax('_edit', [
             'model' => $model,
-            'column_name'=>$column_name,
+            'column_name' => $column_name,
         ]);
     }
 
@@ -244,7 +246,8 @@ class ReportPageController extends Controller
     }
 
     /** @var $widget ReportWidget */
-    public function actionGetwidgetcolumn(){
+    public function actionGetwidgetcolumn()
+    {
 
         Yii::$app->response->format = Response::FORMAT_JSON;
         $out = [];
@@ -253,33 +256,34 @@ class ReportPageController extends Controller
             if ($parents != null) {
                 $widget_id = $parents[0];
                 $widget = ReportWidget::findOne(['id' => $widget_id]);
-                if (!$widget){
-                    return ['output'=>[], 'selected'=>''];
+                if (!$widget) {
+                    return ['output' => [], 'selected' => ''];
                 }
                 $outputColumns = json_decode($widget->outputColumn);
-                foreach ($outputColumns as $item){
-                    $out[] = ['id'=>$item->column_name, 'name'=>$item->column_title];
+                foreach ($outputColumns as $item) {
+                    $out[] = ['id' => $item->column_name, 'name' => $item->column_title];
                 }
-                return ['output'=>$out, 'selected'=>''];
+                return ['output' => $out, 'selected' => ''];
             }
         }
-        return ['output'=>'', 'selected'=>''];
+        return ['output' => '', 'selected' => ''];
     }
 
     /**
      * @param $id
      * @param $start_range
      * @param $end_range
-     * @var $widget ReportWidget
      * @return mixed
+     * @var $widget ReportWidget
      */
-    public function actionReloadAllWidgets($id,$start_range=null,$end_range=null){
+    public function actionReloadAllWidgets($id, $start_range = null, $end_range = null)
+    {
         $model = $this->findModel($id);
         $widgets = $model->getWidgets()->all();
         $start_range = $start_range ? (int)$start_range : null;
         $end_range = $end_range ? (int)$end_range : null;
-        foreach ($widgets as $widget){
-            $widget->runWidget($start_range,$end_range);
+        foreach ($widgets as $widget) {
+            $widget->runWidget($start_range, $end_range);
         }
         return $this->asJson([
             'status' => true,

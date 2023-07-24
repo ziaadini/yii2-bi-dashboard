@@ -31,7 +31,7 @@ class SharingPageController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                         'expire' => ['POST']
@@ -108,7 +108,7 @@ class SharingPageController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
 
@@ -138,7 +138,7 @@ class SharingPageController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id)
     {
         $model = $this->findModel($id);
         if ($model->canDelete() && $model->softDelete()) {
@@ -182,6 +182,7 @@ class SharingPageController extends Controller
             'page_model' => $page_model,
         ]);
     }
+
     /**
      * @param $id
      * @return \yii\web\Response
@@ -213,7 +214,7 @@ class SharingPageController extends Controller
      * @return SharingPage the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel(int $id): SharingPage
     {
         if (($model = SharingPage::findOne(['id' => $id])) !== null) {
             return $model;
