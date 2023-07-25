@@ -13,9 +13,9 @@ class m230719_072523_report_year extends Migration
             'id' => $this->primaryKey()->unsigned(),
             'year' => $this->integer()->unsigned()->notNull(),
             'status' => $this->tinyInteger()->notNull()->defaultValue(1),
-            'created_at' => $this->integer()->unsigned()->null(),
+            'created_at' => $this->integer()->unsigned()->notNull(),
             'created_by' => $this->integer()->unsigned()->null(),
-            'updated_at' => $this->integer()->unsigned()->null(),
+            'updated_at' => $this->integer()->unsigned()->notNull(),
             'updated_by' => $this->integer()->unsigned()->null(),
             'deleted_at' => $this->integer()->unsigned()->notNull()->defaultValue(0),
         ]);
@@ -24,7 +24,7 @@ class m230719_072523_report_year extends Migration
         $now = yii::$app->pdate->jgetdate();
         for ($i = 0; $i < 10; $i++) {
             $year = (int)$now['year'] - $i;
-            $this->insert('{{%report_year}}', ['year' => $year]);
+            $this->insert('{{%report_year}}', ['year' => $year,'created_at'=>time(),'updated_at'=>time()]);
         }
         $this->createIndex('unique-year-deleted_at', '{{%report_year}}', ['year', 'deleted_at'], true);
     }
