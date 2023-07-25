@@ -34,6 +34,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
 class ReportWidgetResult extends ActiveRecord
 {
     use CoreTrait;
+
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
     const FORMAT_NUMBER = 1;
@@ -62,7 +63,7 @@ class ReportWidgetResult extends ActiveRecord
         return [
             [['widget_id'], 'required'],
             [['widget_id', 'start_range', 'end_range', 'status', 'updated_at', 'created_at', 'deleted_at', 'updated_by', 'created_by'], 'integer'],
-            [['add_on','params'], 'safe'],
+            [['add_on', 'params'], 'safe'],
             [['run_controller'], 'string', 'max' => 256],
             [['run_action'], 'string', 'max' => 128],
             [['widget_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportWidget::class, 'targetAttribute' => ['widget_id' => 'id']],
@@ -111,9 +112,10 @@ class ReportWidgetResult extends ActiveRecord
         $query->notDeleted();
         return $query;
     }
+
     public function behaviors()
     {
-         return [
+        return [
             'timestamp' => [
                 'class' => TimestampBehavior::class
             ],

@@ -239,23 +239,23 @@ class ReportWidget extends ActiveRecord
         if (!$isValid) {
             $modelQueryResults['status'] = false;
             $this->addError('status', Yii::t('app', 'Error In Run Widget'));
-            return $modelQueryResults;
+            return false;
         }
 
         $modelQueryResults['status'] = true;
 
-        return $this->createReportWidgetResult($modelQueryResults,$start_range,$end_range);
+        return $this->createReportWidgetResult($modelQueryResults, $start_range, $end_range);
     }
 
-    public function validateResultWidget($modelQueryResults){
-
-        if (!$modelQueryResults){
+    public function validateResultWidget($modelQueryResults)
+    {
+        if (!$modelQueryResults) {
             $isValid = true;
-        }elseif ($modelQueryResults and $this->range_type == $this::RANGE_TYPE_DAILY) {
+        } elseif ($modelQueryResults and $this->range_type == $this::RANGE_TYPE_DAILY) {
             $isValid = key_exists('day', $modelQueryResults[0]) && key_exists('month', $modelQueryResults[0]) && key_exists('year', $modelQueryResults[0]);
-        }elseif($modelQueryResults and $this->range_type == $this::RANGE_TYPE_MONTHLY) {
+        } elseif ($modelQueryResults and $this->range_type == $this::RANGE_TYPE_MONTHLY) {
             $isValid = key_exists('month', $modelQueryResults[0]) && key_exists('year', $modelQueryResults[0]);
-        }else{
+        } else {
             $isValid = false;
         }
 
@@ -334,7 +334,8 @@ class ReportWidget extends ActiveRecord
         return $isValid;
     }
 
-    public function createReportWidgetResult($modelQueryResults,$start_range,$end_range){
+    public function createReportWidgetResult($modelQueryResults, $start_range, $end_range)
+    {
         $reportWidgetResult = new ReportWidgetResult();
         $reportWidgetResult->widget_id = $this->id;
         $reportWidgetResult->start_range = $start_range;

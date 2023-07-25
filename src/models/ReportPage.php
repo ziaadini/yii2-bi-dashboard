@@ -43,7 +43,7 @@ class ReportPage extends ActiveRecord
 
     public static function getDb()
     {
-        return Yii::$app->get('biDB');
+        return Yii::$app->biDB;
     }
 
     public static function tableName()
@@ -137,7 +137,7 @@ class ReportPage extends ActiveRecord
                 self::STATUS_ACTIVE => '#04AA6D',
                 self::STATUS_INACTIVE => '#eea236',
             ],
-            ];
+        ];
         if (isset($code))
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
         else

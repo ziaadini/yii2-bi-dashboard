@@ -1,9 +1,8 @@
 <?php
 
 
-use yii\db\Migration;
 use yii\db\Expression;
-
+use yii\db\Migration;
 
 
 /**
@@ -52,5 +51,4 @@ class m230517_063258_report_widget_table extends Migration
     {
         $this->dropTable('{{%report_widget}}');
     }
-
 }

@@ -3,7 +3,6 @@
 namespace sadi01\bidashboard\controllers;
 
 use sadi01\bidashboard\models\ReportWidget;
-use sadi01\bidashboard\models\ReportWidgetResult;
 use sadi01\bidashboard\models\ReportWidgetSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use sadi01\bidashboard\traits\CoreTrait;
@@ -102,7 +101,7 @@ class ReportWidgetController extends Controller
             $model->search_model_run_result_view = $searchModelRunResultView;
             $model->params = $queryParams;
 
-            $output_column = $this->request->post('output_column',null);
+            $output_column = $this->request->post('output_column', null);
             $model->outputColumn = array_filter($output_column, fn($value) => array_filter($value));
             if ($model->load($this->request->post()) && $model->validate()) {
                 $model->save();
@@ -193,21 +192,20 @@ class ReportWidgetController extends Controller
     public function actionRun($id, int $start_range = null, int $end_range = null)
     {
         $model = $this->findModel($id);
-        $model->runWidget($start_range,$end_range);
+        $runWidgetResult = $model->runWidget($start_range, $end_range);
 
-        if (!count($model->errors)){
-            return $this->asJson([
-                'status' => true,
-                'success' => true,
-                'message' => Yii::t("biDashboard", 'Success'),
-            ]);
-        }else{
+        if ($runWidgetResult === false) {
             return $this->asJson([
                 'status' => false,
                 'success' => false,
                 'message' => ($model->errors ? Html::errorSummary([$model]) : Yii::t('app', 'Error In Run Widget')),
             ]);
+        } else {
+            return $this->asJson([
+                'status' => true,
+                'success' => true,
+                'message' => Yii::t("biDashboard", 'Success'),
+            ]);
         }
     }
-
 }

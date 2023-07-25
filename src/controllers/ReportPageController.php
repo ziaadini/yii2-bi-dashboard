@@ -2,7 +2,6 @@
 
 namespace sadi01\bidashboard\controllers;
 
-use sadi01\bidashboard\components\jdate;
 use sadi01\bidashboard\helpers\CoreHelper;
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageSearch;
@@ -86,7 +85,7 @@ class ReportPageController extends Controller
         $model = $this->findModel($id);
 
         $month = $month ?: CoreHelper::getCurrentMonth();
-        $year = $year?: CoreHelper::getCurrentYear();;
+        $year = $year ?: CoreHelper::getCurrentYear();;
 
         if ($model->range_type == $model::RANGE_DAY) {
             if ($month) {
@@ -101,8 +100,7 @@ class ReportPageController extends Controller
                 $date_array = $this->getStartAndEndOfYear();
             }
         }
-        $startRange = $date_array['start'];
-        $endRange = $date_array['end'];
+
         if ($model->range_type == $model::RANGE_DAY) {
             $rangeDateNumber = count($this->getCurrentMonthDays());
         } else {
@@ -112,8 +110,8 @@ class ReportPageController extends Controller
         return $this->render('view', [
             'model' => $model,
             'pageWidgets' => $model->reportPageWidgets,
-            'startRange' => $startRange,
-            'endRange' => $endRange,
+            'startRange' => $date_array['start'],
+            'endRange' => $date_array['end'],
             'rangeDateNumber' => $rangeDateNumber,
             'month' => $month,
             'year' => $year,
@@ -247,7 +245,8 @@ class ReportPageController extends Controller
     }
 
     /** @var $widget ReportWidget */
-    public function actionGetWidgetColumn(){
+    public function actionGetWidgetColumn()
+    {
 
         Yii::$app->response->format = Response::FORMAT_JSON;
         $out = [];
@@ -273,10 +272,11 @@ class ReportPageController extends Controller
      * @param $id
      * @param $start_range
      * @param $end_range
-     * @var $widget ReportWidget
      * @return mixed
+     * @var $widget ReportWidget
      */
-    public function actionRunAllWidgets($id,$start_range=null,$end_range=null){
+    public function actionRunAllWidgets($id, $start_range = null, $end_range = null)
+    {
         $model = $this->findModel($id);
         $widgets = $model->getWidgets()->all();
         $start_range = $start_range ? (int)$start_range : null;
@@ -284,7 +284,7 @@ class ReportPageController extends Controller
         $errors = [];
         foreach ($widgets as $widget) {
             $widget->runWidget($start_range, $end_range);
-            if ($widget->errors){
+            if ($widget->errors) {
                 $errors[] = $widget->errors;
             }
         }
