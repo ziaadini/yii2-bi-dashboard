@@ -24,7 +24,7 @@ class m230719_072523_report_year extends Migration
         $now = yii::$app->pdate->jgetdate();
         for ($i = 0; $i < 10; $i++) {
             $year = (int)$now['year'] - $i;
-            $this->insert('{{%report_year}}', ['year' => $year,'created_at'=>time(),'updated_at'=>time()]);
+            $this->insert('{{%report_year}}', ['year' => $year, 'created_at' => time(), 'updated_at' => time()]);
         }
         $this->createIndex('unique-year-deleted_at', '{{%report_year}}', ['year', 'deleted_at'], true);
     }

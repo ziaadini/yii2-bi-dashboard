@@ -2,7 +2,6 @@
 
 namespace sadi01\bidashboard\models;
 
-use sadi01\bidashboard\behaviors\Jsonable;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
@@ -37,6 +36,7 @@ class SharingPage extends \yii\db\ActiveRecord
 
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
+
     /**
      * {@inheritdoc}
      */
@@ -57,9 +57,9 @@ class SharingPage extends \yii\db\ActiveRecord
             [['page_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportPage::class, 'targetAttribute' => ['page_id' => 'id']],
         ];
     }
+
     public function beforeValidate()
     {
-
         $this->access_key = Yii::$app->security->generateRandomString();
         $this->expire_time = $this->jalaliToTimestamp($this->expire_time, "Y/m/d H:i:s");
 
@@ -93,15 +93,18 @@ class SharingPage extends \yii\db\ActiveRecord
     {
         return $this->hasOne(ReportPage::class, ['id' => 'page_id']);
     }
+
     public function expire()
     {
         $this->expire_time = time();
         $this->save(false);
     }
-    public function  is_expire(){
-        if($this->expire_time > time()){
+
+    public function isExpire(): bool
+    {
+        if ($this->expire_time > time()) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -114,8 +117,10 @@ class SharingPage extends \yii\db\ActiveRecord
     {
         $query = new SharingPageQuery(get_called_class());
         $query->notDeleted();
+
         return $query;
     }
+
     public static function itemAlias($type, $code = NULL)
     {
         $_items = [
@@ -136,6 +141,7 @@ class SharingPage extends \yii\db\ActiveRecord
         else
             return isset($_items[$type]) ? $_items[$type] : false;
     }
+
     public function behaviors()
     {
         return [
@@ -167,5 +173,4 @@ class SharingPage extends \yii\db\ActiveRecord
     {
         return true;
     }
-
 }

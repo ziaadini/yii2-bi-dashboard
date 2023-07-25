@@ -72,8 +72,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'template' => '{custom-view} {custom-update} {custom-delete} {expire}', // Replace the default delete button with {custom-delete}
                     'visibleButtons' => [
-                        'expire' => function ($model) {
-                            return (!$model->is_expire());
+                        'expire' => function (SharingPage $model) {
+                            return (!$model->isExpire());
                         },
                     ],
                     'buttons' => [

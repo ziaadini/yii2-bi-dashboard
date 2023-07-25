@@ -46,8 +46,8 @@ class ReportYear extends \yii\db\ActiveRecord
             [['year'], 'required'],
             [['year'], 'unique'],
             [['year'], 'integer'],
-            ['year', 'compare', 'operator' => '>', 'compareValue' => (int)(CoreHelper::getCurrentYear())-100],
-            ['year', 'compare', 'operator' => '<', 'compareValue' => (int)(CoreHelper::getCurrentYear())+100],
+            ['year', 'compare', 'operator' => '>', 'compareValue' => (int)(CoreHelper::getCurrentYear()) - 100],
+            ['year', 'compare', 'operator' => '<', 'compareValue' => (int)(CoreHelper::getCurrentYear()) + 100],
             [['year', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at'], 'integer'],
         ];
     }
@@ -82,9 +82,11 @@ class ReportYear extends \yii\db\ActiveRecord
 
     public static function itemAlias($type, $code = NULL)
     {
+        $data = [];
         if ($type == 'List') {
-            return self::find()->select(['year'])->column();
+            $data = self::find()->select(['year'])->column();
         }
+
         $_items = [
             'Status' => [
                 self::STATUS_DELETED => Yii::t('biDashboard', 'DELETED'),
@@ -98,6 +100,7 @@ class ReportYear extends \yii\db\ActiveRecord
                 self::STATUS_DELETED => '#ff5050',
                 self::STATUS_ACTIVE => '#04AA6D',
             ],
+            'List' => $data
         ];
         if (isset($code))
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;

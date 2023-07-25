@@ -7,7 +7,6 @@ use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageSearch;
 use sadi01\bidashboard\models\ReportPageWidget;
 use sadi01\bidashboard\models\ReportWidget;
-use sadi01\bidashboard\models\ReportYear;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
@@ -246,7 +245,6 @@ class ReportPageController extends Controller
     /** @var $widget ReportWidget */
     public function actionGetwidgetcolumn()
     {
-
         Yii::$app->response->format = Response::FORMAT_JSON;
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
