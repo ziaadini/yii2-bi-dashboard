@@ -92,7 +92,7 @@ class ReportPage extends ActiveRecord
             ->viaTable('report_page_widget', ['page_id' => 'id']);
     }
 
-    public function getAccessKeys()
+    public function getSharingKeys()
     {
         return $this->hasMany(SharingPage::class, ['page_id' => 'id']);
     }
