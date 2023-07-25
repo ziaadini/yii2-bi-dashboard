@@ -9,7 +9,6 @@ use Yii;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 use yii\base\InvalidConfigException;
-use yii\console\Application as YiiConsole;
 use yii\i18n\PhpMessageSource;
 use yii\web\HttpException;
 
@@ -39,20 +38,32 @@ class Bootstrap implements BootstrapInterface
         }
 
         Yii::$app->setComponents([
-            'biDB' => require __DIR__ . '/config/db.php',
+            'biDB' => [
+                'class' => 'yii\db\Connection',
+                'dsn' => Env::get('BI_DB_DSN'),
+                'username' => Env::get('BI_DB_USERNAME'),
+                'password' => Env::get('BI_DB_PASSWORD'),
+                'charset' => Env::get('BI_DB_CHARSET'),
+                'tablePrefix' => Env::get('BI_DB_TABLE_PREFIX'),
+                'enableQueryCache' => Env::get('BI_DB_ENABLE_QUERY_CACHE', true),
+                'queryCacheDuration' => Env::get('BI_DB_QUERY_CACHE_DURATION', 5), // five seconds
+                'enableSchemaCache' => Env::get('BI_DB_ENABLE_SCHEMA_CACHE', true),
+                'schemaCacheDuration' => Env::get('BI_DB_SCHEMA_CACHE_DURATION', 86400), // 3600*24, 1DAY
+                'schemaCache' => Env::get('BI_DB_SCHEMA_CACHE_COMPONENT', 'cache'),
+
+            ],
         ]);
 
-        if (!(Yii::$app instanceof YiiConsole)) {
-            if (!Env::get('BI_DB_DSN') or !Env::get('BI_DB_USERNAME') or !Env::get('BI_DB_PASSWORD')) {
-                if (!Env::get('BI_DB_DSN')) {
-                    $parameter = 'BI_DB_DSN';
-                } elseif (!Env::get('BI_DB_USERNAME')) {
-                    $parameter = 'BI_DB_USERNAME';
-                } elseif (!Env::get('BI_DB_PASSWORD')) {
-                    $parameter = 'BI_DB_PASSWORD';
-                }
-                throw new InvalidConfigException(Yii::t('biDashboard', 'The {env_parameter} parameter is not set, add the parameter in the env file of the project.', ['env_parameter' => $parameter]));
-            }
+        $parameter = null;
+        if (!Env::get('BI_DB_DSN')) {
+            $parameter = 'BI_DB_DSN';
+        } elseif (!Env::get('BI_DB_USERNAME')) {
+            $parameter = 'BI_DB_USERNAME';
+        } elseif (!Env::get('BI_DB_PASSWORD')) {
+            $parameter = 'BI_DB_PASSWORD';
+        }
+        if ($parameter){
+            throw new InvalidConfigException(Yii::t('biDashboard', 'The {env_parameter} parameter is not set, add the parameter in the env file of the project.', ['env_parameter' => $parameter]));
         }
 
     }

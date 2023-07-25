@@ -44,7 +44,7 @@ class ReportWidgetResult extends ActiveRecord
 
     public static function getDb()
     {
-        return Yii::$app->get('biDB');
+        return Yii::$app->biDB;
     }
 
     /**

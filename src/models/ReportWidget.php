@@ -1,5 +1,4 @@
 <?php
-
 namespace sadi01\bidashboard\models;
 
 use sadi01\bidashboard\behaviors\Jsonable;
@@ -59,7 +58,7 @@ class ReportWidget extends ActiveRecord
 
     public static function getDb()
     {
-        return Yii::$app->get('biDB');
+        return Yii::$app->biDB;
     }
 
     public static function tableName()
@@ -204,50 +203,26 @@ class ReportWidget extends ActiveRecord
      * @param $end_rage
      * @throws \Exception
      * @var $pDate Pdate
+     * @var $pDate Pdate
      */
     public function runWidget($start_range = null, $end_range = null)
     {
-        $widget = $this;
-        /**@var $pDate Pdate */
-        $pDate = Yii::$app->pdate;
+        $timestamp_date_range = $this->getTimeStampDateRange($start_range, $end_range);
 
-        // -- check and convert time
-        if ($start_range and $end_range) {
-            if (gettype($start_range) != 'integer') {
-                if ($widget->range_type == $widget::RANGE_TYPE_DAILY) {
-                    $start_range = $pDate->jmktime('', '', '', $start_range['mon'], $start_range['day'], $start_range['year']);
-                    $end_range = $pDate->jmktime('', '', '', $end_range['mon'], $end_range['day'], $end_range['year']);
-                } else {
-                    $start_range = $this->getStartAndEndOfMonth($start_range['year'] . "/" . $start_range['mon'])['start'];
-                    $end_range = $this->getStartAndEndOfMonth($end_range['year'] . "/" . $end_range['mon'])['end'];
-                }
-            }
-        } else {
-            if ($widget->range_type == $widget::RANGE_TYPE_DAILY) {
-                $dateTemp = $this->getStartAndEndOfMonth();
-            } else {
-                $dateTemp = $this->getStartAndEndOfYear();
-            }
-            $start_range = $dateTemp['start'];
-            $end_range = $dateTemp['end'];
-        }
+        $modelQueryResults = $this->findAndRunSearchModelWidget($timestamp_date_range['start_range'], $timestamp_date_range['end_range']);
 
-        $modelQueryResults = $this->findAndRunSearchModelWidget($start_range, $end_range);
-
-        $isValid = $this->validateResultWidget($modelQueryResults);
+        $isValid = $this->validateRunWidgetResult($modelQueryResults);
 
         if (!$isValid) {
-            $modelQueryResults['status'] = false;
             $this->addError('status', Yii::t('app', 'Error In Run Widget'));
             return false;
         }
 
         $modelQueryResults['status'] = true;
-
         return $this->createReportWidgetResult($modelQueryResults, $start_range, $end_range);
     }
 
-    public function validateResultWidget($modelQueryResults)
+    public function validateRunWidgetResult($modelQueryResults)
     {
         if (!$modelQueryResults) {
             $isValid = true;
@@ -260,6 +235,36 @@ class ReportWidget extends ActiveRecord
         }
 
         return $isValid;
+    }
+
+    public function getTimeStampDateRange($start_range = null, $end_range = null)
+    {
+        $pDate = Yii::$app->pdate;
+
+        if ($start_range and $end_range) {
+            if (gettype($start_range) != 'integer') {
+                if ($this->range_type == $this::RANGE_TYPE_DAILY) {
+                    $start_range = $pDate->jmktime('', '', '', $start_range['mon'], $start_range['day'], $start_range['year']);
+                    $end_range = $pDate->jmktime('', '', '', $end_range['mon'], $end_range['day'], $end_range['year']);
+                } else {
+                    $start_range = $this->getStartAndEndOfMonth($start_range['year'] . "/" . $start_range['mon'])['start'];
+                    $end_range = $this->getStartAndEndOfMonth($end_range['year'] . "/" . $end_range['mon'])['end'];
+                }
+            }
+        } else {
+            if ($this->range_type == $this::RANGE_TYPE_DAILY) {
+                $dateTemp = $this->getStartAndEndOfMonth();
+            } else {
+                $dateTemp = $this->getStartAndEndOfYear();
+            }
+            $start_range = $dateTemp['start'];
+            $end_range = $dateTemp['end'];
+        }
+
+        return [
+            'start_range' => $start_range,
+            'end_range' => $end_range,
+        ];
     }
 
     public function findAndRunSearchModelWidget($startDate, $endDate)
