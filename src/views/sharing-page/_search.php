@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
     <div class="row">
         <div class="col-3">
             <?= $form->field($model, 'page_id')->dropDownList(
-                ArrayHelper::map(ReportPage::find()->all(), 'id', 'title'),
+                ArrayHelper::map((array)ReportPage::find()->select(['id','title'])->asArray()->all(), 'id', 'title'),
                 ['prompt' => 'Select a page']
             ) ?>
         </div>
