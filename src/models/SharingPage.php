@@ -98,6 +98,13 @@ class SharingPage extends \yii\db\ActiveRecord
         $this->expire_time = time();
         $this->save(false);
     }
+    public function  is_expire(){
+        if($this->expire_time > time()){
+            return false;
+        }else{
+            return true;
+        }
+    }
 
     /**
      * {@inheritdoc}

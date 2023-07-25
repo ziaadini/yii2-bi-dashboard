@@ -2,6 +2,7 @@
 
 namespace sadi01\bidashboard\models;
 
+use sadi01\bidashboard\components\CoreHelper;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -31,7 +32,7 @@ class ReportYear extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%report_year}}';
     }
@@ -44,14 +45,18 @@ class ReportYear extends \yii\db\ActiveRecord
         return [
             [['year'], 'required'],
             [['year'], 'unique'],
+            [['year'], 'integer'],
+            ['year', 'compare', 'operator' => '>', 'compareValue' => (int)(CoreHelper::getCurrentYear())-100],
+            ['year', 'compare', 'operator' => '<', 'compareValue' => (int)(CoreHelper::getCurrentYear())+100],
             [['year', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at'], 'integer'],
         ];
     }
 
+
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('biDashboard', 'ID'),
@@ -68,7 +73,7 @@ class ReportYear extends \yii\db\ActiveRecord
      * {@inheritdoc}
      * @return ReportYearQuery the active query used by this AR class.
      */
-    public static function find()
+    public static function find(): ReportYearQuery
     {
         $query = new ReportYearQuery(get_called_class());
         $query->notDeleted();
@@ -77,11 +82,9 @@ class ReportYear extends \yii\db\ActiveRecord
 
     public static function itemAlias($type, $code = NULL)
     {
-        $data = [];
         if ($type == 'List') {
-            $data = self::find()->select(['year'])->column();
+            return self::find()->select(['year'])->column();
         }
-
         $_items = [
             'Status' => [
                 self::STATUS_DELETED => Yii::t('biDashboard', 'DELETED'),
@@ -95,7 +98,6 @@ class ReportYear extends \yii\db\ActiveRecord
                 self::STATUS_DELETED => '#ff5050',
                 self::STATUS_ACTIVE => '#04AA6D',
             ],
-            'list' => $data
         ];
         if (isset($code))
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
@@ -103,7 +105,7 @@ class ReportYear extends \yii\db\ActiveRecord
             return isset($_items[$type]) ? $_items[$type] : false;
     }
 
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'timestamp' => [
@@ -130,7 +132,7 @@ class ReportYear extends \yii\db\ActiveRecord
         ];
     }
 
-    public function canDelete()
+    public function canDelete(): bool
     {
         return true;
     }

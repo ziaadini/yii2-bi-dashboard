@@ -12,7 +12,7 @@ use yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
 class ReportYearQuery extends \yii\db\ActiveQuery
 {
 
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'softDelete' => [
@@ -24,7 +24,7 @@ class ReportYearQuery extends \yii\db\ActiveQuery
      * {@inheritdoc}
      * @return ReportYear[]|array
      */
-    public function all($db = null)
+    public function all($db = null): array
     {
         return parent::all($db);
     }
@@ -33,7 +33,7 @@ class ReportYearQuery extends \yii\db\ActiveQuery
      * {@inheritdoc}
      * @return ReportYear|array|null
      */
-    public function one($db = null)
+    public function one($db = null): ReportYear|array|null
     {
         return parent::one($db);
     }
