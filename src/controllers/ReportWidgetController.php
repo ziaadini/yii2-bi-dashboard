@@ -116,14 +116,14 @@ class ReportWidgetController extends Controller
             if ($model->load($this->request->post()) && $model->validate()) {
                 $model->save();
                 return $this->asJson([
-                    'success' => true,
-                    'msg' => Yii::t('biDashboard', 'Saved successfully'),
+                    'status' => true,
+                    'message' => Yii::t('biDashboard', 'Saved successfully'),
                 ]);
             } else {
                 return $this->asJson([
-                    'success' => false,
+                    'status' => false,
                     'errors' => $model->errors,
-                    'msg' => Yii::t('biDashboard', 'There was a problem saving'),
+                    'message' => Yii::t('biDashboard', 'There was a problem saving'),
                 ]);
             }
         } else {
@@ -205,8 +205,7 @@ class ReportWidgetController extends Controller
 
         return $this->asJson([
             'status' => true,
-            'success' => true,
-            'msg' => Yii::t("biDashboard", 'Success'),
+            'message' => Yii::t("biDashboard", 'Success'),
         ]);
     }
 

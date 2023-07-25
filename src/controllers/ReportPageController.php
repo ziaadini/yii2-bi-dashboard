@@ -127,8 +127,8 @@ class ReportPageController extends Controller
             if ($model->load($this->request->post()) && $model->validate()) {
                 $model->save();
                 return $this->asJson([
-                    'success' => true,
-                    'msg' => Yii::t("app", 'Success')
+                    'status' => true,
+                    'message' => Yii::t("app", 'Item Saved')
                 ]);
             }
         } else {
@@ -153,8 +153,8 @@ class ReportPageController extends Controller
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->validate() && $model->save()) {
             return $this->asJson([
-                'success' => true,
-                'msg' => Yii::t("app", 'Success')
+                'status' => true,
+                'message' => Yii::t("app", 'Item Updated')
             ]);
         }
 
@@ -198,8 +198,8 @@ class ReportPageController extends Controller
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->validate() && $model->save()) {
             return $this->asJson([
-                'success' => true,
-                'msg' => Yii::t("app", 'Success')
+                'status' => true,
+                'message' => Yii::t("app", 'Success')
             ]);
         }
         $this->performAjaxValidation($model);
@@ -219,14 +219,14 @@ class ReportPageController extends Controller
             if ($model->load($this->request->post()) && $model->validate()) {
                 if ($model->save(false)) {
                     return $this->asJson([
-                        'success' => true,
-                        'msg' => Yii::t("app", 'Success')
+                        'status' => true,
+                        'message' => Yii::t("app", 'Success')
                     ]);
 
                 } else {
                     return $this->asJson([
-                        'success' => false,
-                        'msg' => Yii::t("app", 'fail')
+                        'status' => false,
+                        'message' => Yii::t("app", 'fail')
                     ]);
                 }
             }
@@ -285,8 +285,7 @@ class ReportPageController extends Controller
         }
         return $this->asJson([
             'status' => true,
-            'success' => true,
-            'msg' => Yii::t("biDashboard", 'Success'),
+            'message' => Yii::t("biDashboard", 'Success'),
         ]);
     }
 

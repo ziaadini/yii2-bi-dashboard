@@ -6,9 +6,13 @@ use sadi01\bidashboard\models\ReportYear;
 use sadi01\bidashboard\models\ReportYearSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use Yii;
+use Yii\base\ExitException;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * ReportYearController implements the CRUD actions for ReportYear model.
@@ -22,22 +26,38 @@ class ReportYearController extends Controller
     /**
      * @inheritDoc
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
-                        'delete' => ['POST'],
+                        'index' => ['GET'],
+                        'view' => ['GET'],
+                        'create' => ['GET', 'POST'],
+                        'update' => ['GET', 'PUT', 'POST'],
+                        'delete' => ['POST', 'DELETE'],
                     ],
                 ],
             ]
         );
     }
 
-    public function beforeAction($action)
+    /**
+     * @throws BadRequestHttpException
+     */
+    public function beforeAction($action): bool
     {
         Yii::$app->controller->enableCsrfValidation = false;
         return parent::beforeAction($action);
@@ -48,7 +68,7 @@ class ReportYearController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $searchModel = new ReportYearSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -65,7 +85,7 @@ class ReportYearController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView(int $id): string
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -76,21 +96,22 @@ class ReportYearController extends Controller
      * Creates a new ReportYear model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
+     * @throws ExitException
      */
-    public function actionCreate()
+    public function actionCreate(): Response|string
     {
         $model = new ReportYear();
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
                 $model->save();
                 return $this->asJson([
-                    'success' => true,
-                    'msg' => Yii::t("app", 'Success')
+                    'status' => true,
+                    'message' => Yii::t("app", 'Success')
                 ]);
             } else {
                 return $this->asJson([
-                    'success' => false,
-                    'msg' => Yii::t("app", 'Fails')
+                    'status' => false,
+                    'message' => Yii::t("app", 'Fails')
                 ]);
             }
         } else {
@@ -109,16 +130,16 @@ class ReportYearController extends Controller
      * @param int $id
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws ExitException
      */
-    public function actionUpdate(int $id)
+    public function actionUpdate(int $id): Response|string
     {
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->asJson([
                 'status' => true,
-                'success' => true,
-                'msg' => Yii::t("app", 'Success')
+                'message' => Yii::t("app", 'Update Is Save')
             ]);
         }
 
@@ -135,18 +156,18 @@ class ReportYearController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id): Response
     {
         $model = $this->findModel($id);
         if ($model->canDelete() && $model->softDelete()) {
             return $this->asJson([
                 'status' => true,
-                'msg' => Yii::t("biDashboard", 'Item Deleted')
+                'message' => Yii::t("biDashboard", 'Item Deleted')
             ]);
         } else {
             return $this->asJson([
                 'status' => false,
-                'msg' => Yii::t("biDashboard", 'Error In Delete Action')
+                'message' => Yii::t("biDashboard", 'Error In Delete Action')
             ]);
         }
     }
@@ -158,7 +179,7 @@ class ReportYearController extends Controller
      * @return ReportYear the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel(int $id): ReportYear
     {
         if (($model = ReportYear::findOne(['id' => $id])) !== null) {
             return $model;

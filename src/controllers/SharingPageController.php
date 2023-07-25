@@ -9,9 +9,12 @@ use sadi01\bidashboard\traits\AjaxValidationTrait;
 use Yii;
 use yii\base\Exception;
 use Yii\base\ExitException;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * SharingPageController implements the CRUD actions for SharingPage model.
@@ -30,18 +33,35 @@ class SharingPageController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
-                        'delete' => ['POST'],
-                        'expire' => ['POST']
+                        'index' => ['GET'],
+                        'view' => ['GET'],
+                        'management' => ['GET', 'POST'],
+                        'expire' => ['GET', 'POST'],
+                        'create' => ['GET', 'POST'],
+                        'update' => ['GET', 'PUT', 'POST'],
+                        'delete' => ['POST', 'DELETE'],
                     ],
                 ],
             ]
         );
     }
 
-    public function beforeAction($action)
+    /**
+     * @throws BadRequestHttpException
+     */
+    public function beforeAction($action): bool
     {
         Yii::$app->controller->enableCsrfValidation = false;
         return parent::beforeAction($action);
@@ -52,7 +72,7 @@ class SharingPageController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $searchModel = new SharingPageSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -69,7 +89,7 @@ class SharingPageController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView( int $id): string
     {
         return $this->renderAjax('view', [
             'model' => $this->findModel($id),
@@ -80,16 +100,17 @@ class SharingPageController extends Controller
      * Creates a new SharingPage model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
+     * @throws ExitException
      */
-    public function actionCreate()
+    public function actionCreate(): \yii\web\Response|string
     {
         $model = new SharingPage();
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
                 $model->save();
                 return $this->asJson([
-                    'success' => true,
-                    'msg' => Yii::t("app", 'Success')
+                    'status' => true,
+                    'message' => Yii::t("app", 'Success')
                 ]);
             }
         } else {
@@ -107,15 +128,16 @@ class SharingPageController extends Controller
      * @param int $id
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws ExitException
      */
-    public function actionUpdate(int $id)
+    public function actionUpdate(int $id): Response|string
     {
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->asJson([
-                'success' => true,
-                'msg' => Yii::t("biDashboard", 'Success')
+                'status' => true,
+                'message' => Yii::t("biDashboard", 'Success')
             ]);
         }
         $this->performAjaxValidation($model);
@@ -131,18 +153,18 @@ class SharingPageController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete(int $id)
+    public function actionDelete(int $id): Response
     {
         $model = $this->findModel($id);
         if ($model->canDelete() && $model->softDelete()) {
             return $this->asJson([
                 'status' => true,
-                'msg' => Yii::t("biDashboard", 'Item Deleted')
+                'message' => Yii::t("biDashboard", 'Item Deleted')
             ]);
         } else {
             return $this->asJson([
                 'status' => false,
-                'msg' => Yii::t("biDashboard", 'Error In Delete Action')
+                'message' => Yii::t("biDashboard", 'Error In Delete Action')
             ]);
         }
     }
@@ -152,19 +174,19 @@ class SharingPageController extends Controller
      * @throws Exception
      * @throws NotFoundHttpException
      */
-    public function actionManagement($id)
+    public function actionManagement($id): Response|string
     {
         $page = $this->findModelPage($id);
 
         $share_page_model = new SharingPage([
             'page_id' => $page->id,
-            'access_key' => Yii::$app->security->generateRandomString()
         ]);
-        $page_model = $page->accessKeys;
+        #function to get accesskeys of one page
+        $page_model = $page->sharingKeys;
         if ($share_page_model->load(Yii::$app->request->post()) && $share_page_model->save()) {
             return $this->asJson([
-                'success' => true,
-                'msg' => Yii::t("biDashboard", 'Success')
+                'status' => true,
+                'message' => Yii::t("biDashboard", 'Success')
             ]);
         }
 
@@ -178,22 +200,23 @@ class SharingPageController extends Controller
     /**
      * @param $id
      * @return \yii\web\Response
+     * @throws NotFoundHttpException
      */
-    public function actionExpire($id)
+    public function actionExpire($id): Response
     {
         $model = $this->findModel($id);
         if ($model) {
             $model->expire();
             return $this->asJson([
                 'status' => true,
-                'msg' => Yii::t("biDashboard", 'Success')
+                'message' => Yii::t("biDashboard", 'Success')
             ]);
 
         }
         else{
             return $this->asJson([
                 'status' => false,
-                'msg' => Yii::t("biDashboard", 'fail to update')
+                'message' => Yii::t("biDashboard", 'fail to update')
             ]);
         }
     }
@@ -220,7 +243,7 @@ class SharingPageController extends Controller
      * @return ReportPage the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModelPage($id)
+    protected function findModelPage($id): ReportPage
     {
         if (($model = ReportPage::findOne(['id' => $id])) !== null) {
             return $model;
