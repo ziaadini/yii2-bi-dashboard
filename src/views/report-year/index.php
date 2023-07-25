@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'year',
                 [
                     'attribute' => 'status',
-                    'value' => function ($model) {
+                    'value' => function (ReportYear $model) {
                         return ReportYear::itemAlias('Status', $model->status);
                     },
                 ],
@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'template' => '{custom-update} {custom-delete}', // Replace the default delete button with {custom-delete}
                     'buttons' => [
-                        'custom-delete' => function ($url, $model, $key) {
+                        'custom-delete' => function ($url, ReportYear $model, $key) {
                             return Html::a('<i class="mdi mdi-delete"></i>', 'javascript:void(0)', [
                                 'title' => Yii::t('yii', 'Delete'),
                                 'aria-label' => Yii::t('yii', 'Delete'),
@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-toggle' => 'tooltip',
                             ]);
                         },
-                        'custom-update' => function ($url, $model, $key) {
+                        'custom-update' => function ($url, ReportYear $model, $key) {
                             return Html::a('<i class="mdi mdi-update"></i>', "javascript:void(0)",
                                 [
                                     'data-pjax' => '0',

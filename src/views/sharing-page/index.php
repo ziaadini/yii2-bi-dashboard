@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
                 [
                     'attribute' => 'page_id',
-                    'value' => function ($model) {
+                    'value' => function (SharingPage $model) {
                         return $model->page->title;
                     },
                 ],
@@ -72,12 +72,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'template' => '{custom-view} {custom-update} {custom-delete} {expire}', // Replace the default delete button with {custom-delete}
                     'visibleButtons' => [
-                            'expire' => function($model) {
-
-                            }
+                        'expire' => function ($model) {
+                            return (!$model->is_expire());
+                        },
                     ],
                     'buttons' => [
-                        'custom-delete' => function ($url, $model, $key) {
+                        'custom-delete' => function ($url, SharingPage $model, $key) {
                             return Html::a('<i class="mdi mdi-delete"></i>', 'javascript:void(0)', [
                                 'title' => Yii::t('yii', 'Delete'),
                                 'aria-label' => Yii::t('yii', 'Delete'),
@@ -89,7 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-toggle' => 'tooltip',
                             ]);
                         },
-                        'custom-update' => function ($url, $model, $key) {
+                        'custom-update' => function ($url, SharingPage $model, $key) {
                             return Html::a('<i class="mdi mdi-update"></i>', "javascript:void(0)",
                                 [
                                     'data-pjax' => '0',
@@ -104,7 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]
                             );
                         },
-                        'custom-view' => function ($url, $model, $key) {
+                        'custom-view' => function ($url, SharingPage $model, $key) {
                             return Html::a('<i class="mdi mdi-eye"></i>', "javascript:void(0)",
                                 [
                                     'data-pjax' => '0',
@@ -119,24 +119,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]
                             );
                         },
-                        'expire' => function ($url, $model, $key) {
-                            if ($model->expire_time > time()) {
-                                return Html::a('<i class="mdi mdi-reload"></i>', 'javascript:void(0)', [
-                                    'title' => Yii::t('yii', 'Expired'),
-                                    'aria-label' => Yii::t('yii', 'Expired'),
-                                    'data-reload-pjax-container' => 'p-jax-sharing-page',
-                                    'data-pjax' => '0',
-                                    'data-url' => Url::to(['/bidashboard/sharing-page/expire', 'id' => $model->id]),
-                                    'class' => 'p-jax-btn btn-sm text-info',
-                                    'data-title' => Yii::t('yii', 'Expired'),
-                                ]);
-                            } else {
-                                return '';
-                            }
+                        'expire' => function ($url, SharingPage $model, $key) {
+                            return Html::a('<i class="mdi mdi-reload"></i>', 'javascript:void(0)', [
+                                'title' => Yii::t('yii', 'Expired'),
+                                'aria-label' => Yii::t('yii', 'Expired'),
+                                'data-reload-pjax-container' => 'p-jax-sharing-page',
+                                'data-pjax' => '0',
+                                'data-url' => Url::to(['/bidashboard/sharing-page/expire', 'id' => $model->id]),
+                                'class' => 'p-jax-btn btn-sm text-info',
+                                'data-title' => Yii::t('yii', 'Expired'),
+                            ]);
                         },
                     ],
                 ],
-
             ],
         ]); ?>
     </div>
