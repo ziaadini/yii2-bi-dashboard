@@ -80,6 +80,6 @@ return [
     'Show' => 'نمایش',
     '{modelTitle} data is invalid' => ' دیتای ارسالی ویجت {modelTitle} نامعتبر است',
     'The {env_parameter} parameter is not set, add the parameter in the env file of the project.' => 'پارامتر {env_parameter} تنظیم نشده است، پارامتر را در فایل env پروژه اضافه نمایید.',
-
+    'Chart' => 'نمودار',
 
 ];

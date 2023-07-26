@@ -137,6 +137,22 @@ $pdate = Yii::$app->pdate;
                     <tr>
                         <th style="width: 17%">
                             <div class="border-bottom">
+
+                                <?= Html::a('<i class="mdi mdi-chart-line"></i>', "javascript:void(0)",
+                                    [
+                                        'data-pjax' => '0',
+                                        'class' => "btn btn-sm text-info",
+                                        'data-size' => 'modal-xl',
+                                        'data-title' => Yii::t('biDashboard', 'Chart'),
+                                        'data-toggle' => 'modal',
+                                        'data-target' => '#modal-pjax',
+                                        'data-url' => Url::to(['report-widget/modal-show-chart', 'id' => $pageWidget->widget->id,'field' => $pageWidget->report_widget_field, 'start_range' => $startRange, 'end_range' => $endRange]),
+                                        'data-handle-form-submit' => 1,
+                                        'data-show-loading' => 0,
+                                        'data-reload-pjax-container' => 'p-jax-report-page-add',
+                                        'data-reload-pjax-container-on-show' => 0
+                                    ]) ?>
+
                                 <?= Html::a('<i class="mdi mdi-launch"></i>', [$pageWidget->widget->getModelRoute()], ['target' => '_blank']) ?>
 
                                 <?= Html::a('<i class="mdi mdi-reload"></i>', 'javascript:void(0)',
@@ -202,8 +218,6 @@ $pdate = Yii::$app->pdate;
                                 }
                                 if ($key === false) {
                                     echo '<th scope="col"></th>';
-                                } elseif (!$runWidget->result['status']) {
-                                    echo '<th scope="col " class="text-center">Data Structure Error</th>';
                                 } else {
                                     $resultData = key_exists($pageWidget->report_widget_field, $runWidget->result[$key]) ? $runWidget->result[$key][$pageWidget->report_widget_field] : '.::field error(1)::.';
                                     if ($pageWidget->report_widget_field_format == $pageWidget::FORMAT_CURRENCY) {

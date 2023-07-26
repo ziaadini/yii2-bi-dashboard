@@ -218,7 +218,6 @@ class ReportWidget extends ActiveRecord
             return false;
         }
 
-        $modelQueryResults['status'] = true;
         return $this->createReportWidgetResult($modelQueryResults, $start_range, $end_range);
     }
 
