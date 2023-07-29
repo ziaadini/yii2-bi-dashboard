@@ -7,6 +7,7 @@ use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\ArrayHelper;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 
 /**
@@ -102,11 +103,7 @@ class SharingPage extends \yii\db\ActiveRecord
 
     public function isExpire(): bool
     {
-        if ($this->expire_time > time()) {
-            return false;
-        } else {
-            return true;
-        }
+        return ($this->expire_time > time());
     }
 
     /**
@@ -123,6 +120,10 @@ class SharingPage extends \yii\db\ActiveRecord
 
     public static function itemAlias($type, $code = NULL)
     {
+        $data = [];
+        if ($type == 'List') {
+            $data = ReportPage::find()->select(['id', 'title'])->asArray()->all();
+        }
         $_items = [
             'Status' => [
                 self::STATUS_DELETED => Yii::t('biDashboard', 'DELETED'),
@@ -135,7 +136,8 @@ class SharingPage extends \yii\db\ActiveRecord
             'StatusColor' => [
                 self::STATUS_DELETED => '#ff5050',
                 self::STATUS_ACTIVE => '#04AA6D',
-            ],];
+            ],
+            'List' => $data];
         if (isset($code))
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
         else

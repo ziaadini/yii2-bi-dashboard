@@ -63,7 +63,7 @@ class ReportPageController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $searchModel = new ReportPageSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -80,7 +80,7 @@ class ReportPageController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id, $year = null, $month = null)
+    public function actionView($id, $year = null, $month = null): string
     {
         $model = $this->findModel($id);
         $dateDetail = Yii::$app->pdate->jgetdate();
@@ -119,7 +119,7 @@ class ReportPageController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|Response
      */
-    public function actionCreate()
+    public function actionCreate(): Response|string
     {
         $model = new ReportPage();
         if ($this->request->isPost) {
@@ -146,7 +146,7 @@ class ReportPageController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): Response|string
     {
         $model = $this->findModel($id);
 
@@ -175,18 +175,21 @@ class ReportPageController extends Controller
         $model = $this->findModel($id);
 
         if ($model->canDelete() && $model->softDelete()) {
-
-            $this->flash('success', Yii::t('app', 'Item Deleted'));
-
+            return $this->asJson([
+                'status' => true,
+                'message' => Yii::t("app", 'Item Deleted')
+            ]);
         } else {
-
-            $this->flash('error', $model->errors ? array_values($model->errors)[0][0] : Yii::t('app', 'Error In Delete Action'));
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t("app", 'Error In Delete')
+            ]);
         }
 
         return $this->redirect(['index']);
     }
 
-    public function actionUpdateWidget($id)
+    public function actionUpdateWidget($id): Response|string
     {
         $model = ReportPageWidget::find()->where(['widget_id' => $id])->one();
         $add_on = json_decode($model->widget->add_on["outputColumn"]);
@@ -208,7 +211,7 @@ class ReportPageController extends Controller
         ]);
     }
 
-    public function actionAdd($id)
+    public function actionAdd($id): Response|string
     {
         $model = new ReportPageWidget();
         $page = $this->findModel($id);
@@ -243,8 +246,9 @@ class ReportPageController extends Controller
     }
 
     /** @var $widget ReportWidget */
-    public function actionGetwidgetcolumn()
+    public function actionGetwidgetcolumn(): array
     {
+
         Yii::$app->response->format = Response::FORMAT_JSON;
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
@@ -272,7 +276,7 @@ class ReportPageController extends Controller
      * @return mixed
      * @var $widget ReportWidget
      */
-    public function actionReloadAllWidgets($id, $start_range = null, $end_range = null)
+    public function actionReloadAllWidgets($id, $start_range = null, $end_range = null): mixed
     {
         $model = $this->findModel($id);
         $widgets = $model->getWidgets()->all();
@@ -294,7 +298,7 @@ class ReportPageController extends Controller
      * @return ReportPage the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): ReportPage
     {
         if (($model = ReportPage::findOne(['id' => $id])) !== null) {
             return $model;
@@ -303,7 +307,7 @@ class ReportPageController extends Controller
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 
-    private function flash($type, $message)
+    private function flash($type, $message): void
     {
         Yii::$app->getSession()->setFlash($type == 'error' ? 'danger' : $type, $message);
     }

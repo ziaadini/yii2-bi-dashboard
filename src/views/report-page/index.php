@@ -3,7 +3,6 @@
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageSearch;
 use yii\data\ActiveDataProvider;
-use yii\bootstrap4\Modal;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -48,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="card-body page-content container-fluid text-left">
                 <div id="collapseSearch" class="panel-collapse collapse" aria-expanded="false">
-                  <?= $this->render('_search', ['model' => $searchModel]); ?>
+                    <?= $this->render('_search', ['model' => $searchModel]); ?>
                 </div>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -59,25 +58,55 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'status',
                             'value' => function ($model) {
 
-                                return ReportPage::itemAlias('Status',$model->status);
+                                return ReportPage::itemAlias('Status', $model->status);
                             },
                         ],
                         [
                             'attribute' => 'range_type',
                             'value' => function ($model) {
-                                return ReportPage::itemAlias('range_type',$model->range_type);
+                                return ReportPage::itemAlias('range_type', $model->range_type);
                             },
                         ],
                         [
                             'class' => ActionColumn::class,
                             'urlCreator' => function ($action, ReportPage $model, $key, $index, $column) {
                                 return Url::toRoute([$action, 'id' => $model->id]);
-                            }
+                            },
+                            'template' => '{update} {delete} {view}',
+                            'buttons' => [
+                                'delete' => function ($url, ReportPage $model, $key) {
+                                    return Html::a('<i class="mdi mdi-delete"></i>', 'javascript:void(0)', [
+                                        'title' => Yii::t('yii', 'Delete'),
+                                        'aria-label' => Yii::t('yii', 'Delete'),
+                                        'data-reload-pjax-container' => 'p-jax-report-page',
+                                        'data-pjax' => '0',
+                                        'data-url' => Url::to(['report-page/delete', 'id' => $model->id]),
+                                        'class' => 'p-jax-btn text-danger',
+                                        'data-title' => Yii::t('yii', 'Delete'),
+                                        'data-toggle' => 'tooltip',
+                                    ]);
+                                },
+                                'update' => function ($url, ReportPage $model, $key) {
+                                    return Html::a('<i class="mdi mdi-update"></i>', "javascript:void(0)",
+                                        [
+                                            'data-pjax' => '0',
+                                            'class' => "btn text-primary",
+                                            'data-size' => 'modal-xl',
+                                            'data-title' => Yii::t('app', 'create'),
+                                            'data-toggle' => 'modal',
+                                            'data-target' => '#modal-pjax',
+                                            'data-url' => Url::to(['report-page/update', 'id' => $model->id]),
+                                            'data-handle-form-submit' => 1,
+                                            'data-reload-pjax-container' => 'p-jax-report-page'
+                                        ]
+                                    );
+                                },
+                            ],
                         ],
                     ],
                 ]); ?>
             </div>
         </div>
     </div>
-<?php Pjax::end(); ?>
+    <?php Pjax::end(); ?>
 </div>

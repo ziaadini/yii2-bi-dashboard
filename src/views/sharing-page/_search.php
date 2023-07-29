@@ -1,6 +1,7 @@
 <?php
 
 use sadi01\bidashboard\models\ReportPage;
+use sadi01\bidashboard\models\SharingPage;
 use sadi01\dateRangePicker\dateRangePicker;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -22,7 +23,7 @@ use yii\widgets\ActiveForm;
     <div class="row">
         <div class="col-3">
             <?= $form->field($model, 'page_id')->dropDownList(
-                ArrayHelper::map((array)ReportPage::find()->select(['id','title'])->asArray()->all(), 'id', 'title'),
+                ArrayHelper::map(SharingPage::itemAlias('List'), 'id', 'title'),
                 ['prompt' => 'Select a page']
             ) ?>
         </div>

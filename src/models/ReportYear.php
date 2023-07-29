@@ -2,7 +2,7 @@
 
 namespace sadi01\bidashboard\models;
 
-use sadi01\bidashboard\components\CoreHelper;
+use sadi01\bidashboard\helper\CoreHelper;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -129,7 +129,7 @@ class ReportYear extends \yii\db\ActiveRecord
                     'deleted_at' => 0,
                     'status' => self::STATUS_ACTIVE
                 ],
-                'replaceRegularDelete' => false, // mutate native `delete()` method
+                'replaceRegularDelete' => false,
                 'invokeDeleteEvents' => false
             ],
         ];

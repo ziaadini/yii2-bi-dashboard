@@ -70,14 +70,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     'urlCreator' => function ($action, SharingPage $model, $key, $index, $column) {
                         return Url::toRoute([$action, 'id' => $model->id]);
                     },
-                    'template' => '{custom-view} {custom-update} {custom-delete} {expire}', // Replace the default delete button with {custom-delete}
+                    'template' => '{view} {update} {delete} {expire}', // Replace the default delete button with {custom-delete}
                     'visibleButtons' => [
                         'expire' => function (SharingPage $model) {
                             return (!$model->isExpire());
                         },
                     ],
                     'buttons' => [
-                        'custom-delete' => function ($url, SharingPage $model, $key) {
+                        'delete' => function ($url, SharingPage $model, $key) {
                             return Html::a('<i class="mdi mdi-delete"></i>', 'javascript:void(0)', [
                                 'title' => Yii::t('yii', 'Delete'),
                                 'aria-label' => Yii::t('yii', 'Delete'),
@@ -89,7 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-toggle' => 'tooltip',
                             ]);
                         },
-                        'custom-update' => function ($url, SharingPage $model, $key) {
+                        'update' => function ($url, SharingPage $model, $key) {
                             return Html::a('<i class="mdi mdi-update"></i>', "javascript:void(0)",
                                 [
                                     'data-pjax' => '0',
@@ -104,7 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]
                             );
                         },
-                        'custom-view' => function ($url, SharingPage $model, $key) {
+                        'view' => function ($url, SharingPage $model, $key) {
                             return Html::a('<i class="mdi mdi-eye"></i>', "javascript:void(0)",
                                 [
                                     'data-pjax' => '0',
