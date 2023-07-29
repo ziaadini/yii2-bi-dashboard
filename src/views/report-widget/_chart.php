@@ -14,6 +14,7 @@ use yii\web\JsExpression;
  * @var $titles array
  * @var $results array
  * @var $chart_type string
+ * @var $max integer
  */
 $this->title = Yii::t('biDashboard', 'Chart');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'Chart'), 'url' => ['index']];
@@ -33,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ?>
                     <?= Highcharts::widget([
                         'options' => [
+                            'chart' => ['type' => $chart_type],
                             'title' => [
                                 'text' => $widget->title
                             ],
@@ -42,13 +44,24 @@ $this->params['breadcrumbs'][] = $this->title;
                             'yAxis' => [
                                 'title' => [
                                     'text' => $widget->title
-                                ]
+                                ],
+                                'min' => 0,
+                                'max' => max($results),
+                                'tickInterval' => 10
                             ],
                             'series' => [
                                 [
-                                    'type' => $chart_type,
                                     'name' => $widget->title,
                                     'data' => $results
+                                ],
+                            ],
+                            'plotOptions' => [
+                                'pie' => [
+                                    'allowPointSelect' => true,
+                                    'cursor' => 'pointer',
+                                    'dataLabels' => [
+                                        'enabled' => true,
+                                    ],
                                 ],
                             ]
                         ]

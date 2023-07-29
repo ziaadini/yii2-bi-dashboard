@@ -44,7 +44,7 @@ class ReportWidgetResult extends ActiveRecord
     const CHART_COLUMN = 'column';
     const CHART_PIE ='pie';
     const CHART_AREA = 'area';
-    const CHART_WORlD_CLOUD = 'worldcloud';
+    const CHART_WORD_CLOUD = 'word_cloud';
 
     public $result;
 
@@ -127,7 +127,6 @@ class ReportWidgetResult extends ActiveRecord
                 self::CHART_COLUMN => Yii::t('biDashboard', 'Chart column'),
                 self::CHART_PIE => Yii::t('biDashboard', 'Chart pie'),
                 self::CHART_AREA => Yii::t('biDashboard', 'Chart area'),
-                self::CHART_WORlD_CLOUD => Yii::t('biDashboard', 'Chart world cloud'),
             ],
         ];
         if (isset($code))

@@ -215,20 +215,21 @@ class ReportWidgetController extends Controller
         $result = $runWidget->result;
         $result = array_reverse($result);
 
-        if ($chart_type == ReportWidgetResult::CHART_WORlD_CLOUD){
-            $arrayResult = array_map(function($item) use ($field) {
-                return ['name' => $item['month_name'],'weight' => (int)$item[$field]];
-            }, $result);
-        }else{
-            $arrayResult = array_map(function($item) use ($field) {
-                return (int)$item[$field];
-            }, $result);
-
-        }
+        $arrayResult = array_map(function($item) use ($field) {
+            return (int)$item[$field];
+        }, $result);
 
         $arrayTitle = array_map(function($item) {
             return $item["month_name"];
         }, $result);
+
+        if ($chart_type == ReportWidgetResult::CHART_PIE){
+            $result_pie = [];
+            foreach ($result as $key => $item){
+                $result_pie[] = ['name' => $arrayTitle[$key],'y' => $arrayResult[$key]];
+            }
+            $arrayResult = $result_pie;
+        }
 
         return $this->renderAjax('_chart', [
             'status' => true,
