@@ -14,7 +14,10 @@ use yii\web\JsExpression;
  * @var $titles array
  * @var $results array
  * @var $chart_type string
+ * @var $field string
  * @var $max integer
+ * @var $start_range integer
+ * @var $end_range integer
  */
 $this->title = Yii::t('biDashboard', 'Chart');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'Chart'), 'url' => ['index']];
@@ -79,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
         $.pjax.reload({
             container: '#p-jax-report-page-widget-chart',
             replace: false ,
-            url: "/bidashboard/report-widget/modal-show-chart?id=1&field=<?=$field?>&start_range=1679344200&end_range=1710880199&chart_type="+chart_type,
+            url: "/bidashboard/report-widget/modal-show-chart?id=<?=$widget->id?>&field=<?=$field?>&start_range=<?=$start_range?>&end_range<?=$end_range?>&chart_type="+chart_type,
             push: false,
         });
     }

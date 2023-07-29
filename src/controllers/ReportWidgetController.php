@@ -239,8 +239,8 @@ class ReportWidgetController extends Controller
             'titles' => $arrayTitle,
             'chart_type' => $chart_type,
             'field' => $field,
-            'startRange' => $start_range,
-            'endRange' => $end_range,
+            'start_range' => $start_range,
+            'end_range' => $end_range,
         ]);
     }
 }
