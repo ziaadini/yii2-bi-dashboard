@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'data-reload-pjax-container' => 'p-jax-report-page',
                                         'data-pjax' => '0',
                                         'data-url' => Url::to(['report-page/delete', 'id' => $model->id]),
-                                        'class' => 'p-jax-btn text-danger',
+                                        'class' => 'p-jax-btn text-danger mr-2',
                                         'data-title' => Yii::t('yii', 'Delete'),
                                         'data-toggle' => 'tooltip',
                                     ]);
