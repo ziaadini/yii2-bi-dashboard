@@ -1,5 +1,5 @@
 
-## Usage
+## Usage/View
 To use this widget, insert the following code into a view file:
 ```php
         <?= ReportModalWidget::widget([
@@ -70,3 +70,49 @@ for example:
     "total_count"=> "تعداد",
     "total_amount"=> "جمع‌کل"
 ]
+```
+
+## Usage/SearchModel
+
+To use this widget, insert the following code into a method in saerch Model class file:
+
+```php
+public function searchWidget(string $params,int $rangeType,int $startRange,int $endRange)
+{
+    $query = Invoice::find();
+    $query->andFilterWhere(['between', 'updated_at', $startRange, $endRange]);
+    if ($rangeType == ReportWidget::RANGE_TYPE_MONTHLY) {
+        $query->select([
+            'total_count' => 'COUNT(' . Invoice::tableName() . '.id)',
+            'total_amount' => 'SUM(' . Invoice::tableName() . '.price)',
+            'year' => 'pyear(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))',
+            'month' => 'pmonth(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))',
+            'month_name' => 'pmonthname(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))',
+        ]);
+        $query
+            ->groupBy('pyear(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at)), pmonth(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))')
+            ->orderBy(Invoice::tableName() . '.updated_at');
+    }
+    elseif ($rangeType == ReportWidget::RANGE_TYPE_DAILY) {
+        $query->select([
+            'total_count' => 'COUNT(' . Invoice::tableName() . '.id)',
+            'total_amount' => 'SUM(' . Invoice::tableName() . '.price)',
+            'year' => 'pyear(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))',
+            'day' => 'pday(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))',
+            'month' => 'pmonth(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))',
+            'month_name' => 'pmonthname(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))',
+        ]);
+        $query
+            ->groupBy('pday(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at)), pmonth(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at)), pyear(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))')
+            ->orderBy('FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at)');
+    }
+
+    $dataProvider = new ActiveDataProvider([
+        'query' => $query,
+    ]);
+    $this->load($params);
+    return $dataProvider;
+}
+
+```
+
