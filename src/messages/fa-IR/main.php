@@ -81,5 +81,10 @@ return [
     '{modelTitle} data is invalid' => ' دیتای ارسالی ویجت {modelTitle} نامعتبر است',
     'The {env_parameter} parameter is not set, add the parameter in the env file of the project.' => 'پارامتر {env_parameter} تنظیم نشده است، پارامتر را در فایل env پروژه اضافه نمایید.',
     'Chart' => 'نمودار',
+    'Chart line' => 'نمودار خطی',
+    'Chart column' => 'نمودار میله ای',
+    'Chart pie' => 'نمودار دایره ای',
+    'Chart area' => 'نمودار خطی محیطی',
+    'Chart world cloud' => 'نمودار ابر کلمات',
 
 ];

@@ -3,6 +3,7 @@
 namespace sadi01\bidashboard\controllers;
 
 use sadi01\bidashboard\models\ReportWidget;
+use sadi01\bidashboard\models\ReportWidgetResult;
 use sadi01\bidashboard\models\ReportWidgetSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use sadi01\bidashboard\traits\CoreTrait;
@@ -208,22 +209,37 @@ class ReportWidgetController extends Controller
             ]);
         }
     }
-    public function actionModalShowChart($id,$field,$start_range=null,$end_range=null){
+    public function actionModalShowChart($id,$field,$start_range=null,$end_range=null,$chart_type='line'){
         $model = $this->findModel($id);
         $runWidget= $model->lastResult($start_range,$end_range);
         $result = $runWidget->result;
+        $result = array_reverse($result);
 
-        $arrayResult = array_map(function($item) use ($field) {
-            return (int)$item[$field];
-        }, $result);
+        if ($chart_type == ReportWidgetResult::CHART_WORlD_CLOUD){
+            $arrayResult = array_map(function($item) use ($field) {
+                return ['name' => $item['month_name'],'weight' => (int)$item[$field]];
+            }, $result);
+        }else{
+            $arrayResult = array_map(function($item) use ($field) {
+                return (int)$item[$field];
+            }, $result);
+
+        }
+
         $arrayTitle = array_map(function($item) {
             return $item["month_name"];
         }, $result);
 
         return $this->renderAjax('_chart', [
+            'status' => true,
+            'msg' => 'ok',
             'widget' => $model,
             'results' => $arrayResult,
             'titles' => $arrayTitle,
+            'chart_type' => $chart_type,
+            'field' => $field,
+            'startRange' => $start_range,
+            'endRange' => $end_range,
         ]);
     }
 }

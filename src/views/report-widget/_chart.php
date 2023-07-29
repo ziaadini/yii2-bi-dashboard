@@ -2,12 +2,18 @@
 
 use yii\helpers\Html;
 use miloschuman\highcharts\Highcharts;
+use yii\helpers\Url;
+use yii\widgets\Pjax;
+use sadi01\bidashboard\models\ReportWidgetResult;
+use yii\web\JsExpression;
+
 
 /**
  * @var yii\web\View $this
  * @var sadi01\bidashboard\models\ReportWidget $widget
  * @var $titles array
  * @var $results array
+ * @var $chart_type string
  */
 $this->title = Yii::t('biDashboard', 'Chart');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'Chart'), 'url' => ['index']];
@@ -17,39 +23,51 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="page-content container-fluid text-left">
         <div class="work-report-index card">
             <div class="panel-group m-bot20" id="accordion">
+                <?php Pjax::begin(['id' => 'p-jax-report-page-widget-chart', 'enablePushState' => false,'clientOptions' => ['push' => false],]); ?>
                 <div class="card-body">
-                    <div class="card-body">
-                        <?= Highcharts::widget([
-                            'options' => [
+                    <?= Html::dropDownList('your-dropdown-name', Yii::$app->request->get('chart_type'), ReportWidgetResult::itemAlias('Chart'), [
+                        'id' => 'chart_type_id',
+                        'class' => 'form-control col-sm-3',
+                        'onchange' => 'pjaxChartReload()',
+                    ]);
+                    ?>
+                    <?= Highcharts::widget([
+                        'options' => [
+                            'title' => [
+                                'text' => $widget->title
+                            ],
+                            'xAxis' => [
+                                'categories' => $titles
+                            ],
+                            'yAxis' => [
                                 'title' => [
                                     'text' => $widget->title
-                                ],
-                                'xAxis' => [
-                                    'categories' => $titles
-                                ],
-                                'yAxis' => [
-                                    'title' => [
-                                        'text' => $widget->title
-                                    ]
-                                ],
-                                'series' => [
-                                    [
-                                        'type' => 'column',
-                                        'name' => $widget->title,
-                                        'data' => $results
-                                    ],
-                                    [
-                                        'type' => 'line',
-                                        'name' => $widget->title,
-                                        'data' => $results
-                                    ],
                                 ]
+                            ],
+                            'series' => [
+                                [
+                                    'type' => $chart_type,
+                                    'name' => $widget->title,
+                                    'data' => $results
+                                ],
                             ]
-                        ]);
-                        ?>
-                    </div>
+                        ]
+                    ]);
+                    ?>
                 </div>
+                <?php Pjax::end(); ?>
             </div>
         </div>
     </div>
 </div>
+<script>
+    function pjaxChartReload() {
+        var chart_type = $('#chart_type_id').val();
+        $.pjax.reload({
+            container: '#p-jax-report-page-widget-chart',
+            replace: false ,
+            url: "/bidashboard/report-widget/modal-show-chart?id=1&field=<?=$field?>&start_range=1679344200&end_range=1710880199&chart_type="+chart_type,
+            push: false,
+        });
+    }
+</script>

@@ -40,6 +40,12 @@ class ReportWidgetResult extends ActiveRecord
     const FORMAT_NUMBER = 1;
     const FORMAT_CURRENCY = 2;
 
+    const CHART_LINE = 'line';
+    const CHART_COLUMN = 'column';
+    const CHART_PIE ='pie';
+    const CHART_AREA = 'area';
+    const CHART_WORlD_CLOUD = 'worldcloud';
+
     public $result;
 
     public static function getDb()
@@ -111,6 +117,23 @@ class ReportWidgetResult extends ActiveRecord
         $query = new ReportWidgetResultQuery(get_called_class());
         $query->notDeleted();
         return $query;
+    }
+
+    public static function itemAlias($type, $code = NULL)
+    {
+        $_items = [
+            'Chart' => [
+                self::CHART_LINE => Yii::t('biDashboard', 'Chart line'),
+                self::CHART_COLUMN => Yii::t('biDashboard', 'Chart column'),
+                self::CHART_PIE => Yii::t('biDashboard', 'Chart pie'),
+                self::CHART_AREA => Yii::t('biDashboard', 'Chart area'),
+                self::CHART_WORlD_CLOUD => Yii::t('biDashboard', 'Chart world cloud'),
+            ],
+        ];
+        if (isset($code))
+            return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
+        else
+            return isset($_items[$type]) ? $_items[$type] : false;
     }
 
     public function behaviors()
