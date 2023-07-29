@@ -95,6 +95,11 @@ class SharingPage extends \yii\db\ActiveRecord
         return $this->hasOne(ReportPage::class, ['id' => 'page_id']);
     }
 
+    public static function getDb()
+    {
+        return Yii::$app->biDB;
+    }
+
     public function expire()
     {
         $this->expire_time = time();

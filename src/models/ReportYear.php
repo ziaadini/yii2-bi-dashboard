@@ -37,6 +37,7 @@ class ReportYear extends \yii\db\ActiveRecord
         return '{{%report_year}}';
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -78,6 +79,11 @@ class ReportYear extends \yii\db\ActiveRecord
         $query = new ReportYearQuery(get_called_class());
         $query->notDeleted();
         return $query;
+    }
+
+    public static function getDb()
+    {
+        return Yii::$app->biDB;
     }
 
     public static function itemAlias($type, $code = NULL)

@@ -7,6 +7,12 @@ use yii\db\Migration;
  */
 class m230719_072523_report_year extends Migration
 {
+    public function init()
+    {
+        $this->db = 'biDB';
+        parent::init();
+    }
+
     public function safeUp()
     {
         $this->createTable('{{%report_year}}', [

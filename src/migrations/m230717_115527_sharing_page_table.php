@@ -7,9 +7,15 @@ use yii\db\Migration;
  */
 class m230717_115527_sharing_page_table extends Migration
 {
+    public function init()
+    {
+        $this->db = 'biDB';
+        parent::init();
+    }
 
     public function safeUp()
     {
+
         $this->createTable('{{%report_sharing_page}}', [
             'id' => $this->primaryKey()->unsigned(),
             'page_id' => $this->integer()->unsigned()->notNull(),
