@@ -146,7 +146,7 @@ $pdate = Yii::$app->pdate;
                                         'data-title' => Yii::t('biDashboard', 'Chart'),
                                         'data-toggle' => 'modal',
                                         'data-target' => '#modal-pjax',
-                                        'data-url' => Url::to(['report-widget/modal-show-chart', 'id' => $pageWidget->widget->id,'field' => $pageWidget->report_widget_field, 'start_range' => $startRange, 'end_range' => $endRange,'chart_type' => 'line']),
+                                        'data-url' => Url::to(['report-widget/modal-show-chart', 'id' => $pageWidget->widget->id, 'field' => $pageWidget->report_widget_field, 'start_range' => $startRange, 'end_range' => $endRange, 'chart_type' => 'line']),
                                         'data-handle-form-submit' => 1,
                                         'data-show-loading' => 0,
                                         'data-reload-pjax-container' => 'p-jax-report-page-add',
@@ -192,15 +192,17 @@ $pdate = Yii::$app->pdate;
                                     ]); ?>
                             </div>
                             <div class=" text-left row p-3">
-                                <div class="col-12">
+                                <div class="col-sm-12 d-flex justify-content-between">
                                     <span>ویجت گزارش :</span>
-                                    <span class="bg-warning"><?= $pageWidget->widget->title ?></span>
+                                    <span class="bg-warning">
+                                        <?= $pageWidget->widget->title ?>
+                                    </span>
                                 </div>
-                                <div class="col-sm-6">
-                                    <label>فیلد ویجت گزارش :</label>
+                                <div class="col-sm-12 d-flex justify-content-between">
+                                    <span>فیلد ویجت گزارش :</span>
                                     <span class="bg-warning">
                                     <?= $pageWidget->report_widget_field ?>
-                                </span>
+                                    </span>
                                 </div>
                             </div>
                             <div class="text-center text-info">
