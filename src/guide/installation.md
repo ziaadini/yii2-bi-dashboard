@@ -2,13 +2,17 @@
 
 Before installing and using the bidashboard, ensure you have the following prerequisites installed:
 
-1. **PHP**: Ensure you have PHP installed on your server or local machine. The bidashboard is built for the Yii2 framework, which requires PHP to be set up.
+1. **PHP**: Ensure you have PHP installed on your server or local machine. The bidashboard is built for the Yii2
+   framework, which requires PHP to be set up.
 
 2. **Yii Framework 2.0**: Make sure you have the Yii framework version 2.0 (or higher) installed on your system.
 
-3. **Composer**: The preferred way to install the bidashboard extension is through Composer. Make sure you have Composer installed. If you don't have Composer yet, you can download it from [getcomposer.org](http://getcomposer.org/download/).
+3. **Composer**: The preferred way to install the bidashboard extension is through Composer. Make sure you have Composer
+   installed. If you don't have Composer yet, you can download it
+   from [getcomposer.org](http://getcomposer.org/download/).
 
-4. **Other Dependencies**: The bidashboard extension may have other dependencies listed in the `composer.json` file, such as Yii2 Bootstrap, Kartik Grid, and others. Ensure these dependencies are installed as well.
+4. **Other Dependencies**: The bidashboard extension may have other dependencies listed in the `composer.json` file,
+   such as Yii2 Bootstrap, Kartik Grid, and others. Ensure these dependencies are installed as well.
 
 ### Installation
 
@@ -50,7 +54,16 @@ Or, Add migrations path in console application config:
         ],
     ],
 ],
+
+
+
+
 ```
+
+## Handling PersianDate4MySQL in Migrations
+
+The [PersianDate4MySQL](https://github.com/zoghal/PersianDate4MySQL) library is used to handle Persian (Jalali) dates in MySQL migrations. The library provides six
+handy functions that enable you to work with Persian dates seamlessly.
 ## License
 
 BSD 3-Clause License
