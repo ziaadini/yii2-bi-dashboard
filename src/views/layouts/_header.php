@@ -8,15 +8,17 @@ use yii\web\View;
 ?>
 <header class="topbar custom_background_color2">
     <nav class="navbar top-navbar navbar-expand-md navbar-dark">
-        <div class="navbar-header custom_background_color2">
+        <div class="navbar-header">
             <!-- This is for the sidebar toggle which is visible on mobile only -->
             <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)">
                 <i class="fal fa-bars"></i></a>
             <a class="navbar-brand" href="<?= Url::to(['/site/index']) ?>">
                 <!-- Logo icon -->
                 <b class="logo-icon">
-                    <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                    <img src="img/BI.png">
+                    <?= Html::img('https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/BI.png', ['style' => 'background-color: white; height: 20px;','href'=>'javascript:void(0)','id'=>'logo-close']) ?>
+<!--                    --><?php //= Html::img('https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/BI.png', ['style' => 'background-color: white; height: 50px;','href'=>'javascript:void(0)','id'=>'logo-expand']) ?>
+
+                    <img src="" height="20px" style="background-color: white">
                 </b>
                 <!--End Logo icon -->
             </a>
