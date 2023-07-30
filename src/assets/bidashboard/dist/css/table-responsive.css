@@ -1,0 +1,114 @@
+@media only screen and (max-width: 800px) {
+    /* Force table to not be like tables anymore */
+    .t-responsive table,
+    .t-responsive thead,
+    .t-responsive tbody,
+    .t-responsive tfoot,
+    .t-responsive thead th,
+    .t-responsive tbody td,
+    .t-responsive tr {
+        display: block;
+    }
+
+    /*****************  Table Header *****************/
+    .t-responsive thead tr {display: none;}
+
+    /*****************  Table Body *****************/
+    .t-responsive tbody tr { border: 1px solid #ccc;margin: 10px 0; background-color: #fff !important; }
+    .t-responsive.table-header tbody tr { border: 1px solid #2cabe39c;margin: 10px 0; background-color: #2cabe317 !important; }
+    .t-responsive tbody tr:first-child {margin-top: 0; }
+    .t-responsive.hide-first-rows tbody tr td:first-child { display: none !important; }
+
+    .t-responsive tbody td {
+        /* Behave like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-right: 50% !important;
+        white-space: normal;
+        text-align:right;
+        min-height: 40px;
+    }
+
+
+    .t-responsive tbody td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 10px;
+        right: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align:right;
+        font-weight: bold;
+    }
+
+    /*
+    Label the data
+    */
+    .t-responsive tbody td:before { content: attr(data-title); }
+
+
+    /*****************  Table Footer *****************/
+    .t-responsive tfoot
+    {
+
+        float: right;
+        width: 100%;
+        background-color: #2cabe3;
+        color: #f1f1f1;
+    }
+    .t-responsive tfoot.fixed{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 555;
+        webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+        box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+    .t-responsive tfoot tr
+    {
+        clear: both;
+        margin: 6px 0;
+        border-radius: 0 !important;
+    }
+
+    .t-responsive tfoot td {
+        /* Behave like a "row" */
+        display: block;
+        float: right;
+
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        width: 50%;
+        white-space: normal;
+        text-align:right;
+        border-radius: 0 !important;
+    }
+
+    .index .card {
+        border: 0 !important;
+        background-color: inherit !important;
+    }
+    .index .card .card-body {
+        padding: 0 !important;
+    }
+}
+
+#footer-fixed{
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    left: 0;
+    bottom: 0;
+    background-color: #f8f7f5;
+    border-right: 5px solid #ff766c;
+    border-left: 5px solid #ff766c;
+    webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+#footer-fixed h2{margin: 5px 0;font-size: 40px;}
+#footer-fixed .btn{margin: 10px 0;}
+

@@ -5,11 +5,11 @@ use sadi01\bidashboard\models\SharingPage;
 use sadi01\dateRangePicker\dateRangePicker;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var \sadi01\bidashboard\models\SharingPageSearch $model */
-/** @var yii\widgets\ActiveForm $form */
+/** @var ActiveForm $form */
 ?>
 
 <div class="sharing-page-search">
@@ -26,33 +26,6 @@ use yii\widgets\ActiveForm;
                 ArrayHelper::map(SharingPage::itemAlias('List'), 'id', 'title'),
                 ['prompt' => 'Select a page']
             ) ?>
-        </div>
-        <div class="col-3">
-            <?= $form->field($model, 'expire_time')->widget(dateRangePicker::class,[
-                'options'  => [
-                    'drops' => 'down',
-                    'placement' => 'right',
-                    'opens' => 'left',
-                    'language' => 'fa',
-                    'jalaali'=> true,
-                    'showDropdowns'=> true,
-                    'singleDatePicker' => true,
-                    'useTimestamp' => true,
-                    'timePicker' => true,
-                    'timePicker24Hour' => true,
-                    'timePickerSeconds' => true,
-                    'locale'=> [
-                        'format' => 'jYYYY/jMM/jDD HH:mm:ss',
-
-                    ],
-                ],
-                'htmlOptions' => [
-                    'class'	=> 'form-control',
-                    'id' => 'from_date_time',
-                    'autocomplete' => 'off',
-                ]
-            ]);
-            ?>
         </div>
     </div>
     <div class="form-group">

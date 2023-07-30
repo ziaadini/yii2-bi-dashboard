@@ -59,7 +59,6 @@ class CoreHelper
 
     public static function getCurrentYear()
     {
-//        dd("fkfjkf");
         return self::getYear();
     }
 }
