@@ -65,6 +65,7 @@ Or, Add migrations path in console application config:
 
 How To Use
 -------------
+add to view model:
 
 ```php
 use sadi01\bidashboard\widgets\ReportModalWidget;
@@ -76,3 +77,25 @@ use sadi01\bidashboard\widgets\ReportModalWidget;
     'searchModelFormName' => $searchModelFormName,
 ]) ?>
 ```
+
+add to search model:
+
+```php
+public function searchWidget(string $params,int $rangeType,int $startRange,int $endRange)
+{
+    $query = Invoice::find();
+    $query->andFilterWhere(['between', 'updated_at', $startRange, $endRange]);
+    if ($rangeType == ReportWidget::RANGE_TYPE_MONTHLY) {
+    ...
+     }
+    elseif ($rangeType == ReportWidget::RANGE_TYPE_DAILY) {
+    ...    
+    }
+    $dataProvider = new ActiveDataProvider([
+        'query' => $query,
+    ]);
+    $this->load($params);
+    return $dataProvider;
+}
+```
+[more details](https://github.com/Sadi01/yii2-bi-dashboard/guide/usage)
