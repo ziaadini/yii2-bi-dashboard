@@ -1,6 +1,3 @@
-# Bidashboard
-
-**Bidashboard** is a data visualization dashboard designed to provide insights into key metrics and data for business intelligence purposes. It allows users to monitor and analyze various aspects of their business in real-time through interactive charts and graphs.
 <p align="center">
     <a href="https://en.wikipedia.org/wiki/Business_intelligence" target="_blank" rel="external">
         <img src="https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/yii.png" height="80px">
@@ -11,6 +8,10 @@
     <h1 align="center">Business intelligence dashboard for Yii 2</h1>
     <br>
 </p>
+
+# Bidashboard
+
+**Bidashboard** is a data visualization dashboard designed to provide insights into key metrics and data for business intelligence purposes. It allows users to monitor and analyze various aspects of their business in real-time through interactive charts and graphs.
 
 This extension provides the Business Intelligence Dashboard for the [Yii framework 2.0](http://www.yiiframework.com).
 
