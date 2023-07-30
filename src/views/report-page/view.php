@@ -151,9 +151,9 @@ $year = Yii::$app->request->get('year', null);
                 <tr>
                     <th style="width: 17%">
                         <div class="border-bottom">
-                            <?= Html::a('<i class="mdi mdi-launch"></i>', [$pageWidget->widget->getModelRoute()], ['target' => '_blank']) ?>
+                            <?= Html::a('<i class="fa fa-link"></i>', [$pageWidget->widget->getModelRoute()], ['target' => '_blank']) ?>
 
-                            <?= Html::a('<i class="mdi mdi-reload"></i>', 'javascript:void(0)',
+                            <?= Html::a('<i class="fa fa-refresh"></i>', 'javascript:void(0)',
                                 [
                                     'title' => Yii::t('yii', 'reload'),
                                     'aria-label' => Yii::t('yii', 'reload'),
@@ -163,7 +163,7 @@ $year = Yii::$app->request->get('year', null);
                                     'class' => " p-jax-btn btn-sm text-info",
                                     'data-title' => Yii::t('yii', 'reload'),
                                 ]); ?>
-                            <?= Html::a('<i class="mdi mdi-pencil"></i>', "javascript:void(0)",
+                            <?= Html::a('<i class="fa fa-pen"></i>', "javascript:void(0)",
                                 [
                                     'data-pjax' => '0',
                                     'class' => "btn btn-sm text-info",
@@ -177,7 +177,7 @@ $year = Yii::$app->request->get('year', null);
                                     'data-reload-pjax-container' => 'p-jax-report-page-add',
                                     'data-reload-pjax-container-on-show' => 0
                                 ]) ?>
-                            <?= Html::a('<i class="mdi mdi-delete"></i>', 'javascript:void(0)',
+                            <?= Html::a('<i class="fa fa-trash"></i>', 'javascript:void(0)',
                                 [
                                     'title' => Yii::t('yii', 'delete'),
                                     'aria-label' => Yii::t('yii', 'delete'),

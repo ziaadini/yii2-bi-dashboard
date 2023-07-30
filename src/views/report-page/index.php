@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <h4 class="panel-title">
                     <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion"
                        href="#collapseSearch" aria-expanded="false">
-                        <i class="mdi mdi-search-web"></i> جستجو
+                        <i class="fa fa-search"></i> جستجو
                     </a>
                 </h4>
                 <div>
@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'template' => '{update} {delete} {view}',
                             'buttons' => [
                                 'delete' => function ($url, ReportPage $model, $key) {
-                                    return Html::a('<i class="mdi mdi-delete"></i>', 'javascript:void(0)', [
+                                    return Html::a('<i class="fa fa-trash"></i>', 'javascript:void(0)', [
                                         'title' => Yii::t('yii', 'Delete'),
                                         'aria-label' => Yii::t('yii', 'Delete'),
                                         'data-reload-pjax-container' => 'p-jax-report-page',
@@ -87,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ]);
                                 },
                                 'update' => function ($url, ReportPage $model, $key) {
-                                    return Html::a('<i class="mdi mdi-update"></i>', "javascript:void(0)",
+                                    return Html::a('<i class="fa fa-pen"></i>', "javascript:void(0)",
                                         [
                                             'data-pjax' => '0',
                                             'class' => "btn text-primary",
