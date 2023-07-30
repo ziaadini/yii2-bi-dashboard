@@ -1,7 +1,7 @@
 
 ## Usage
 
-Use consists of two parts:
+Usage consists of two parts:
 Query section and widget section
 
 - The Query section: creating a query that returns data from the database, this part must be implemented in the search model
