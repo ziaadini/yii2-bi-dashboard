@@ -3,6 +3,13 @@
 The bidashboard project includes several routes that serve different purposes. Here's an overview of each route and what
 it does:
 
+- `/bidashboard/`:
+    - Purpose: This is the main page route of the bidashboard. It serves as the landing page when users access the
+      bidashboard application.
+    - Description: When users navigate to the base URL `/bidashboard/`, they are directed to the main page of the
+      bidashboard. This page may provide an overview of key metrics, general dashboard information, or a customizable
+      dashboard layout with widgets and data visualizations. From this main page, users can access various other routes
+      and functionalities of the bidashboard.
 - `/bidashboard/report-widget`:
     - Purpose: This route displays widgets on the dashboard. Widgets are small, self-contained data visualizations or
       components that provide a quick overview of key metrics.
