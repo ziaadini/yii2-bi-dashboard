@@ -70,11 +70,11 @@ return [
 
 Guides
 -------------
-- [Installation Guide](./src/guide/installation.md): Provides detailed instructions on how to install the bidashboard extension using Composer and alternative methods.
+- [Installation Guide](./src/guide/installation.md)
 
-- [Routes Guide](./src/guide/routes.md): Explains the purpose and functionalities of various routes in the bidashboard application.
+- [Description Guide](./src/guide/description.md)
 
-- [Usage Guide](./src/guide/usage.md): Offers a comprehensive overview of how to use the bidashboard extension, including how to configure the module and leverage its features.
+- [Usage Guide](./src/guide/usage.md)
 
 
 
