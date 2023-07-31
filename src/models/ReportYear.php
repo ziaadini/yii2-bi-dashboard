@@ -2,7 +2,7 @@
 
 namespace sadi01\bidashboard\models;
 
-use sadi01\bidashboard\helper\CoreHelper;
+use sadi01\bidashboard\helpers\CoreHelper;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
