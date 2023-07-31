@@ -3,9 +3,9 @@
 use sadi01\bidashboard\models\ReportYear;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\Pjax;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
-use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
 /** @var sadi01\bidashboard\models\ReportYearSearch $searchModel */
@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <h4 class="panel-title">
                     <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion"
                        href="#collapseSearch" aria-expanded="false">
-                        <i class="mdi mdi-search-web"></i> جستجو
+                        <i class="fa fa-search"></i> جستجو
                     </a>
                 </h4>
                 <div>
@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template' => '{update} {delete}',
                     'buttons' => [
                         'delete' => function ($url, ReportYear $model, $key) {
-                            return Html::a('<i class="mdi mdi-delete"></i>', 'javascript:void(0)', [
+                            return Html::a('<i class="fa fa-trash"></i>', 'javascript:void(0)', [
                                 'title' => Yii::t('yii', 'Delete'),
                                 'aria-label' => Yii::t('yii', 'Delete'),
                                 'data-reload-pjax-container' => 'p-jax-report-year',
@@ -79,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]);
                         },
                         'update' => function ($url, ReportYear $model, $key) {
-                            return Html::a('<i class="mdi mdi-update"></i>', "javascript:void(0)",
+                            return Html::a('<i class="fa fa-pen"></i>', "javascript:void(0)",
                                 [
                                     'data-pjax' => '0',
                                     'class' => "btn text-primary",

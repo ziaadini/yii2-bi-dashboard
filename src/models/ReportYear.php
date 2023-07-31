@@ -81,10 +81,10 @@ class ReportYear extends \yii\db\ActiveRecord
         return $query;
     }
 
-    public static function getDb()
-    {
-        return Yii::$app->biDB;
-    }
+//    public static function getDb()
+//    {
+//        return Yii::$app->biDB;
+//    }
 
     public static function itemAlias($type, $code = NULL)
     {

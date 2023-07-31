@@ -1,11 +1,12 @@
 <?php
 
 use sadi01\bidashboard\models\SharingPage;
-use yii\grid\ActionColumn;
-use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
+use yii\grid\ActionColumn;
+use yii\grid\GridView;
+
 
 /** @var yii\web\View $this */
 /** @var \sadi01\bidashboard\models\SharingPageSearch $searchModel */
@@ -22,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <h4 class="panel-title">
                     <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion"
                        href="#collapseSearch" aria-expanded="false">
-                        <i class="mdi mdi-search-web"></i> جستجو
+                        <i class="fa fa-search"></i> جستجو
                     </a>
                 </h4>
                 <div>
@@ -78,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     'buttons' => [
                         'delete' => function ($url, SharingPage $model, $key) {
-                            return Html::a('<i class="mdi mdi-delete"></i>', 'javascript:void(0)', [
+                            return Html::a('<i class="fa fa-trash"></i>', 'javascript:void(0)', [
                                 'title' => Yii::t('yii', 'Delete'),
                                 'aria-label' => Yii::t('yii', 'Delete'),
                                 'data-reload-pjax-container' => 'p-jax-sharing-page',
@@ -90,7 +91,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]);
                         },
                         'update' => function ($url, SharingPage $model, $key) {
-                            return Html::a('<i class="mdi mdi-update"></i>', "javascript:void(0)",
+                            return Html::a('<i class="fa fa-pen"></i>', "javascript:void(0)",
                                 [
                                     'data-pjax' => '0',
                                     'class' => "btn text-primary",
@@ -105,10 +106,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             );
                         },
                         'view' => function ($url, SharingPage $model, $key) {
-                            return Html::a('<i class="mdi mdi-eye"></i>', "javascript:void(0)",
+                            return Html::a('<i class="fa fa-eye"></i>', "javascript:void(0)",
                                 [
                                     'data-pjax' => '0',
-                                    'class' => "btn text-primary",
+                                    'class' => "btn text-info",
                                     'data-size' => 'modal-xl',
                                     'data-title' => Yii::t('app', 'view'),
                                     'data-toggle' => 'modal',
@@ -120,7 +121,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             );
                         },
                         'expire' => function ($url, SharingPage $model, $key) {
-                            return Html::a('<i class="mdi mdi-reload"></i>', 'javascript:void(0)', [
+                            return Html::a('<i class="fa fa-times-circle"></i>', 'javascript:void(0)', [
                                 'title' => Yii::t('yii', 'Expired'),
                                 'aria-label' => Yii::t('yii', 'Expired'),
                                 'data-reload-pjax-container' => 'p-jax-sharing-page',

@@ -32,7 +32,7 @@ class Bootstrap implements BootstrapInterface
                 'basePath' => __DIR__ . '/messages',
                 'sourceLanguage' => 'en-US',
                 'fileMap' => [
-                    'biDashboard' => 'main.php',
+                    'biDashboard' => 'bid_main.php',
                 ],
             ];
         }

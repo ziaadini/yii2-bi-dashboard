@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <h4 class="panel-title">
                     <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion"
                        href="#collapseSearch" aria-expanded="false">
-                        <i class="mdi mdi-search-web"></i> جستجو
+                        <i class="fa fa-search"></i> جستجو
                     </a>
                 </h4>
             </div>

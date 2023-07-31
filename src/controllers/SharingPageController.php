@@ -2,12 +2,10 @@
 
 namespace sadi01\bidashboard\controllers;
 
-use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\SharingPage;
 use sadi01\bidashboard\models\SharingPageSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use Yii;
-use yii\base\Exception;
 use Yii\base\ExitException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -102,7 +100,7 @@ class SharingPageController extends Controller
      * @return string|\yii\web\Response
      * @throws ExitException
      */
-    public function actionCreate(): \yii\web\Response|string
+    public function actionCreate(): Response|string
     {
         $model = new SharingPage();
         if ($this->request->isPost) {
