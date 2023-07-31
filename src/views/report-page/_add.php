@@ -8,6 +8,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\web\View;
 use yii\helpers\Url;
+use kartik\depdrop\DepDrop;
 
 
 /** @var yii\web\View $this */

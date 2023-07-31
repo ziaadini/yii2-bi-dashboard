@@ -29,6 +29,10 @@ class ReportYear extends \yii\db\ActiveRecord
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
 
+    public static function getDb()
+    {
+        return Yii::$app->biDB;
+    }
     /**
      * {@inheritdoc}
      */

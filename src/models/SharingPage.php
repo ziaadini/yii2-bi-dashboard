@@ -9,6 +9,7 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
+use sadi01\bidashboard\models\ReportPage;
 
 /**
  * This is the model class for table "sharing_page".
@@ -38,6 +39,10 @@ class SharingPage extends \yii\db\ActiveRecord
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
 
+    public static function getDb()
+    {
+        return Yii::$app->biDB;
+    }
     /**
      * {@inheritdoc}
      */

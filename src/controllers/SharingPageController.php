@@ -2,6 +2,7 @@
 
 namespace sadi01\bidashboard\controllers;
 
+use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\SharingPage;
 use sadi01\bidashboard\models\SharingPageSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
@@ -175,10 +176,10 @@ class SharingPageController extends Controller
     public function actionManagement($id): Response|string
     {
         $page = $this->findModelPage($id);
-
         $share_page_model = new SharingPage([
             'page_id' => $page->id,
         ]);
+
         #function to get accesskeys of one page
         $page_model = $page->sharingKeys;
         if ($share_page_model->load(Yii::$app->request->post()) && $share_page_model->save()) {

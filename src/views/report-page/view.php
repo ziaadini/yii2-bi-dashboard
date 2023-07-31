@@ -52,9 +52,9 @@ $pdate = Yii::$app->pdate;
                         <div class="d-flex justify-content-end">
                             <div class="px-1">
                                 <select name="year" class="form-control" onchange="this.form.submit()">
-                                    <option value="1402" <?= $year == '1402' ? 'selected' : '' ?> >1402</option>
-                                    <option value="1401" <?= $year == '1401' ? 'selected' : '' ?> >1401</option>
-                                    <option value="1400" <?= $year == '1400' ? 'selected' : '' ?> >1400</option>
+                                    <?php foreach (ReportYear::itemAlias('List') as $Year): ?>
+                                        <option <?= $Year ?> <?= $year == $Year ? 'selected' : '' ?> ><?= $Year?></option>
+                                    <?php endforeach;?>
                                 </select>
                             </div>
                             <?php if ($model->range_type == $model::RANGE_DAY): ?>
@@ -154,7 +154,7 @@ $pdate = Yii::$app->pdate;
                         <th style="width: 17%">
                             <div class="border-bottom">
 
-                                <?= Html::a('<i class="mdi mdi-chart-line"></i>', "javascript:void(0)",
+                                <?= Html::a('<i class="fa fa-chart-line"></i>', "javascript:void(0)",
                                     [
                                         'data-pjax' => '0',
                                         'class' => "btn btn-sm text-info",
@@ -169,9 +169,9 @@ $pdate = Yii::$app->pdate;
                                         'data-reload-pjax-container-on-show' => 0
                                     ]) ?>
 
-                                <?= Html::a('<i class="mdi mdi-launch"></i>', [$pageWidget->widget->getModelRoute()], ['target' => '_blank']) ?>
+                                <?= Html::a('<i class="fa fa-link"></i>', [$pageWidget->widget->getModelRoute()], ['target' => '_blank']) ?>
 
-                                <?= Html::a('<i class="mdi mdi-reload"></i>', 'javascript:void(0)',
+                                <?= Html::a('<i class="fa fa-refresh" aria-hidden="true"></i>', 'javascript:void(0)',
                                     [
                                         'title' => Yii::t('yii', 'reload'),
                                         'aria-label' => Yii::t('yii', 'reload'),
@@ -181,7 +181,7 @@ $pdate = Yii::$app->pdate;
                                         'class' => " p-jax-btn btn-sm text-info",
                                         'data-title' => Yii::t('yii', 'reload'),
                                     ]); ?>
-                                <?= Html::a('<i class="mdi mdi-pencil"></i>', "javascript:void(0)",
+                                <?= Html::a('<i class="fa fa-pencil"></i>', "javascript:void(0)",
                                     [
                                         'data-pjax' => '0',
                                         'class' => "btn btn-sm text-info",
@@ -195,7 +195,7 @@ $pdate = Yii::$app->pdate;
                                         'data-reload-pjax-container' => 'p-jax-report-page-add',
                                         'data-reload-pjax-container-on-show' => 0
                                     ]) ?>
-                                <?= Html::a('<i class="mdi mdi-delete"></i>', 'javascript:void(0)',
+                                <?= Html::a('<i class="fa fa-trash"></i>', 'javascript:void(0)',
                                     [
                                         'title' => Yii::t('yii', 'delete'),
                                         'aria-label' => Yii::t('yii', 'delete'),
