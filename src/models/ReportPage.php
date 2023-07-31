@@ -48,7 +48,7 @@ class ReportPage extends ActiveRecord
 
     public static function tableName()
     {
-        return 'report_page';
+        return '{{%report_page}}';
     }
 
     /**
@@ -100,6 +100,11 @@ class ReportPage extends ActiveRecord
             ->viaTable('report_page_widget', ['page_id' => 'id']);
     }
 
+    public function getSharingKeys()
+    {
+        return $this->hasMany(SharingPage::class, ['page_id' => 'id']);
+    }
+
     /**
      * {@inheritdoc}
      * @return ReportPageQuery the active query used by this AR class.
@@ -138,6 +143,7 @@ class ReportPage extends ActiveRecord
                 self::STATUS_INACTIVE => '#eea236',
             ],
         ];
+
         if (isset($code))
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
         else

@@ -4,6 +4,7 @@ use Yii;
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageWidget;
 use sadi01\bidashboard\models\ReportWidgetResult;
+use sadi01\bidashboard\models\ReportYear;
 use yii\helpers\Html;
 use yii\helpers\Time;
 use yii\helpers\Url;
@@ -19,6 +20,7 @@ use yii\widgets\Pjax;
  * @var $startRange int
  * @var $endRange int
  * @var $rangeDateNumber int
+ * @var  ReportYear $years
  */
 
 $this->title = $model->title;

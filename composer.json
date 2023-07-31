@@ -47,6 +47,8 @@
   },
   "require-dev": {
 
+    "kartik-v/yii2-widget-depdrop": "@dev",
+    "sadi01/yii2-daterangepicker": "*"
   },
   "autoload": {
     "psr-4": { "sadi01\\bidashboard\\": "src" }
@@ -55,6 +57,9 @@
     "process-timeout": 1800,
     "fxp-asset": {
       "enabled": false
+    },
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true
     }
   },
   "repositories": [

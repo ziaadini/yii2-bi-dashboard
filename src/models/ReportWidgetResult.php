@@ -58,7 +58,7 @@ class ReportWidgetResult extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'report_widget_result';
+        return '{{%report_widget_result}}';
     }
 
     /**

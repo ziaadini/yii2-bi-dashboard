@@ -87,11 +87,11 @@ $(function () {
                     contentType: false,
                     type: 'POST',
                     success: function (data) {
-                        if (data.success === true) {
+                        if (data.status === true) {
                             swal({
                                 position: 'top-end',
                                 timer: 2000,
-                                title: "<span class='text-success'>" + data.msg + "</span>",
+                                title: "<span class='text-success'>" + data.message + "</span>",
                                 type: "success",
                                 background: '#d4edda',
                                 showConfirmButton: false,
@@ -125,11 +125,11 @@ $(function () {
                                 $form[0].reset();
                             }
 
-                        } else if (data.success === false) {
+                        } else if (data.status === false) {
                             swal({
                                 position: 'top-end',
                                 timer: 2000,
-                                title: "<span class='text-danger'>" + data.msg + "</span>",
+                                title: "<span class='text-danger'>" + data.message + "</span>",
                                 type: "error",
                                 background: '#f8d7da',
                                 showConfirmButton: false,
@@ -265,11 +265,11 @@ $(function () {
                     contentType: false,
                     type: 'POST',
                     success: function (data) {
-                        if (data.success === true) {
+                        if (data.status === true) {
                             swal({
                                 position: 'top-end',
                                 timer: 2000,
-                                title: "<span class='text-success'>" + data.msg + "</span>",
+                                title: "<span class='text-success'>" + data.message + "</span>",
                                 type: "success",
                                 background: '#d4edda',
                                 showConfirmButton: false,
@@ -298,11 +298,11 @@ $(function () {
                             if (redirect !== undefined || data.redirect) {
                                 window.location.replace(data.url);
                             }
-                        } else if (data.success === false) {
+                        } else if (data.status === false) {
                             swal({
                                 position: 'top-end',
                                 timer: 2000,
-                                title: "<span class='text-danger'>" + data.msg + "</span>",
+                                title: "<span class='text-danger'>" + data.message + "</span>",
                                 type: "error",
                                 background: '#f8d7da',
                                 showConfirmButton: false,

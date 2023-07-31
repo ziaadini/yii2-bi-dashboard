@@ -5,8 +5,8 @@ namespace sadi01\bidashboard\models;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
-use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use yii\db\ActiveRecord;
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
 
 /**
  * This is the model class for table "report_page_widget".
@@ -44,7 +44,7 @@ class ReportPageWidget extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'report_page_widget';
+        return '{{%report_page_widget}}';
     }
 
     /**

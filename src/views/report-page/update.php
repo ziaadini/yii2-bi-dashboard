@@ -15,12 +15,16 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Report Pages'), 'url
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
-<div class="report-page-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
+<div class="report-widget-create">
+    <div class="page-content container-fluid text-left ">
+        <div class="work-report-index ">
+            <div class="panel-group m-bot20" id="accordion">
+                <div class="card-body">
+                    <?= $this->render('_form', [
+                        'model' => $model,
+                    ]) ?>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

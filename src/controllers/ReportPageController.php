@@ -63,7 +63,7 @@ class ReportPageController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $searchModel = new ReportPageSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -123,15 +123,15 @@ class ReportPageController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|Response
      */
-    public function actionCreate()
+    public function actionCreate(): Response|string
     {
         $model = new ReportPage();
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->validate()) {
                 $model->save();
                 return $this->asJson([
-                    'success' => true,
-                    'msg' => Yii::t("app", 'Success')
+                    'status' => true,
+                    'message' => Yii::t("app", 'Item Saved')
                 ]);
             }
         } else {
@@ -150,14 +150,14 @@ class ReportPageController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): Response|string
     {
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->validate() && $model->save()) {
             return $this->asJson([
-                'success' => true,
-                'msg' => Yii::t("app", 'Success')
+                'status' => true,
+                'message' => Yii::t("app", 'Item Updated')
             ]);
         }
 
@@ -179,34 +179,43 @@ class ReportPageController extends Controller
         $model = $this->findModel($id);
 
         if ($model->canDelete() && $model->softDelete()) {
-
-            $this->flash('success', Yii::t('app', 'Item Deleted'));
-
+            return $this->asJson([
+                'status' => true,
+                'message' => Yii::t("app", 'Item Deleted')
+            ]);
         } else {
-
-            $this->flash('error', $model->errors ? array_values($model->errors)[0][0] : Yii::t('app', 'Error In Delete Action'));
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t("app", 'Error In Delete')
+            ]);
         }
 
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the ReportPage model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return ReportPage the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
+    public function actionUpdateWidget($id): Response|string
     {
-        if (($model = ReportPage::findOne(['id' => $id])) !== null) {
-            return $model;
+        $model = ReportPageWidget::find()->where(['widget_id' => $id])->one();
+        $add_on = json_decode($model->widget->add_on["outputColumn"]);
+
+        foreach ($add_on as $value) {
+            $column_name[$value->column_name] = $value->column_title;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->validate() && $model->save()) {
+            return $this->asJson([
+                'status' => true,
+                'message' => Yii::t("app", 'Success')
+            ]);
+        }
+        $this->performAjaxValidation($model);
+        return $this->renderAjax('_edit', [
+            'model' => $model,
+            'column_name' => $column_name,
+        ]);
     }
 
-    public function actionAdd($id)
+    public function actionAdd($id): Response|string
     {
         $model = new ReportPageWidget();
         $page = $this->findModel($id);
@@ -216,13 +225,14 @@ class ReportPageController extends Controller
             if ($model->load($this->request->post()) && $model->validate()) {
                 if ($model->save(false)) {
                     return $this->asJson([
-                        'success' => true,
-                        'msg' => Yii::t("app", 'Success')
+                        'status' => true,
+                        'message' => Yii::t("app", 'Success')
                     ]);
+
                 } else {
                     return $this->asJson([
-                        'success' => false,
-                        'msg' => Yii::t("app", 'fail')
+                        'status' => false,
+                        'message' => Yii::t("app", 'fail')
                     ]);
                 }
             }
@@ -237,11 +247,6 @@ class ReportPageController extends Controller
             'page' => $page,
             'widgets' => $widgets,
         ]);
-    }
-
-    private function flash($type, $message)
-    {
-        Yii::$app->getSession()->setFlash($type == 'error' ? 'danger' : $type, $message);
     }
 
     /** @var $widget ReportWidget */
@@ -295,4 +300,24 @@ class ReportPageController extends Controller
         ]);
     }
 
+    /**
+     * Finds the ReportPage model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param int $id ID
+     * @return ReportPage the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id): ReportPage
+    {
+        if (($model = ReportPage::findOne(['id' => $id])) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    private function flash($type, $message): void
+    {
+        Yii::$app->getSession()->setFlash($type == 'error' ? 'danger' : $type, $message);
+    }
 }
