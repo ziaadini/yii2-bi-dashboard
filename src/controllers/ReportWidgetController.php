@@ -210,16 +210,19 @@ class ReportWidgetController extends Controller
     public function actionModalShowChart($id,$field,$start_range=null,$end_range=null,$chart_type='line'){
         $model = $this->findModel($id);
         $runWidget= $model->lastResult($start_range,$end_range);
-        $result = $runWidget->result;
-        $result = array_reverse($result);
+        $result = array_reverse($runWidget->result);
+        $arrayResult = null;
+        $arrayTitle = null;
 
-        $arrayResult = array_map(function($item) use ($field) {
-            return (int)$item[$field];
-        }, $result);
+        if ($result){
+            $arrayResult = array_map(function($item) use ($field) {
+                return (int)$item[$field];
+            }, $result);
 
-        $arrayTitle = array_map(function($item) {
-            return $item["month_name"];
-        }, $result);
+            $arrayTitle = array_map(function($item) {
+                return $item["month_name"];
+            }, $result);
+        }
 
         if ($chart_type == ReportWidgetResult::CHART_PIE){
             $result_pie = [];
