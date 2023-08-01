@@ -171,7 +171,7 @@ $pdate = Yii::$app->pdate;
 
                                 <?= Html::a('<i class="fa fa-external-link fa-lg"></i>', [$pageWidget->widget->getModelRoute()], ['target' => '_blank']) ?>
 
-                                <?= Html::a('<i class="fa fa-clock fa-lg" aria-hidden="true"></i>', 'javascript:void(0)',
+                                <?= Html::a('<i class="fa fa-clock fa-lg text-success" aria-hidden="true"></i>', 'javascript:void(0)',
                                     [
                                         'title' => Yii::t('yii', 'reload'),
                                         'aria-label' => Yii::t('yii', 'reload'),
@@ -181,7 +181,7 @@ $pdate = Yii::$app->pdate;
                                         'class' => " p-jax-btn btn-sm text-info",
                                         'data-title' => Yii::t('yii', 'reload'),
                                     ]); ?>
-                                <?= Html::a('<i class="fa fa-clock fa-lg text-success"></i>', "javascript:void(0)",
+                                <?= Html::a('<i class="fa fa-pencil fa-lg"></i>', "javascript:void(0)",
                                     [
                                         'data-pjax' => '0',
                                         'class' => "btn btn-sm text-info",
