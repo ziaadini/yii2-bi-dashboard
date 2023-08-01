@@ -154,7 +154,7 @@ $pdate = Yii::$app->pdate;
                         <th style="width: 17%">
                             <div class="border-bottom">
 
-                                <?= Html::a('<i class="fa fa-chart-line"></i>', "javascript:void(0)",
+                                <?= Html::a('<i class="fa fa-chart-line fa-lg"></i>', "javascript:void(0)",
                                     [
                                         'data-pjax' => '0',
                                         'class' => "btn btn-sm text-info",
@@ -169,9 +169,9 @@ $pdate = Yii::$app->pdate;
                                         'data-reload-pjax-container-on-show' => 0
                                     ]) ?>
 
-                                <?= Html::a('<i class="fa fa-link"></i>', [$pageWidget->widget->getModelRoute()], ['target' => '_blank']) ?>
+                                <?= Html::a('<i class="fa fa-external-link fa-lg"></i>', [$pageWidget->widget->getModelRoute()], ['target' => '_blank']) ?>
 
-                                <?= Html::a('<i class="fa fa-refresh" aria-hidden="true"></i>', 'javascript:void(0)',
+                                <?= Html::a('<i class="fa fa-refresh fa-lg" aria-hidden="true"></i>', 'javascript:void(0)',
                                     [
                                         'title' => Yii::t('yii', 'reload'),
                                         'aria-label' => Yii::t('yii', 'reload'),
@@ -181,7 +181,7 @@ $pdate = Yii::$app->pdate;
                                         'class' => " p-jax-btn btn-sm text-info",
                                         'data-title' => Yii::t('yii', 'reload'),
                                     ]); ?>
-                                <?= Html::a('<i class="fa fa-pencil"></i>', "javascript:void(0)",
+                                <?= Html::a('<i class="fa fa-pencil fa-lg"></i>', "javascript:void(0)",
                                     [
                                         'data-pjax' => '0',
                                         'class' => "btn btn-sm text-info",
@@ -195,7 +195,7 @@ $pdate = Yii::$app->pdate;
                                         'data-reload-pjax-container' => 'p-jax-report-page-add',
                                         'data-reload-pjax-container-on-show' => 0
                                     ]) ?>
-                                <?= Html::a('<i class="fa fa-trash"></i>', 'javascript:void(0)',
+                                <?= Html::a('<i class="fa fa-trash fa-lg"></i>', 'javascript:void(0)',
                                     [
                                         'title' => Yii::t('yii', 'delete'),
                                         'aria-label' => Yii::t('yii', 'delete'),
