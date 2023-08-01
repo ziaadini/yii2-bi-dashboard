@@ -86,7 +86,5 @@ $this->params['breadcrumbs'][] = $this->title;
             url: urlPjax,
             push: false,
         });
-        console.log('urlPjax');
-        console.log(urlPjax);
     }
 </script>
