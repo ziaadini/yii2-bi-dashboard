@@ -19,8 +19,8 @@ use yii\bootstrap4\ActiveForm;
     <div class="row">
         <div class="col-3">
             <?= $form->field($model, 'year')->dropDownList(
-                ArrayHelper::map(ReportYear::itemAlias('List'), 'id', 'title'),
-                ['prompt' => 'Select a page']
+                array_combine(ReportYear::itemAlias('List'), ReportYear::itemAlias('List')),
+                ['prompt' => 'Select a year']
             ) ?>
         </div>
     </div>

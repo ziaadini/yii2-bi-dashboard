@@ -171,7 +171,7 @@ $pdate = Yii::$app->pdate;
 
                                 <?= Html::a('<i class="fa fa-external-link fa-lg"></i>', [$pageWidget->widget->getModelRoute()], ['target' => '_blank']) ?>
 
-                                <?= Html::a('<i class="fa fa-clock fa-lg text-success" aria-hidden="true"></i>', 'javascript:void(0)',
+                                <?= Html::a('<i class="fa fa-history fa-lg text-success" aria-hidden="true"></i>', 'javascript:void(0)',
                                     [
                                         'title' => Yii::t('yii', 'reload'),
                                         'aria-label' => Yii::t('yii', 'reload'),
