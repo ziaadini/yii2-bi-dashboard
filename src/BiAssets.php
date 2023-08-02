@@ -17,15 +17,10 @@ class BiAssets extends AssetBundle
         'bidashboard/dist/css/sweetalert2.min.css',
         "bidashboard/dist/css/horizontal-timeline.css",
         "bidashboard/dist/css/custom.css",
-        "bidashboard/dist/css/leaflet.css",
         "bidashboard/dist/css/jalalidatepicker.min.css",
-        "https://unpkg.com/leaflet@1.9.3/dist/leaflet.css",
     ];
 
     public $js = [
-        'bidashboard/dist/js/jquery.sparkline.min.js',
-        'bidashboard/libs/jquery/dist/jquery.min.js',
-        'bidashboard/libs/bootstrap/dist/js/bootstrap.min.js',
         'bidashboard/dist/js/app.min.js',
         'bidashboard/dist/js/app-style-switcher.js',
         'bidashboard/dist/js/base.js',
@@ -47,7 +42,7 @@ class BiAssets extends AssetBundle
     ];
 
     public $depends = [
-        'yii\widgets\ActiveFormAsset',
-        'yii\validators\ValidationAsset',
+        'yii\web\YiiAsset',
+        'yii\bootstrap4\BootstrapPluginAsset',
     ];
 }

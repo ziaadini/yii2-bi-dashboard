@@ -101,9 +101,9 @@ class ReportYearController extends Controller
     public function actionCreate(): Response|string
     {
         $model = new ReportYear();
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                $model->save();
+
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save()) {
                 return $this->asJson([
                     'status' => true,
                     'message' => Yii::t("app", 'Success')
@@ -111,11 +111,9 @@ class ReportYearController extends Controller
             } else {
                 return $this->asJson([
                     'status' => false,
-                    'message' => Yii::t("app", 'Fails')
+                    'message' => Yii::t("app", 'Fail in Save')
                 ]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         $this->performAjaxValidation($model);
@@ -136,13 +134,19 @@ class ReportYearController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->asJson([
-                'status' => true,
-                'message' => Yii::t("app", 'Update Is Save')
-            ]);
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save()) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t("app", 'Success')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("app", 'Fail in Save')
+                ]);
+            }
         }
-
         $this->performAjaxValidation($model);
         return $this->renderAjax('update', [
             'model' => $model,

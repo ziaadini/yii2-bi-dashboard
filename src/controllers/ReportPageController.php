@@ -126,16 +126,18 @@ class ReportPageController extends Controller
     public function actionCreate(): Response|string
     {
         $model = new ReportPage();
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->validate()) {
-                $model->save();
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save()) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'Item Saved')
+                    'message' => Yii::t("app", 'Success')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("app", 'Fail in Save')
                 ]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
         $this->performAjaxValidation($model);
         return $this->renderAjax('create', [

@@ -104,16 +104,18 @@ class SharingPageController extends Controller
     public function actionCreate(): Response|string
     {
         $model = new SharingPage();
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                $model->save();
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save()) {
                 return $this->asJson([
                     'status' => true,
                     'message' => Yii::t("app", 'Success')
                 ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("app", 'Fail in Save')
+                ]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
         $this->performAjaxValidation($model);
         return $this->renderAjax('create', [
@@ -132,12 +134,18 @@ class SharingPageController extends Controller
     public function actionUpdate(int $id): Response|string
     {
         $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->asJson([
-                'status' => true,
-                'message' => Yii::t("biDashboard", 'Success')
-            ]);
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save()) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t("app", 'Success')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("app", 'Fail in Save')
+                ]);
+            }
         }
         $this->performAjaxValidation($model);
         return $this->renderAjax('update', [

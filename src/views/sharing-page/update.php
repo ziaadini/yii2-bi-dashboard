@@ -13,13 +13,10 @@ $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' 
 $this->params['breadcrumbs'][] = Yii::t('biDashboard', 'Update');
 ?>
 <div class="report-widget-create">
-    <div class="page-content container-fluid text-left">
+    <div class="page-content container-fluid text-left pt-5">
         <div class="work-report-index card">
             <div class="panel-group m-bot20" id="accordion">
-                <div class="card-body container">
-
-                    <h1><?= Html::encode($this->title) ?></h1>
-
+                <div class="card-body">
                     <?= $this->render('_form', [
                         'model' => $model,
                     ]) ?>

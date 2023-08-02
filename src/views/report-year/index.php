@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'data-pjax' => '0',
                             'class' => "btn btn-primary",
-                            'data-size' => 'modal-xl',
+                            'data-size' => 'modal-md',
                             'data-title' => Yii::t('app', 'create'),
                             'data-toggle' => 'modal',
                             'data-target' => '#modal-pjax',
