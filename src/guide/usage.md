@@ -115,12 +115,13 @@ example output query:
 
 
 ## Usage/widget section
-To use this widget, insert the following code into a view file:
+To use this widget, insert the following code into a index file:
 ```php
         <?= ReportModalWidget::widget([
             'queryParams' => $queryParams,
             'searchModel' => $searchModel,
-            'searchModelMethod' => $searchModelMethod,
+            'searchModelMethod' => $searchWidget,
+            'searchModelRunResultView' => $searchModelRunResultView,
             'searchRoute' => Yii::$app->request->pathInfo,
             'searchModelFormName' => $searchModelFormName,
             'outputColumn' => $outputColumn,
@@ -129,35 +130,39 @@ To use this widget, insert the following code into a view file:
 ```
 ## Parameters Reference
 
-| Parameter             | Type     | Description                                                                                       | example                           |
-|:----------------------|:---------|:--------------------------------------------------------------------------------------------------|:----------------------------------|
-| `queryParams`         | `array`  | **Required**                                                                                      | [example](https://github.com/)    |
-| `searchModel`         | `string` | **Required**                                                                                      | 'app\models\search\InvoiceSearch' |
-| `searchModelMethod`   | `string` | **Required**,The name of the function that was added to the search model in the part of your name | 'searchWidget'                    |
-| `searchRoute`         | `string` | **Required**                                                                                      | 'invoice/index'                   |
-| `searchModelFormName` | `string` | **Required**                                                                                      | 'InvoiceSearch'                   |
-| `outputColumn`        | `array`  | **Required**                                                                                      | [example](https://github.com/)    |
+| Parameter                    | Type     | Description                                                                                       | example                           |
+|:-----------------------------|:---------|:--------------------------------------------------------------------------------------------------|:----------------------------------|
+| `queryParams`                | `array`  | **Required**                                                                                      | [example](https://github.com/)    |
+| `searchModel`                | `string` | **Required**                                                                                      | 'app\models\search\InvoiceSearch' |
+| `searchModelMethod`          | `string` | **Required**,The name of the function that was added to the search model in the part of your name | 'searchWidget'                    |
+| `searchModelRunResultView`   | `string` | **Required**                                                                                      | 'view'                            |
+| `searchRoute`                | `string` | **Required**                                                                                      | 'invoice/index'                   |
+| `searchModelFormName`        | `string` | **Required**                                                                                      | 'InvoiceSearch'                   |
+| `outputColumn`               | `array`  | **Required**                                                                                      | [example](https://github.com/)    |
 
 ### queryParams ###
 > Search parameters in the model that are received as an array
 
 for example:
 ```php
-$queryParams = Yii::$app->request->getQueryParams();
+$queryParams = \Yii::$app->request->getQueryParams();
+if ($queryParams){
+    $queryParams = array_filter($queryParams['InvoiceSearch']);
+}
 ```
 ### searchModel ###
 > A string that contains the name of the class model that should be present in that database search method
 
 for example:
 ```php
-$searchModel = InvoiceSearch::class;
+$searchModel = new InvoiceSearch();
 ```
 ### searchModelMethod ###
 > A string that contains the name of the method that the widget should call and return
 
 for example:
 ```php
-$searchModelMethod = 'search';
+$searchWidget = 'searchWidget';
 ```
 ### searchRoute ###
 > A string containing the address of the page where the widget was created
@@ -178,13 +183,14 @@ $searchModelFormName = key(Yii::$app->request->getQueryParams());
 
 for example:
 ```php
+$outputColumn =
 [
     "day" => "روز",
     "year"=> "سال",
     "month"=> "ماه",
     "total_count"=> "تعداد",
-    "total_amount"=> "جمع‌کل",
-]
+    "total_amount"=> "جمع‌کل"
+];
 ```
 
 
