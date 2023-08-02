@@ -37,13 +37,11 @@ return [
     'Updated By' => 'آپدیت توسط',
     'Created By' => 'ایجاد توسط',
     'Are you sure you want to delete this item?' => 'آیا از حذف این مورد اطمینان دارید؟',
-
     'Create Report Widget' => 'ایجاد ویجت',
     'Save As Report Widget' => 'ایجاد ویجت',
     'Saved successfully' => 'با موفقیت ذخیره شد',
     'Report Widgets' => 'ویجت‌ها',
     'Update Report Widget: {name}' => 'ویرایش ویجت: {name}',
-
     'Daily' => 'روزانه',
     'Monthly' => 'ماهانه',
     'visibility' => 'نمایش',
@@ -55,30 +53,23 @@ return [
     'InActive' => 'غیرفعال',
     'Search' => 'جستجو',
     'Reset' => 'ریست',
-
     'add widget' => 'افزودن ویجت',
     'attribute' => 'ویژگی',
     'value' => 'مقدار',
-
     'Report Model Classes' => 'مدل کلاس های سیستم',
     'Create Report Model Class' => 'ایجاد مدل کلاس',
     'Update Report Model Class: {name}' => 'ویرایش مدل کلاس: {name}',
     'create' => 'ایجاد',
-
     'Select Status' => 'انتخاب وضعیت',
     'Select RANGE' => 'انتخاب دوره',
-
     'Report Widget Field Format' => 'نوع نمایش فیلد',
     'Number' => 'عدد',
     'Currency' => 'مبلغ',
-
     'run all widget' => 'اجرای تمام ویجت‌ها',
     'run' => 'اجرا',
     'Select widget' => 'انتخاب ویجت',
     'Widget' => 'ویجت',
-
     'Show' => 'نمایش',
-
     'Success' => 'موفق',
     "page-widget-form"=>"فرم ویجت",
     "range_type"=>"نوع",
@@ -105,5 +96,4 @@ return [
     'Chart pie' => 'نمودار دایره ای',
     'Chart area' => 'نمودار خطی محیطی',
     'Chart world cloud' => 'نمودار ابر کلمات',
-
 ];
