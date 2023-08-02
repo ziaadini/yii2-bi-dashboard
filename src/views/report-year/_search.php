@@ -1,5 +1,7 @@
 <?php
 
+use sadi01\bidashboard\models\ReportYear;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
 
@@ -16,7 +18,10 @@ use yii\bootstrap4\ActiveForm;
     ]); ?>
     <div class="row">
         <div class="col-3">
-            <?= $form->field($model, 'year') ?>
+            <?= $form->field($model, 'year')->dropDownList(
+                ArrayHelper::map(ReportYear::itemAlias('List'), 'id', 'title'),
+                ['prompt' => 'Select a page']
+            ) ?>
         </div>
     </div>
     <div class="form-group">

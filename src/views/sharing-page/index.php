@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'urlCreator' => function ($action, SharingPage $model, $key, $index, $column) {
                         return Url::toRoute([$action, 'id' => $model->id]);
                     },
-                    'template' => '{view} {update} {delete} {expire}', // Replace the default delete button with {custom-delete}
+                    'template' => '{view} {update} {delete} {expire}',
                     'visibleButtons' => [
                         'expire' => function (SharingPage $model) {
                             return ($model->isExpire());
