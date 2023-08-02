@@ -57,7 +57,11 @@ public function searchWidget(string $params,int $rangeType,int $startRange,int $
     $dataProvider = new ActiveDataProvider([
         'query' => $query,
     ]);
+    
+    $params = ['InvoiceSearch' => json_decode($params,true)];
     $this->load($params);
+    $query->andFilterWhere(['like', 'title', $this->title]);
+    
     return $dataProvider;
 }
 
@@ -126,7 +130,6 @@ To use this widget, insert the following code into a index file:
             'searchModelFormName' => $searchModelFormName,
             'outputColumn' => $outputColumn,
         ]) ?>
-
 ```
 ## Parameters Reference
 
