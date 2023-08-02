@@ -164,6 +164,14 @@ for example:
 ```php
 $searchWidget = 'searchWidget';
 ```
+### searchModelRunResultView ###
+> A string that contains the name of the method that the widget should call and return
+
+for example:
+```php
+$searchModelRunResultView = 'views/invoice/index.php';
+```
+
 ### searchRoute ###
 > A string containing the address of the page where the widget was created
 
