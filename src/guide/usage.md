@@ -180,7 +180,7 @@ $searchModelRunResultView = 'views/invoice/index.php';
 
 for example:
 ```php
-$searchRoute = Yii::$app->request->getQueryParams();
+$searchRoute = Yii::$app->request->pathInfo;
 ```
 ### searchModelFormName ###
 > A string containing the name of the model in which the search is performed
