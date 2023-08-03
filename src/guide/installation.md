@@ -36,24 +36,7 @@ return [
 ```
 Env
 -------------
-Create a new file named `.env` in the root directory of your project and add the following configuration:
-
-```
-BI_DB_DSN="mysql:host=localhost;dbname=DBname"
-BI_DB_USERNAME="username"
-BI_DB_PASSWORD="password"
-BI_DB_TABLE_PREFIX=""
-BI_DB_CHARSET=utf8
-BI_DB_ENABLE_QUERY_CACHE=true
-BI_DB_QUERY_CACHE_DURATION=5
-BI_DB_ENABLE_SCHEMA_CACHE=true
-BI_DB_SCHEMA_CACHE_DURATION=86400
-BI_DB_SCHEMA_CACHE_COMPONENT="cache"
-```
-
-Make sure to replace `localhost` with the actual hostname or IP address of your MySQL database server.
-Set `DBname`, `username`, and `password` to match your database name, database username, and password, respectively.
-DB Migrations
+You have to add the database configuration to env, its example is in - [Env.example](./src/env-config/.env.example)
 
 
 ### DB Migrations
