@@ -285,11 +285,10 @@ class ReportPageController extends Controller
     public function actionRunAllWidgets($id, $start_range = null, $end_range = null)
     {
         $model = $this->findModel($id);
-        $widgets = $model->getWidgets()->all();
         $start_range = $start_range ? (int)$start_range : null;
         $end_range = $end_range ? (int)$end_range : null;
         $errors = [];
-        foreach ($widgets as $widget) {
+        foreach ($model->widgets as $widget) {
             $widget->runWidget($start_range, $end_range);
             if ($widget->errors) {
                 $errors[] = $widget->errors;
