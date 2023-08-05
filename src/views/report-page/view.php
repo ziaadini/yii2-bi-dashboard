@@ -170,9 +170,11 @@ $pdate = Yii::$app->pdate;
                                             'data-reload-pjax-container-on-show' => 0,
                                             'data-toggle' => 'tooltip',
                                         ]) ?>
-
-                                    <?= Html::a('<i class="fa fa-external-link fa-lg text-info "></i>', [$pageWidget->widget->getModelRoute()], ['target' => '_blank']) ?>
-
+                                    <?= Html::a(
+                                        '<i class="fa fa-external-link fa-lg text-info "></i>',
+                                        [$pageWidget->widget->getModelRoute()],
+                                        ['onclick' => 'window.open("' . Html::encode($pageWidget->widget->getModelRoute()) . '", "_blank"); return false;']
+                                    ) ?>
                                     <?= Html::a('<i class="fa fa-history text-success" aria-hidden="true"></i>', 'javascript:void(0)',
                                         [
                                             'title' => Yii::t('yii', 'Reload'),
