@@ -140,7 +140,7 @@ class ReportWidgetController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->validate() && $model->save()) {
+        if ($model->load($this->request->post()) && $model->save()) {
             return $this->asJson([
                 'status' => true,
                 'message' => Yii::t("app", 'Item Updated')
