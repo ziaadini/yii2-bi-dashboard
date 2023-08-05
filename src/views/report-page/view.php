@@ -256,12 +256,11 @@ $pdate = Yii::$app->pdate;
 
                                     echo '<th scope="col" class="text-center" style="font-size: 20px;">';
                                     echo '<span id="number_item_'.$i.'">'.$resultData.'</span>';
-                                    echo '<span class="fa fa-copy" onclick="copyNumber('.$i.')"></span>';
+                                    echo '<span class="fa fa-copy text-info p-1" onclick="copyNumber('.$i.')"></span>';
 
                                     if ($rateNumber != 0){
                                         echo '<br />';
-                                        echo '<span class="fa '.($rateNumber > 0 ? 'fa-arrow-circle-down text-danger' : 'fa-arrow-circle-up text-success').'"></span>';
-                                        echo '<br />';
+                                        echo '<span class="p-1 fa '.($rateNumber > 0 ? 'fa-arrow-circle-down text-danger' : 'fa-arrow-circle-up text-success').'"></span>';
                                         echo '%'.abs($rateNumber);
                                     }
                                     echo '</th>';
