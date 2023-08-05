@@ -77,7 +77,7 @@ return [
     "report_widget_field_format"=>"ویجت فیلد",
     "Report Widget Field"=>"نوع ویجت",
     "Widget ID"=>"ویجت",
-    "share"=>"اشتراک گذاری",
+    "share"=>"اشتراک گذاری صفحه",
     "Expire Time"=>"زمان انقضا",
     "Button"=>"کلید",
     "Expired"=>"منقضی",
