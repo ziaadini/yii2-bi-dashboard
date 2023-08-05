@@ -246,14 +246,8 @@ $pdate = Yii::$app->pdate;
 
                                     $resultData = (int)$resultData;
 
-                                    if ($lastNumber and $lastNumber <= $resultData) {
-                                        $typeRate = true;
-                                    }elseif($lastNumber and $lastNumber > $resultData){
-                                        $typeRate = false;
-                                    }
-
                                     $salesChange = $lastNumber - $resultData;
-                                    $rateNumber = $salesChange ? round($lastNumber / $salesChange,2) : 0;
+                                    $rateNumber = $salesChange ? round(($lastNumber / $salesChange)*100,2) : 0;
                                     $lastNumber = $resultData;
 
                                     if ($pageWidget->report_widget_field_format == $pageWidget::FORMAT_CURRENCY) {
@@ -264,9 +258,9 @@ $pdate = Yii::$app->pdate;
                                     echo '<span id="number_item_'.$i.'">'.$resultData.'</span>';
                                     echo '<span class="fa fa-copy" onclick="copyNumber('.$i.')"></span>';
 
-                                    if ($typeRate !== null and $rateNumber != 0){
+                                    if ($rateNumber != 0){
                                         echo '<br />';
-                                        echo '<span class="fa '.($typeRate ? 'fa-arrow-circle-up text-success' : 'fa-arrow-circle-down text-danger').'"></span>';
+                                        echo '<span class="fa '.($rateNumber > 0 ? 'fa-arrow-circle-up text-success' : 'fa-arrow-circle-down text-danger').'"></span>';
                                         echo '<br />';
                                         echo '%'.abs($rateNumber);
                                     }
