@@ -190,7 +190,7 @@ $pdate = Yii::$app->pdate;
                                             'data-title' => Yii::t('biDashboard', 'update',),
                                             'data-toggle' => 'modal',
                                             'data-target' => '#modal-pjax',
-                                            'data-url' => Url::to(['/report-widget/update', 'id' => $pageWidget->widget->id]),
+                                            'data-url' => Url::to(['/bidashboard/report-widget/update', 'id' => $pageWidget->widget->id]),
                                             'data-handle-form-submit' => 1,
                                             'data-show-loading' => 0,
                                             'data-reload-pjax-container' => 'p-jax-report-page-add',
@@ -213,7 +213,7 @@ $pdate = Yii::$app->pdate;
                                 <div class="row">
                                     <div class="col-sm-6 d-flex justify-content-between">
                                         <span class="col-sm-2">ویجت گزارش :</span>
-                                        <span class=" bg-warning"><?= $pageWidget->widget->title ?></span>
+                                        <span class=" bg-warning"><?= $pageWidget->widget->description ?></span>
                                     </div>
                                     <div class="col-sm-6 d-flex justify-content-between">
                                         <span>فیلد ویجت گزارش :</span>
