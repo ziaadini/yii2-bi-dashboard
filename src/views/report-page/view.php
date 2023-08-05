@@ -167,8 +167,7 @@ $pdate = Yii::$app->pdate;
                                             'data-handle-form-submit' => 1,
                                             'data-show-loading' => 0,
                                             'data-reload-pjax-container' => 'p-jax-report-page-add',
-                                            'data-reload-pjax-container-on-show' => 0,
-                                            'data-toggle' => 'tooltip',
+                                            'data-reload-pjax-container-on-show' => 0
                                         ]) ?>
 
                                     <?= Html::a('<i class="fa fa-external-link fa-lg text-info "></i>', [$pageWidget->widget->getModelRoute()], ['target' => '_blank']) ?>
@@ -196,8 +195,7 @@ $pdate = Yii::$app->pdate;
                                             'data-handle-form-submit' => 1,
                                             'data-show-loading' => 0,
                                             'data-reload-pjax-container' => 'p-jax-report-page-add',
-                                            'data-reload-pjax-container-on-show' => 0,
-                                            'data-toggle' => 'tooltip',
+                                            'data-reload-pjax-container-on-show' => 0
                                         ]) ?>
                                     <?= Html::a('<i class="fa fa-trash-alt"></i>', 'javascript:void(0)',
                                         [
