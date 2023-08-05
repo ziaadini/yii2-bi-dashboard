@@ -11,6 +11,9 @@ Data source section and View section
 > For example, we use the invoice table that stores the values of our financial invoices
 
 ## Usage/Data source section
+In the "Data Source" section, it is imperative that you meticulously input your specific dataset into the system. This dataset holds the utmost importance as it serves as the foundation for the subsequent processes. It is noteworthy that your dataset can manifest in two distinct forms: a comprehensive file encapsulating the requisite information or an intricately crafted function designed to extract the desired data from a designated database.
+
+Within the context of this illustration, a well-defined function has been meticulously crafted. This function undertakes the pivotal role of interfacing with the designated database, adeptly retrieving the pertinent dataset. Subsequently, this extracted dataset is seamlessly channeled to the designated widget, where it seamlessly integrates into the overall process flow.
 
 To use this widget, Write a function in your search model that queries your database and returns the result data. Then,
 in the widget section, use the names of these functions when placing the widget in your codes. Subsequently, when the
