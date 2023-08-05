@@ -139,6 +139,7 @@ class ReportWidgetController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->scenario = ReportWidget::SCENARIO_UPDATE;
 
         if ($model->load($this->request->post()) && $model->save()) {
             return $this->asJson([

@@ -56,9 +56,7 @@ class ReportWidget extends ActiveRecord
     public $params;
     public $outputColumn;
 
-    /**
-     * {@inheritdoc}
-     */
+    const SCENARIO_UPDATE = 'update';
 
     public static function getDb()
     {
@@ -77,6 +75,8 @@ class ReportWidget extends ActiveRecord
     {
         return [
             [['title', 'search_model_method', 'search_model_class', 'search_route', 'search_model_form_name', 'range_type'], 'required'],
+            [['title'], 'required', 'on' => $this::SCENARIO_UPDATE],
+            [['description'], 'safe', 'on' => $this::SCENARIO_UPDATE],
             [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by'], 'integer'],
             [['add_on', 'search_model_class', 'params', 'outputColumn'], 'safe'],
             [['title', 'search_model_method', 'search_model_run_result_view', 'search_route', 'search_model_form_name'], 'string', 'max' => 128],
