@@ -260,7 +260,7 @@ $pdate = Yii::$app->pdate;
 
                                     if ($rateNumber != 0){
                                         echo '<br />';
-                                        echo '<span class="fa '.($rateNumber > 0 ? 'fa-arrow-circle-up text-success' : 'fa-arrow-circle-down text-danger').'"></span>';
+                                        echo '<span class="fa '.($rateNumber > 0 ? 'fa-arrow-circle-down text-danger' : 'fa-arrow-circle-up text-success').'"></span>';
                                         echo '<br />';
                                         echo '%'.abs($rateNumber);
                                     }

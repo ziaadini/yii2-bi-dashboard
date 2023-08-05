@@ -1,16 +1,16 @@
 ## Usage
 
 Usage consists of two parts:
-Widget section and View section
+Data source section and View section
 
-- The Widget section: creating a query that returns data from the database, this part must be implemented in the search
+- The Data source  section: creating a query that returns data from the database, this part must be implemented in the search
   model
 
-- The widget section: Placing creation buttons and widget list in the model, to create widgets
+- The View section: Placing creation buttons and widget list in the model, to create widgets
 
 > For example, we use the invoice table that stores the values of our financial invoices
 
-## Usage/Query section
+## Usage/Data source section
 
 To use this widget, Write a function in your search model that queries your database and returns the result data. Then,
 in the widget section, use the names of these functions when placing the widget in your codes. Subsequently, when the
