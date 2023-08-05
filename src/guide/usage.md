@@ -1,9 +1,9 @@
 ## Usage
 
 Usage consists of two parts:
-Query section and widget section
+Widget section and View section
 
-- The Query section: creating a query that returns data from the database, this part must be implemented in the search
+- The Widget section: creating a query that returns data from the database, this part must be implemented in the search
   model
 
 - The widget section: Placing creation buttons and widget list in the model, to create widgets
@@ -116,7 +116,7 @@ example output query:
 ]
 ```
 
-## Usage/widget section
+## Usage/View section
 
 To use this widget, insert the following code into a index file:
 
@@ -134,22 +134,15 @@ To use this widget, insert the following code into a index file:
 
 ## Parameters Reference
 
-| Parameter                    | Type     | Description                                                                                       | example                           |
-|:-----------------------------|:---------|:--------------------------------------------------------------------------------------------------|:----------------------------------|
-| `queryParams`                | `array`  | **
-Required**                                                                                      | [example](https://github.com/)    |
-| `searchModel`                | `string` | **
-Required**                                                                                      | 'app\models\search\InvoiceSearch' |
-| `searchModelMethod`          | `string` | **
-Required**,The name of the function that was added to the search model in the part of your name | 'searchWidget'                    |
-| `searchModelRunResultView`   | `string` | **
-Required**                                                                                      | 'view'                            |
-| `searchRoute`                | `string` | **
-Required**                                                                                      | 'invoice/index'                   |
-| `searchModelFormName`        | `string` | **
-Required**                                                                                      | 'InvoiceSearch'                   |
-| `outputColumn`               | `array`  | **
-Required**                                                                                      | [example](https://github.com/)    |
+| Parameter                    | Type                        | Description          | example                           |
+|:-----------------------------|:----------------------------|:---------------------|:----------------------------------|
+| `queryParams`                | `array`                     | **Required**         | ---                               |
+| `searchModel`                | `string`                    | **Required**         | 'app\models\search\InvoiceSearch' |
+| `searchModelMethod`          | `string`                    | **Required**         | 'searchWidget'                    |
+| `searchModelRunResultView`   | `string`                    | **Required**         | 'view'                            |
+| `searchRoute`                | `string`                    | **Required**         | 'invoice/index'                   |
+| `searchModelFormName`        | `string`                    | **Required**         | 'InvoiceSearch'                   |
+| `outputColumn`               | `array`                     | **Required**         | ---                               |
 
 ### queryParams ###
 
