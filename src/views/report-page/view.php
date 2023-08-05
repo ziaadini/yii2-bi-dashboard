@@ -249,7 +249,7 @@ $pdate = Yii::$app->pdate;
                                     $resultData = (int)$resultData;
 
                                     $salesChange = $lastNumber - $resultData;
-                                    $rateNumber = $salesChange ? round(($lastNumber / $salesChange) * 100, 2) : 0;
+                                    $rateNumber = $lastNumber ? round(($salesChange /$lastNumber) * 100, 2) : 0;
                                     $lastNumber = $resultData;
 
                                     if ($pageWidget->report_widget_field_format == $pageWidget::FORMAT_CURRENCY) {
