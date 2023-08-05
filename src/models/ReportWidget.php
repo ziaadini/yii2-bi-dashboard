@@ -133,6 +133,13 @@ class ReportWidget extends ActiveRecord
         return $this->hasMany(ReportWidgetResult::class, ['widget_id' => 'id']);
     }
 
+    public function FindColumnTitle($pageWidget){
+        foreach ($pageWidget->widget->add_on['outputColumn'] as $column) {
+            if ($column['column_name'] == $pageWidget->report_widget_field) {
+                return $column["column_title"];
+            }
+        }
+    }
     /**
      * {@inheritdoc}
      * @return ReportWidgetQuery the active query used by this AR class.

@@ -39,7 +39,7 @@ $pdate = Yii::$app->pdate;
         <?= \sadi01\bidashboard\widgets\Alert::widget() ?>
         <div class="row d-flex">
             <div class="pt-2 col-sm-2 text-left mr-auto">
-                <span><?= $model->title ?></span>
+                <h2 class="d-inline"><?= $model->title ?></h2>
                 <?= Html::a('<i class="fa fa-edit"></i>', "javascript:void(0)",
                     [
                         'data-pjax' => '0',
@@ -127,7 +127,7 @@ $pdate = Yii::$app->pdate;
     </div>
     <div class="table-responsive text-nowrap">
         <table class="table table-bordered bg-white">
-            <thead style="background-color: rgb(40,44,44);" class="text-white">
+            <thead class="text-white bg-inverse">
             <tr>
                 <th scope="col" class="text-center">ویجت</th>
                 <?php
@@ -158,7 +158,7 @@ $pdate = Yii::$app->pdate;
                                     <?= Html::a('<i class="fa fa-chart-line"></i>', "javascript:void(0)",
                                         [
                                             'data-pjax' => '0',
-                                            'class' => "btn btn-sm text-info fa-lg",
+                                            'class' => "btn btn-sm text-secondary fa-lg",
                                             'data-size' => 'modal-xl',
                                             'data-title' => Yii::t('biDashboard', 'Chart'),
                                             'data-toggle' => 'modal',
@@ -167,20 +167,22 @@ $pdate = Yii::$app->pdate;
                                             'data-handle-form-submit' => 1,
                                             'data-show-loading' => 0,
                                             'data-reload-pjax-container' => 'p-jax-report-page-add',
-                                            'data-reload-pjax-container-on-show' => 0
+                                            'data-reload-pjax-container-on-show' => 0,
+                                            'data-toggle' => 'tooltip',
                                         ]) ?>
 
-                                    <?= Html::a('<i class="fa fa-external-link fa-lg"></i>', [$pageWidget->widget->getModelRoute()], ['target' => '_blank']) ?>
+                                    <?= Html::a('<i class="fa fa-external-link fa-lg text-info "></i>', [$pageWidget->widget->getModelRoute()], ['target' => '_blank']) ?>
 
-                                    <?= Html::a('<i class="fa fa-refresh fa-lg text-success" aria-hidden="true"></i>', 'javascript:void(0)',
+                                    <?= Html::a('<i class="fa fa-history text-success" aria-hidden="true"></i>', 'javascript:void(0)',
                                         [
-                                            'title' => Yii::t('yii', 'reload'),
-                                            'aria-label' => Yii::t('yii', 'reload'),
+                                            'title' => Yii::t('yii', 'Reload'),
+                                            'aria-label' => Yii::t('yii', 'Reload'),
                                             'data-reload-pjax-container' => 'p-jax-report-page-add',
                                             'data-pjax' => '0',
                                             'data-url' => Url::to(['/bidashboard/report-widget/run', 'id' => $pageWidget->widget->id, 'start_range' => $startRange, 'end_range' => $endRange]),
                                             'class' => " p-jax-btn btn-sm text-info fa-lg",
-                                            'data-title' => Yii::t('yii', 'reload'),
+                                            'data-title' => Yii::t('yii', 'Reload'),
+                                            'data-toggle' => 'tooltip',
                                         ]); ?>
                                     <?= Html::a('<i class="fa fa-edit"></i>', "javascript:void(0)",
                                         [
@@ -194,17 +196,18 @@ $pdate = Yii::$app->pdate;
                                             'data-handle-form-submit' => 1,
                                             'data-show-loading' => 0,
                                             'data-reload-pjax-container' => 'p-jax-report-page-add',
-                                            'data-reload-pjax-container-on-show' => 0
+                                            'data-reload-pjax-container-on-show' => 0,
+                                            'data-toggle' => 'tooltip',
                                         ]) ?>
                                     <?= Html::a('<i class="fa fa-trash-alt"></i>', 'javascript:void(0)',
                                         [
-                                            'title' => Yii::t('yii', 'delete'),
-                                            'aria-label' => Yii::t('yii', 'delete'),
+                                            'title' => Yii::t('yii', 'Delete'),
+                                            'aria-label' => Yii::t('yii', 'Delete'),
                                             'data-reload-pjax-container' => 'p-jax-report-page-add',
                                             'data-pjax' => '0',
                                             'data-url' => Url::to(['/bidashboard/report-page-widget/delete', 'id_widget' => $pageWidget->widget->id, 'id_page' => $model->id]),
                                             'class' => " p-jax-btn btn-sm text-danger fa-lg",
-                                            'data-title' => Yii::t('yii', 'delete'),
+                                            'data-title' => Yii::t('yii', 'Delete'),
                                             'data-toggle' => 'tooltip',
                                         ]); ?>
                                 </div>
@@ -212,19 +215,20 @@ $pdate = Yii::$app->pdate;
                             <div class="text-left my-3">
                                 <div class="row">
                                     <div class="col-sm-6 d-flex justify-content-between">
-                                        <span class="col-sm-2">ویجت گزارش :</span>
-                                        <span class=" bg-warning"><?= $pageWidget->widget->description ?></span>
+                                        <span>ویجت گزارش :</span>
+                                        <span class=" bg-warning"><?= $pageWidget->widget->search_model_form_name ?></span>
                                     </div>
                                     <div class="col-sm-6 d-flex justify-content-between">
                                         <span>فیلد ویجت گزارش :</span>
-                                        <span class="bg-warning">
-                                    <?= $pageWidget->report_widget_field ?>
+                                        <span class="bg-warning" data-toggle="tooltip"
+                                              title="<?= $pageWidget->report_widget_field ?>">
+                                     <?= $pageWidget->widget->findColumnTitle($pageWidget) ?>
                                     </span>
                                     </div>
                                 </div>
                             </div>
                             <div class="border-top text-center text-info">
-                                بروز شده در <?= Yii::$app->formatter->asRelativeTime($runWidget->created_at, 'now'); ?>
+                                <?= Yii::$app->formatter->asRelativeTime($runWidget->created_at, 'now'); ?>
                             </div>
                         </th>
                         <?php
@@ -249,7 +253,7 @@ $pdate = Yii::$app->pdate;
                                     $resultData = (int)$resultData;
 
                                     $salesChange = $lastNumber - $resultData;
-                                    $rateNumber = $lastNumber ? round(($salesChange /$lastNumber) * 100, 2) : 0;
+                                    $rateNumber = $lastNumber ? round(($salesChange / $lastNumber) * 100, 2) : 0;
                                     $lastNumber = $resultData;
 
                                     if ($pageWidget->report_widget_field_format == $pageWidget::FORMAT_CURRENCY) {
