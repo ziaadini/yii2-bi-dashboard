@@ -132,7 +132,7 @@ public function searchWidget(string $params,int $rangeType,int $startRange,int $
     return $dataProvider;
 }
 ```
-advance config
+Advanced config
 -------------
 - [Installation Guide](./src/guide/installation.md)
 

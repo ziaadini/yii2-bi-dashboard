@@ -222,7 +222,7 @@ $pdate = Yii::$app->pdate;
                                         <span>فیلد ویجت گزارش :</span>
                                         <span class="bg-warning" data-toggle="tooltip"
                                               title="<?= $pageWidget->report_widget_field ?>">
-                                     <?= $pageWidget->widget->findColumnTitle($pageWidget) ?>
+                                     <?= $pageWidget->widget->getOutputColumnTitle($pageWidget->report_widget_field) ?>
                                     </span>
                                     </div>
                                 </div>

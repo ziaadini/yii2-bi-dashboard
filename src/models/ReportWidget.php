@@ -4,10 +4,6 @@ namespace sadi01\bidashboard\models;
 
 use sadi01\bidashboard\behaviors\Jsonable;
 use sadi01\bidashboard\components\Pdate;
-use sadi01\bidashboard\models\ReportPage;
-use sadi01\bidashboard\models\ReportPageQuery;
-use sadi01\bidashboard\models\ReportWidgetResult;
-use sadi01\bidashboard\models\ReportWidgetResultQuery;
 use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\behaviors\BlameableBehavior;
@@ -38,6 +34,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @property string $search_route
  * @property string $search_model_form_name
  *
+ * @property string $outputColumnTitle
  * @property ReportPage[] $reportPages
  * @property ReportWidgetResult[] $reportWidgetResults
  *
@@ -133,13 +130,20 @@ class ReportWidget extends ActiveRecord
         return $this->hasMany(ReportWidgetResult::class, ['widget_id' => 'id']);
     }
 
-    public function FindColumnTitle($pageWidget){
-        foreach ($pageWidget->widget->add_on['outputColumn'] as $column) {
-            if ($column['column_name'] == $pageWidget->report_widget_field) {
+    public function getOutputColumnTitle(string $field): string
+    {
+        foreach ($this->add_on['outputColumn'] as $column) {
+            if ($column['column_name'] == $field) {
                 return $column["column_title"];
             }
         }
+
+        /**@var $searchModel ActiveRecord*/
+        $searchModel = new ($this->search_model_class);
+
+        return $searchModel->getAttributeLabel($field);
     }
+
     /**
      * {@inheritdoc}
      * @return ReportWidgetQuery the active query used by this AR class.
