@@ -198,7 +198,7 @@ class ReportPageController extends Controller
     public function actionUpdateWidget($id): Response|string
     {
         $model = ReportPageWidget::find()->where(['widget_id' => $id])->one();
-        $add_on = json_decode($model->widget->add_on["outputColumn"]);
+        $add_on = $model->widget->add_on["outputColumn"];
 
         foreach ($add_on as $value) {
             $column_name[$value->column_name] = $value->column_title;

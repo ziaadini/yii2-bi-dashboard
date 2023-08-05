@@ -20,8 +20,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card-body">
                     <?= $this->render('_form', [
                         'model' => $model,
-                        'queryParams' => json_decode($queryParams),
-                        'output_column' => json_decode($output_column),
+                        'queryParams' => $queryParams,
+                        'output_column' => $output_column,
                     ]) ?>
                 </div>
             </div>

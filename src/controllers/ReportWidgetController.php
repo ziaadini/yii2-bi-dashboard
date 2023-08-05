@@ -100,7 +100,7 @@ class ReportWidgetController extends Controller
             $model->search_model_class = $searchModelClass;
             $model->search_model_form_name = $search_model_form_name;
             $model->search_model_run_result_view = $searchModelRunResultView;
-            $model->params = $queryParams;
+            $model->params = json_decode($queryParams,true);
 
             $output_column = $this->request->post('output_column', null);
             $model->outputColumn = array_filter($output_column, fn($value) => array_filter($value));
@@ -124,8 +124,8 @@ class ReportWidgetController extends Controller
 
         return $this->renderAjax('create', [
             'model' => $model,
-            'queryParams' => $queryParams,
-            'output_column' => $output_column,
+            'queryParams' => json_decode($queryParams,true),
+            'output_column' => json_decode($output_column,true),
         ]);
     }
 
