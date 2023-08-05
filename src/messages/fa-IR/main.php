@@ -96,4 +96,5 @@ return [
     'Chart pie' => 'نمودار دایره ای',
     'Chart area' => 'نمودار خطی محیطی',
     'Chart world cloud' => 'نمودار ابر کلمات',
+    'Copy success' => 'با موفقیت کپی شد',
 ];

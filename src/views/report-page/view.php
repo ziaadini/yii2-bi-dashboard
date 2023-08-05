@@ -228,6 +228,11 @@ $pdate = Yii::$app->pdate;
                         <?php
                         $formatter = Yii::$app->formatter;
                         if ($runWidget) {
+
+                            $lastNumber = null;
+                            $rateNumber = null;
+                            $typeRate = null;
+
                             for ($i = 1; $i <= $rangeDateNumber; $i++) {
                                 if ($model->range_type == $model::RANGE_DAY) {
                                     $key = array_search($i, array_column($runWidget->result, 'day'));
@@ -238,10 +243,35 @@ $pdate = Yii::$app->pdate;
                                     echo '<th scope="col"></th>';
                                 } else {
                                     $resultData = key_exists($pageWidget->report_widget_field, $runWidget->result[$key]) ? $runWidget->result[$key][$pageWidget->report_widget_field] : '.::field error(1)::.';
+
+                                    $resultData = (int)$resultData;
+
+                                    if ($lastNumber and $lastNumber <= $resultData) {
+                                        $typeRate = true;
+                                    }elseif($lastNumber and $lastNumber > $resultData){
+                                        $typeRate = false;
+                                    }
+
+                                    $salesChange = $lastNumber - $resultData;
+                                    $rateNumber = $salesChange ? round($lastNumber / $salesChange,2) : 0;
+                                    $lastNumber = $resultData;
+
                                     if ($pageWidget->report_widget_field_format == $pageWidget::FORMAT_CURRENCY) {
                                         $resultData = $formatter->asCurrency($resultData);
                                     }
-                                    echo '<th scope="col" class="text-center" style="font-size: 20px;">' . $resultData . '</th>';
+
+                                    echo '<th scope="col" class="text-center" style="font-size: 20px;">';
+                                    echo '<span id="number_item_'.$i.'">'.$resultData.'</span>';
+                                    echo '<span class="fa fa-copy" onclick="copyNumber('.$i.')"></span>';
+
+                                    if ($typeRate !== null and $rateNumber != 0){
+                                        echo '<br />';
+                                        echo '<span class="fa '.($typeRate ? 'fa-arrow-circle-up text-success' : 'fa-arrow-circle-down text-danger').'"></span>';
+                                        echo '<br />';
+                                        echo '%'.abs($rateNumber);
+                                    }
+                                    echo '</th>';
+
                                 }
                             }
                         }
@@ -255,3 +285,22 @@ $pdate = Yii::$app->pdate;
 </div>
 <?php Pjax::end(); ?>
 </div>
+<script>
+    function copyNumber(itemId) {
+        const numberDiv = document.getElementById('number_item_'+itemId);
+        const range = document.createRange();
+        range.selectNode(numberDiv);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand('copy');
+        selection.removeAllRanges();
+        Swal.fire({
+            position: 'bottom-end',
+            icon: 'success',
+            html: '<?= Yii::t('biDashboard','Copy success') ?>',
+            showConfirmButton: false,
+            timer: 1000
+        })
+    }
+</script>
