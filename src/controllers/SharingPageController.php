@@ -38,49 +38,49 @@ class SharingPageController extends Controller
                         [
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/index'],
+                                'roles' => ['SharingPage/index'],
                                 'actions' => [
                                     'index'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/view'],
+                                'roles' => ['SharingPage/view'],
                                 'actions' => [
                                     'view'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/create'],
+                                'roles' => ['SharingPage/create'],
                                 'actions' => [
                                     'create',
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/update'],
+                                'roles' => ['SharingPage/update'],
                                 'actions' => [
                                     'update',
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/delete'],
+                                'roles' => ['SharingPage/delete'],
                                 'actions' => [
                                     'delete'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/managment'],
+                                'roles' => ['SharingPage/managment'],
                                 'actions' => [
                                     'managment',
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/expire'],
+                                'roles' => ['SharingPage/expire'],
                                 'actions' => [
                                     'expire'
                                 ]

@@ -37,35 +37,35 @@ class ReportYearController extends Controller
                         [
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/index'],
+                                'roles' => ['ReportYear/index'],
                                 'actions' => [
                                     'index'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/view'],
+                                'roles' => ['ReportYear/view'],
                                 'actions' => [
                                     'view'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/create'],
+                                'roles' => ['ReportYear/create'],
                                 'actions' => [
                                     'create',
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/update'],
+                                'roles' => ['ReportYear/update'],
                                 'actions' => [
                                     'update',
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/delete'],
+                                'roles' => ['ReportYear/delete'],
                                 'actions' => [
                                     'delete'
                                 ]

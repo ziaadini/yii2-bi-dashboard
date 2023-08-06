@@ -32,7 +32,7 @@ class ReportPageWidgetController extends Controller
                         [
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/delete'],
+                                'roles' => ['ReportPageWidget/delete'],
                                 'actions' => [
                                     'delete'
                                 ]
