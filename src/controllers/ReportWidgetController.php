@@ -8,6 +8,7 @@ use sadi01\bidashboard\models\ReportWidgetSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\Html;
 use yii\web\Controller;
@@ -33,10 +34,81 @@ class ReportWidgetController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' =>
+                        [
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/index'],
+                                'actions' => [
+                                    'index'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/view'],
+                                'actions' => [
+                                    'view'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/create'],
+                                'actions' => [
+                                    'create',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/update'],
+                                'actions' => [
+                                    'update',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/open-modal'],
+                                'actions' => [
+                                    'open-modal'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/run'],
+                                'actions' => [
+                                    'run'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/modal-show-chart'],
+                                'actions' => [
+                                    'modal-show-chart'
+                                ]
+                            ],
+
+
+                        ]
+                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
-                        'delete' => ['POST'],
+                        'index' => ['GET'],
+                        'view' => ['GET'],
+                        'create' => ['GET', 'POST'],
+                        'update' => ['GET', 'PUT', 'POST'],
+                        'delete' => ['POST', 'DELETE'],
+                        'open-modal' => ['GET'],
+                        'run' => ['GET', 'PUT', 'POST'],
+                        'modal-show-chart' => ['GET', 'PUT', 'POST'],
                     ],
                 ],
             ]
@@ -100,7 +172,7 @@ class ReportWidgetController extends Controller
             $model->search_model_class = $searchModelClass;
             $model->search_model_form_name = $search_model_form_name;
             $model->search_model_run_result_view = $searchModelRunResultView;
-            $model->params = json_decode($queryParams,true);
+            $model->params = json_decode($queryParams, true);
 
             $output_column = $this->request->post('output_column', null);
             $model->outputColumn = array_filter($output_column, fn($value) => array_filter($value));
@@ -124,8 +196,8 @@ class ReportWidgetController extends Controller
 
         return $this->renderAjax('create', [
             'model' => $model,
-            'queryParams' => json_decode($queryParams,true),
-            'output_column' => json_decode($output_column,true),
+            'queryParams' => json_decode($queryParams, true),
+            'output_column' => json_decode($output_column, true),
         ]);
     }
 
@@ -212,27 +284,29 @@ class ReportWidgetController extends Controller
             ]);
         }
     }
-    public function actionModalShowChart($id,$field,$start_range=null,$end_range=null,$chart_type='line'){
+
+    public function actionModalShowChart($id, $field, $start_range = null, $end_range = null, $chart_type = 'line')
+    {
         $model = $this->findModel($id);
-        $runWidget= $model->lastResult($start_range,$end_range);
+        $runWidget = $model->lastResult($start_range, $end_range);
         $result = array_reverse($runWidget->result);
         $arrayResult = null;
         $arrayTitle = null;
 
-        if ($result){
-            $arrayResult = array_map(function($item) use ($field) {
+        if ($result) {
+            $arrayResult = array_map(function ($item) use ($field) {
                 return (int)$item[$field];
             }, $result);
 
-            $arrayTitle = array_map(function($item) {
+            $arrayTitle = array_map(function ($item) {
                 return $item["month_name"];
             }, $result);
         }
 
-        if ($chart_type == ReportWidgetResult::CHART_PIE){
+        if ($chart_type == ReportWidgetResult::CHART_PIE) {
             $result_pie = [];
-            foreach ($result as $key => $item){
-                $result_pie[] = ['name' => $arrayTitle[$key],'y' => $arrayResult[$key]];
+            foreach ($result as $key => $item) {
+                $result_pie[] = ['name' => $arrayTitle[$key], 'y' => $arrayResult[$key]];
             }
             $arrayResult = $result_pie;
         }

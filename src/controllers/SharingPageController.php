@@ -34,12 +34,58 @@ class SharingPageController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
-                    'rules' => [
+                    'rules' =>
                         [
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
-                    ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/index'],
+                                'actions' => [
+                                    'index'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/view'],
+                                'actions' => [
+                                    'view'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/create'],
+                                'actions' => [
+                                    'create',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/update'],
+                                'actions' => [
+                                    'update',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/managment'],
+                                'actions' => [
+                                    'managment',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/expire'],
+                                'actions' => [
+                                    'expire'
+                                ]
+                            ],
+                        ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,
@@ -88,7 +134,7 @@ class SharingPageController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView( int $id): string
+    public function actionView(int $id): string
     {
         return $this->renderAjax('view', [
             'model' => $this->findModel($id),
@@ -219,14 +265,14 @@ class SharingPageController extends Controller
                 'message' => Yii::t("biDashboard", 'Success')
             ]);
 
-        }
-        else{
+        } else {
             return $this->asJson([
                 'status' => false,
                 'message' => Yii::t("biDashboard", 'fail to update')
             ]);
         }
     }
+
     /**
      * Finds the SharingPage model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

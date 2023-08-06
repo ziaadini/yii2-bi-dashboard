@@ -6,6 +6,7 @@ use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageWidget;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use Yii;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -19,6 +20,34 @@ class ReportPageWidgetController extends Controller
     use AjaxValidationTrait;
 
     public $layout = 'bid_main';
+
+    public function behaviors(): array
+    {
+        return array_merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' =>
+                        [
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+                        ]
+                ],
+                'verbs' => [
+                    'class' => VerbFilter::class,
+                    'actions' => [
+                        'delete' => ['POST', 'DELETE'],
+                    ],
+                ],
+            ]
+        );
+    }
 
     public function actionDelete($id_widget, $id_page)
     {

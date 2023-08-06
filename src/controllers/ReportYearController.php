@@ -33,12 +33,44 @@ class ReportYearController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
-                    'rules' => [
+                    'rules' =>
                         [
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
-                    ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/index'],
+                                'actions' => [
+                                    'index'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/view'],
+                                'actions' => [
+                                    'view'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/create'],
+                                'actions' => [
+                                    'create',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/update'],
+                                'actions' => [
+                                    'update',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+                        ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,

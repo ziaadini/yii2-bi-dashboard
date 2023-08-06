@@ -37,12 +37,73 @@ class ReportPageController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
-                    'rules' => [
+                    'rules' =>
                         [
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
-                    ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/index'],
+                                'actions' => [
+                                    'index'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/view'],
+                                'actions' => [
+                                    'view'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/create'],
+                                'actions' => [
+                                    'create',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/update'],
+                                'actions' => [
+                                    'update',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/update-widget'],
+                                'actions' => [
+                                    'update-widget'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/add'],
+                                'actions' => [
+                                    'add'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/get-widget-column'],
+                                'actions' => [
+                                    'get-widget-column'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/run-all-widgets'],
+                                'actions' => [
+                                    'run-all-widgets'
+                                ]
+                            ],
+
+                        ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,
@@ -52,6 +113,10 @@ class ReportPageController extends Controller
                         'create' => ['GET', 'POST'],
                         'update' => ['GET', 'PUT', 'POST'],
                         'delete' => ['POST', 'DELETE'],
+                        'update-widget' => ['GET', 'PUT', 'POST'],
+                        'add' => ['GET', 'POST'],
+                        'get-widget-column' => ['GET'],
+                        'run-all-widgets' => ['GET', 'PUT']
                     ],
                 ],
             ]
