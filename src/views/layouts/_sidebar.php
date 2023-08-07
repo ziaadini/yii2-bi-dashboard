@@ -29,6 +29,12 @@ $menu_items = [
         'icon' => 'fas fa-share',
         'url' => ['/bidashboard/sharing-page']
     ],
+    [
+        'group' => 'External Data',
+        'label' => Yii::t('app', 'External Data'),
+        'icon' => 'fas fa-share',
+        'url' => ['/bidashboard/external-data']
+    ],
 ];
 ?>
     <aside class="left-sidebar">

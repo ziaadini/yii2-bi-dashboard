@@ -97,4 +97,15 @@ return [
     'Chart area' => 'نمودار خطی محیطی',
     'Chart world cloud' => 'نمودار ابر کلمات',
     'Copy success' => 'با موفقیت کپی شد',
+
+    'Add new value' => 'ثبت مقدار جدید',
+    'External Datas' => 'مقادیر خارجی',
+    'Create External Data' => 'ایجاد نوع مقدار خارجی',
+    'Update External Data: {name}' => 'ویرایش نوع مقدار خارجی: {name}',
+    'Data External' => 'نوع داده خارجی',
+    'External Data Values' => 'مقادیر داده خارجی',
+    'Data External Value' => 'مقادیر داده خارجی',
+    'Update External Data Value: {name}' => 'ویرایش مقدار خارجی: {name}',
+    'Create External Data Value' => 'ایجاد مقدار داده خارجی',
+    'Value' => 'مقدار',
 ];
