@@ -116,7 +116,7 @@ class ReportPageController extends Controller
                         'update-widget' => ['POST'],
                         'add' => ['POST'],
                         'get-widget-column' => ['GET'],
-                        'run-all-widgets' => ['POST']
+                        'run-all-widgets' => ['GET']
                     ],
                 ],
             ]
