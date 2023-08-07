@@ -140,4 +140,4 @@ Advanced config
 
 - [Usage Guide](./src/guide/usage.md)
 
-- [rbac Guide](./src/guide/rbac.md)
+- [Access Control Guide (RBAC)](./src/guide/rbac.md)

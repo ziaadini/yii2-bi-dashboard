@@ -5,7 +5,7 @@
 RBAC (Role-Based Access Control) is a method of managing access to resources in a system based on the roles assigned to
 users. In the context of Yii 2, RBAC is implemented using the AccessControl class to define access rules for different
 user roles to specific actions in a controller.
-Now we introduce the access to the 5 controlles we have:
+Now we introduce the access to the 5 controllers we have:
 
 ## Access Control for ReportPageController
 
