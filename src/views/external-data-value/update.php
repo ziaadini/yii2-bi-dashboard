@@ -15,12 +15,14 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'External Dat
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('biDashboard', 'Update');
 ?>
-<div class="external-data-value-update">
+<div class="page-content container-fluid text-left">
+    <div class="work-report-index">
+        <div class="panel-group m-bot20" id="accordion">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+            <?= $this->render('_form', [
+                'model' => $model,
+            ]) ?>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
+        </div>
+    </div>
 </div>

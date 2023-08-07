@@ -2,17 +2,25 @@
 
 namespace sadi01\bidashboard\controllers;
 
+use Yii;
 use sadi01\bidashboard\models\ExternalDataValue;
 use sadi01\bidashboard\models\ExternalDataValueSearch;
+use sadi01\bidashboard\traits\AjaxValidationTrait;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * ExternalDataValueController implements the CRUD actions for ExternalDataValue model.
  */
 class ExternalDataValueController extends Controller
 {
+
+    use AjaxValidationTrait;
+
+    public $layout = 'bid_main';
+
     /**
      * @inheritDoc
      */
@@ -39,17 +47,25 @@ class ExternalDataValueController extends Controller
     public function actionIndex()
     {
         $searchModel = new ExternalDataValueSearch();
+
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
+        $queryParams = \Yii::$app->request->getQueryParams();
+        if ($queryParams and key_exists('ExternalDataValueSearch',$queryParams)) {
+
+            $queryParams = array_filter($queryParams['ExternalDataValueSearch']);
+        }
+
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'queryParams' => $queryParams,
         ]);
     }
 
     /**
      * Displays a single ExternalDataValue model.
-     * @param int $id شناسه
+     * @param int $id 
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -65,19 +81,27 @@ class ExternalDataValueController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+    public function actionCreate($external_data_id)
     {
         $model = new ExternalDataValue();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load($this->request->post())) {
+            $model->external_data_id = $external_data_id;
+            if ($model->save()) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t("biDashboard", 'Success')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("biDashboard", 'Fail in Save')
+                ]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
-        return $this->render('create', [
+        $this->performAjaxValidation($model);
+        return $this->renderAjax('create', [
             'model' => $model,
         ]);
     }
@@ -85,19 +109,29 @@ class ExternalDataValueController extends Controller
     /**
      * Updates an existing ExternalDataValue model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id شناسه
-     * @return string|\yii\web\Response
+     * @param int $id 
+     * @return string|Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load($this->request->post())) {
+            if ($model->save()) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t("biDashboard", 'Success')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("biDashboard", 'Fail in Save')
+                ]);
+            }
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
         ]);
     }
@@ -105,8 +139,8 @@ class ExternalDataValueController extends Controller
     /**
      * Deletes an existing ExternalDataValue model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id شناسه
-     * @return \yii\web\Response
+     * @param int $id 
+     * @return Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
@@ -119,7 +153,7 @@ class ExternalDataValueController extends Controller
     /**
      * Finds the ExternalDataValue model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id شناسه
+     * @param int $id 
      * @return ExternalDataValue the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

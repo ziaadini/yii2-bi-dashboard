@@ -60,11 +60,19 @@ class ExternalDataController extends Controller
         ]);
 
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'dataProviderValues' => $dataProviderValues,
-        ]);
+        if ($this->request->isPjax){
+            return $this->renderAjax('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'dataProviderValues' => $dataProviderValues,
+            ]);
+        }else{
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'dataProviderValues' => $dataProviderValues,
+            ]);
+        }
     }
 
     /**
@@ -132,11 +140,21 @@ class ExternalDataController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load($this->request->post())) {
+            if ($model->save()) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t("app", 'Success')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("app", 'Fail in Save')
+                ]);
+            }
         }
 
-        return $this->render('update', [
+        return $this->renderAjax('update', [
             'model' => $model,
         ]);
     }

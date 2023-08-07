@@ -102,6 +102,7 @@ return [
     'External Datas' => 'مقادیر خارجی',
     'Create External Data' => 'ایجاد نوع مقدار خارجی',
     'Update External Data: {name}' => 'ویرایش نوع مقدار خارجی: {name}',
+    'External Data' => 'نوع داده خارجی',
     'Data External' => 'نوع داده خارجی',
     'External Data Values' => 'مقادیر داده خارجی',
     'Data External Value' => 'مقادیر داده خارجی',

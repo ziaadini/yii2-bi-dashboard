@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'Report Pages
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="report-widget-create">
-    <div class="page-content container-fluid text-left pt-5">
+    <div class="page-content container-fluid text-left">
         <div class="work-report-index">
             <div class="panel-group m-bot20" id="accordion">
                 <div class="report-page-create">

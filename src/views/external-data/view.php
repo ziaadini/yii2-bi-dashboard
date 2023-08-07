@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use yii\grid\GridView;
 use  sadi01\bidashboard\models\ExternalDataValue;
 use yii\grid\ActionColumn;
+use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
 /** @var sadi01\bidashboard\models\ExternalData $model */
@@ -65,17 +66,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-pjax' => '0',
                                 'class' => "btn btn-success",
                                 'data-size' => 'modal-md',
-                                'data-title' => Yii::t('app', 'create'),
+                                'data-title' => Yii::t('biDashboard', 'Add new value'),
                                 'data-toggle' => 'modal',
                                 'data-target' => '#modal-pjax',
                                 'data-url' => Url::to(['/bidashboard/external-data-value/create', 'external_data_id' => $model->id]),
                                 'data-handle-form-submit' => 1,
-                                'data-reload-pjax-container' => 'p-jax-report-year'
+                                'data-reload-pjax-container' => 'p-jax-external-data-value'
                             ])
                         ?>
                     </div>
                 </div>
                 <div class="card-body">
+                    <?php Pjax::begin(['id' => 'p-jax-external-data-value']); ?>
+
                     <?= GridView::widget([
                         'dataProvider' => $dataProviderValue,
                         'columns' => [
@@ -101,6 +104,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                         ],
                     ]); ?>
+                    <?php Pjax::end(); ?>
+
                 </div>
             </div>
         </div>

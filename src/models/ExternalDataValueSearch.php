@@ -42,8 +42,6 @@ class ExternalDataValueSearch extends ExternalDataValue
     {
         $query = ExternalDataValue::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -51,23 +49,53 @@ class ExternalDataValueSearch extends ExternalDataValue
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+             $query->where('0=1');
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'external_data_id' => $this->external_data_id,
-            'value' => $this->value,
-            'status' => $this->status,
-            'created_at' => $this->created_at,
-            'created_by' => $this->created_by,
-            'updated_at' => $this->updated_at,
-            'updated_by' => $this->updated_by,
-            'deleted_at' => $this->deleted_at,
+        $query->andFilterWhere(['like','value',$this->value]);
+        $query->andFilterWhere(['=','external_data_id',$this->external_data_id]);
+
+        return $dataProvider;
+    }
+    public function searchWidget(array $params,int $rangeType,int $startRange,int $endRange)
+    {
+        $query = ExternalDataValue::find();
+
+        $query->andFilterWhere(['between', 'updated_at', $startRange, $endRange]);
+
+        if ($rangeType == ReportWidget::RANGE_TYPE_MONTHLY) {
+            $query->select([
+                'total_count' => 'COUNT(' . ExternalDataValue::tableName() . '.id)',
+                'total_amount' => 'SUM(' . ExternalDataValue::tableName() . '.value)',
+                'year' => 'pyear(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))',
+                'month' => 'pmonth(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))',
+                'month_name' => 'pmonthname(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))',
+            ]);
+            $query
+                ->groupBy('pyear(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at)), pmonth(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))')
+                ->orderBy(ExternalDataValue::tableName() . '.updated_at');
+        }
+
+        if ($rangeType == ReportWidget::RANGE_TYPE_DAILY) {
+            $query->select([
+                'total_count' => 'COUNT(' . ExternalDataValue::tableName() . '.id)',
+                'total_amount' => 'SUM(' . ExternalDataValue::tableName() . '.value)',
+                'year' => 'pyear(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))',
+                'day' => 'pday(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))',
+                'month' => 'pmonth(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))',
+                'month_name' => 'pmonthname(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))',
+            ]);
+            $query
+                ->groupBy('pday(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at)), pmonth(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at)), pyear(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))')
+                ->orderBy('FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at)');
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
         ]);
+
+        $this->load($params);
 
         return $dataProvider;
     }
