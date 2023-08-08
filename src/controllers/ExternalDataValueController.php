@@ -85,9 +85,9 @@ class ExternalDataValueController extends Controller
     {
         $model = new ExternalDataValue();
 
-        if ($model->load($this->request->post())) {
+        if ($model->load($this->request->post()) && $model->validate()) {
             $model->external_data_id = $external_data_id;
-            if ($model->save()) {
+            if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
                     'message' => Yii::t("biDashboard", 'Success')
