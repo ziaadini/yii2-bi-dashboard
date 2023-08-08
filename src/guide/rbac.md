@@ -5,137 +5,89 @@
 RBAC (Role-Based Access Control) is a method of managing access to resources in a system based on the roles assigned to
 users. In the context of Yii 2, RBAC is implemented using the AccessControl class to define access rules for different
 user roles to specific actions in a controller.
-Now we introduce the access to the 5 controlles we have:
+Now we introduce the access to the 6 controllers we have:
 
-## Access Control for ReportPageController
+## permissions  for ReportPageController
 
 ### Action: index
-
-Roles: ['ReportPage/index']
-
+permission: ['ReportPage/index']
 ### Action: view
-
-Roles: ['ReportPage/view']
-
+permission: ['ReportPage/view']
 ### Action: create
-
-Roles: ['ReportPage/create']
-
+permission: ['ReportPage/create']
 ### Action: update
-
-Roles: ['ReportPage/update']
-
+permission: ['ReportPage/update']
 ### Action: delete
-
-Roles: ['ReportPage/delete']
-
+permission: ['ReportPage/delete']
 ### Action: update-widget
-
-Roles: ['ReportPage/update-widget']
-
+permission: ['ReportPage/update-widget']
 ### Action: add
-
-Roles: ['ReportPage/add']
-
+permission: ['ReportPage/add']
 ### Action: get-widget-column
-
-Roles: ['ReportPage/get-widget-column']
-
+permission: ['ReportPage/get-widget-column']
 ### Action: run-all-widgets
+permission: ['ReportPage/run-all-widgets']
 
-Roles: ['ReportPage/run-all-widgets']
 
-## Access Control for ReportPageWidgetController
-
+## permissions for ReportPageWidgetController
 ### Action: delete
+permission: ['ReportWidget/delete']
 
-Roles: ['ReportWidget/delete']
 
-## Access Control for ReportWidgetController
-
+## permissions for DefaultController
 ### Action: index
+permission: ['Default/index']
 
-Roles: ['ReportWidget/index']
 
+## permissions for ReportWidgetController
+### Action: index
+permission: ['ReportWidget/index']
 ### Action: view
-
-Roles: ['ReportWidget/view']
-
+permission: ['ReportWidget/view']
 ### Action: create
-
-Roles: ['ReportWidget/create']
-
+permission: ['ReportWidget/create']
 ### Action: update
-
-Roles: ['ReportWidget/update']
-
+permission: ['ReportWidget/update']
 ### Action: delete
-
-Roles: ['ReportWidget/delete']
-
+permission: ['ReportWidget/delete']
 ### Action: open-modal
-
-Roles: ['ReportWidget/open-modal']
-
+permission: ['ReportWidget/open-modal']
 ### Action: run
-
-Roles: ['ReportWidget/run']
-
+permission: ['ReportWidget/run']
 ### Action: modal-show-chart
+permission: ['ReportWidget/modal-show-chart']
 
-Roles: ['ReportWidget/modal-show-chart']
 
-## Access Control for ReportYearController
 
+## permissions for ReportYearController
 ### Action: index
-
-Roles: ['ReportYear/index']
-
+permission: ['ReportYear/index']
 ### Action: view
-
-Roles: ['ReportYear/view']
-
+permission: ['ReportYear/view']
 ### Action: create
-
-Roles: ['ReportYear/create']
-
+permission: ['ReportYear/create']
 ### Action: update
-
-Roles: ['ReportYear/update']
-
+permission: ['ReportYear/update']
 ### Action: delete
+permission: ['ReportYear/delete']
 
-Roles: ['ReportYear/delete']
 
-## Access Control for SharingPageController
 
+## permissions for SharingPageController
 ## Action: index
-
-Roles: ['SharingPage/index']
-
+permission: ['SharingPage/index']
 ### Action: view
-
-Roles: ['SharingPage/view']
-
+permission: ['SharingPage/view']
 ### Action: create
-
-Roles: ['SharingPage/create']
-
+permission: ['SharingPage/create']
 ### Action: update
-
-Roles: ['SharingPage/update']
-
+permission: ['SharingPage/update']
 ### Action: delete
-
-Roles: ['SharingPage/delete']
-
+permission: ['SharingPage/delete']
 ### Action: managment
-
-Roles: ['SharingPage/managment']
-
+permission: ['SharingPage/managment']
 ### Action: expire
-
-Roles: ['SharingPage/expire']
+permission: ['SharingPage/expire']
 
 This project document provides an overview of the Role-Based Access Control (RBAC) configuration for the controllers and
 their respective actions. The defined access rules ensure that only authorized users with specific roles can access and

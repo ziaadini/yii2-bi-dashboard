@@ -73,9 +73,9 @@ class SharingPageController extends Controller
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['SharingPage/managment'],
+                                'roles' => ['SharingPage/management'],
                                 'actions' => [
-                                    'managment',
+                                    'management',
                                 ]
                             ],
                             [
@@ -92,10 +92,10 @@ class SharingPageController extends Controller
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'management' => ['GET', 'POST'],
-                        'expire' => ['GET', 'POST'],
-                        'create' => ['GET', 'POST'],
-                        'update' => ['GET', 'PUT', 'POST'],
+                        'management' => ['POST'],
+                        'expire' => ['POST'],
+                        'create' => ['POST'],
+                        'update' => ['POST'],
                         'delete' => ['POST', 'DELETE'],
                     ],
                 ],
@@ -150,6 +150,7 @@ class SharingPageController extends Controller
     public function actionCreate(): Response|string
     {
         $model = new SharingPage();
+
         if ($model->load($this->request->post()) && $model->validate()) {
             if ($model->save()) {
                 return $this->asJson([
@@ -163,6 +164,7 @@ class SharingPageController extends Controller
                 ]);
             }
         }
+
         $this->performAjaxValidation($model);
         return $this->renderAjax('create', [
             'model' => $model,

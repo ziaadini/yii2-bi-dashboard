@@ -110,13 +110,13 @@ class ReportPageController extends Controller
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'create' => ['GET', 'POST'],
-                        'update' => ['GET', 'PUT', 'POST'],
+                        'create' => ['POST'],
+                        'update' => ['POST'],
                         'delete' => ['POST', 'DELETE'],
-                        'update-widget' => ['GET', 'PUT', 'POST'],
-                        'add' => ['GET', 'POST'],
+                        'update-widget' => ['POST'],
+                        'add' => ['POST'],
                         'get-widget-column' => ['GET'],
-                        'run-all-widgets' => ['GET', 'PUT']
+                        'run-all-widgets' => ['GET']
                     ],
                 ],
             ]
