@@ -347,6 +347,7 @@ class ReportWidget extends ActiveRecord
                 if (count($parameters) <= 3) {
                     $isValid = false;
                 }
+                $this->addError('status','function in search model not found');
             } else {
                 $isValid = false;
             }
