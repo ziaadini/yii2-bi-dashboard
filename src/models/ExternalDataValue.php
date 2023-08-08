@@ -100,7 +100,9 @@ class ExternalDataValue extends ActiveRecord
 
     public function beforeValidate()
     {
-        $this->created_at = $this->jalaliToTimestamp($this->created_at, "Y/m/d H:i:s");
+        if ($this->isNewRecord){
+            $this->created_at = $this->jalaliToTimestamp($this->created_at, "Y/m/d H:i:s");
+        }
         return parent::beforeValidate();
     }
 
