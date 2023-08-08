@@ -2,6 +2,7 @@
 
 namespace sadi01\bidashboard\models;
 
+use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -28,6 +29,7 @@ use yii\db\ActiveRecord;
  */
 class ExternalData extends ActiveRecord
 {
+    use CoreTrait;
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 2;
     /**
@@ -91,6 +93,14 @@ class ExternalData extends ActiveRecord
     public function getBidExternalDataValues()
     {
         return $this->hasMany(ExternalDataValue::class, ['external_data_id' => 'id']);
+    }
+
+    public function beforeValidate()
+    {
+        if ($this->isNewRecord){
+            $this->created_at = $this->jalaliToTimestamp($this->created_at, "Y/m/d H:i:s");
+        }
+        return parent::beforeValidate();
     }
 
     public static function itemAlias($type, $code = NULL)

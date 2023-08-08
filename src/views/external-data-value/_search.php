@@ -50,7 +50,7 @@ use sadi01\bidashboard\models\ExternalDataValue;
                     'language' => 'fa',
                     'jalaali'=> true,
                     'showDropdowns'=> true,
-                    'singleDatePicker' => false,
+                    'singleDatePicker' => true,
                     'useTimestamp' => true,
                     'timePicker' => true,
                     'timePicker24Hour' => true,

@@ -216,7 +216,7 @@ class ReportWidgetController extends Controller
         if ($model->load($this->request->post()) && $model->save()) {
             return $this->asJson([
                 'status' => true,
-                'message' => Yii::t("app", 'Item Updated')
+                'message' => Yii::t("biDashboard", 'Item Updated')
             ]);
         }
 

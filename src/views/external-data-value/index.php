@@ -18,7 +18,6 @@ use sadi01\bidashboard\widgets\ReportModalWidget;
 
 $this->title = Yii::t('biDashboard', 'External Datas');
 $this->params['breadcrumbs'][] = $this->title;
-
 $isExternalDataValuePage = true;
 ?>
 <?php Pjax::begin(['id' => 'p-jax-external-data', 'enablePushState' => false]); ?>

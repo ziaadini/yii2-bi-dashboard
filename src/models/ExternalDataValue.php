@@ -2,7 +2,9 @@
 
 namespace sadi01\bidashboard\models;
 
+use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
+use yii\db\ActiveRecord;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
@@ -26,8 +28,9 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @mixin BlameableBehavior
  * @mixin TimestampBehavior
  */
-class ExternalDataValue extends \yii\db\ActiveRecord
+class ExternalDataValue extends ActiveRecord
 {
+    use CoreTrait;
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 2;
 
@@ -95,6 +98,11 @@ class ExternalDataValue extends \yii\db\ActiveRecord
         return $this->hasOne(ExternalData::class, ['id' => 'external_data_id']);
     }
 
+    public function beforeValidate()
+    {
+        $this->created_at = $this->jalaliToTimestamp($this->created_at, "Y/m/d H:i:s");
+        return parent::beforeValidate();
+    }
 
     public static function itemAlias($type, $code = NULL)
     {
