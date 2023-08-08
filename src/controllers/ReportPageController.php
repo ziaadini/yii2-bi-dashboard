@@ -288,25 +288,20 @@ class ReportPageController extends Controller
         $page = $this->findModel($id);
         $model->page_id = $id;
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->validate()) {
-                if ($model->save(false)) {
-                    return $this->asJson([
-                        'status' => true,
-                        'message' => Yii::t("app", 'Success')
-                    ]);
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t("app", 'Success')
+                ]);
 
-                } else {
-                    return $this->asJson([
-                        'status' => false,
-                        'message' => Yii::t("app", 'fail')
-                    ]);
-                }
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("app", 'fail')
+                ]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
-
         $this->performAjaxValidation($model);
         $widgets = ReportWidget::find()->where(['range_type' => $page->range_type])->all();
         return $this->renderAjax('_add', [
