@@ -32,15 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= Html::encode($this->title) ?>
                     </h4>
                     <div>
-                        <?= Html::a(Html::tag('span', Yii::t('biDashboard','Show model'), ['class' => ['btn btn-info']]), $modelRoute) ?>
-
-                        <?= Html::a(Yii::t('biDashboard', 'Delete'), ['delete', 'id' => $model->id], [
-                            'class' => 'btn btn-danger',
-                            'data' => [
-                                'confirm' => Yii::t('biDashboard', 'Are you sure you want to delete this item?'),
-                                'method' => 'post',
-                            ],
-                        ]) ?>
+                        <?= Html::a(Html::tag('span', Yii::t('biDashboard', 'Show model'), ['class' => ['btn btn-info']]), $modelRoute) ?>
                     </div>
                 </div>
                 <div class="card-body">

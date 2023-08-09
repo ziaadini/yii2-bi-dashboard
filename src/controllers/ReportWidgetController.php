@@ -23,7 +23,6 @@ class ReportWidgetController extends Controller
     use AjaxValidationTrait;
     use CoreTrait;
 
-    public $enableCsrfValidation = false;
     public $layout = 'bid_main';
 
     /**
@@ -144,7 +143,7 @@ class ReportWidgetController extends Controller
 
         $modelRoute = $model->getModelRoute();
 
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $model,
             'modelRoute' => $modelRoute,
         ]);
@@ -236,9 +235,17 @@ class ReportWidgetController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $model->softDelete();
-
-        return $this->redirect(['index']);
+        if ($model->canDelete() && $model->softDelete()) {
+            return $this->asJson([
+                'status' => true,
+                'message' => Yii::t("biDashboard", 'Item Deleted')
+            ]);
+        } else {
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t("biDashboard", 'Error In Delete Action')
+            ]);
+        }
     }
 
     /**

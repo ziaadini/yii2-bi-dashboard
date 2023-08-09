@@ -368,4 +368,9 @@ class ReportWidget extends ActiveRecord
         $reportWidgetResult->save();
         return $reportWidgetResult;
     }
+
+    public function canDelete()
+    {
+        return true;
+    }
 }

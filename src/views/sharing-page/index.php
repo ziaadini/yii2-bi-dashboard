@@ -1,11 +1,11 @@
 <?php
 
 use sadi01\bidashboard\models\SharingPage;
+use sadi01\bidashboard\widgets\grid\ActionColumn;
+use sadi01\bidashboard\widgets\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
-use yii\grid\ActionColumn;
-use yii\grid\GridView;
 
 
 /** @var yii\web\View $this */

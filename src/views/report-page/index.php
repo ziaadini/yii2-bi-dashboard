@@ -2,9 +2,9 @@
 
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageSearch;
+use sadi01\bidashboard\widgets\grid\ActionColumn;
+use sadi01\bidashboard\widgets\grid\GridView;
 use yii\data\ActiveDataProvider;
-use yii\grid\ActionColumn;
-use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         [
                             'class' => ActionColumn::class,
-                            'template'=>'{view} {delete}',
+                            'template' => '{view} {delete}',
                             'urlCreator' => function ($action, ReportPage $model, $key, $index, $column) {
                                 return Url::toRoute([$action, 'id' => $model->id]);
                             },
