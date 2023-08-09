@@ -21,7 +21,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @property int $updated_at
  * @property int $updated_by
  * @property int $deleted_at
-*
+ *
  * @property ExternalData $externalData
  *
  * @mixin SoftDeleteBehavior
@@ -31,6 +31,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
 class ExternalDataValue extends ActiveRecord
 {
     use CoreTrait;
+
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 2;
 
@@ -100,9 +101,7 @@ class ExternalDataValue extends ActiveRecord
 
     public function beforeValidate()
     {
-        if ($this->isNewRecord){
-            $this->created_at = $this->jalaliToTimestamp($this->created_at, "Y/m/d H:i:s");
-        }
+        $this->created_at = $this->jalaliToTimestamp($this->created_at, "Y/m/d H:i:s");
         return parent::beforeValidate();
     }
 
@@ -148,7 +147,6 @@ class ExternalDataValue extends ActiveRecord
             ],
         ];
     }
-
 
 
 }
