@@ -54,6 +54,12 @@ class Bootstrap implements BootstrapInterface
             ],
         ]);
 
+        Yii::$app->setModules([
+            'gridview' => [
+                'class' => 'kartik\grid\Module',
+            ],
+        ]);
+
         $parameter = null;
         if (!Env::get('BI_DB_DSN')) {
             $parameter = 'BI_DB_DSN';

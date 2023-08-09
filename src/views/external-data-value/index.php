@@ -2,8 +2,8 @@
 use Yii;
 
 use yii\helpers\Url;
-use yii\grid\ActionColumn;
-use yii\grid\GridView;
+use sadi01\bidashboard\widgets\grid\ActionColumn;
+use sadi01\bidashboard\widgets\grid\GridView;
 use yii\widgets\Pjax;
 use yii\helpers\Html;
 use sadi01\bidashboard\models\ExternalDataValue;

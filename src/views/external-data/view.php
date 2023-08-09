@@ -3,9 +3,9 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
-use yii\grid\GridView;
+use sadi01\bidashboard\widgets\grid\ActionColumn;
+use sadi01\bidashboard\widgets\grid\GridView;
 use  sadi01\bidashboard\models\ExternalDataValue;
-use yii\grid\ActionColumn;
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
