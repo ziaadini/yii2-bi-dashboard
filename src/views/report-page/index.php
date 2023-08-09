@@ -102,6 +102,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ]
                                     );
                                 },
+                                'view' => function ($url, ReportPage $model, $key) {
+                                    return Html::a('<i class="fa fa-eye"></i>', $url, [
+                                        'title' => Yii::t('yii', 'View'),
+                                        'aria-label' => Yii::t('yii', 'View'),
+                                        'class' => 'btn text-info p-0',
+                                        'data-toggle' => 'tooltip',
+                                    ]);
+                                },
                             ],
                         ],
                     ],
