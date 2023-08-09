@@ -33,8 +33,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         <tr>
                             <td><?= Yii::t('biDashboard', 'ID') ?></td>
                             <td><?= Yii::t('biDashboard', 'title') ?></td>
-                            <td><?= Yii::t('biDashboard', 'Created at') ?></td>
-                            <td><?= Yii::t('biDashboard', 'Updated at') ?></td>
+                            <td><?= Yii::t('biDashboard', 'Created At') ?></td>
+                            <td><?= Yii::t('biDashboard', 'Updated At') ?></td>
                         </tr>
                         </thead>
                         <tbody>

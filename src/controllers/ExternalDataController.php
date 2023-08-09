@@ -155,8 +155,8 @@ class ExternalDataController extends Controller
     {
         $model = new ExternalData();
 
-        if ($model->load($this->request->post())) {
-            if ($model->save()) {
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
                     'message' => Yii::t("app", 'Success')
@@ -186,8 +186,8 @@ class ExternalDataController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load($this->request->post())) {
-            if ($model->save()) {
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
                     'message' => Yii::t("app", 'Success')
@@ -200,6 +200,7 @@ class ExternalDataController extends Controller
             }
         }
 
+        $this->performAjaxValidation($model);
         return $this->renderAjax('update', [
             'model' => $model,
         ]);
