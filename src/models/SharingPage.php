@@ -68,7 +68,6 @@ class SharingPage extends \yii\db\ActiveRecord
     {
         $this->access_key = Yii::$app->security->generateRandomString();
         $this->expire_time = $this->jalaliToTimestamp($this->expire_time, "Y/m/d H:i:s");
-
         return parent::beforeValidate();
     }
 
