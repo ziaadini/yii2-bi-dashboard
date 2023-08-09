@@ -89,12 +89,6 @@ class ReportYearController extends Controller
     /**
      * @throws BadRequestHttpException
      */
-    public function beforeAction($action): bool
-    {
-        Yii::$app->controller->enableCsrfValidation = false;
-        return parent::beforeAction($action);
-    }
-
     /**
      * Lists all ReportYear models.
      *

@@ -24,7 +24,6 @@ class ReportPageController extends Controller
     use AjaxValidationTrait;
     use CoreTrait;
 
-    public $enableCsrfValidation = false;
     public $layout = 'bid_main';
 
     /**
@@ -241,23 +240,29 @@ class ReportPageController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id): Response
     {
-        $model = $this->findModel($id);
+        try {
+            $model = $this->findModel($id);
+            $sharingKeys = $model->sharingKeys;
 
-        if ($model->canDelete() && $model->softDelete()) {
+            foreach ($sharingKeys as $value) {
+                $value->softDelete();
+            }
+
+            $model->softDelete();
+
             return $this->asJson([
                 'status' => true,
-                'message' => Yii::t("app", 'Item Deleted')
+                'message' => Yii::t("biDashboard", 'Success')
             ]);
-        } else {
+        } catch (\Exception $e) {
             return $this->asJson([
                 'status' => false,
-                'message' => Yii::t("app", 'Error In Delete')
+                'message' => Yii::t("biDashboard", 'An error occurred: ') . $e->getMessage()
             ]);
         }
 
-        return $this->redirect(['index']);
     }
 
     public function actionUpdateWidget($id): Response|string
