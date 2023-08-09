@@ -27,81 +27,81 @@ class SharingPageController extends Controller
     /**
      * @inheritDoc
      */
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'access' => [
-                    'class' => AccessControl::class,
-                    'rules' =>
-                        [
-                            [
-                                'allow' => true,
-                                'roles' => ['SharingPage/index'],
-                                'actions' => [
-                                    'index'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['SharingPage/view'],
-                                'actions' => [
-                                    'view'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['SharingPage/create'],
-                                'actions' => [
-                                    'create',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['SharingPage/update'],
-                                'actions' => [
-                                    'update',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['SharingPage/delete'],
-                                'actions' => [
-                                    'delete'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['SharingPage/management'],
-                                'actions' => [
-                                    'management',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['SharingPage/expire'],
-                                'actions' => [
-                                    'expire'
-                                ]
-                            ],
-                        ]
-                ],
-                'verbs' => [
-                    'class' => VerbFilter::class,
-                    'actions' => [
-                        'index' => ['GET'],
-                        'view' => ['GET'],
-                        'management' => ['POST'],
-                        'expire' => ['POST'],
-                        'create' => ['POST'],
-                        'update' => ['POST'],
-                        'delete' => ['POST', 'DELETE'],
-                    ],
-                ],
-            ]
-        );
-    }
+//    public function behaviors()
+//    {
+//        return array_merge(
+//            parent::behaviors(),
+//            [
+//                'access' => [
+//                    'class' => AccessControl::class,
+//                    'rules' =>
+//                        [
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['SharingPage/index'],
+//                                'actions' => [
+//                                    'index'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['SharingPage/view'],
+//                                'actions' => [
+//                                    'view'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['SharingPage/create'],
+//                                'actions' => [
+//                                    'create',
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['SharingPage/update'],
+//                                'actions' => [
+//                                    'update',
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['SharingPage/delete'],
+//                                'actions' => [
+//                                    'delete'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['SharingPage/management'],
+//                                'actions' => [
+//                                    'management',
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['SharingPage/expire'],
+//                                'actions' => [
+//                                    'expire'
+//                                ]
+//                            ],
+//                        ]
+//                ],
+//                'verbs' => [
+//                    'class' => VerbFilter::class,
+//                    'actions' => [
+//                        'index' => ['GET'],
+//                        'view' => ['GET'],
+//                        'management' => ['POST'],
+//                        'expire' => ['POST'],
+//                        'create' => ['POST'],
+//                        'update' => ['POST'],
+//                        'delete' => ['POST', 'DELETE'],
+//                    ],
+//                ],
+//            ]
+//        );
+//    }
 
     /**
      * @throws BadRequestHttpException
@@ -152,7 +152,7 @@ class SharingPageController extends Controller
         $model = new SharingPage();
 
         if ($model->load($this->request->post()) && $model->validate()) {
-            if ($model->save()) {
+            if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
                     'message' => Yii::t("app", 'Success')

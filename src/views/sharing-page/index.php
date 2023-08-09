@@ -68,7 +68,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
 
                 ],
-                'expire_time:datetime',
+                [
+                    'attribute' => 'expire_time',
+                    'value' => function ($item) {
+                        return Yii::$app->pdate->jdate('Y/m/d-h:i', $item->created_at);
+                    }
+                ],
                 [
                     'class' => ActionColumn::class,
                     'urlCreator' => function ($action, SharingPage $model, $key, $index, $column) {
