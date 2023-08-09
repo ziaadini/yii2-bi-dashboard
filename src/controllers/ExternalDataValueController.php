@@ -84,9 +84,8 @@ class ExternalDataValueController extends Controller
     public function actionCreate($external_data_id)
     {
         $model = new ExternalDataValue();
-
+        $model->external_data_id = $external_data_id;
         if ($model->load($this->request->post()) && $model->validate()) {
-            $model->external_data_id = $external_data_id;
             if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,

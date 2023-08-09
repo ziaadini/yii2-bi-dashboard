@@ -25,12 +25,6 @@ use sadi01\bidashboard\models\ExternalDataValue;
 
     <div class="row">
         <div class="col-sm-3">
-            <?= $form->field($model, 'value') ?>
-        </div>
-        <div class="col-sm-3">
-            <?= $form->field($model, 'status')->dropDownList(ExternalDataValue::itemAlias('Status')) ?>
-        </div>
-        <div class="col-sm-3">
             <?= $form->field($model, 'external_data_id')->widget(Select2::class, [
                 'data' => ArrayHelper::map(ExternalData::find()->all(), 'id', 'title'),
                 'options' => [
@@ -40,6 +34,12 @@ use sadi01\bidashboard\models\ExternalDataValue;
                     'allowClear' => true
                 ],
             ])->label(Yii::t('biDashboard','External Data')); ?>
+        </div>
+        <div class="col-sm-3">
+            <?= $form->field($model, 'value') ?>
+        </div>
+        <div class="col-sm-3">
+            <?= $form->field($model, 'status')->dropDownList(ExternalDataValue::itemAlias('Status')) ?>
         </div>
         <div class="col-sm-3">
             <?= $form->field($model, 'created_at')->widget(dateRangePicker::class,[

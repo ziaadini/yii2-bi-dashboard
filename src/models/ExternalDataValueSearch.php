@@ -62,40 +62,42 @@ class ExternalDataValueSearch extends ExternalDataValue
     {
         $query = ExternalDataValue::find();
 
-        $query->andFilterWhere(['between', 'updated_at', $startRange, $endRange]);
+        $query->andFilterWhere(['between', 'created_at', $startRange, $endRange]);
 
         if ($rangeType == ReportWidget::RANGE_TYPE_MONTHLY) {
             $query->select([
                 'total_count' => 'COUNT(' . ExternalDataValue::tableName() . '.id)',
                 'total_amount' => 'SUM(' . ExternalDataValue::tableName() . '.value)',
-                'year' => 'pyear(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))',
-                'month' => 'pmonth(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))',
-                'month_name' => 'pmonthname(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))',
+                'year' => 'pyear(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at))',
+                'month' => 'pmonth(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at))',
+                'month_name' => 'pmonthname(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at))',
             ]);
             $query
-                ->groupBy('pyear(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at)), pmonth(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))')
-                ->orderBy(ExternalDataValue::tableName() . '.updated_at');
+                ->groupBy('pyear(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at)), pmonth(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at))')
+                ->orderBy(ExternalDataValue::tableName() . '.created_at');
         }
 
         if ($rangeType == ReportWidget::RANGE_TYPE_DAILY) {
             $query->select([
                 'total_count' => 'COUNT(' . ExternalDataValue::tableName() . '.id)',
                 'total_amount' => 'SUM(' . ExternalDataValue::tableName() . '.value)',
-                'year' => 'pyear(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))',
-                'day' => 'pday(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))',
-                'month' => 'pmonth(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))',
-                'month_name' => 'pmonthname(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))',
+                'year' => 'pyear(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at))',
+                'day' => 'pday(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at))',
+                'month' => 'pmonth(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at))',
+                'month_name' => 'pmonthname(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at))',
             ]);
             $query
-                ->groupBy('pday(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at)), pmonth(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at)), pyear(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at))')
-                ->orderBy('FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.updated_at)');
+                ->groupBy('pday(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at)), pmonth(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at)), pyear(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at))')
+                ->orderBy('FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at)');
         }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
+        $params = ['ExternalDataValueSearch' => $params];
         $this->load($params);
+        $query->andFilterWhere(['=', 'external_data_id', $this->external_data_id]);
 
         return $dataProvider;
     }
