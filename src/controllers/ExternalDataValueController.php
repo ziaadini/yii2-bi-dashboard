@@ -95,7 +95,7 @@ class ExternalDataValueController extends Controller
     {
         $searchModel = new ExternalDataValueSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-        $queryParams = array_filter(Yii::$app->request->getQueryParams('ExternalDataValueSearch') ?: []);
+        $queryParams = array_filter(Yii::$app->request->getQueryParam('ExternalDataValueSearch') ?: []);
 
         return $this->renderAjax('index', [
             'searchModel' => $searchModel,
