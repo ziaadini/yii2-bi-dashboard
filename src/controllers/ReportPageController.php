@@ -24,7 +24,6 @@ class ReportPageController extends Controller
     use AjaxValidationTrait;
     use CoreTrait;
 
-    public $enableCsrfValidation = false;
     public $layout = 'bid_main';
 
     /**
@@ -204,6 +203,7 @@ class ReportPageController extends Controller
                 ]);
             }
         }
+
         $this->performAjaxValidation($model);
         return $this->renderAjax('create', [
             'model' => $model,
@@ -314,7 +314,6 @@ class ReportPageController extends Controller
     /** @var $widget ReportWidget */
     public function actionGetWidgetColumn()
     {
-
         Yii::$app->response->format = Response::FORMAT_JSON;
         $out = [];
         if (isset($_POST['depdrop_parents'])) {

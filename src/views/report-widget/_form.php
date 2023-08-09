@@ -1,11 +1,12 @@
 <?php
 
-use yii\helpers\Html;
-use yii\bootstrap4\ActiveForm;
-use yii\web\View;
-use yii\helpers\ArrayHelper;
 use sadi01\bidashboard\models\ReportModelClass;
 use sadi01\bidashboard\models\ReportWidget;
+use yii;
+use yii\bootstrap4\ActiveForm;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\web\View;
 
 /** @var View $this
  * @var ReportWidget $model
@@ -17,7 +18,7 @@ use sadi01\bidashboard\models\ReportWidget;
 ?>
 
 <div class="report-widget-form">
-    <?php $queryString = \Yii::$app->request->queryString; ?>
+    <?php $queryString = Yii::$app->request->queryString; ?>
     <?php $form = ActiveForm::begin(['id' => 'report_widget_form', 'action' => ['/bidashboard/report-widget/create?' . $queryString]]); ?>
 
     <div class="row">

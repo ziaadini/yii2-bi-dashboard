@@ -13,7 +13,6 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
-use function PHPUnit\Framework\countOf;
 
 /**
  * ExternalDataController implements the CRUD actions for ExternalData model.
