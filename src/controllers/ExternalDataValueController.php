@@ -6,6 +6,7 @@ use sadi01\bidashboard\models\ExternalDataValue;
 use sadi01\bidashboard\models\ExternalDataValueSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use Yii;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -29,10 +30,56 @@ class ExternalDataValueController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' =>
+                        [
+                            [
+                                'allow' => true,
+                                'roles' => ['ExternalDataValue/index'],
+                                'actions' => [
+                                    'index'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ExternalDataValue/view'],
+                                'actions' => [
+                                    'view'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ExternalDataValue/create'],
+                                'actions' => [
+                                    'create',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ExternalDataValue/update'],
+                                'actions' => [
+                                    'update',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ExternalDataValue/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+
+                        ]
+                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
-                        'delete' => ['POST'],
+                        'index' => ['GET'],
+                        'view' => ['GET'],
+                        'create' => ['POST'],
+                        'update' => ['POST'],
+                        'delete' => ['POST', 'DELETE'],
                     ],
                 ],
             ]
@@ -139,9 +186,12 @@ class ExternalDataValueController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($id)->softDelete();
 
-        return $this->redirect(['index']);
+        return $this->asJson([
+            'status' => true,
+            'message' => Yii::t("biDashboard", 'Success')
+        ]);
     }
 
     /**

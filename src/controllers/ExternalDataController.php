@@ -8,10 +8,12 @@ use sadi01\bidashboard\models\ExternalDataValue;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use function PHPUnit\Framework\countOf;
 
 /**
  * ExternalDataController implements the CRUD actions for ExternalData model.
@@ -22,6 +24,7 @@ class ExternalDataController extends Controller
 
     public $layout = 'bid_main';
 
+
     /**
      * @inheritDoc
      */
@@ -30,10 +33,56 @@ class ExternalDataController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' =>
+                        [
+                            [
+                                'allow' => true,
+                                'roles' => ['ExternalData/index'],
+                                'actions' => [
+                                    'index'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ExternalData/view'],
+                                'actions' => [
+                                    'view'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ExternalData/create'],
+                                'actions' => [
+                                    'create',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ExternalData/update'],
+                                'actions' => [
+                                    'update',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ExternalData/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+
+                        ]
+                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
-                        'delete' => ['POST'],
+                        'index' => ['GET'],
+                        'view' => ['GET'],
+                        'create' => ['POST'],
+                        'update' => ['POST'],
+                        'delete' => ['POST', 'DELETE'],
                     ],
                 ],
             ]
@@ -161,14 +210,22 @@ class ExternalDataController extends Controller
      * Deletes an existing ExternalData model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id
-     * @return \yii\web\Response
+     * @return Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+        $exteralDataValues = $model->externalDataValues;
+        foreach ($exteralDataValues as $value){
+            $value->softDelete();
+        }
+        $model->softDelete();
+        return $this->asJson([
+            'status' => true,
+            'message' => Yii::t("biDashboard", 'Success')
+        ]);
     }
 
     /**

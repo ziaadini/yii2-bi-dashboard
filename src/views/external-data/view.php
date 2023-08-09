@@ -52,6 +52,8 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 
+<?php Pjax::begin(['id' => 'p-jax-external-data', 'enablePushState' => false]); ?>
+
 <div class="report-widget-view">
     <div class="page-content container-fluid text-left">
         <div class="work-report-index card">
@@ -99,8 +101,37 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'class' => ActionColumn::class,
                                 'template' => '{update} {delete}',
                                 'urlCreator' => function ($action, ExternalDataValue $model, $key, $index, $column) {
-                                    return Url::toRoute(['/bidashboard/external-data-value/'.$action, 'id' => $model->id]);
-                                }
+                                    return Url::toRoute(['/bidashboard/external-data-value/' . $action, 'id' => $model->id]);
+                                },
+                                'buttons' => [
+                                    'update' => function ($url, ExternalDataValue $model, $key) {
+                                        return Html::a('<i class="fa fa-pen"></i>', "javascript:void(0)",
+                                            [
+                                                'data-pjax' => '0',
+                                                'class' => "btn text-primary",
+                                                'data-size' => 'modal-md',
+                                                'data-title' => Yii::t('biDashboard', 'update'),
+                                                'data-toggle' => 'modal',
+                                                'data-target' => '#modal-pjax',
+                                                'data-url' => Url::to(['/bidashboard/external-data-value/update', 'id' => $model->id]),
+                                                'data-handle-form-submit' => 1,
+                                                'data-reload-pjax-container' => 'p-jax-external-data'
+                                            ]
+                                        );
+                                    },
+                                    'delete' => function ($url, ExternalDataValue $model, $key) {
+                                        return Html::a('<i class="fa fa-trash"></i>', 'javascript:void(0)', [
+                                            'title' => Yii::t('yii', 'Delete'),
+                                            'aria-label' => Yii::t('yii', 'Delete'),
+                                            'data-reload-pjax-container' => 'p-jax-external-data',
+                                            'data-pjax' => '0',
+                                            'data-url' => Url::to(['/bidashboard/external-data-value/delete', 'id' => $model->id]),
+                                            'class' => 'p-jax-btn text-danger p-0',
+                                            'data-title' => Yii::t('yii', 'Delete'),
+                                            'data-toggle' => 'tooltip',
+                                        ]);
+                                    },
+                                ],
                             ],
                         ],
                     ]); ?>
@@ -111,3 +142,4 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+<?php Pjax::end(); ?>

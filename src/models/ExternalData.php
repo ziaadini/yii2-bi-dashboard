@@ -81,7 +81,7 @@ class ExternalData extends ActiveRecord
      *
      * @return ActiveQuery|ExternalDataValueQuery
      */
-    public function getBidExternalDataValues()
+    public function getExternalDataValues()
     {
         return $this->hasMany(ExternalDataValue::class, ['external_data_id' => 'id']);
     }

@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'external_data_id',
                             'label' => Yii::t('biDashboard', 'External Data'),
                             'value' => function ($item) {
-                                return $item->externalData->title;
+                                return $item->externalData?->title;
                             }
                         ],
                         'value',
@@ -70,7 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         [
                             'class' => ActionColumn::class,
-                            'template' => '{update}',
+                            'template' => '{update} {delete}',
                             'urlCreator' => function ($action, ExternalDataValue $model, $key, $index, $column) {
                                 return Url::toRoute(['/bidashboard/external-data-value/' . $action, 'id' => $model->id]);
                             },
@@ -89,6 +89,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'data-reload-pjax-container' => 'p-jax-external-data'
                                         ]
                                     );
+                                },
+                                'delete' => function ($url, ExternalDataValue $model, $key) {
+                                    return Html::a('<i class="fa fa-trash"></i>', 'javascript:void(0)', [
+                                        'title' => Yii::t('yii', 'Delete'),
+                                        'aria-label' => Yii::t('yii', 'Delete'),
+                                        'data-reload-pjax-container' => 'p-jax-external-data',
+                                        'data-pjax' => '0',
+                                        'data-url' => Url::to(['/bidashboard/external-data-value/delete', 'id' => $model->id]),
+                                        'class' => 'p-jax-btn text-danger p-0',
+                                        'data-title' => Yii::t('yii', 'Delete'),
+                                        'data-toggle' => 'tooltip',
+                                    ]);
                                 },
                             ],
                         ],

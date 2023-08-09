@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'urlCreator' => function ($action, ExternalData $model, $key, $index, $column) {
                                 return Url::toRoute([$action, 'id' => $model->id]);
                             },
-                            'template' => '{update} {view}',
+                            'template' => ' {view}  {update}  {delete}',
                             'buttons' => [
                                 'update' => function ($url, ExternalData $model, $key) {
                                     return Html::a('<i class="fa fa-pen"></i>', "javascript:void(0)",
@@ -81,6 +81,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'data-reload-pjax-container' => 'p-jax-external-data'
                                         ]
                                     );
+                                },
+                                'delete' => function ($url, ExternalData $model, $key) {
+                                    return Html::a('<i class="fa fa-trash"></i>', 'javascript:void(0)', [
+                                        'title' => Yii::t('yii', 'Delete'),
+                                        'aria-label' => Yii::t('yii', 'Delete'),
+                                        'data-reload-pjax-container' => 'p-jax-external-data',
+                                        'data-pjax' => '0',
+                                        'data-url' => Url::to(['/bidashboard/external-data/delete', 'id' => $model->id]),
+                                        'class' => 'p-jax-btn text-danger p-0',
+                                        'data-title' => Yii::t('yii', 'Delete'),
+                                        'data-toggle' => 'tooltip',
+                                    ]);
                                 },
                             ],
                         ],
