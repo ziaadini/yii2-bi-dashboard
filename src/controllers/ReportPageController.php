@@ -203,6 +203,7 @@ class ReportPageController extends Controller
                 ]);
             }
         }
+
         $this->performAjaxValidation($model);
         return $this->renderAjax('create', [
             'model' => $model,
@@ -240,29 +241,23 @@ class ReportPageController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id): Response
+    public function actionDelete($id)
     {
-        try {
-            $model = $this->findModel($id);
-            $sharingKeys = $model->sharingKeys;
+        $model = $this->findModel($id);
 
-            foreach ($sharingKeys as $value) {
-                $value->softDelete();
-            }
-
-            $model->softDelete();
-
+        if ($model->canDelete() && $model->softDelete()) {
             return $this->asJson([
                 'status' => true,
-                'message' => Yii::t("biDashboard", 'Success')
+                'message' => Yii::t("app", 'Item Deleted')
             ]);
-        } catch (\Exception $e) {
+        } else {
             return $this->asJson([
                 'status' => false,
-                'message' => Yii::t("biDashboard", 'An error occurred: ') . $e->getMessage()
+                'message' => Yii::t("app", 'Error In Delete')
             ]);
         }
 
+        return $this->redirect(['index']);
     }
 
     public function actionUpdateWidget($id): Response|string
@@ -319,7 +314,6 @@ class ReportPageController extends Controller
     /** @var $widget ReportWidget */
     public function actionGetWidgetColumn()
     {
-
         Yii::$app->response->format = Response::FORMAT_JSON;
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
