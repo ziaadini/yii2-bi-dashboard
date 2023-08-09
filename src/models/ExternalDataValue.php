@@ -9,6 +9,7 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use yii\db\ActiveQuery;
+
 /**
  * This is the model class for table "{{%bid_external_data_value}}".
  *
@@ -79,17 +80,6 @@ class ExternalDataValue extends ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
-     * @return ExternalDataValueQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        $query = new ExternalDataValueQuery(get_called_class());
-        $query->notDeleted();
-        return $query;
-    }
-
-    /**
      * Gets query for [[ExternalData]].
      *
      * @return ActiveQuery|ExternalDataQuery
@@ -120,12 +110,25 @@ class ExternalDataValue extends ActiveRecord
             return isset($_items[$type]) ? $_items[$type] : false;
     }
 
+    /**
+     * {@inheritdoc}
+     * @return ExternalDataValueQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        $query = new ExternalDataValueQuery(get_called_class());
+        $query->notDeleted();
+        return $query;
+    }
 
     public function behaviors()
     {
         return [
-            'timestamp' => [
-                'class' => TimestampBehavior::class
+            'TimestampBehavior' => [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => null,
+                'updatedAtAttribute' => 'updated_at',
+                //'value' => new Expression('NOW()'),
             ],
             [
                 'class' => BlameableBehavior::class,
@@ -147,6 +150,4 @@ class ExternalDataValue extends ActiveRecord
             ],
         ];
     }
-
-
 }

@@ -58,7 +58,6 @@ class ReportPageWidgetController extends Controller
                 'status' => true,
                 'message' => Yii::t("app", 'Success')
             ]);
-
         } else {
             return $this->asJson([
                 'status' => false,

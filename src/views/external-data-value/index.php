@@ -18,7 +18,6 @@ use sadi01\bidashboard\widgets\ReportModalWidget;
 
 $this->title = Yii::t('biDashboard', 'External Datas');
 $this->params['breadcrumbs'][] = $this->title;
-$isExternalDataValuePage = true;
 ?>
 <?php Pjax::begin(['id' => 'p-jax-external-data', 'enablePushState' => false]); ?>
 
@@ -49,7 +48,7 @@ $isExternalDataValuePage = true;
             <div class="card-body page-content container-fluid text-left">
                 <?= $this->render('_search', ['model' => $searchModel]); ?>
 
-                <?= $this->render('/layouts/navlink_external_data.php',['isExternalDataValuePage' => $isExternalDataValuePage]) ?>
+                <?= $this->render('/external-data-value/_nav') ?>
 
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,

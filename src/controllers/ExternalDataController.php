@@ -2,15 +2,15 @@
 
 namespace sadi01\bidashboard\controllers;
 
-use sadi01\bidashboard\models\ExternalDataValue;
-use Yii;
 use sadi01\bidashboard\models\ExternalData;
 use sadi01\bidashboard\models\ExternalDataSearch;
+use sadi01\bidashboard\models\ExternalDataValue;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
+use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\web\Response;
 
 /**
@@ -31,7 +31,7 @@ class ExternalDataController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -59,14 +59,13 @@ class ExternalDataController extends Controller
             ],
         ]);
 
-
-        if ($this->request->isPjax){
+        if ($this->request->isPjax) {
             return $this->renderAjax('index', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
                 'dataProviderValues' => $dataProviderValues,
             ]);
-        }else{
+        } else {
             return $this->render('index', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
@@ -77,13 +76,12 @@ class ExternalDataController extends Controller
 
     /**
      * Displays a single ExternalData model.
-     * @param int $id 
+     * @param int $id
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-
         $dataProviderValue = ExternalDataValue::find()->where(['external_data_id' => $id]);
         $dataProviderValue = new ActiveDataProvider([
             'query' => $dataProviderValue,
@@ -132,7 +130,7 @@ class ExternalDataController extends Controller
     /**
      * Updates an existing ExternalData model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id 
+     * @param int $id
      * @return string|Response
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -162,7 +160,7 @@ class ExternalDataController extends Controller
     /**
      * Deletes an existing ExternalData model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id 
+     * @param int $id
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -176,7 +174,7 @@ class ExternalDataController extends Controller
     /**
      * Finds the ExternalData model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id 
+     * @param int $id
      * @return ExternalData the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

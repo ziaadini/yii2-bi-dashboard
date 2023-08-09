@@ -4,7 +4,6 @@ namespace sadi01\bidashboard\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use sadi01\bidashboard\models\ExternalDataValue;
 
 /**
  * ExternalDataValueSearch represents the model behind the search form of `sadi01\bidashboard\models\ExternalDataValue`.
@@ -49,20 +48,44 @@ class ExternalDataValueSearch extends ExternalDataValue
         $this->load($params);
 
         if (!$this->validate()) {
-             $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
-        $query->andFilterWhere(['like','value',$this->value]);
-        $query->andFilterWhere(['=','external_data_id',$this->external_data_id]);
+        $query->andFilterWhere(['like', 'value', $this->value]);
+        $query->andFilterWhere(['=', 'external_data_id', $this->external_data_id]);
 
         return $dataProvider;
     }
-    public function searchWidget(array $params,int $rangeType,int $startRange,int $endRange)
+
+    public function searchWidget(array $params, int $rangeType, int $startRange, int $endRange)
     {
         $query = ExternalDataValue::find();
 
-        $query->andFilterWhere(['between', 'created_at', $startRange, $endRange]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params, '');
+
+        if (!$this->validate()) {
+            $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            ExternalDataValue::tableName() . '.id' => $this->id,
+            ExternalDataValue::tableName() . '.external_data_id' => $this->external_data_id,
+            ExternalDataValue::tableName() . '.value' => $this->value,
+            ExternalDataValue::tableName() . '.status' => $this->status,
+            ExternalDataValue::tableName() . '.updated_at' => $this->updated_at,
+            ExternalDataValue::tableName() . '.updated_by' => $this->updated_by,
+            ExternalDataValue::tableName() . '.created_by' => $this->created_by,
+            ExternalDataValue::tableName() . '.deleted_at' => $this->deleted_at,
+        ]);
+
+        $query->andFilterWhere(['between', ExternalDataValue::tableName() . '.created_at', $startRange, $endRange]);
 
         if ($rangeType == ReportWidget::RANGE_TYPE_MONTHLY) {
             $query->select([
@@ -90,14 +113,6 @@ class ExternalDataValueSearch extends ExternalDataValue
                 ->groupBy('pday(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at)), pmonth(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at)), pyear(FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at))')
                 ->orderBy('FROM_UNIXTIME(' . ExternalDataValue::tableName() . '.created_at)');
         }
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
-        $params = ['ExternalDataValueSearch' => $params];
-        $this->load($params);
-        $query->andFilterWhere(['=', 'external_data_id', $this->external_data_id]);
 
         return $dataProvider;
     }

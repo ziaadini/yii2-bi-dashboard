@@ -13,7 +13,6 @@ use yii\db\ActiveQuery;
  */
 class ExternalDataQuery extends ActiveQuery
 {
-
     /**
      * {@inheritdoc}
      * @return ExternalData[]|array
@@ -40,5 +39,4 @@ class ExternalDataQuery extends ActiveQuery
             ],
         ];
     }
-
 }

@@ -2,13 +2,13 @@
 
 namespace sadi01\bidashboard\controllers;
 
-use Yii;
 use sadi01\bidashboard\models\ExternalDataValue;
 use sadi01\bidashboard\models\ExternalDataValueSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
+use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\web\Response;
 
 /**
@@ -30,7 +30,7 @@ class ExternalDataValueController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -47,14 +47,8 @@ class ExternalDataValueController extends Controller
     public function actionIndex()
     {
         $searchModel = new ExternalDataValueSearch();
-
         $dataProvider = $searchModel->search($this->request->queryParams);
-
-        $queryParams = \Yii::$app->request->getQueryParams();
-        if ($queryParams and key_exists('ExternalDataValueSearch',$queryParams)) {
-
-            $queryParams = array_filter($queryParams['ExternalDataValueSearch']);
-        }
+        $queryParams = array_filter(Yii::$app->request->getQueryParams('ExternalDataValueSearch') ?: []);
 
         return $this->renderAjax('index', [
             'searchModel' => $searchModel,
@@ -65,7 +59,7 @@ class ExternalDataValueController extends Controller
 
     /**
      * Displays a single ExternalDataValue model.
-     * @param int $id 
+     * @param int $id
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -83,8 +77,8 @@ class ExternalDataValueController extends Controller
      */
     public function actionCreate($external_data_id)
     {
-        $model = new ExternalDataValue();
-        $model->external_data_id = $external_data_id;
+        $model = new ExternalDataValue(['external_data_id' => $external_data_id]);
+
         if ($model->load($this->request->post()) && $model->validate()) {
             if ($model->save(false)) {
                 return $this->asJson([
@@ -108,7 +102,7 @@ class ExternalDataValueController extends Controller
     /**
      * Updates an existing ExternalDataValue model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id 
+     * @param int $id
      * @return string|Response
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -116,8 +110,8 @@ class ExternalDataValueController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load($this->request->post())) {
-            if ($model->save()) {
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
                     'message' => Yii::t("biDashboard", 'Success')
@@ -130,6 +124,7 @@ class ExternalDataValueController extends Controller
             }
         }
 
+        $this->performAjaxValidation($model);
         return $this->renderAjax('update', [
             'model' => $model,
         ]);
@@ -138,7 +133,7 @@ class ExternalDataValueController extends Controller
     /**
      * Deletes an existing ExternalDataValue model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id 
+     * @param int $id
      * @return Response
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -152,7 +147,7 @@ class ExternalDataValueController extends Controller
     /**
      * Finds the ExternalDataValue model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id 
+     * @param int $id
      * @return ExternalDataValue the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

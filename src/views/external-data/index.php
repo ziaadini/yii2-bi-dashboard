@@ -1,14 +1,12 @@
 <?php
 
 use sadi01\bidashboard\models\ExternalData;
-use yii\helpers\Html;
-use yii\helpers\Url;
+use Yii;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\Pjax;
-use Yii;
-use sadi01\bidashboard\models\ExternalDataValue;
-
 
 /** @var yii\web\View $this */
 /** @var sadi01\bidashboard\models\ExternalDataSearch $searchModel */
@@ -17,7 +15,6 @@ use sadi01\bidashboard\models\ExternalDataValue;
 
 $this->title = Yii::t('biDashboard', 'External Datas');
 $this->params['breadcrumbs'][] = $this->title;
-$isExternalDataValuePage = false;
 ?>
 <?php Pjax::begin(['id' => 'p-jax-external-data', 'enablePushState' => false]); ?>
 
@@ -48,7 +45,7 @@ $isExternalDataValuePage = false;
             <div class="card-body page-content container-fluid text-left">
                 <?= $this->render('_search', ['model' => $searchModel]); ?>
 
-                <?= $this->render('/layouts/navlink_external_data.php', ['isExternalDataValuePage' => $isExternalDataValuePage]) ?>
+                <?= $this->render('/external-data-value/_nav') ?>
 
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,

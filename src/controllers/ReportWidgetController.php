@@ -298,10 +298,10 @@ class ReportWidgetController extends Controller
                 return (int)$item[$field];
             }, $result);
 
-            $arrayTitle = array_map(function ($item) use ($model){
-                if ($model->range_type == $model::RANGE_TYPE_DAILY){
+            $arrayTitle = array_map(function ($item) use ($model) {
+                if ($model->range_type == $model::RANGE_TYPE_DAILY) {
                     return $item["day"];
-                }else{
+                } else {
                     return $item["month_name"];
                 }
             }, $result);
