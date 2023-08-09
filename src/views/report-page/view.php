@@ -159,7 +159,7 @@ $pdate = Yii::$app->pdate;
                                     <?= Html::a('<i class="fa fa-chart-line"></i>', "javascript:void(0)",
                                         [
                                             'data-pjax' => '0',
-                                            'class' => "btn btn-sm text-secondary fa-lg",
+                                            'class' => "btn btn-sm text-secondary fa-lg p-0",
                                             'data-size' => 'modal-xl',
                                             'data-title' => Yii::t('biDashboard', 'Chart'),
                                             'data-toggle' => 'modal',
@@ -182,14 +182,14 @@ $pdate = Yii::$app->pdate;
                                             'data-reload-pjax-container' => 'p-jax-report-page-add',
                                             'data-pjax' => '0',
                                             'data-url' => Url::to(['/bidashboard/report-widget/run', 'id' => $pageWidget->widget->id, 'start_range' => $startRange, 'end_range' => $endRange]),
-                                            'class' => " p-jax-btn btn-sm text-info fa-lg",
+                                            'class' => " p-jax-btn btn-sm text-info fa-lg p-0",
                                             'data-title' => Yii::t('yii', 'Reload'),
                                             'data-toggle' => 'tooltip',
                                         ]); ?>
                                     <?= Html::a('<i class="fa fa-edit"></i>', "javascript:void(0)",
                                         [
                                             'data-pjax' => '0',
-                                            'class' => "btn btn-sm text-primary fa-lg",
+                                            'class' => "btn btn-sm text-primary fa-lg p-0",
                                             'data-size' => 'modal-xl',
                                             'data-title' => Yii::t('biDashboard', 'update',),
                                             'data-toggle' => 'modal',
@@ -207,7 +207,7 @@ $pdate = Yii::$app->pdate;
                                             'data-reload-pjax-container' => 'p-jax-report-page-add',
                                             'data-pjax' => '0',
                                             'data-url' => Url::to(['/bidashboard/report-page-widget/delete', 'id_widget' => $pageWidget->widget->id, 'id_page' => $model->id]),
-                                            'class' => " p-jax-btn btn-sm text-danger fa-lg",
+                                            'class' => " p-jax-btn btn-sm text-danger fa-lg p-0",
                                             'data-title' => Yii::t('yii', 'Delete'),
                                             'data-toggle' => 'tooltip',
                                         ]); ?>
