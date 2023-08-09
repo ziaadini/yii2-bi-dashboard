@@ -3,13 +3,14 @@
 namespace sadi01\bidashboard\models;
 
 use yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
-
+use yii\db\ActiveQuery;
 /**
  * This is the ActiveQuery class for [[ExternalDataValue]].
  *
  * @see ExternalDataValue
+ * @mixin SoftDeleteQueryBehavior
  */
-class ExternalDataValueQuery extends \yii\db\ActiveQuery
+class ExternalDataValueQuery extends ActiveQuery
 {
     /**
      * {@inheritdoc}

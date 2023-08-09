@@ -8,7 +8,7 @@ use yii\db\ActiveRecord;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
-
+use yii\db\ActiveQuery;
 /**
  * This is the model class for table "{{%bid_external_data_value}}".
  *
@@ -92,7 +92,7 @@ class ExternalDataValue extends ActiveRecord
     /**
      * Gets query for [[ExternalData]].
      *
-     * @return \yii\db\ActiveQuery|ExternalDataQuery
+     * @return ActiveQuery|ExternalDataQuery
      */
     public function getExternalData()
     {
