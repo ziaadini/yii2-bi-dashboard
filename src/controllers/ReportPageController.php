@@ -30,98 +30,98 @@ class ReportPageController extends Controller
     /**
      * @inheritDoc
      */
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'access' => [
-                    'class' => AccessControl::class,
-                    'rules' =>
-                        [
-                            [
-                                'allow' => true,
-                                'roles' => ['ReportPage/index'],
-                                'actions' => [
-                                    'index'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['ReportPage/view'],
-                                'actions' => [
-                                    'view'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['ReportPage/create'],
-                                'actions' => [
-                                    'create',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['ReportPage/update'],
-                                'actions' => [
-                                    'update',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['ReportPage/delete'],
-                                'actions' => [
-                                    'delete'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['ReportPage/update-widget'],
-                                'actions' => [
-                                    'update-widget'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['ReportPage/add'],
-                                'actions' => [
-                                    'add'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['ReportPage/get-widget-column'],
-                                'actions' => [
-                                    'get-widget-column'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['ReportPage/run-all-widgets'],
-                                'actions' => [
-                                    'run-all-widgets'
-                                ]
-                            ],
-
-                        ]
-                ],
-                'verbs' => [
-                    'class' => VerbFilter::class,
-                    'actions' => [
-                        'index' => ['GET'],
-                        'view' => ['GET'],
-                        'create' => ['POST'],
-                        'update' => ['POST'],
-                        'delete' => ['POST', 'DELETE'],
-                        'update-widget' => ['POST'],
-                        'add' => ['POST'],
-                        'get-widget-column' => ['GET'],
-                        'run-all-widgets' => ['GET']
-                    ],
-                ],
-            ]
-        );
-    }
+//    public function behaviors()
+//    {
+//        return array_merge(
+//            parent::behaviors(),
+//            [
+//                'access' => [
+//                    'class' => AccessControl::class,
+//                    'rules' =>
+//                        [
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['ReportPage/index'],
+//                                'actions' => [
+//                                    'index'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['ReportPage/view'],
+//                                'actions' => [
+//                                    'view'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['ReportPage/create'],
+//                                'actions' => [
+//                                    'create',
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['ReportPage/update'],
+//                                'actions' => [
+//                                    'update',
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['ReportPage/delete'],
+//                                'actions' => [
+//                                    'delete'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['ReportPage/update-widget'],
+//                                'actions' => [
+//                                    'update-widget'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['ReportPage/add'],
+//                                'actions' => [
+//                                    'add'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['ReportPage/get-widget-column'],
+//                                'actions' => [
+//                                    'get-widget-column'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['ReportPage/run-all-widgets'],
+//                                'actions' => [
+//                                    'run-all-widgets'
+//                                ]
+//                            ],
+//
+//                        ]
+//                ],
+//                'verbs' => [
+//                    'class' => VerbFilter::class,
+//                    'actions' => [
+//                        'index' => ['GET'],
+//                        'view' => ['GET'],
+//                        'create' => ['POST'],
+//                        'update' => ['POST'],
+//                        'delete' => ['POST', 'DELETE'],
+//                        'update-widget' => ['POST'],
+//                        'add' => ['POST'],
+//                        'get-widget-column' => ['GET'],
+//                        'run-all-widgets' => ['GET']
+//                    ],
+//                ],
+//            ]
+//        );
+//    }
 
     /**
      * Lists all ReportPage models.
