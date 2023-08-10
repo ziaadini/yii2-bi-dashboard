@@ -12,6 +12,7 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "report_widget".
@@ -157,6 +158,11 @@ class ReportWidget extends ActiveRecord
 
     public static function itemAlias($type, $code = NULL)
     {
+        $data = [];
+        if ($type == 'List') {
+            $data = ArrayHelper::map(ReportWidget::find()->where(['range_type' => $code])->all(), 'id', 'title');
+            $code = null;
+        }
         $_items = [
             'Status' => [
                 self::STATUS_ACTIVE => Yii::t('biDashboard', 'Active'),
@@ -170,6 +176,7 @@ class ReportWidget extends ActiveRecord
                 self::VISIBILITY_PUBLIC => Yii::t('biDashboard', 'Public'),
                 self::VISIBILITY_PRIVATE => Yii::t('biDashboard', 'Private'),
             ],
+            'List' => $data,
         ];
 
         if (isset($code))

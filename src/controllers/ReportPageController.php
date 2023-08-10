@@ -12,6 +12,7 @@ use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -303,12 +304,10 @@ class ReportPageController extends Controller
         }
 
         $this->performAjaxValidation($model);
-        $widgets = ReportWidget::find()->where(['range_type' => $page->range_type])->all();
 
         return $this->renderAjax('_add', [
             'model' => $model,
             'page' => $page,
-            'widgets' => $widgets,
         ]);
     }
 
