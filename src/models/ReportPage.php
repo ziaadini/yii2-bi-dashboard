@@ -105,6 +105,15 @@ class ReportPage extends ActiveRecord
         return $this->hasMany(SharingPage::class, ['page_id' => 'id']);
     }
 
+    public function afterDelete()
+    {
+        $sharingKeys = $this->sharingKeys;
+        foreach ($sharingKeys as $value){
+            $value->softDelete();
+        }
+        return parent::afterDelete();
+    }
+
     /**
      * {@inheritdoc}
      * @return ReportPageQuery the active query used by this AR class.
@@ -172,7 +181,7 @@ class ReportPage extends ActiveRecord
                     'status' => self::STATUS_ACTIVE
                 ],
                 'replaceRegularDelete' => false,
-                'invokeDeleteEvents' => false
+                'invokeDeleteEvents' => true
             ],
         ];
     }

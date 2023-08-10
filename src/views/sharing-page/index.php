@@ -66,9 +66,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'access_key',
                 [
-
-                ],
-                [
                     'attribute' => 'expire_time',
                     'value' => function ($item) {
                         return Yii::$app->pdate->jdate('Y/m/d-h:i', $item->created_at);
