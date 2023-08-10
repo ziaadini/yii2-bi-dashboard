@@ -221,14 +221,19 @@ class ReportPageController extends Controller
     public function actionUpdate($id): Response|string
     {
         $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->validate() && $model->save()) {
-            return $this->asJson([
-                'status' => true,
-                'message' => Yii::t("app", 'Item Updated')
-            ]);
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save()) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t("app", 'Success')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("app", 'Fail in Save')
+                ]);
+            }
         }
-
         $this->performAjaxValidation($model);
         return $this->renderAjax('update', [
             'model' => $model,
