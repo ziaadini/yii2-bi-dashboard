@@ -191,7 +191,7 @@ class ReportPageController extends Controller
     {
         $model = new ReportPage();
         if ($model->load($this->request->post()) && $model->validate()) {
-            if ($model->save()) {
+            if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
                     'message' => Yii::t("app", 'Success')
@@ -244,12 +244,13 @@ class ReportPageController extends Controller
     public function actionDelete($id): Response
     {
         $model = $this->findModel($id);
-        if ($model->softDelete()){
+
+        if ($model->softDelete()) {
             return $this->asJson([
                 'status' => true,
                 'message' => Yii::t("biDashboard", 'Success')
             ]);
-        }else{
+        } else {
             return $this->asJson([
                 'status' => false,
                 'message' => Yii::t("biDashboard", 'Error In Delete Action')
@@ -272,6 +273,7 @@ class ReportPageController extends Controller
                 'message' => Yii::t("app", 'Success')
             ]);
         }
+
         $this->performAjaxValidation($model);
         return $this->renderAjax('_edit', [
             'model' => $model,
@@ -299,8 +301,10 @@ class ReportPageController extends Controller
                 ]);
             }
         }
+
         $this->performAjaxValidation($model);
         $widgets = ReportWidget::find()->where(['range_type' => $page->range_type])->all();
+
         return $this->renderAjax('_add', [
             'model' => $model,
             'page' => $page,

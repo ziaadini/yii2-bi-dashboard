@@ -216,12 +216,12 @@ class ExternalDataController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        if ($model->softDelete()){
+        if ($model->softDelete()) {
             return $this->asJson([
                 'status' => true,
                 'message' => Yii::t("biDashboard", 'Success')
             ]);
-        }else{
+        } else {
             return $this->asJson([
                 'status' => false,
                 'message' => Yii::t("biDashboard", 'Error In Delete Action')

@@ -108,7 +108,7 @@ class ReportPage extends ActiveRecord
     public function afterDelete()
     {
         $sharingKeys = $this->sharingKeys;
-        foreach ($sharingKeys as $value){
+        foreach ($sharingKeys as $value) {
             $value->softDelete();
         }
         return parent::afterDelete();
