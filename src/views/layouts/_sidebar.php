@@ -7,32 +7,32 @@ $menu_items = [];
 $menu_items = [
     [
         'group' => 'Widget',
-        'label' => Yii::t('app', 'Widget'),
+        'label' => Yii::t('biDashboard', 'Widget'),
         'icon' => 'fa fa-cogs',
         'url' => ['/bidashboard/report-widget']
     ],
     [
         'group' => 'Page',
-        'label' => Yii::t('app', 'Page'),
+        'label' => Yii::t('biDashboard', 'Page'),
         'icon' => 'fas fa-building',
         'url' => ['/bidashboard/report-page']
     ],
     [
         'group' => 'Year',
-        'label' => Yii::t('app', 'Year'),
+        'label' => Yii::t('biDashboard', 'Year'),
         'icon' => 'fa fa-calendar',
         'url' => ['/bidashboard/report-year']
     ],
     [
         'group' => 'Sharing',
-        'label' => Yii::t('app', 'Sharing'),
+        'label' => Yii::t('biDashboard', 'Sharing'),
         'icon' => 'fas fa-share',
         'url' => ['/bidashboard/sharing-page']
     ],
     [
         'group' => 'External Data',
-        'label' => Yii::t('app', 'External Data'),
-        'icon' => 'fas fa-share',
+        'label' => Yii::t('biDashboard', 'External Data'),
+        'icon' => 'fas fa-file-excel',
         'url' => ['/bidashboard/external-data']
     ],
 ];

@@ -109,4 +109,7 @@ return [
     'Update External Data Value: {name}' => 'ویرایش مقدار خارجی: {name}',
     'Create External Data Value' => 'ایجاد مقدار داده خارجی',
     'Value' => 'مقدار',
+    'Sharing' => 'اشتراک گذاری',
+    'Year' => 'سال',
+    'Page' => 'صفحه',
 ];
