@@ -150,12 +150,12 @@ class SharingPageController extends Controller
             if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'The Operation Was Successful')
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
                 ]);
             } else {
                 return $this->asJson([
                     'status' => false,
-                    'message' => Yii::t("app", 'Fail in Save')
+                    'message' => Yii::t("biDashboard", 'Error In Save Sharing Key')
                 ]);
             }
         }
@@ -178,15 +178,15 @@ class SharingPageController extends Controller
     {
         $model = $this->findModel($id);
         if ($model->load($this->request->post()) && $model->validate()) {
-            if ($model->save()) {
+            if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'The Operation Was Successful')
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
                 ]);
             } else {
                 return $this->asJson([
                     'status' => false,
-                    'message' => Yii::t("app", 'Fail in Save')
+                    'message' => Yii::t("biDashboard", 'Error In Update Sharing Key')
                 ]);
             }
         }
@@ -236,7 +236,7 @@ class SharingPageController extends Controller
         if ($share_page_model->load(Yii::$app->request->post()) && $share_page_model->save()) {
             return $this->asJson([
                 'status' => true,
-                'message' => Yii::t("biDashboard", 'Success')
+                'message' => Yii::t("biDashboard", 'The Operation Was Successful')
             ]);
         }
 
@@ -259,13 +259,13 @@ class SharingPageController extends Controller
             $model->expire();
             return $this->asJson([
                 'status' => true,
-                'message' => Yii::t("biDashboard", 'Success')
+                'message' => Yii::t("biDashboard", 'The Operation Was Successful')
             ]);
 
         } else {
             return $this->asJson([
                 'status' => false,
-                'message' => Yii::t("biDashboard", 'fail to update')
+                'message' => Yii::t("biDashboard", 'Error In Expire Sharing Key')
             ]);
         }
     }
@@ -283,7 +283,7 @@ class SharingPageController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('biDashboard', 'The requested page does not exist.'));
     }
 
     /**
@@ -298,6 +298,6 @@ class SharingPageController extends Controller
         if (($model = ReportPage::findOne(['id' => $id])) !== null) {
             return $model;
         }
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('biDashboard', 'The requested page does not exist.'));
     }
 }

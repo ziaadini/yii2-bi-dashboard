@@ -130,12 +130,12 @@ class ExternalDataValueController extends Controller
             if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("biDashboard", 'Success')
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
                 ]);
             } else {
                 return $this->asJson([
                     'status' => false,
-                    'message' => Yii::t("biDashboard", 'Fail in Save')
+                    'message' => Yii::t("biDashboard", 'Error In Save External Data Value')
                 ]);
             }
         }
@@ -161,12 +161,12 @@ class ExternalDataValueController extends Controller
             if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("biDashboard", 'Success')
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
                 ]);
             } else {
                 return $this->asJson([
                     'status' => false,
-                    'message' => Yii::t("biDashboard", 'Fail in Save')
+                    'message' => Yii::t("biDashboard", 'Error In Update External Data Value')
                 ]);
             }
         }
@@ -186,12 +186,18 @@ class ExternalDataValueController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->softDelete();
-
-        return $this->asJson([
-            'status' => true,
-            'message' => Yii::t("biDashboard", 'Success')
-        ]);
+        $model = $this->findModel($id);
+        if ($model->softDelete()) {
+            return $this->asJson([
+                'status' => true,
+                'message' => Yii::t("biDashboard", 'The Operation Was Successful')
+            ]);
+        } else {
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t("biDashboard", 'Error In Delete Action')
+            ]);
+        }
     }
 
     /**

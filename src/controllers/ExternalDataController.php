@@ -159,12 +159,12 @@ class ExternalDataController extends Controller
             if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'The Operation Was Successful')
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
                 ]);
             } else {
                 return $this->asJson([
                     'status' => false,
-                    'message' => Yii::t("app", 'Fail in Save')
+                    'message' => Yii::t("biDashboard", 'Error In Save External Data')
                 ]);
             }
         }
@@ -190,12 +190,12 @@ class ExternalDataController extends Controller
             if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'The Operation Was Successful')
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
                 ]);
             } else {
                 return $this->asJson([
                     'status' => false,
-                    'message' => Yii::t("app", 'Fail in Save')
+                    'message' => Yii::t("biDashboard", 'Error In Update External Data')
                 ]);
             }
         }

@@ -195,12 +195,12 @@ class ReportPageController extends Controller
             if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'The Operation Was Successful')
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
                 ]);
             } else {
                 return $this->asJson([
                     'status' => false,
-                    'message' => Yii::t("app", 'Fail in Save')
+                    'message' => Yii::t("biDashboard", 'Error In Save Page')
                 ]);
             }
         }
@@ -225,12 +225,12 @@ class ReportPageController extends Controller
             if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'The Operation Was Successful')
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
                 ]);
             } else {
                 return $this->asJson([
                     'status' => false,
-                    'message' => Yii::t("app", 'Fail in Save')
+                    'message' => Yii::t("biDashboard", 'Error In Update Page')
                 ]);
             }
         }
@@ -255,7 +255,7 @@ class ReportPageController extends Controller
         if ($model->softDelete()) {
             return $this->asJson([
                 'status' => true,
-                'message' => Yii::t("biDashboard", 'Success')
+                'message' => Yii::t("biDashboard", 'The Operation Was Successful')
             ]);
         } else {
             return $this->asJson([
@@ -298,13 +298,13 @@ class ReportPageController extends Controller
             if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'The Operation Was Successful')
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
                 ]);
 
             } else {
                 return $this->asJson([
                     'status' => false,
-                    'message' => Yii::t("app", 'fail')
+                    'message' => Yii::t("biDashboard", 'Error In Add Widget')
                 ]);
             }
         }
@@ -362,7 +362,7 @@ class ReportPageController extends Controller
         return $this->asJson([
             'status' => true,
             'success' => true,
-            'message' => $errors ? Yii::t('app', 'Error In Run Widget') : Yii::t("biDashboard", 'Success'),
+            'message' => $errors ? Yii::t('biDashboard', 'Error In Run Widget') : Yii::t("biDashboard", 'Success'),
         ]);
     }
 
@@ -379,7 +379,7 @@ class ReportPageController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('biDashboard', 'The requested page does not exist.'));
     }
 
     private function flash($type, $message): void

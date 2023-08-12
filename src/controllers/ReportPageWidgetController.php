@@ -52,16 +52,15 @@ class ReportPageWidgetController extends Controller
     public function actionDelete($id_widget, $id_page)
     {
         $model = ReportPageWidget::findOne(['widget_id' => $id_widget, 'page_id' => $id_page]);
-
-        if ($model->canDelete() && $model->softDelete()) {
+        if ($model->softDelete()) {
             return $this->asJson([
                 'status' => true,
-                'message' => Yii::t("app", 'The Operation Was Successful')
+                'message' => Yii::t("biDashboard", 'The Operation Was Successful')
             ]);
         } else {
             return $this->asJson([
                 'status' => false,
-                'message' => Yii::t("app", 'Error')
+                'message' => Yii::t("biDashboard", 'Error In Delete Action')
             ]);
         }
     }
@@ -79,6 +78,6 @@ class ReportPageWidgetController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('biDashboard', 'The requested page does not exist.'));
     }
 }

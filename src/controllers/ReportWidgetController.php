@@ -287,7 +287,7 @@ class ReportWidgetController extends Controller
         } else {
             return $this->asJson([
                 'status' => true,
-                'message' => Yii::t("biDashboard", 'Success'),
+                'message' => Yii::t("biDashboard", 'The Operation Was Successful'),
             ]);
         }
     }

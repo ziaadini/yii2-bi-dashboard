@@ -129,15 +129,15 @@ class ReportYearController extends Controller
         $model = new ReportYear();
 
         if ($model->load($this->request->post()) && $model->validate()) {
-            if ($model->save()) {
+            if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'The Operation Was Successful')
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
                 ]);
             } else {
                 return $this->asJson([
                     'status' => false,
-                    'message' => Yii::t("app", 'Fail in Save')
+                    'message' => Yii::t("biDashboard", 'Error In Save Year')
                 ]);
             }
         }
@@ -161,15 +161,15 @@ class ReportYearController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load($this->request->post()) && $model->validate()) {
-            if ($model->save()) {
+            if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'The Operation Was Successful')
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
                 ]);
             } else {
                 return $this->asJson([
                     'status' => false,
-                    'message' => Yii::t("app", 'Fail in Save')
+                    'message' => Yii::t("biDashboard", 'Error In Update Year')
                 ]);
             }
         }
@@ -215,6 +215,6 @@ class ReportYearController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('biDashboard', 'The requested page does not exist.'));
     }
 }
