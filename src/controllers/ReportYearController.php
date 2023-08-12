@@ -132,7 +132,7 @@ class ReportYearController extends Controller
             if ($model->save()) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'Success')
+                    'message' => Yii::t("app", 'The Operation Was Successful')
                 ]);
             } else {
                 return $this->asJson([
@@ -164,7 +164,7 @@ class ReportYearController extends Controller
             if ($model->save()) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'Success')
+                    'message' => Yii::t("app", 'The Operation Was Successful')
                 ]);
             } else {
                 return $this->asJson([

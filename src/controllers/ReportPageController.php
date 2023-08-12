@@ -195,7 +195,7 @@ class ReportPageController extends Controller
             if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'Success')
+                    'message' => Yii::t("app", 'The Operation Was Successful')
                 ]);
             } else {
                 return $this->asJson([
@@ -222,10 +222,10 @@ class ReportPageController extends Controller
     {
         $model = $this->findModel($id);
         if ($model->load($this->request->post()) && $model->validate()) {
-            if ($model->save()) {
+            if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'Success')
+                    'message' => Yii::t("app", 'The Operation Was Successful')
                 ]);
             } else {
                 return $this->asJson([
@@ -234,6 +234,7 @@ class ReportPageController extends Controller
                 ]);
             }
         }
+
         $this->performAjaxValidation($model);
         return $this->renderAjax('update', [
             'model' => $model,
@@ -247,7 +248,7 @@ class ReportPageController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id): Response
+    public function actionDelete(int $id): Response
     {
         $model = $this->findModel($id);
 
@@ -264,7 +265,7 @@ class ReportPageController extends Controller
         }
     }
 
-    public function actionUpdateWidget($id): Response|string
+    public function actionUpdateWidget(int $id): Response|string
     {
         $model = ReportPageWidget::find()->where(['widget_id' => $id])->one();
         $add_on = $model->widget->add_on["outputColumn"];
@@ -276,7 +277,7 @@ class ReportPageController extends Controller
         if ($this->request->isPost && $model->load($this->request->post()) && $model->validate() && $model->save()) {
             return $this->asJson([
                 'status' => true,
-                'message' => Yii::t("app", 'Success')
+                'message' => Yii::t("app", 'The Operation Was Successful')
             ]);
         }
 
@@ -287,7 +288,7 @@ class ReportPageController extends Controller
         ]);
     }
 
-    public function actionAdd($id): Response|string
+    public function actionAdd(int $id): Response|string
     {
         $model = new ReportPageWidget();
         $page = $this->findModel($id);
@@ -297,7 +298,7 @@ class ReportPageController extends Controller
             if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'Success')
+                    'message' => Yii::t("app", 'The Operation Was Successful')
                 ]);
 
             } else {
@@ -372,7 +373,7 @@ class ReportPageController extends Controller
      * @return ReportPage the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id): ReportPage
+    protected function findModel(int $id): ReportPage
     {
         if (($model = ReportPage::findOne(['id' => $id])) !== null) {
             return $model;

@@ -56,7 +56,7 @@ class ReportPageWidgetController extends Controller
         if ($model->canDelete() && $model->softDelete()) {
             return $this->asJson([
                 'status' => true,
-                'message' => Yii::t("app", 'Success')
+                'message' => Yii::t("app", 'The Operation Was Successful')
             ]);
         } else {
             return $this->asJson([
