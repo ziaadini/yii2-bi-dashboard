@@ -273,12 +273,18 @@ class ReportPageController extends Controller
         foreach ($add_on as $value) {
             $column_name[$value->column_name] = $value->column_title;
         }
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->validate() && $model->save()) {
-            return $this->asJson([
-                'status' => true,
-                'message' => Yii::t("app", 'The Operation Was Successful')
-            ]);
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("biDashboard", 'Error In Update Widget')
+                ]);
+            }
         }
 
         $this->performAjaxValidation($model);
