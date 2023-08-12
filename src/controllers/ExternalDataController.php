@@ -219,7 +219,7 @@ class ExternalDataController extends Controller
         if ($model->softDelete()) {
             return $this->asJson([
                 'status' => true,
-                'message' => Yii::t("biDashboard", 'Success')
+                'message' => Yii::t("biDashboard", 'The Operation Was Successful')
             ]);
         } else {
             return $this->asJson([
