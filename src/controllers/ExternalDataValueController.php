@@ -36,35 +36,35 @@ class ExternalDataValueController extends Controller
                         [
                             [
                                 'allow' => true,
-                                'roles' => ['ExternalDataValue/index'],
+                                'roles' => ['BI/ExternalDataValue/index'],
                                 'actions' => [
                                     'index'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ExternalDataValue/view'],
+                                'roles' => ['BI/ExternalDataValue/view'],
                                 'actions' => [
                                     'view'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ExternalDataValue/create'],
+                                'roles' => ['BI/ExternalDataValue/create'],
                                 'actions' => [
                                     'create',
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ExternalDataValue/update'],
+                                'roles' => ['BI/ExternalDataValue/update'],
                                 'actions' => [
                                     'update',
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ExternalDataValue/delete'],
+                                'roles' => ['BI/ExternalDataValue/delete'],
                                 'actions' => [
                                     'delete'
                                 ]

@@ -119,6 +119,7 @@ example output query:
 ```
 
 ## Usage/View section
+The "View section" becomes active when you perform a search in your model. After conducting the search, two buttons, "Create Widget" and "Display Widget List," will be shown, allowing you to interact with model widgets.
 
 To use this widget, insert the following code into a index file:
 
@@ -143,6 +144,7 @@ To use this widget, insert the following code into a index file:
 | `searchModelMethod`          | `string`                    | **Required**         | 'searchWidget'                    |
 | `searchModelRunResultView`   | `string`                    | **Required**         | 'view'                            |
 | `searchRoute`                | `string`                    | **Required**         | 'invoice/index'                   |
+
 | `searchModelFormName`        | `string`                    | **Required**         | 'InvoiceSearch'                   |
 | `outputColumn`               | `array`                     | **Required**         | ---                               |
 

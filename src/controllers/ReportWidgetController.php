@@ -39,56 +39,56 @@ class ReportWidgetController extends Controller
                         [
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/index'],
+                                'roles' => ['BI/ReportWidget/index'],
                                 'actions' => [
                                     'index'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/view'],
+                                'roles' => ['BI/ReportWidget/view'],
                                 'actions' => [
                                     'view'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/create'],
+                                'roles' => ['BI/ReportWidget/create'],
                                 'actions' => [
                                     'create',
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/update'],
+                                'roles' => ['BI/ReportWidget/update'],
                                 'actions' => [
                                     'update',
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/delete'],
+                                'roles' => ['BI/ReportWidget/delete'],
                                 'actions' => [
                                     'delete'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/open-modal'],
+                                'roles' => ['BI/ReportWidget/open-modal'],
                                 'actions' => [
                                     'open-modal'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/run'],
+                                'roles' => ['BI/ReportWidget/run'],
                                 'actions' => [
                                     'run'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportWidget/modal-show-chart'],
+                                'roles' => ['BI/ReportWidget/modal-show-chart'],
                                 'actions' => [
                                     'modal-show-chart'
                                 ]

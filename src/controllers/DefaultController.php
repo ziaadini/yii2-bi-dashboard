@@ -21,7 +21,7 @@ class DefaultController extends Controller
                         [
                             [
                                 'allow' => true,
-                                'roles' => ['Default/index'],
+                                'roles' => ['BI/Default/index'],
                                 'actions' => [
                                     'index'
                                 ]

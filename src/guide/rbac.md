@@ -10,84 +10,84 @@ Now we introduce the access to the 6 controllers we have:
 ## permissions  for ReportPageController
 
 ### Action: index
-permission: ['ReportPage/index']
+permission: ['BI/ReportPage/index']
 ### Action: view
-permission: ['ReportPage/view']
+permission: ['BI/ReportPage/view']
 ### Action: create
-permission: ['ReportPage/create']
+permission: ['BI/ReportPage/create']
 ### Action: update
-permission: ['ReportPage/update']
+permission: ['BI/ReportPage/update']
 ### Action: delete
-permission: ['ReportPage/delete']
+permission: ['BI/ReportPage/delete']
 ### Action: update-widget
-permission: ['ReportPage/update-widget']
+permission: ['BI/ReportPage/update-widget']
 ### Action: add
-permission: ['ReportPage/add']
+permission: ['BI/ReportPage/add']
 ### Action: get-widget-column
-permission: ['ReportPage/get-widget-column']
+permission: ['BI/ReportPage/get-widget-column']
 ### Action: run-all-widgets
-permission: ['ReportPage/run-all-widgets']
+permission: ['BI/ReportPage/run-all-widgets']
 
 
 ## permissions for ReportPageWidgetController
 ### Action: delete
-permission: ['ReportWidget/delete']
+permission: ['BI/ReportWidget/delete']
 
 
 ## permissions for DefaultController
 ### Action: index
-permission: ['Default/index']
+permission: ['BI/Default/index']
 
 
 ## permissions for ReportWidgetController
 ### Action: index
-permission: ['ReportWidget/index']
+permission: ['BI/ReportWidget/index']
 ### Action: view
-permission: ['ReportWidget/view']
+permission: ['BI/ReportWidget/view']
 ### Action: create
-permission: ['ReportWidget/create']
+permission: ['BI/ReportWidget/create']
 ### Action: update
-permission: ['ReportWidget/update']
+permission: ['BI/ReportWidget/update']
 ### Action: delete
-permission: ['ReportWidget/delete']
+permission: ['BI/ReportWidget/delete']
 ### Action: open-modal
-permission: ['ReportWidget/open-modal']
+permission: ['BI/ReportWidget/open-modal']
 ### Action: run
-permission: ['ReportWidget/run']
+permission: ['BI/ReportWidget/run']
 ### Action: modal-show-chart
-permission: ['ReportWidget/modal-show-chart']
+permission: ['BI/ReportWidget/modal-show-chart']
 
 
 
 ## permissions for ReportYearController
 ### Action: index
-permission: ['ReportYear/index']
+permission: ['BI/ReportYear/index']
 ### Action: view
-permission: ['ReportYear/view']
+permission: ['BI/ReportYear/view']
 ### Action: create
-permission: ['ReportYear/create']
+permission: ['BI/ReportYear/create']
 ### Action: update
-permission: ['ReportYear/update']
+permission: ['BI/ReportYear/update']
 ### Action: delete
-permission: ['ReportYear/delete']
+permission: ['BI/ReportYear/delete']
 
 
 
 ## permissions for SharingPageController
 ## Action: index
-permission: ['SharingPage/index']
+permission: ['BI/SharingPage/index']
 ### Action: view
-permission: ['SharingPage/view']
+permission: ['BI/SharingPage/view']
 ### Action: create
-permission: ['SharingPage/create']
+permission: ['BI/SharingPage/create']
 ### Action: update
-permission: ['SharingPage/update']
+permission: ['BI/SharingPage/update']
 ### Action: delete
-permission: ['SharingPage/delete']
+permission: ['BI/SharingPage/delete']
 ### Action: managment
-permission: ['SharingPage/managment']
+permission: ['BI/SharingPage/managment']
 ### Action: expire
-permission: ['SharingPage/expire']
+permission: ['BI/SharingPage/expire']
 
 This project document provides an overview of the Role-Based Access Control (RBAC) configuration for the controllers and
 their respective actions. The defined access rules ensure that only authorized users with specific roles can access and
