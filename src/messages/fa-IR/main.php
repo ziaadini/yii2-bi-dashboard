@@ -39,7 +39,6 @@ return [
     'Are you sure you want to delete this item?' => 'آیا از حذف این مورد اطمینان دارید؟',
     'Create Report Widget' => 'ایجاد ویجت',
     'Save As Report Widget' => 'ایجاد ویجت',
-    'Saved successfully' => 'با موفقیت ذخیره شد',
     'Report Widgets' => 'ویجت‌ها',
     'Update Report Widget: {name}' => 'ویرایش ویجت: {name}',
     'Daily' => 'روزانه',
@@ -132,6 +131,7 @@ return [
     'Error In Run Widget' => 'خطا در اجرای ویجت',
     'Error In Update Widget' => 'خطا در به‌روزرسانی ویجت',
     'Return To Home' => 'بازگشت به خانه',
+    'Select a year' => 'انتخاب سال',
 
 
 ];
