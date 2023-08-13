@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
+$url = Yii::$app->assetManager->getPublishedUrl('@sadi01/bidashboard/assets');
 
 /* @var $this View */
 ?>
@@ -15,13 +16,14 @@ use yii\web\View;
             <a class="navbar-brand" href="<?= Url::to(['/site/index']) ?>">
                 <!-- Logo icon -->
                 <b class="logo-icon">
-                    <?= Html::img('https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/BI.png', ['style' => 'background-color: white; height: 20px;','href'=>'javascript:void(0)','id'=>'logo-close']) ?>
-<!--                    --><?php //= Html::img('https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/BI.png', ['style' => 'background-color: white; height: 50px;','href'=>'javascript:void(0)','id'=>'logo-expand']) ?>
-
-                    <img src="" height="20px" style="background-color: white">
+<!--                    --><?php //= Html::img($url.'/bidashboard/images/BI.png', ['style' => 'background-color: white; height: 20px;','href'=>'javascript:void(0)','id'=>'logo-close']) ?>
+                    <?= Html::img($url.'/bidashboard/images/BI.png', ['style' => 'height: 50px;','href'=>'javascript:void(0)','id'=>'logo-expand']) ?>
                 </b>
                 <!--End Logo icon -->
             </a>
+
+
+
             <!-- ============================================================== -->
             <!-- End Logo -->
             <!-- ============================================================== -->
@@ -50,7 +52,12 @@ use yii\web\View;
                     </a>
                 </li>
             </ul>
-
+            <a class="text-white" href="<?= Url::to(['/site/index']) ?>">
+            <div class="align-self-end">
+                <span class="fa fa-home"></span>
+                <?= Yii::t('biDashboard','Return To Home') ?>
+            </div>
+            </a>
         </div>
     </nav>
 </header>
