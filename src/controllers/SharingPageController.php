@@ -38,49 +38,49 @@ class SharingPageController extends Controller
                         [
                             [
                                 'allow' => true,
-                                'roles' => ['SharingPage/index'],
+                                'roles' => ['BI/SharingPage/index'],
                                 'actions' => [
                                     'index'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['SharingPage/view'],
+                                'roles' => ['BI/SharingPage/view'],
                                 'actions' => [
                                     'view'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['SharingPage/create'],
+                                'roles' => ['BI/SharingPage/create'],
                                 'actions' => [
                                     'create',
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['SharingPage/update'],
+                                'roles' => ['BI/SharingPage/update'],
                                 'actions' => [
                                     'update',
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['SharingPage/delete'],
+                                'roles' => ['BI/SharingPage/delete'],
                                 'actions' => [
                                     'delete'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['SharingPage/management'],
+                                'roles' => ['BI/SharingPage/management'],
                                 'actions' => [
                                     'management',
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['SharingPage/expire'],
+                                'roles' => ['BI/SharingPage/expire'],
                                 'actions' => [
                                     'expire'
                                 ]
@@ -92,10 +92,10 @@ class SharingPageController extends Controller
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'management' => ['POST'],
+                        'management' => ['GET','POST'],
                         'expire' => ['POST'],
-                        'create' => ['POST'],
-                        'update' => ['POST'],
+                        'create' => ['GET','POST'],
+                        'update' => ['GET','POST'],
                         'delete' => ['POST', 'DELETE'],
                     ],
                 ],

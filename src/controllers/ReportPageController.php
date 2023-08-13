@@ -41,63 +41,63 @@ class ReportPageController extends Controller
                         [
                             [
                                 'allow' => true,
-                                'roles' => ['ReportPage/index'],
+                                'roles' => ['BI/ReportPage/index'],
                                 'actions' => [
                                     'index'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportPage/view'],
+                                'roles' => ['BI/ReportPage/view'],
                                 'actions' => [
                                     'view'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportPage/create'],
+                                'roles' => ['BI/ReportPage/create'],
                                 'actions' => [
                                     'create',
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportPage/update'],
+                                'roles' => ['BI/ReportPage/update'],
                                 'actions' => [
                                     'update',
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportPage/delete'],
+                                'roles' => ['BI/ReportPage/delete'],
                                 'actions' => [
                                     'delete'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportPage/update-widget'],
+                                'roles' => ['BI/ReportPage/update-widget'],
                                 'actions' => [
                                     'update-widget'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportPage/add'],
+                                'roles' => ['BI/ReportPage/add'],
                                 'actions' => [
                                     'add'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportPage/get-widget-column'],
+                                'roles' => ['BI/ReportPage/get-widget-column'],
                                 'actions' => [
                                     'get-widget-column'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportPage/run-all-widgets'],
+                                'roles' => ['BI/ReportPage/run-all-widgets'],
                                 'actions' => [
                                     'run-all-widgets'
                                 ]
@@ -110,13 +110,13 @@ class ReportPageController extends Controller
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'create' => ['POST'],
-                        'update' => ['POST'],
+                        'create' => ['GET','POST'],
+                        'update' => ['GET','POST'],
                         'delete' => ['POST', 'DELETE'],
                         'update-widget' => ['POST'],
-                        'add' => ['POST'],
-                        'get-widget-column' => ['GET'],
-                        'run-all-widgets' => ['GET']
+                        'add' => ['GET','POST'],
+                        'get-widget-column' => ['POST'],
+                        'run-all-widgets' => ['POST']
                     ],
                 ],
             ]

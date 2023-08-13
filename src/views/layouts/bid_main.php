@@ -207,7 +207,6 @@ BiAssets::register($this);
     </div>
     <?php Modal::end(); ?>
 
-    <?= $this->render('_customizer') ?>
     <?= $this->render('_footer') ?>
 </div>
 <?php $this->endBody() ?>

@@ -54,14 +54,14 @@ Or, Add migrations path in console application config:
     'migrate' => [
         'class' => 'yii\console\controllers\MigrateController',
         'migrationNamespaces' => [
-            'sadi01\bidashboard\migrations',
+         
         ],
+        'migrationPath' => [
+            '@vendor/sadi01/yii2-bi-dashboard/src/migrations',
+            '@app/migrations'
+        ]
     ],
 ],
-
-
-
-
 ```
 
 ## Handling PersianDate4MySQL in Migrations

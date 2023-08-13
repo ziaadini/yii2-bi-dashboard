@@ -87,14 +87,18 @@ php yii migrate --migrationPath=@sadi01/bidashboard/migrations
 Or, Add migrations path in console application config:
 
 ```php
-    'controllerMap' => [
-          'migrate' => [
-            'class' => 'yii\console\controllers\MigrateController',
-              'migrationNamespaces' => [
-                  'sadi01\bidashboard\migrations',
-              ],
+'controllerMap' => [
+    'migrate' => [
+        'class' => 'yii\console\controllers\MigrateController',
+        'migrationNamespaces' => [
+         
         ],
+        'migrationPath' => [
+            '@vendor/sadi01/yii2-bi-dashboard/src/migrations',
+            '@app/migrations'
+        ]
     ],
+],
 ```
 
 How To Use

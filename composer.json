@@ -43,9 +43,7 @@
     "yii2tech/ar-softdelete": "*",
     "kartik-v/yii2-widget-select2": "^2.1.4",
     "kartik-v/yii2-widget-depdrop": "@dev",
-    "miloschuman/yii2-highcharts-widget": "^10.0"
-  },
-  "require-dev": {
+    "miloschuman/yii2-highcharts-widget": "^10.0",
     "sadi01/yii2-daterangepicker": "*"
   },
   "autoload": {

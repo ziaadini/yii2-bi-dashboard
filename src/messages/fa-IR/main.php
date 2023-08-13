@@ -131,6 +131,7 @@ return [
     'The requested page does not exist' => 'صفحه مورد درخواست شما وجود ندارد',
     'Error In Run Widget' => 'خطا در اجرای ویجت',
     'Error In Update Widget' => 'خطا در به‌روزرسانی ویجت',
+    'Return To Home' => 'بازگشت به خانه',
 
 
 ];

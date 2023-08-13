@@ -37,35 +37,35 @@ class ReportYearController extends Controller
                         [
                             [
                                 'allow' => true,
-                                'roles' => ['ReportYear/index'],
+                                'roles' => ['BI/ReportYear/index'],
                                 'actions' => [
                                     'index'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportYear/view'],
+                                'roles' => ['BI/ReportYear/view'],
                                 'actions' => [
                                     'view'
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportYear/create'],
+                                'roles' => ['BI/ReportYear/create'],
                                 'actions' => [
                                     'create',
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportYear/update'],
+                                'roles' => ['BI/ReportYear/update'],
                                 'actions' => [
                                     'update',
                                 ]
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['ReportYear/delete'],
+                                'roles' => ['BI/ReportYear/delete'],
                                 'actions' => [
                                     'delete'
                                 ]
@@ -77,8 +77,8 @@ class ReportYearController extends Controller
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'create' => ['POST'],
-                        'update' => ['POST'],
+                        'create' => ['GET','POST'],
+                        'update' => ['GET','POST'],
                         'delete' => ['POST', 'DELETE'],
                     ],
                 ],
