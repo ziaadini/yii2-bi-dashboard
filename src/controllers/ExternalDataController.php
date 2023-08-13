@@ -79,8 +79,8 @@ class ExternalDataController extends Controller
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'create' => ['POST'],
-                        'update' => ['POST'],
+                        'create' => ['GET','POST'],
+                        'update' => ['GET','POST'],
                         'delete' => ['POST', 'DELETE'],
                     ],
                 ],

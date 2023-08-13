@@ -92,10 +92,10 @@ class SharingPageController extends Controller
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'management' => ['POST'],
+                        'management' => ['GET','POST'],
                         'expire' => ['POST'],
-                        'create' => ['POST'],
-                        'update' => ['POST'],
+                        'create' => ['GET','POST'],
+                        'update' => ['GET','POST'],
                         'delete' => ['POST', 'DELETE'],
                     ],
                 ],
