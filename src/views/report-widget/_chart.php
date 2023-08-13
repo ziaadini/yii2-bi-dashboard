@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'text' => $widget->title
                                 ],
                                 'min' => 0,
-                                'max' => max($results),
+                                'max' => $results ? max($results) : 0,
                                 'tickInterval' => 10
                             ],
                             'series' => [
@@ -79,10 +79,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <script>
     function pjaxChartReload() {
         var chart_type = $('#chart_type_id').val();
+        var urlPjax = "/bidashboard/report-widget/modal-show-chart?id=<?=$widget->id?>&field=<?=$field?>&start_range=<?=$start_range?>&end_range=<?=$end_range?>&chart_type="+chart_type;
         $.pjax.reload({
             container: '#p-jax-report-page-widget-chart',
             replace: false ,
-            url: "/bidashboard/report-widget/modal-show-chart?id=<?=$widget->id?>&field=<?=$field?>&start_range=<?=$start_range?>&end_range<?=$end_range?>&chart_type="+chart_type,
+            url: urlPjax,
             push: false,
         });
     }

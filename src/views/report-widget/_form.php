@@ -1,11 +1,12 @@
 <?php
 
-use yii\helpers\Html;
-use yii\bootstrap4\ActiveForm;
-use yii\web\View;
-use yii\helpers\ArrayHelper;
 use sadi01\bidashboard\models\ReportModelClass;
 use sadi01\bidashboard\models\ReportWidget;
+use yii;
+use yii\bootstrap4\ActiveForm;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\web\View;
 
 /** @var View $this
  * @var ReportWidget $model
@@ -17,8 +18,8 @@ use sadi01\bidashboard\models\ReportWidget;
 ?>
 
 <div class="report-widget-form">
-    <?php $queryString = \Yii::$app->request->queryString; ?>
-    <?php $form = ActiveForm::begin(['action' => ['/bidashboard/report-widget/create?' . $queryString]]); ?>
+    <?php $queryString = Yii::$app->request->queryString; ?>
+    <?php $form = ActiveForm::begin(['id' => 'report_widget_form', 'action' => ['/bidashboard/report-widget/create?' . $queryString]]); ?>
 
     <div class="row">
         <div class="col-sm-6">
@@ -47,16 +48,18 @@ use sadi01\bidashboard\models\ReportWidget;
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($queryParams as $Pkey => $Pvalue): ?>
-                <tr>
-                    <td>
-                        <?= Yii::t('app', $Pkey) ?>
-                    </td>
-                    <td>
-                        <?= $Pvalue ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
+            <?php if (count($queryParams)): ?>
+                <?php foreach ($queryParams as $Pkey => $Pvalue): ?>
+                    <tr>
+                        <td>
+                            <?= Yii::t('app', $Pkey) ?>
+                        </td>
+                        <td>
+                            <?= $Pvalue ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
             </tbody>
         </table>
     </div>
@@ -72,25 +75,25 @@ use sadi01\bidashboard\models\ReportWidget;
             </tr>
             </thead>
             <tbody data-repeater-list="output_column">
-                <tr data-repeater-item>
-                    <th>
-                        <div class="form-group">
-                            <label>Field Name</label>
-                            <input type="text" name="column_name" class="form-control"/>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="form-group">
-                            <label>عنوان</label>
-                            <input type="text" name="column_title" class="form-control"/>
-                        </div>
-                    </th>
-                    <th class="col-sm-1">
-                        <div class="form-group mt-2">
-                            <input data-repeater-delete type="button" value="حذف" class="btn btn-danger mt-4"/>
-                        </div>
-                    </th>
-                </tr>
+            <tr data-repeater-item>
+                <th>
+                    <div class="form-group">
+                        <label>Field Name</label>
+                        <input type="text" name="column_name" class="form-control"/>
+                    </div>
+                </th>
+                <th>
+                    <div class="form-group">
+                        <label>عنوان</label>
+                        <input type="text" name="column_title" class="form-control"/>
+                    </div>
+                </th>
+                <th class="col-sm-1">
+                    <div class="form-group mt-2">
+                        <input data-repeater-delete type="button" value="حذف" class="btn btn-danger mt-4"/>
+                    </div>
+                </th>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -112,8 +115,8 @@ use sadi01\bidashboard\models\ReportWidget;
         outPutColumn.setList([
             <?php foreach ($output_column as $Kcolumn => $Vcolumn): ?>
             {
-                "column_name":"<?= $Kcolumn ?>",
-                "column_title":"<?= $Vcolumn ?>",
+                "column_name": "<?= $Kcolumn ?>",
+                "column_title": "<?= $Vcolumn ?>",
             },
             <?php endforeach; ?>
         ])

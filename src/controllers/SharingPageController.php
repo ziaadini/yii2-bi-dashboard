@@ -34,22 +34,68 @@ class SharingPageController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
-                    'rules' => [
+                    'rules' =>
                         [
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
-                    ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/SharingPage/index'],
+                                'actions' => [
+                                    'index'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/SharingPage/view'],
+                                'actions' => [
+                                    'view'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/SharingPage/create'],
+                                'actions' => [
+                                    'create',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/SharingPage/update'],
+                                'actions' => [
+                                    'update',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/SharingPage/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/SharingPage/management'],
+                                'actions' => [
+                                    'management',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/SharingPage/expire'],
+                                'actions' => [
+                                    'expire'
+                                ]
+                            ],
+                        ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'management' => ['GET', 'POST'],
-                        'expire' => ['GET', 'POST'],
-                        'create' => ['GET', 'POST'],
-                        'update' => ['GET', 'PUT', 'POST'],
+                        'management' => ['GET','POST'],
+                        'expire' => ['POST'],
+                        'create' => ['GET','POST'],
+                        'update' => ['GET','POST'],
                         'delete' => ['POST', 'DELETE'],
                     ],
                 ],
@@ -60,11 +106,6 @@ class SharingPageController extends Controller
     /**
      * @throws BadRequestHttpException
      */
-    public function beforeAction($action): bool
-    {
-        Yii::$app->controller->enableCsrfValidation = false;
-        return parent::beforeAction($action);
-    }
 
     /**
      * Lists all SharingPage models.
@@ -88,7 +129,7 @@ class SharingPageController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView( int $id): string
+    public function actionView(int $id): string
     {
         return $this->renderAjax('view', [
             'model' => $this->findModel($id),
@@ -104,17 +145,21 @@ class SharingPageController extends Controller
     public function actionCreate(): Response|string
     {
         $model = new SharingPage();
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                $model->save();
+
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'Success')
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("biDashboard", 'Error In Save Sharing Key')
                 ]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
+
         $this->performAjaxValidation($model);
         return $this->renderAjax('create', [
             'model' => $model,
@@ -132,12 +177,18 @@ class SharingPageController extends Controller
     public function actionUpdate(int $id): Response|string
     {
         $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->asJson([
-                'status' => true,
-                'message' => Yii::t("biDashboard", 'Success')
-            ]);
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("biDashboard", 'Error In Update Sharing Key')
+                ]);
+            }
         }
         $this->performAjaxValidation($model);
         return $this->renderAjax('update', [
@@ -185,7 +236,7 @@ class SharingPageController extends Controller
         if ($share_page_model->load(Yii::$app->request->post()) && $share_page_model->save()) {
             return $this->asJson([
                 'status' => true,
-                'message' => Yii::t("biDashboard", 'Success')
+                'message' => Yii::t("biDashboard", 'The Operation Was Successful')
             ]);
         }
 
@@ -208,17 +259,17 @@ class SharingPageController extends Controller
             $model->expire();
             return $this->asJson([
                 'status' => true,
-                'message' => Yii::t("biDashboard", 'Success')
+                'message' => Yii::t("biDashboard", 'The Operation Was Successful')
             ]);
 
-        }
-        else{
+        } else {
             return $this->asJson([
                 'status' => false,
-                'message' => Yii::t("biDashboard", 'fail to update')
+                'message' => Yii::t("biDashboard", 'Error In Expire Sharing Key')
             ]);
         }
     }
+
     /**
      * Finds the SharingPage model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

@@ -21,11 +21,11 @@ use yii\web\View;
                         <?php $form = ActiveForm::begin(['id' => 'page-form','enableClientValidation' => true]); ?>
 
                         <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-
+                        <?php if ($model->isNewRecord): ?>
                         <?= $form->field($model, 'status')->dropDownList(ReportPage::itemAlias('Status')) ?>
 
                         <?= $form->field($model, 'range_type')->dropDownList(ReportPage::itemAlias('RangeType')) ?>
-
+                        <?php endif; ?>
                         <div class="form-group">
                             <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>
                         </div>

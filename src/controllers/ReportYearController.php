@@ -33,20 +33,52 @@ class ReportYearController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
-                    'rules' => [
+                    'rules' =>
                         [
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
-                    ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportYear/index'],
+                                'actions' => [
+                                    'index'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportYear/view'],
+                                'actions' => [
+                                    'view'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportYear/create'],
+                                'actions' => [
+                                    'create',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportYear/update'],
+                                'actions' => [
+                                    'update',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportYear/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+                        ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'create' => ['GET', 'POST'],
-                        'update' => ['GET', 'PUT', 'POST'],
+                        'create' => ['GET','POST'],
+                        'update' => ['GET','POST'],
                         'delete' => ['POST', 'DELETE'],
                     ],
                 ],
@@ -57,12 +89,6 @@ class ReportYearController extends Controller
     /**
      * @throws BadRequestHttpException
      */
-    public function beforeAction($action): bool
-    {
-        Yii::$app->controller->enableCsrfValidation = false;
-        return parent::beforeAction($action);
-    }
-
     /**
      * Lists all ReportYear models.
      *
@@ -101,21 +127,19 @@ class ReportYearController extends Controller
     public function actionCreate(): Response|string
     {
         $model = new ReportYear();
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                $model->save();
+
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'Success')
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
                 ]);
             } else {
                 return $this->asJson([
                     'status' => false,
-                    'message' => Yii::t("app", 'Fails')
+                    'message' => Yii::t("biDashboard", 'Error In Save Year')
                 ]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         $this->performAjaxValidation($model);
@@ -136,13 +160,19 @@ class ReportYearController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->asJson([
-                'status' => true,
-                'message' => Yii::t("app", 'Update Is Save')
-            ]);
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("biDashboard", 'Error In Update Year')
+                ]);
+            }
         }
-
         $this->performAjaxValidation($model);
         return $this->renderAjax('update', [
             'model' => $model,

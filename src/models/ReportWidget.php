@@ -4,10 +4,6 @@ namespace sadi01\bidashboard\models;
 
 use sadi01\bidashboard\behaviors\Jsonable;
 use sadi01\bidashboard\components\Pdate;
-use sadi01\bidashboard\models\ReportPage;
-use sadi01\bidashboard\models\ReportPageQuery;
-use sadi01\bidashboard\models\ReportWidgetResult;
-use sadi01\bidashboard\models\ReportWidgetResultQuery;
 use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\behaviors\BlameableBehavior;
@@ -16,6 +12,7 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "report_widget".
@@ -38,6 +35,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @property string $search_route
  * @property string $search_model_form_name
  *
+ * @property string $outputColumnTitle
  * @property ReportPage[] $reportPages
  * @property ReportWidgetResult[] $reportWidgetResults
  *
@@ -59,9 +57,7 @@ class ReportWidget extends ActiveRecord
     public $params;
     public $outputColumn;
 
-    /**
-     * {@inheritdoc}
-     */
+    const SCENARIO_UPDATE = 'update';
 
     public static function getDb()
     {
@@ -80,6 +76,8 @@ class ReportWidget extends ActiveRecord
     {
         return [
             [['title', 'search_model_method', 'search_model_class', 'search_route', 'search_model_form_name', 'range_type'], 'required'],
+            [['title'], 'required', 'on' => $this::SCENARIO_UPDATE],
+            [['description'], 'safe', 'on' => $this::SCENARIO_UPDATE],
             [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by'], 'integer'],
             [['add_on', 'search_model_class', 'params', 'outputColumn'], 'safe'],
             [['title', 'search_model_method', 'search_model_run_result_view', 'search_route', 'search_model_form_name'], 'string', 'max' => 128],
@@ -133,6 +131,20 @@ class ReportWidget extends ActiveRecord
         return $this->hasMany(ReportWidgetResult::class, ['widget_id' => 'id']);
     }
 
+    public function getOutputColumnTitle(string $field): string
+    {
+        foreach ($this->add_on['outputColumn'] as $column) {
+            if ($column['column_name'] == $field) {
+                return $column["column_title"];
+            }
+        }
+
+        /**@var $searchModel ActiveRecord*/
+        $searchModel = new ($this->search_model_class);
+
+        return $searchModel->getAttributeLabel($field);
+    }
+
     /**
      * {@inheritdoc}
      * @return ReportWidgetQuery the active query used by this AR class.
@@ -146,6 +158,11 @@ class ReportWidget extends ActiveRecord
 
     public static function itemAlias($type, $code = NULL)
     {
+        $data = [];
+        if ($type == 'List') {
+            $data = ArrayHelper::map(ReportWidget::find()->where(['range_type' => $code])->all(), 'id', 'title');
+            $code = null;
+        }
         $_items = [
             'Status' => [
                 self::STATUS_ACTIVE => Yii::t('biDashboard', 'Active'),
@@ -159,6 +176,7 @@ class ReportWidget extends ActiveRecord
                 self::VISIBILITY_PUBLIC => Yii::t('biDashboard', 'Public'),
                 self::VISIBILITY_PRIVATE => Yii::t('biDashboard', 'Private'),
             ],
+            'List' => $data,
         ];
 
         if (isset($code))
@@ -291,8 +309,7 @@ class ReportWidget extends ActiveRecord
     {
         $modelRoute = "/" . $this->search_route . "?";
         $modalRouteParams = "";
-        $params = json_decode($this->params, true);
-        foreach ($params as $key => $param) {
+        foreach ($this->params as $key => $param) {
             $modalRouteParams .= $this->search_model_form_name . "[" . $key . "]=" . $param . "&";
         }
         $modelRoute .= $modalRouteParams;
@@ -337,6 +354,7 @@ class ReportWidget extends ActiveRecord
                 if (count($parameters) <= 3) {
                     $isValid = false;
                 }
+                $this->addError('status','function in search model not found');
             } else {
                 $isValid = false;
             }
@@ -356,5 +374,10 @@ class ReportWidget extends ActiveRecord
         $reportWidgetResult->result = $modelQueryResults;
         $reportWidgetResult->save();
         return $reportWidgetResult;
+    }
+
+    public function canDelete()
+    {
+        return true;
     }
 }

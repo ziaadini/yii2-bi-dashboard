@@ -100,7 +100,6 @@ class SharingPage extends \yii\db\ActiveRecord
         return $this->hasOne(ReportPage::class, ['id' => 'page_id']);
     }
 
-
     public function expire()
     {
         $this->expire_time = time();

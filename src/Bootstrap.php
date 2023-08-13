@@ -32,9 +32,21 @@ class Bootstrap implements BootstrapInterface
                 'basePath' => __DIR__ . '/messages',
                 'sourceLanguage' => 'en-US',
                 'fileMap' => [
-                    'biDashboard' => 'bid_main.php',
+                    'biDashboard' => 'main.php',
                 ],
             ];
+        }
+
+        $parameter = null;
+        if (!Env::get('BI_DB_DSN')) {
+            $parameter = 'BI_DB_DSN';
+        } elseif (!Env::get('BI_DB_USERNAME')) {
+            $parameter = 'BI_DB_USERNAME';
+        } elseif (!Env::get('BI_DB_PASSWORD')) {
+            $parameter = 'BI_DB_PASSWORD';
+        }
+        if ($parameter) {
+            throw new InvalidConfigException(Yii::t('biDashboard', 'The {env_parameter} parameter is not set, add the parameter in the env file of the project.', ['env_parameter' => $parameter]));
         }
 
         Yii::$app->setComponents([
@@ -54,17 +66,11 @@ class Bootstrap implements BootstrapInterface
             ],
         ]);
 
-        $parameter = null;
-        if (!Env::get('BI_DB_DSN')) {
-            $parameter = 'BI_DB_DSN';
-        } elseif (!Env::get('BI_DB_USERNAME')) {
-            $parameter = 'BI_DB_USERNAME';
-        } elseif (!Env::get('BI_DB_PASSWORD')) {
-            $parameter = 'BI_DB_PASSWORD';
-        }
-        if ($parameter){
-            throw new InvalidConfigException(Yii::t('biDashboard', 'The {env_parameter} parameter is not set, add the parameter in the env file of the project.', ['env_parameter' => $parameter]));
-        }
+        Yii::$app->setModules([
+            'gridview' => [
+                'class' => 'kartik\grid\Module',
+            ],
+        ]);
 
     }
 }

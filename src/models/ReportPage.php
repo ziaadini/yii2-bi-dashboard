@@ -23,7 +23,8 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @property int|null $updated_by
  * @property int|null $created_by
  *
- * @property \sadi01\bidashboard\models\ReportPageWidget $reportPageWidgets
+ * @property ReportPageWidget $reportPageWidgets
+ * @property ReportWidget[] $widgets
  *
  * @mixin SoftDeleteBehavior
  */
@@ -91,18 +92,26 @@ class ReportPage extends ActiveRecord
      */
     public function getReportPageWidgets()
     {
-        return $this->hasMany(\sadi01\bidashboard\models\ReportPageWidget::class, ['page_id' => 'id']);
+        return $this->hasMany(ReportPageWidget::class, ['page_id' => 'id']);
     }
 
     public function getWidgets()
     {
-        return $this->hasMany(ReportWidget::class, ['id' => 'widget_id'])
-            ->viaTable('report_page_widget', ['page_id' => 'id']);
+        return $this->hasMany(ReportWidget::class, ['id' => 'widget_id'])->via('reportPageWidgets');
     }
 
     public function getSharingKeys()
     {
         return $this->hasMany(SharingPage::class, ['page_id' => 'id']);
+    }
+
+    public function afterDelete()
+    {
+        $sharingKeys = $this->sharingKeys;
+        foreach ($sharingKeys as $value) {
+            $value->softDelete();
+        }
+        return parent::afterDelete();
     }
 
     /**
@@ -172,7 +181,7 @@ class ReportPage extends ActiveRecord
                     'status' => self::STATUS_ACTIVE
                 ],
                 'replaceRegularDelete' => false,
-                'invokeDeleteEvents' => false
+                'invokeDeleteEvents' => true
             ],
         ];
     }

@@ -1,11 +1,11 @@
 <?php
 
 use sadi01\bidashboard\models\SharingPage;
+use sadi01\bidashboard\widgets\grid\ActionColumn;
+use sadi01\bidashboard\widgets\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
-use yii\grid\ActionColumn;
-use yii\grid\GridView;
 
 
 /** @var yii\web\View $this */
@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'data-pjax' => '0',
                             'class' => "btn btn-primary",
-                            'data-size' => 'modal-xl',
+                            'data-size' => 'modal-md',
                             'data-title' => Yii::t('app', 'create'),
                             'data-toggle' => 'modal',
                             'data-target' => '#modal-pjax',
@@ -65,13 +65,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                 ],
                 'access_key',
-                'expire_time:datetime',
+                [
+                    'attribute' => 'expire_time',
+                    'value' => function ($item) {
+                        return Yii::$app->pdate->jdate('Y/m/d-h:i', $item->created_at);
+                    }
+                ],
                 [
                     'class' => ActionColumn::class,
                     'urlCreator' => function ($action, SharingPage $model, $key, $index, $column) {
                         return Url::toRoute([$action, 'id' => $model->id]);
                     },
-                    'template' => '{view} {update} {delete} {expire}', // Replace the default delete button with {custom-delete}
+                    'template' => '{view} {update} {delete} {expire}',
                     'visibleButtons' => [
                         'expire' => function (SharingPage $model) {
                             return ($model->isExpire());
@@ -85,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-reload-pjax-container' => 'p-jax-sharing-page',
                                 'data-pjax' => '0',
                                 'data-url' => Url::to(['/bidashboard/sharing-page/delete', 'id' => $model->id]),
-                                'class' => 'p-jax-btn text-danger',
+                                'class' => 'p-jax-btn text-danger p-0',
                                 'data-title' => Yii::t('yii', 'Delete'),
                                 'data-toggle' => 'tooltip',
                             ]);
@@ -94,7 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             return Html::a('<i class="fa fa-pen"></i>', "javascript:void(0)",
                                 [
                                     'data-pjax' => '0',
-                                    'class' => "btn text-primary",
+                                    'class' => "btn text-primary p-0",
                                     'data-size' => 'modal-xl',
                                     'data-title' => Yii::t('app', 'create'),
                                     'data-toggle' => 'modal',
@@ -109,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             return Html::a('<i class="fa fa-eye"></i>', "javascript:void(0)",
                                 [
                                     'data-pjax' => '0',
-                                    'class' => "btn text-info",
+                                    'class' => "btn text-info p-0",
                                     'data-size' => 'modal-xl',
                                     'data-title' => Yii::t('app', 'view'),
                                     'data-toggle' => 'modal',
@@ -127,7 +132,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-reload-pjax-container' => 'p-jax-sharing-page',
                                 'data-pjax' => '0',
                                 'data-url' => Url::to(['/bidashboard/sharing-page/expire', 'id' => $model->id]),
-                                'class' => 'p-jax-btn btn-sm text-info',
+                                'class' => 'p-jax-btn btn-sm text-info p-0',
                                 'data-title' => Yii::t('yii', 'Expired'),
                             ]);
                         },

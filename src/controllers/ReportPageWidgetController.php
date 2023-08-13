@@ -6,9 +6,11 @@ use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageWidget;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use Yii;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * ReportPageController implements the CRUD actions for ReportPage model.
@@ -19,20 +21,46 @@ class ReportPageWidgetController extends Controller
 
     public $layout = 'bid_main';
 
+    public function behaviors(): array
+    {
+        return array_merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' =>
+                        [
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportPageWidget/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+                        ]
+                ],
+                'verbs' => [
+                    'class' => VerbFilter::class,
+                    'actions' => [
+                        'delete' => ['POST', 'DELETE'],
+                    ],
+                ],
+            ]
+        );
+    }
+
     public function actionDelete($id_widget, $id_page)
     {
         $model = ReportPageWidget::findOne(['widget_id' => $id_widget, 'page_id' => $id_page]);
-
-        if ($model->canDelete() && $model->softDelete()) {
+        if ($model->softDelete()) {
             return $this->asJson([
                 'status' => true,
-                'message' => Yii::t("app", 'Success')
+                'message' => Yii::t("biDashboard", 'The Operation Was Successful')
             ]);
-
         } else {
             return $this->asJson([
                 'status' => false,
-                'message' => Yii::t("app", 'Error')
+                'message' => Yii::t("biDashboard", 'Error In Delete Action')
             ]);
         }
     }

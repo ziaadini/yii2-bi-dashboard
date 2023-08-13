@@ -25,7 +25,7 @@ use kartik\depdrop\DepDrop;
                     <div class="report-page-widget-form">
                         <?php $form = ActiveForm::begin(['id' => 'page-widget-form']); ?>
                         <?= $form->field($model, 'widget_id')->widget(Select2::class, [
-                            'data' => ArrayHelper::map($widgets, 'id', 'title'),
+                            'data' => ReportWidget::itemAlias('List',$page->range_type),
                             'options' => [
                                 'placeholder' => Yii::t('biDashboard', 'Select widget'),
                             ],

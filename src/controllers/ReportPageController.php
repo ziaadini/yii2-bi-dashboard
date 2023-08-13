@@ -12,6 +12,7 @@ use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -24,7 +25,6 @@ class ReportPageController extends Controller
     use AjaxValidationTrait;
     use CoreTrait;
 
-    public $enableCsrfValidation = false;
     public $layout = 'bid_main';
 
     /**
@@ -37,21 +37,86 @@ class ReportPageController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
-                    'rules' => [
+                    'rules' =>
                         [
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
-                    ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportPage/index'],
+                                'actions' => [
+                                    'index'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportPage/view'],
+                                'actions' => [
+                                    'view'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportPage/create'],
+                                'actions' => [
+                                    'create',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportPage/update'],
+                                'actions' => [
+                                    'update',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportPage/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportPage/update-widget'],
+                                'actions' => [
+                                    'update-widget'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportPage/add'],
+                                'actions' => [
+                                    'add'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportPage/get-widget-column'],
+                                'actions' => [
+                                    'get-widget-column'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportPage/run-all-widgets'],
+                                'actions' => [
+                                    'run-all-widgets'
+                                ]
+                            ],
+
+                        ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'create' => ['GET', 'POST'],
-                        'update' => ['GET', 'PUT', 'POST'],
+                        'create' => ['GET','POST'],
+                        'update' => ['GET','POST'],
                         'delete' => ['POST', 'DELETE'],
+                        'update-widget' => ['POST'],
+                        'add' => ['GET','POST'],
+                        'get-widget-column' => ['POST'],
+                        'run-all-widgets' => ['POST']
                     ],
                 ],
             ]
@@ -126,17 +191,20 @@ class ReportPageController extends Controller
     public function actionCreate(): Response|string
     {
         $model = new ReportPage();
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->validate()) {
-                $model->save();
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
-                    'message' => Yii::t("app", 'Item Saved')
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("biDashboard", 'Error In Save Page')
                 ]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
+
         $this->performAjaxValidation($model);
         return $this->renderAjax('create', [
             'model' => $model,
@@ -153,12 +221,18 @@ class ReportPageController extends Controller
     public function actionUpdate($id): Response|string
     {
         $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->validate() && $model->save()) {
-            return $this->asJson([
-                'status' => true,
-                'message' => Yii::t("app", 'Item Updated')
-            ]);
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("biDashboard", 'Error In Update Page')
+                ]);
+            }
         }
 
         $this->performAjaxValidation($model);
@@ -174,40 +248,45 @@ class ReportPageController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id): Response
     {
         $model = $this->findModel($id);
 
-        if ($model->canDelete() && $model->softDelete()) {
+        if ($model->softDelete()) {
             return $this->asJson([
                 'status' => true,
-                'message' => Yii::t("app", 'Item Deleted')
+                'message' => Yii::t("biDashboard", 'The Operation Was Successful')
             ]);
         } else {
             return $this->asJson([
                 'status' => false,
-                'message' => Yii::t("app", 'Error In Delete')
+                'message' => Yii::t("biDashboard", 'Error In Delete Action')
             ]);
         }
-
-        return $this->redirect(['index']);
     }
 
-    public function actionUpdateWidget($id): Response|string
+    public function actionUpdateWidget(int $id): Response|string
     {
         $model = ReportPageWidget::find()->where(['widget_id' => $id])->one();
-        $add_on = json_decode($model->widget->add_on["outputColumn"]);
+        $add_on = $model->widget->add_on["outputColumn"];
 
         foreach ($add_on as $value) {
             $column_name[$value->column_name] = $value->column_title;
         }
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->validate() && $model->save()) {
-            return $this->asJson([
-                'status' => true,
-                'message' => Yii::t("app", 'Success')
-            ]);
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("biDashboard", 'Error In Update Widget')
+                ]);
+            }
         }
+
         $this->performAjaxValidation($model);
         return $this->renderAjax('_edit', [
             'model' => $model,
@@ -215,44 +294,38 @@ class ReportPageController extends Controller
         ]);
     }
 
-    public function actionAdd($id): Response|string
+    public function actionAdd(int $id): Response|string
     {
         $model = new ReportPageWidget();
         $page = $this->findModel($id);
         $model->page_id = $id;
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->validate()) {
-                if ($model->save(false)) {
-                    return $this->asJson([
-                        'status' => true,
-                        'message' => Yii::t("app", 'Success')
-                    ]);
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
+                ]);
 
-                } else {
-                    return $this->asJson([
-                        'status' => false,
-                        'message' => Yii::t("app", 'fail')
-                    ]);
-                }
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("biDashboard", 'Error In Add Widget')
+                ]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         $this->performAjaxValidation($model);
-        $widgets = ReportWidget::find()->where(['range_type' => $page->range_type])->all();
+
         return $this->renderAjax('_add', [
             'model' => $model,
             'page' => $page,
-            'widgets' => $widgets,
         ]);
     }
 
     /** @var $widget ReportWidget */
     public function actionGetWidgetColumn()
     {
-
         Yii::$app->response->format = Response::FORMAT_JSON;
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
@@ -283,11 +356,10 @@ class ReportPageController extends Controller
     public function actionRunAllWidgets($id, $start_range = null, $end_range = null)
     {
         $model = $this->findModel($id);
-        $widgets = $model->getWidgets()->all();
         $start_range = $start_range ? (int)$start_range : null;
         $end_range = $end_range ? (int)$end_range : null;
         $errors = [];
-        foreach ($widgets as $widget) {
+        foreach ($model->widgets as $widget) {
             $widget->runWidget($start_range, $end_range);
             if ($widget->errors) {
                 $errors[] = $widget->errors;
@@ -296,7 +368,7 @@ class ReportPageController extends Controller
         return $this->asJson([
             'status' => true,
             'success' => true,
-            'message' => $errors ? Yii::t('app', 'Error In Run Widget') : Yii::t("biDashboard", 'Success'),
+            'message' => $errors ? Yii::t('biDashboard', 'Error In Run Widget') : Yii::t("biDashboard", 'Success'),
         ]);
     }
 
@@ -307,7 +379,7 @@ class ReportPageController extends Controller
      * @return ReportPage the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id): ReportPage
+    protected function findModel(int $id): ReportPage
     {
         if (($model = ReportPage::findOne(['id' => $id])) !== null) {
             return $model;

@@ -8,6 +8,7 @@ use sadi01\bidashboard\models\ReportWidgetSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\Html;
 use yii\web\Controller;
@@ -22,7 +23,6 @@ class ReportWidgetController extends Controller
     use AjaxValidationTrait;
     use CoreTrait;
 
-    public $enableCsrfValidation = false;
     public $layout = 'bid_main';
 
     /**
@@ -33,10 +33,81 @@ class ReportWidgetController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' =>
+                        [
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportWidget/index'],
+                                'actions' => [
+                                    'index'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportWidget/view'],
+                                'actions' => [
+                                    'view'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportWidget/create'],
+                                'actions' => [
+                                    'create',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportWidget/update'],
+                                'actions' => [
+                                    'update',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportWidget/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportWidget/open-modal'],
+                                'actions' => [
+                                    'open-modal'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportWidget/run'],
+                                'actions' => [
+                                    'run'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportWidget/modal-show-chart'],
+                                'actions' => [
+                                    'modal-show-chart'
+                                ]
+                            ],
+
+
+                        ]
+                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
-                        'delete' => ['POST'],
+                        'index' => ['GET'],
+                        'view' => ['GET'],
+                        'create' => ['GET','POST'],
+                        'update' => ['GET','POST'],
+                        'delete' => ['POST', 'DELETE'],
+                        'open-modal' => ['GET'],
+                        'run' =>  ['GET','POST'],
+                        'modal-show-chart' => ['GET'],
                     ],
                 ],
             ]
@@ -72,7 +143,7 @@ class ReportWidgetController extends Controller
 
         $modelRoute = $model->getModelRoute();
 
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $model,
             'modelRoute' => $modelRoute,
         ]);
@@ -100,7 +171,7 @@ class ReportWidgetController extends Controller
             $model->search_model_class = $searchModelClass;
             $model->search_model_form_name = $search_model_form_name;
             $model->search_model_run_result_view = $searchModelRunResultView;
-            $model->params = $queryParams;
+            $model->params = json_decode($queryParams, true);
 
             $output_column = $this->request->post('output_column', null);
             $model->outputColumn = array_filter($output_column, fn($value) => array_filter($value));
@@ -124,8 +195,8 @@ class ReportWidgetController extends Controller
 
         return $this->renderAjax('create', [
             'model' => $model,
-            'queryParams' => $queryParams,
-            'output_column' => $output_column,
+            'queryParams' => json_decode($queryParams, true),
+            'output_column' => json_decode($output_column, true),
         ]);
     }
 
@@ -139,12 +210,17 @@ class ReportWidgetController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->scenario = ReportWidget::SCENARIO_UPDATE;
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load($this->request->post()) && $model->save()) {
+            return $this->asJson([
+                'status' => true,
+                'message' => Yii::t("biDashboard", 'Item Updated')
+            ]);
         }
 
-        return $this->render('update', [
+        $this->performAjaxValidation($model);
+        return $this->renderAjax('update', [
             'model' => $model,
         ]);
     }
@@ -159,9 +235,17 @@ class ReportWidgetController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $model->softDelete();
-
-        return $this->redirect(['index']);
+        if ($model->canDelete() && $model->softDelete()) {
+            return $this->asJson([
+                'status' => true,
+                'message' => Yii::t("biDashboard", 'Item Deleted')
+            ]);
+        } else {
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t("biDashboard", 'Error In Delete Action')
+            ]);
+        }
     }
 
     /**
@@ -176,7 +260,7 @@ class ReportWidgetController extends Controller
         if (($model = ReportWidget::findOne(['id' => $id])) !== null) {
             return $model;
         }
-        throw new NotFoundHttpException(Yii::t('biDashboard', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 
     public function actionOpenModal()
@@ -203,28 +287,37 @@ class ReportWidgetController extends Controller
         } else {
             return $this->asJson([
                 'status' => true,
-                'message' => Yii::t("biDashboard", 'Success'),
+                'message' => Yii::t("biDashboard", 'The Operation Was Successful'),
             ]);
         }
     }
-    public function actionModalShowChart($id,$field,$start_range=null,$end_range=null,$chart_type='line'){
+
+    public function actionModalShowChart($id, $field, $start_range = null, $end_range = null, $chart_type = 'line')
+    {
         $model = $this->findModel($id);
-        $runWidget= $model->lastResult($start_range,$end_range);
-        $result = $runWidget->result;
-        $result = array_reverse($result);
+        $runWidget = $model->lastResult($start_range, $end_range);
+        $result = array_reverse($runWidget->result);
+        $arrayResult = null;
+        $arrayTitle = null;
 
-        $arrayResult = array_map(function($item) use ($field) {
-            return (int)$item[$field];
-        }, $result);
+        if ($result) {
+            $arrayResult = array_map(function ($item) use ($field) {
+                return (int)$item[$field];
+            }, $result);
 
-        $arrayTitle = array_map(function($item) {
-            return $item["month_name"];
-        }, $result);
+            $arrayTitle = array_map(function ($item) use ($model) {
+                if ($model->range_type == $model::RANGE_TYPE_DAILY) {
+                    return $item["day"];
+                } else {
+                    return $item["month_name"];
+                }
+            }, $result);
+        }
 
-        if ($chart_type == ReportWidgetResult::CHART_PIE){
+        if ($chart_type == ReportWidgetResult::CHART_PIE) {
             $result_pie = [];
-            foreach ($result as $key => $item){
-                $result_pie[] = ['name' => $arrayTitle[$key],'y' => $arrayResult[$key]];
+            foreach ($result as $key => $item) {
+                $result_pie[] = ['name' => $arrayTitle[$key], 'y' => $arrayResult[$key]];
             }
             $arrayResult = $result_pie;
         }
