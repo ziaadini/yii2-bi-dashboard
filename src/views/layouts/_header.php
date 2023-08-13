@@ -13,7 +13,7 @@ $url = Yii::$app->assetManager->getPublishedUrl('@sadi01/bidashboard/assets');
             <!-- This is for the sidebar toggle which is visible on mobile only -->
             <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)">
                 <i class="fal fa-bars"></i></a>
-            <a class="navbar-brand" href="<?= Url::to(['/site/index']) ?>">
+            <a class="navbar-brand" href="<?= Url::to(['/bidashboard']) ?>">
                 <!-- Logo icon -->
                 <b class="logo-icon">
 <!--                    --><?php //= Html::img($url.'/bidashboard/images/BI.png', ['style' => 'background-color: white; height: 20px;','href'=>'javascript:void(0)','id'=>'logo-close']) ?>
