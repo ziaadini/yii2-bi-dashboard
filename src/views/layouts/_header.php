@@ -53,10 +53,10 @@ $url = Yii::$app->assetManager->getPublishedUrl('@sadi01/bidashboard/assets');
                 </li>
             </ul>
             <a class="text-white" href="<?= Url::to(['/site/index']) ?>">
-            <div class="align-self-end">
-                <span class="fa fa-home"></span>
-                <?= Yii::t('biDashboard','Return To Home') ?>
-            </div>
+                <div class="align-self-end ">
+                    <span class="fa fa-home"></span>
+                    <?= Yii::t('biDashboard','Return To Home') ?>
+                </div>
             </a>
         </div>
     </nav>
