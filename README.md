@@ -107,17 +107,24 @@ use sadi01\bidashboard\widgets\ReportModalWidget;
 <?= ReportModalWidget::widget([
     'queryParams' => $queryParams,
     'searchModel' => $searchModel,
-    'searchRoute' => $searchRoute,
+    'searchModelMethod' => $searchWidget,
+    'searchModelRunResultView' => $searchModelRunResultView,
+    'searchRoute' => Yii::$app->request->pathInfo,
     'searchModelFormName' => $searchModelFormName,
+    'outputColumn' => $outputColumn,
 ]) ?>
 ```
 
 add to search model:
 
 ```php
-public function searchWidget(string $params,int $rangeType,int $startRange,int $endRange)
+public function searchWidget(array $params,int $rangeType,int $startRange,int $endRange)
 {
     $query = Invoice::find();
+    $dataProvider = new ActiveDataProvider([
+        'query' => $query,
+    ]);
+    $this->load($params, '');
     $query->andFilterWhere(['between', 'updated_at', $startRange, $endRange]);
     if ($rangeType == ReportWidget::RANGE_TYPE_MONTHLY) {
     ...
@@ -125,10 +132,6 @@ public function searchWidget(string $params,int $rangeType,int $startRange,int $
     elseif ($rangeType == ReportWidget::RANGE_TYPE_DAILY) {
     ...    
     }
-    $dataProvider = new ActiveDataProvider([
-        'query' => $query,
-    ]);
-    $this->load($params);
     return $dataProvider;
 }
 ```

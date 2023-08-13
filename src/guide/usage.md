@@ -27,10 +27,17 @@ For example, let's assume we have a table called 'invoice' where financial invoi
 Below is a sample code snippet that you can add to the search model 'invoice' to fetch data from the database:
 
 ```php
-public function searchWidget(string $params,int $rangeType,int $startRange,int $endRange)
+public function searchWidget(array $params,int $rangeType,int $startRange,int $endRange)
 {
     $query = Invoice::find();
+    
+    $dataProvider = new ActiveDataProvider([
+        'query' => $query,
+    ]);
+    $this->load($params, '');
+    $query->andFilterWhere(['like', 'title', $this->title]);
     $query->andFilterWhere(['between', 'updated_at', $startRange, $endRange]);
+    
     if ($rangeType == ReportWidget::RANGE_TYPE_MONTHLY) {
         $query->select([
             'total_count' => 'COUNT(' . Invoice::tableName() . '.id)',
@@ -57,14 +64,6 @@ public function searchWidget(string $params,int $rangeType,int $startRange,int $
             ->orderBy('FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at)');
     }
 
-    $dataProvider = new ActiveDataProvider([
-        'query' => $query,
-    ]);
-    
-    $params = ['InvoiceSearch' => json_decode($params,true)];
-    $this->load($params);
-    $query->andFilterWhere(['like', 'title', $this->title]);
-    
     return $dataProvider;
 }
 
@@ -154,10 +153,7 @@ To use this widget, insert the following code into a index file:
 for example:
 
 ```php
-$queryParams = \Yii::$app->request->getQueryParams();
-if ($queryParams) {
-    $queryParams = array_filter($queryParams['InvoiceSearch']);
-}
+$queryParams = array_filter(Yii::$app->request->getQueryParam('InvoiceSearch') ?: []);
 ```
 
 ### searchModel ###

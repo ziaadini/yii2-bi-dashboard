@@ -120,7 +120,7 @@ class ExternalDataValueController extends Controller
     /**
      * Creates a new ExternalDataValue model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
+     * @return string|Response
      */
     public function actionCreate($external_data_id)
     {
