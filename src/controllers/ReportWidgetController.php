@@ -2,16 +2,18 @@
 
 namespace sadi01\bidashboard\controllers;
 
-use sadi01\bidashboard\components\Pdate;
 use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\models\ReportWidgetResult;
 use sadi01\bidashboard\models\ReportWidgetSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * ReportWidgetController implements the CRUD actions for ReportWidget model.
@@ -31,10 +33,81 @@ class ReportWidgetController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' =>
+                        [
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/index'],
+                                'actions' => [
+                                    'index'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/view'],
+                                'actions' => [
+                                    'view'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/create'],
+                                'actions' => [
+                                    'create',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/update'],
+                                'actions' => [
+                                    'update',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/open-modal'],
+                                'actions' => [
+                                    'open-modal'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/run'],
+                                'actions' => [
+                                    'run'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportWidget/modal-show-chart'],
+                                'actions' => [
+                                    'modal-show-chart'
+                                ]
+                            ],
+
+
+                        ]
+                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
-                        'delete' => ['POST'],
+                        'index' => ['GET'],
+                        'view' => ['GET'],
+                        'create' => ['POST'],
+                        'update' => ['POST'],
+                        'delete' => ['POST', 'DELETE'],
+                        'open-modal' => ['GET'],
+                        'run' => ['GET'],
+                        'modal-show-chart' => ['GET'],
                     ],
                 ],
             ]
@@ -67,30 +140,12 @@ class ReportWidgetController extends Controller
     public function actionView($id, $method = null)
     {
         $model = $this->findModel($id);
-        $params = $model->params;
 
-//---- create url search
-        $modelRoute = "/" . $model->search_route . "?";
-        $modalRouteParams = "";
-        foreach ($params as $key => $param) {
-            $modalRouteParams .= $model->search_model_form_name . "[" . $key . "]=" . $param . "&";
-        }
-        $modelRoute .= $modalRouteParams;
-//---- end
+        $modelRoute = $model->getModelRoute();
 
-        $runWidget = ReportWidgetResult::find()
-            ->where(['widget_id' => $model->id])
-            ->orderBy(['id' => SORT_DESC])
-            ->one();
-
-        if (!$runWidget || $method == 'new') {
-            $runWidget = $this->runWidget($id, null, null);
-        }
-
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $model,
             'modelRoute' => $modelRoute,
-            'runWidget' => $runWidget,
         ]);
     }
 
@@ -99,29 +154,38 @@ class ReportWidgetController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+    public function actionCreate($searchModelClass = null,
+                                 $searchModelMethod = null,
+                                 $searchModelRunResultView = null,
+                                 $search_route = null,
+                                 $search_model_form_name = null,
+                                 $queryParams = null,
+                                 $output_column = null)
     {
         $model = new ReportWidget();
         $model->loadDefaultValues();
 
-        $searchModelClass = $this->request->get('searchModelClass', null);
-        $searchModelMethod = $this->request->get('searchModelMethod', null);
-        $searchModelRunResultView = $this->request->get('searchModelRunResultView', null);
-        $search_route = $this->request->get('search_route', null);
-        $search_model_form_name = $this->request->get('search_model_form_name', null);
-        $queryParams = $this->request->get('queryParams', null);
-
         if ($this->request->isPost) {
+            $model->search_model_method = $searchModelMethod;
+            $model->search_route = $search_route;
+            $model->search_model_class = $searchModelClass;
+            $model->search_model_form_name = $search_model_form_name;
+            $model->search_model_run_result_view = $searchModelRunResultView;
+            $model->params = json_decode($queryParams, true);
+
+            $output_column = $this->request->post('output_column', null);
+            $model->outputColumn = array_filter($output_column, fn($value) => array_filter($value));
             if ($model->load($this->request->post()) && $model->validate()) {
-                $model->save(false);
+                $model->save();
                 return $this->asJson([
-                    'success' => true,
-                    'msg' => Yii::t('biDashboard', 'Saved successfully'),
+                    'status' => true,
+                    'message' => Yii::t('biDashboard', 'Saved successfully'),
                 ]);
             } else {
                 return $this->asJson([
-                    'success' => false,
-                    'msg' => Yii::t('biDashboard', 'There was a problem saving'),
+                    'status' => false,
+                    'errors' => $model->errors,
+                    'message' => Yii::t('biDashboard', 'There was a problem saving'),
                 ]);
             }
         } else {
@@ -131,12 +195,8 @@ class ReportWidgetController extends Controller
 
         return $this->renderAjax('create', [
             'model' => $model,
-            'searchModelClass' => $searchModelClass,
-            'searchModelMethod' => $searchModelMethod,
-            'searchModelRunResultView' => $searchModelRunResultView,
-            'search_route' => $search_route,
-            'search_model_form_name' => $search_model_form_name,
-            'queryParams' => $queryParams,
+            'queryParams' => json_decode($queryParams, true),
+            'output_column' => json_decode($output_column, true),
         ]);
     }
 
@@ -144,18 +204,23 @@ class ReportWidgetController extends Controller
      * Updates an existing ReportWidget model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
-     * @return string|\yii\web\Response
+     * @return string|Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->scenario = ReportWidget::SCENARIO_UPDATE;
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load($this->request->post()) && $model->save()) {
+            return $this->asJson([
+                'status' => true,
+                'message' => Yii::t("biDashboard", 'Item Updated')
+            ]);
         }
 
-        return $this->render('update', [
+        $this->performAjaxValidation($model);
+        return $this->renderAjax('update', [
             'model' => $model,
         ]);
     }
@@ -170,9 +235,17 @@ class ReportWidgetController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $model->softDelete();
-
-        return $this->redirect(['index']);
+        if ($model->canDelete() && $model->softDelete()) {
+            return $this->asJson([
+                'status' => true,
+                'message' => Yii::t("biDashboard", 'Item Deleted')
+            ]);
+        } else {
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t("biDashboard", 'Error In Delete Action')
+            ]);
+        }
     }
 
     /**
@@ -187,7 +260,7 @@ class ReportWidgetController extends Controller
         if (($model = ReportWidget::findOne(['id' => $id])) !== null) {
             return $model;
         }
-        throw new NotFoundHttpException(Yii::t('biDashboard', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 
     public function actionOpenModal()
@@ -201,65 +274,64 @@ class ReportWidgetController extends Controller
         ]);
     }
 
-    /**
-     * @param $id
-     * @param $start_range
-     * @param $end_rage
-     * @return mixed
-     * @throws \Exception
-     */
-    public function runWidget($id, $start_range = null, $end_range = null)
+    public function actionRun($id, int $start_range = null, int $end_range = null)
     {
-        $widget = $this->findModel($id);
-        /**@var $pDate Pdate */
-        $pDate = \Yii::$app->pdate;
+        $model = $this->findModel($id);
+        $runWidgetResult = $model->runWidget($start_range, $end_range);
 
-        if ($start_range and $end_range) {
-            if ($widget->range_type == $widget::RANGE_TYPE_DAILY) {
-                $start_range = $pDate->jmktime('', '', '', $start_range['mon'], $start_range['day'], $start_range['year']);
-                $end_range = $pDate->jmktime('', '', '', $end_range['mon'], $end_range['day'], $end_range['year']);
-            } else {
-                $start_range = $this->getStartAndEndOfMonth($start_range['year'] . "/" . $start_range['mon'])['start'];
-                $end_range = $this->getStartAndEndOfMonth($end_range['year'] . "/" . $end_range['mon'])['end'];
-            }
+        if ($runWidgetResult === false) {
+            return $this->asJson([
+                'status' => false,
+                'message' => ($model->errors ? Html::errorSummary([$model]) : Yii::t('app', 'Error In Run Widget')),
+            ]);
         } else {
-            if ($widget->range_type == $widget::RANGE_TYPE_DAILY) {
-                $dateTemp = $this->getStartAndEndOfMonth();
-            } else {
-                $dateTemp = $this->getStartAndEndOfYear();
-            }
-            $start_range = $dateTemp['start'];
-            $end_range = $dateTemp['end'];
+            return $this->asJson([
+                'status' => true,
+                'message' => Yii::t("biDashboard", 'The Operation Was Successful'),
+            ]);
         }
-
-        $modelQueryResults = $this->findSearchModelWidget($widget, $start_range, $end_range);
-
-        // -- create Report Widget Result
-        $reportWidgetResult = new ReportWidgetResult();
-        $reportWidgetResult->widget_id = $id;
-        $reportWidgetResult->status = 10;
-        $reportWidgetResult->start_range = $start_range;
-        $reportWidgetResult->end_range = $end_range;
-        $reportWidgetResult->run_action = Yii::$app->controller->action->id;
-        $reportWidgetResult->run_controller = Yii::$app->controller->id;
-        $reportWidgetResult->result = $modelQueryResults;
-        $reportWidgetResult->save();
-
-        return $reportWidgetResult;
     }
 
-    public function findSearchModelWidget($model, $startDate, $endDate)
+    public function actionModalShowChart($id, $field, $start_range = null, $end_range = null, $chart_type = 'line')
     {
-        $params = $model->add_on['params'];
-        $searchModel = new ($model->search_model_class);
-        $methodExists = method_exists($searchModel, 'search');
-        if ($methodExists) {
-            $dataProvider = $searchModel->{$model->search_model_method}($params, $model->range_type, $startDate, $endDate);
-            $modelQueryResults = array_values($dataProvider->query->asArray()->all());
-        } else {
-            $modelQueryResults = null;
+        $model = $this->findModel($id);
+        $runWidget = $model->lastResult($start_range, $end_range);
+        $result = array_reverse($runWidget->result);
+        $arrayResult = null;
+        $arrayTitle = null;
+
+        if ($result) {
+            $arrayResult = array_map(function ($item) use ($field) {
+                return (int)$item[$field];
+            }, $result);
+
+            $arrayTitle = array_map(function ($item) use ($model) {
+                if ($model->range_type == $model::RANGE_TYPE_DAILY) {
+                    return $item["day"];
+                } else {
+                    return $item["month_name"];
+                }
+            }, $result);
         }
 
-        return $modelQueryResults;
+        if ($chart_type == ReportWidgetResult::CHART_PIE) {
+            $result_pie = [];
+            foreach ($result as $key => $item) {
+                $result_pie[] = ['name' => $arrayTitle[$key], 'y' => $arrayResult[$key]];
+            }
+            $arrayResult = $result_pie;
+        }
+
+        return $this->renderAjax('_chart', [
+            'status' => true,
+            'msg' => 'ok',
+            'widget' => $model,
+            'results' => $arrayResult,
+            'titles' => $arrayTitle,
+            'chart_type' => $chart_type,
+            'field' => $field,
+            'start_range' => $start_range,
+            'end_range' => $end_range,
+        ]);
     }
 }

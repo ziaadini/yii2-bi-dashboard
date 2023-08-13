@@ -23,7 +23,8 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @property int|null $updated_by
  * @property int|null $created_by
  *
- * @property \sadi01\bidashboard\models\ReportPageWidget $reportPageWidgets
+ * @property ReportPageWidget $reportPageWidgets
+ * @property ReportWidget[] $widgets
  *
  * @mixin SoftDeleteBehavior
  */
@@ -36,11 +37,19 @@ class ReportPage extends ActiveRecord
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 2;
     const RANGE_DAY = 1;
-    const RANGE_MONTH = 0;
+    const RANGE_MONTH = 2;
+
+    const FORMAT_NUMBER = 1;
+    const FORMAT_CURRENCY = 2;
+
+    public static function getDb()
+    {
+        return Yii::$app->biDB;
+    }
 
     public static function tableName()
     {
-        return 'report_page';
+        return '{{%report_page}}';
     }
 
     /**
@@ -72,6 +81,7 @@ class ReportPage extends ActiveRecord
             'deleted_at' => Yii::t('biDashboard', 'Deleted At'),
             'updated_by' => Yii::t('biDashboard', 'Updated By'),
             'created_by' => Yii::t('biDashboard', 'Created By'),
+            'report_widget_field_format' => Yii::t('biDashboard', 'Report Widget Field Format'),
         ];
     }
 
@@ -82,12 +92,26 @@ class ReportPage extends ActiveRecord
      */
     public function getReportPageWidgets()
     {
-        return $this->hasMany(\sadi01\bidashboard\models\ReportPageWidget::class, ['page_id' => 'id']);
+        return $this->hasMany(ReportPageWidget::class, ['page_id' => 'id']);
     }
+
     public function getWidgets()
     {
-        return $this->hasMany(ReportWidget::class, ['id' => 'widget_id'])
-            ->viaTable('report_page_widget', ['page_id' => 'id']);
+        return $this->hasMany(ReportWidget::class, ['id' => 'widget_id'])->via('reportPageWidgets');
+    }
+
+    public function getSharingKeys()
+    {
+        return $this->hasMany(SharingPage::class, ['page_id' => 'id']);
+    }
+
+    public function afterDelete()
+    {
+        $sharingKeys = $this->sharingKeys;
+        foreach ($sharingKeys as $value) {
+            $value->softDelete();
+        }
+        return parent::afterDelete();
     }
 
     /**
@@ -104,14 +128,18 @@ class ReportPage extends ActiveRecord
     public static function itemAlias($type, $code = NULL)
     {
         $_items = [
-            'range_type' => [
+            'RangeType' => [
                 self::RANGE_DAY => Yii::t('biDashboard', 'روزانه'),
                 self::RANGE_MONTH => Yii::t('biDashboard', 'ماهانه'),
             ],
+            'Format' => [
+                self::FORMAT_CURRENCY => Yii::t('biDashboard', 'Currency'),
+                self::FORMAT_NUMBER => Yii::t('biDashboard', 'Number'),
+            ],
             'Status' => [
-                self::STATUS_DELETED => Yii::t('biDashboard', 'DELETED'),
-                self::STATUS_ACTIVE => Yii::t('biDashboard', 'ACTIVE'),
-                self::STATUS_INACTIVE => Yii::t('biDashboard', 'INACTIVE'),
+                self::STATUS_ACTIVE => Yii::t('biDashboard', 'Active'),
+                self::STATUS_INACTIVE => Yii::t('biDashboard', 'InActive'),
+                self::STATUS_DELETED => Yii::t('biDashboard', 'Deleted'),
             ],
             'StatusClass' => [
                 self::STATUS_DELETED => 'danger',
@@ -122,7 +150,9 @@ class ReportPage extends ActiveRecord
                 self::STATUS_DELETED => '#ff5050',
                 self::STATUS_ACTIVE => '#04AA6D',
                 self::STATUS_INACTIVE => '#eea236',
-            ],];
+            ],
+        ];
+
         if (isset($code))
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
         else
@@ -151,7 +181,7 @@ class ReportPage extends ActiveRecord
                     'status' => self::STATUS_ACTIVE
                 ],
                 'replaceRegularDelete' => false,
-                'invokeDeleteEvents' => false
+                'invokeDeleteEvents' => true
             ],
         ];
     }

@@ -21,12 +21,14 @@ $this->title = 'Bi dashboard widget';
  * @var $searchModel object
  * @var $searchRoute string
  * @var $searchModelMethod string
+ * @var $searchModelRunResultView string
  * @var $searchModelFormName string
  * @var $queryParams array
+ * @var $outputColumn array
  */
 
 ?>
-
+<?php if ($searchModelFormName): ?>
 <?= Html::a(Html::tag('span', 'افزودن ویجت', ['class' => ['btn btn-info']]), "javascript:void(0)",
     [
         'data-pjax' => '0',
@@ -39,10 +41,11 @@ $this->title = 'Bi dashboard widget';
             '/bidashboard/report-widget/create',
             'searchModelClass' => $searchModel::class,
             'searchModelMethod' => $searchModelMethod,
-            'searchModelRunResultView' => '---',
+            'searchModelRunResultView' => $searchModelRunResultView,
             'search_route' => $searchRoute,
             'search_model_form_name' => $searchModelFormName,
             'queryParams' => json_encode($queryParams),
+            'output_column' => json_encode($outputColumn),
         ]),
         'data-handle-form-submit' => 1
     ]) ?>
@@ -58,7 +61,8 @@ $this->title = 'Bi dashboard widget';
         'data-url' => Url::to([
             '/bidashboard/report-widget/open-modal',
             'ReportWidgetSearch[search_model_class]' => $searchModel::class,
-            'ReportWidgetSearch[search_model_method]' => 'search',
+            'ReportWidgetSearch[search_model_method]' => $searchModelMethod,
         ]),
         'data-handle-form-submit' => 0
     ]) ?>
+<?php endif; ?>

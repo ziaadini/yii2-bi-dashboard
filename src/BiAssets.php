@@ -9,17 +9,26 @@ class BiAssets extends AssetBundle
 
     public $css = [
         'bidashboard/dist/css/style.min.css',
-        'bidashboard/dist/css/iranSansNumber.css',
+        'bidashboard/dist/css/fontiran.css',
+        'bidashboard/dist/css/footable.bootstrap.min.css',
+        'bidashboard/dist/css/horizontal-timeline.css',
+        'bidashboard/dist/css/fonts/iranSansNumber/css/style.css',
+        'bidashboard/dist/css/fonts/font-awesome/css/all.min.css',
         'bidashboard/dist/css/sweetalert2.min.css',
+        "bidashboard/dist/css/horizontal-timeline.css",
+        "bidashboard/dist/css/custom.css",
+        "bidashboard/dist/css/jalalidatepicker.min.css",
     ];
 
     public $js = [
-        'bidashboard/dist/js/jquery.sparkline.min.js',
-        'bidashboard/libs/jquery/dist/jquery.min.js',
-        'bidashboard/libs/bootstrap/dist/js/bootstrap.min.js',
         'bidashboard/dist/js/app.min.js',
+        'bidashboard/dist/js/app-style-switcher.js',
+        'bidashboard/dist/js/base.js',
+        'bidashboard/dist/js/waves.js',
+        'bidashboard/dist/js/smooth-scroll.min.js',
         'bidashboard/dist/js/app.init.mini-sidebar.js',
         'bidashboard/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js',
+        'bidashboard/dist/js/assets/libs/jquery.repeater/jquery.repeater.min.js',
         'bidashboard/dist/js/sidebarmenu.js',
         'bidashboard/dist/js/pjax-utility.js?v=1.2',
         'bidashboard/dist/js/jquery.pjax.js',
@@ -27,12 +36,13 @@ class BiAssets extends AssetBundle
         'bidashboard/dist/js/sweetalert2.all.min.js',
         'bidashboard/dist/js/sweet-alert.init.js',
         'bidashboard/dist/js/custom.min.js?v=1.2',
+        'bidashboard/dist/js/assets/libs/sparkline/sparkline.js',
+
 
     ];
 
     public $depends = [
-        'yii\widgets\ActiveFormAsset',
         'yii\web\YiiAsset',
-        'yii\validators\ValidationAsset',
+        'yii\bootstrap4\BootstrapPluginAsset',
     ];
 }

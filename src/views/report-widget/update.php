@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\bootstrap4\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var sadi01\bidashboard\models\ReportWidget $model */
@@ -14,18 +15,19 @@ $this->params['breadcrumbs'][] = Yii::t('biDashboard', 'Update');
 ?>
 
 <div class="report-widget-update">
-    <div class="page-content container-fluid text-left pt-5">
+    <div class="page-content container-fluid text-left">
         <div class="work-report-index card">
             <div class="panel-group m-bot20" id="accordion">
-                <div class="card-header d-flex justify-content-between">
-                    <h4 class="panel-title">
-                        <?= Html::encode($this->title) ?>
-                    </h4>
-                </div>
                 <div class="card-body">
-                    <?= $this->render('_form', [
-                        'model' => $model,
-                    ]) ?>
+                    <div class="report-year-form">
+                        <?php $form = ActiveForm::begin(['enableClientValidation' => true]); ?>
+                        <?= $form->field($model, 'title')->textInput() ?>
+                        <?= $form->field($model, 'description')->textInput() ?>
+                        <div class="form-group">
+                            <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+                        </div>
+                        <?php ActiveForm::end(); ?>
+                    </div>
                 </div>
             </div>
         </div>

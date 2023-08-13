@@ -1,9 +1,8 @@
 <?php
 
 
-use yii\db\Migration;
 use yii\db\Expression;
-
+use yii\db\Migration;
 
 
 /**
@@ -11,6 +10,12 @@ use yii\db\Expression;
  */
 class m230517_063258_report_widget_table extends Migration
 {
+    public function init()
+    {
+        $this->db = 'biDB';
+        parent::init();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -46,5 +51,4 @@ class m230517_063258_report_widget_table extends Migration
     {
         $this->dropTable('{{%report_widget}}');
     }
-
 }

@@ -1,19 +1,25 @@
 <?php
 
-use yii\helpers\Html;
-use yii\bootstrap4\ActiveForm;
-use yii\web\View;
-use yii\helpers\ArrayHelper;
 use sadi01\bidashboard\models\ReportModelClass;
 use sadi01\bidashboard\models\ReportWidget;
+use yii;
+use yii\bootstrap4\ActiveForm;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\web\View;
 
-/** @var View $this */
-/** @var ReportWidget $model */
-/** @var ActiveForm $form */
+/** @var View $this
+ * @var ReportWidget $model
+ * @var ActiveForm $form
+ * @var $queryString string
+ * @var $queryParams array
+ * @var $output_column array
+ */
 ?>
 
 <div class="report-widget-form">
-    <?php $form = ActiveForm::begin(['action' => ['/bidashboard/report-widget/create']]); ?>
+    <?php $queryString = Yii::$app->request->queryString; ?>
+    <?php $form = ActiveForm::begin(['id' => 'report_widget_form', 'action' => ['/bidashboard/report-widget/create?' . $queryString]]); ?>
 
     <div class="row">
         <div class="col-sm-6">
@@ -30,45 +36,89 @@ use sadi01\bidashboard\models\ReportWidget;
         </div>
     </div>
 
-    <?= $form->field($model, 'search_model_class')->hiddenInput(['value' => $searchModelClass])->label(false) ?>
-    <?= $form->field($model, 'search_model_method')->hiddenInput(['value' => $searchModelMethod])->label(false) ?>
-    <?= $form->field($model, 'search_model_run_result_view')->hiddenInput(['value' => $searchModelRunResultView])->label(false) ?>
-    <?= $form->field($model, 'search_route')->hiddenInput(['value' => $searchRoute])->label(false) ?>
-    <?= $form->field($model, 'search_model_form_name')->hiddenInput(['value' => $searchModelFormName])->label(false) ?>
-
-    <?php
-    foreach ($queryParams as $Pkey => $Pvalue) {
-        echo $form->field($model, 'params[' . $Pkey . ']')->hiddenInput(['value' => $Pvalue])->label(false);
-    }
-    ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th colspan="2">پارامتر‌های جستجوی</th>
+            </tr>
+            <tr>
+                <th><?= Yii::t('biDashboard', 'attribute') ?></th>
+                <th><?= Yii::t('biDashboard', 'value') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if (count($queryParams)): ?>
+                <?php foreach ($queryParams as $Pkey => $Pvalue): ?>
+                    <tr>
+                        <td>
+                            <?= Yii::t('app', $Pkey) ?>
+                        </td>
+                        <td>
+                            <?= $Pvalue ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            </tbody>
+        </table>
     </div>
 
-    <?php ActiveForm::end(); ?>
-
-</div>
-
-<div class="table-responsive">
-    <table class="table table-striped table-bordered">
-        <thead>
-        <tr>
-            <th><?= Yii::t('biDashboard', 'attribute') ?></th>
-            <th><?= Yii::t('biDashboard', 'value') ?></th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($queryParams as $Pkey => $Pvalue): ?>
+    <div class="repeater">
+        <table class="table table-striped table-bordered">
+            <thead>
             <tr>
-                <td>
-                    <?= Yii::t('app', $Pkey) ?>
-                </td>
-                <td>
-                    <?= $Pvalue ?>
-                </td>
+                <th colspan="2">فیلد‌های خروجی گزارش ویجت</th>
+                <th>
+                    <input data-repeater-create type="button" value="افزودن" class="btn btn-success"/>
+                </th>
             </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody data-repeater-list="output_column">
+            <tr data-repeater-item>
+                <th>
+                    <div class="form-group">
+                        <label>Field Name</label>
+                        <input type="text" name="column_name" class="form-control"/>
+                    </div>
+                </th>
+                <th>
+                    <div class="form-group">
+                        <label>عنوان</label>
+                        <input type="text" name="column_title" class="form-control"/>
+                    </div>
+                </th>
+                <th class="col-sm-1">
+                    <div class="form-group mt-2">
+                        <input data-repeater-delete type="button" value="حذف" class="btn btn-danger mt-4"/>
+                    </div>
+                </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-group text-center">
+        <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success col-sm-4']) ?>
+    </div>
+    <?php ActiveForm::end(); ?>
 </div>
+
+<script>
+    $(document).ready(function () {
+        var outPutColumn = $('.repeater').repeater({
+            show: function () {
+                $(this).slideDown();
+            },
+        });
+
+        outPutColumn.setList([
+            <?php foreach ($output_column as $Kcolumn => $Vcolumn): ?>
+            {
+                "column_name": "<?= $Kcolumn ?>",
+                "column_title": "<?= $Vcolumn ?>",
+            },
+            <?php endforeach; ?>
+        ])
+    });
+</script>

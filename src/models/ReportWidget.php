@@ -3,8 +3,8 @@
 namespace sadi01\bidashboard\models;
 
 use sadi01\bidashboard\behaviors\Jsonable;
-use sadi01\bidashboard\models\ReportPageQuery;
-use sadi01\bidashboard\models\ReportWidgetResultQuery;
+use sadi01\bidashboard\components\Pdate;
+use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -12,6 +12,7 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "report_widget".
@@ -34,30 +35,38 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @property string $search_route
  * @property string $search_model_form_name
  *
+ * @property string $outputColumnTitle
  * @property ReportPage[] $reportPages
  * @property ReportWidgetResult[] $reportWidgetResults
  *
  * @mixin SoftDeleteBehavior
+ * @mixin BlameableBehavior
+ * @mixin TimestampBehavior
  */
 class ReportWidget extends ActiveRecord
 {
+    use CoreTrait;
+
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
-
     const RANGE_TYPE_DAILY = 1;
     const RANGE_TYPE_MONTHLY = 2;
     const VISIBILITY_PUBLIC = 1;
     const VISIBILITY_PRIVATE = 2;
 
     public $params;
+    public $outputColumn;
 
-    /**
-     * {@inheritdoc}
-     */
+    const SCENARIO_UPDATE = 'update';
+
+    public static function getDb()
+    {
+        return Yii::$app->biDB;
+    }
 
     public static function tableName()
     {
-        return 'report_widget';
+        return '{{%report_widget}}';
     }
 
     /**
@@ -67,8 +76,10 @@ class ReportWidget extends ActiveRecord
     {
         return [
             [['title', 'search_model_method', 'search_model_class', 'search_route', 'search_model_form_name', 'range_type'], 'required'],
+            [['title'], 'required', 'on' => $this::SCENARIO_UPDATE],
+            [['description'], 'safe', 'on' => $this::SCENARIO_UPDATE],
             [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by'], 'integer'],
-            [['add_on', 'search_model_class', 'params'], 'safe'],
+            [['add_on', 'search_model_class', 'params', 'outputColumn'], 'safe'],
             [['title', 'search_model_method', 'search_model_run_result_view', 'search_route', 'search_model_form_name'], 'string', 'max' => 128],
             [['description', 'search_model_class'], 'string', 'max' => 255],
         ];
@@ -120,6 +131,20 @@ class ReportWidget extends ActiveRecord
         return $this->hasMany(ReportWidgetResult::class, ['widget_id' => 'id']);
     }
 
+    public function getOutputColumnTitle(string $field): string
+    {
+        foreach ($this->add_on['outputColumn'] as $column) {
+            if ($column['column_name'] == $field) {
+                return $column["column_title"];
+            }
+        }
+
+        /**@var $searchModel ActiveRecord*/
+        $searchModel = new ($this->search_model_class);
+
+        return $searchModel->getAttributeLabel($field);
+    }
+
     /**
      * {@inheritdoc}
      * @return ReportWidgetQuery the active query used by this AR class.
@@ -133,6 +158,11 @@ class ReportWidget extends ActiveRecord
 
     public static function itemAlias($type, $code = NULL)
     {
+        $data = [];
+        if ($type == 'List') {
+            $data = ArrayHelper::map(ReportWidget::find()->where(['range_type' => $code])->all(), 'id', 'title');
+            $code = null;
+        }
         $_items = [
             'Status' => [
                 self::STATUS_ACTIVE => Yii::t('biDashboard', 'Active'),
@@ -146,6 +176,7 @@ class ReportWidget extends ActiveRecord
                 self::VISIBILITY_PUBLIC => Yii::t('biDashboard', 'Public'),
                 self::VISIBILITY_PRIVATE => Yii::t('biDashboard', 'Private'),
             ],
+            'List' => $data,
         ];
 
         if (isset($code))
@@ -183,9 +214,170 @@ class ReportWidget extends ActiveRecord
                 'jsonAttributes' => [
                     'add_on' => [
                         'params',
+                        'outputColumn',
                     ],
                 ],
             ],
         ];
+    }
+
+
+    /**
+     * @param $id
+     * @param $start_range
+     * @param $end_rage
+     * @throws \Exception
+     * @var $pDate Pdate
+     * @var $pDate Pdate
+     */
+    public function runWidget($start_range = null, $end_range = null)
+    {
+        $timestamp_date_range = $this->getTimeStampDateRange($start_range, $end_range);
+
+        $modelQueryResults = $this->findAndRunSearchModelWidget($timestamp_date_range['start_range'], $timestamp_date_range['end_range']);
+
+        $isValid = $this->validateRunWidgetResult($modelQueryResults);
+
+        if (!$isValid) {
+            $this->addError('status', Yii::t('app', 'Error In Run Widget'));
+            return false;
+        }
+
+        return $this->createReportWidgetResult($modelQueryResults, $start_range, $end_range);
+    }
+
+    public function validateRunWidgetResult($modelQueryResults)
+    {
+        if (!$modelQueryResults) {
+            $isValid = true;
+        } elseif ($modelQueryResults and $this->range_type == $this::RANGE_TYPE_DAILY) {
+            $isValid = key_exists('day', $modelQueryResults[0]) && key_exists('month', $modelQueryResults[0]) && key_exists('year', $modelQueryResults[0]);
+        } elseif ($modelQueryResults and $this->range_type == $this::RANGE_TYPE_MONTHLY) {
+            $isValid = key_exists('month', $modelQueryResults[0]) && key_exists('year', $modelQueryResults[0]);
+        } else {
+            $isValid = false;
+        }
+
+        return $isValid;
+    }
+
+    public function getTimeStampDateRange($start_range = null, $end_range = null)
+    {
+        $pDate = Yii::$app->pdate;
+
+        if ($start_range and $end_range) {
+            if (gettype($start_range) != 'integer') {
+                if ($this->range_type == $this::RANGE_TYPE_DAILY) {
+                    $start_range = $pDate->jmktime('', '', '', $start_range['mon'], $start_range['day'], $start_range['year']);
+                    $end_range = $pDate->jmktime('', '', '', $end_range['mon'], $end_range['day'], $end_range['year']);
+                } else {
+                    $start_range = $this->getStartAndEndOfMonth($start_range['year'] . "/" . $start_range['mon'])['start'];
+                    $end_range = $this->getStartAndEndOfMonth($end_range['year'] . "/" . $end_range['mon'])['end'];
+                }
+            }
+        } else {
+            if ($this->range_type == $this::RANGE_TYPE_DAILY) {
+                $dateTemp = $this->getStartAndEndOfMonth();
+            } else {
+                $dateTemp = $this->getStartAndEndOfYear();
+            }
+            $start_range = $dateTemp['start'];
+            $end_range = $dateTemp['end'];
+        }
+
+        return [
+            'start_range' => $start_range,
+            'end_range' => $end_range,
+        ];
+    }
+
+    public function findAndRunSearchModelWidget($startDate, $endDate)
+    {
+        $params = $this->params;
+        $searchModel = new ($this->search_model_class);
+        $methodExists = method_exists($searchModel, $this->search_model_method);
+        if ($methodExists) {
+            $dataProvider = $searchModel->{$this->search_model_method}($params, $this->range_type, $startDate, $endDate);
+            $modelQueryResults = $dataProvider->query->asArray()->all();
+        } else {
+            $modelQueryResults = null;
+        }
+        return $modelQueryResults;
+    }
+
+    public function getModelRoute()
+    {
+        $modelRoute = "/" . $this->search_route . "?";
+        $modalRouteParams = "";
+        foreach ($this->params as $key => $param) {
+            $modalRouteParams .= $this->search_model_form_name . "[" . $key . "]=" . $param . "&";
+        }
+        $modelRoute .= $modalRouteParams;
+        return $modelRoute;
+    }
+
+    public function lastResult($startRange = null, $endRange = null)
+    {
+        if (!$startRange || !$endRange) {
+            if ($this->range_type == $this::RANGE_TYPE_DAILY) {
+                $dateTemp = $this->getStartAndEndOfMonth();
+            } else {
+                $dateTemp = $this->getStartAndEndOfYear();
+            }
+            $startRange = $dateTemp['start'];
+            $endRange = $dateTemp['end'];
+        }
+        $runWidget = ReportWidgetResult::find()
+            ->where(['widget_id' => $this->id])
+            ->andWhere(['start_range' => $startRange])
+            ->andWhere(['end_range' => $endRange])
+            ->orderBy(['id' => SORT_DESC])
+            ->limit(1)
+            ->one();
+
+        if (!$runWidget) {
+            $runWidget = $this->runWidget($startRange, $endRange);
+        }
+
+        return $runWidget;
+    }
+
+    public function validate($attributeNames = null, $clearErrors = true)
+    {
+        $isValid = parent::validate($attributeNames, $clearErrors);
+        if ($this->search_model_class) {
+            $searchModel = new ($this->search_model_class);
+            $methodExists = method_exists($searchModel, $this->search_model_method);
+            if ($methodExists) {
+                $reflection = new \ReflectionMethod($searchModel, $this->search_model_method);
+                $parameters = $reflection->getParameters();
+                if (count($parameters) <= 3) {
+                    $isValid = false;
+                }
+                $this->addError('status','function in search model not found');
+            } else {
+                $isValid = false;
+            }
+        }
+
+        return $isValid;
+    }
+
+    public function createReportWidgetResult($modelQueryResults, $start_range, $end_range)
+    {
+        $reportWidgetResult = new ReportWidgetResult();
+        $reportWidgetResult->widget_id = $this->id;
+        $reportWidgetResult->start_range = $start_range;
+        $reportWidgetResult->end_range = $end_range;
+        $reportWidgetResult->run_action = Yii::$app->controller->action->id;
+        $reportWidgetResult->run_controller = Yii::$app->controller->id;
+        $reportWidgetResult->result = $modelQueryResults;
+        $reportWidgetResult->save();
+        return $reportWidgetResult;
+    }
+
+    public function canDelete()
+    {
+        return true;
     }
 }

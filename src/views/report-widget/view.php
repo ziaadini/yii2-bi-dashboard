@@ -32,15 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= Html::encode($this->title) ?>
                     </h4>
                     <div>
-                        <?= Html::a(Html::tag('span', 'نمایش مدل', ['class' => ['btn btn-info']]), $modelRoute) ?>
-
-                        <?= Html::a(Yii::t('biDashboard', 'Delete'), ['delete', 'id' => $model->id], [
-                            'class' => 'btn btn-danger',
-                            'data' => [
-                                'confirm' => Yii::t('biDashboard', 'Are you sure you want to delete this item?'),
-                                'method' => 'post',
-                            ],
-                        ]) ?>
+                        <?= Html::a(Html::tag('span', Yii::t('biDashboard', 'Show model'), ['class' => ['btn btn-info']]), $modelRoute) ?>
                     </div>
                 </div>
                 <div class="card-body">
@@ -78,16 +70,4 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
-
-    <?php Pjax::begin(['id' => 'p-jax-report-page-add', 'enablePushState' => false]); ?>
-    <div class="col">
-        <div>
-            <?php if ($model->range_type == $model::RANGE_TYPE_DAILY): ?>
-                <?= $this->render('@sadi01/bidashboard/views/report-widget/widget-result-daily.php', ['runWidget' => $runWidget]) ?>
-            <?php else: ?>
-                <?= $this->render('@sadi01/bidashboard/views/report-widget/widget-result-monthly.php', ['runWidget' => $runWidget]) ?>
-            <?php endif; ?>
-        </div>
-    </div>
-    <?php Pjax::end(); ?>
 </div>

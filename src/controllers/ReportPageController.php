@@ -2,16 +2,20 @@
 
 namespace sadi01\bidashboard\controllers;
 
-use sadi01\bidashboard\components\jdate;
+use sadi01\bidashboard\helpers\CoreHelper;
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageSearch;
 use sadi01\bidashboard\models\ReportPageWidget;
+use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
+use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * ReportPageController implements the CRUD actions for ReportPage model.
@@ -19,6 +23,7 @@ use yii\web\NotFoundHttpException;
 class ReportPageController extends Controller
 {
     use AjaxValidationTrait;
+    use CoreTrait;
 
     public $layout = 'bid_main';
 
@@ -32,21 +37,86 @@ class ReportPageController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
-                    'rules' => [
+                    'rules' =>
                         [
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
-                    ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/index'],
+                                'actions' => [
+                                    'index'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/view'],
+                                'actions' => [
+                                    'view'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/create'],
+                                'actions' => [
+                                    'create',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/update'],
+                                'actions' => [
+                                    'update',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/update-widget'],
+                                'actions' => [
+                                    'update-widget'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/add'],
+                                'actions' => [
+                                    'add'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/get-widget-column'],
+                                'actions' => [
+                                    'get-widget-column'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['ReportPage/run-all-widgets'],
+                                'actions' => [
+                                    'run-all-widgets'
+                                ]
+                            ],
+
+                        ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'create' => ['GET', 'POST'],
-                        'update' => ['GET', 'PUT', 'POST'],
+                        'create' => ['POST'],
+                        'update' => ['POST'],
                         'delete' => ['POST', 'DELETE'],
+                        'update-widget' => ['POST'],
+                        'add' => ['POST'],
+                        'get-widget-column' => ['GET'],
+                        'run-all-widgets' => ['GET']
                     ],
                 ],
             ]
@@ -58,7 +128,7 @@ class ReportPageController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $searchModel = new ReportPageSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -75,43 +145,66 @@ class ReportPageController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id, $year = null, $month = null)
     {
         $model = $this->findModel($id);
 
-        if ($model->range_type) {
-            return $this->render('view', [
-                'model' => $model,
-                'widgets' => $model->reportPageWidgets,
-            ]);
+        $month = $month ?: CoreHelper::getCurrentMonth();
+        $year = $year ?: CoreHelper::getCurrentYear();;
+
+        if ($model->range_type == $model::RANGE_DAY) {
+            if ($month) {
+                $date_array = $this->getStartAndEndOfMonth($year . '/' . $month);
+            } else {
+                $date_array = $this->getStartAndEndOfMonth();
+            }
         } else {
-            return $this->render('monthly', [
-                'model' => $model,
-                'widgets' => $model->reportPageWidgets,
-            ]);
+            if ($year) {
+                $date_array = $this->getStartAndEndOfYear($year);
+            } else {
+                $date_array = $this->getStartAndEndOfYear();
+            }
         }
+
+        if ($model->range_type == $model::RANGE_DAY) {
+            $rangeDateNumber = count($this->getCurrentMonthDays());
+        } else {
+            $rangeDateNumber = 12;
+        }
+
+        return $this->render('view', [
+            'model' => $model,
+            'pageWidgets' => $model->reportPageWidgets,
+            'startRange' => $date_array['start'],
+            'endRange' => $date_array['end'],
+            'rangeDateNumber' => $rangeDateNumber,
+            'month' => $month,
+            'year' => $year,
+        ]);
     }
 
     /**
      * Creates a new ReportPage model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
+     * @return string|Response
      */
-    public function actionCreate()
+    public function actionCreate(): Response|string
     {
         $model = new ReportPage();
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->validate()) {
-                $model->save(false);
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
                 return $this->asJson([
-                    'success' => true,
-                    'msg' => Yii::t("app", 'Success')
+                    'status' => true,
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("biDashboard", 'Error In Save Page')
                 ]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
+
         $this->performAjaxValidation($model);
         return $this->renderAjax('create', [
             'model' => $model,
@@ -125,15 +218,21 @@ class ReportPageController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): Response|string
     {
         $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->validate() && $model->save()) {
-            return $this->asJson([
-                'success' => true,
-                'msg' => Yii::t("app", 'Success')
-            ]);
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("biDashboard", 'Error In Update Page')
+                ]);
+            }
         }
 
         $this->performAjaxValidation($model);
@@ -149,20 +248,128 @@ class ReportPageController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id): Response
     {
         $model = $this->findModel($id);
 
-        if ($model->canDelete() && $model->softDelete()) {
-
-            $this->flash('success', Yii::t('app', 'Item Deleted'));
-
+        if ($model->softDelete()) {
+            return $this->asJson([
+                'status' => true,
+                'message' => Yii::t("biDashboard", 'The Operation Was Successful')
+            ]);
         } else {
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t("biDashboard", 'Error In Delete Action')
+            ]);
+        }
+    }
 
-            $this->flash('error', $model->errors ? array_values($model->errors)[0][0] : Yii::t('app', 'Error In Delete Action'));
+    public function actionUpdateWidget(int $id): Response|string
+    {
+        $model = ReportPageWidget::find()->where(['widget_id' => $id])->one();
+        $add_on = $model->widget->add_on["outputColumn"];
+
+        foreach ($add_on as $value) {
+            $column_name[$value->column_name] = $value->column_title;
+        }
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
+                ]);
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("biDashboard", 'Error In Update Widget')
+                ]);
+            }
         }
 
-        return $this->redirect(['index']);
+        $this->performAjaxValidation($model);
+        return $this->renderAjax('_edit', [
+            'model' => $model,
+            'column_name' => $column_name,
+        ]);
+    }
+
+    public function actionAdd(int $id): Response|string
+    {
+        $model = new ReportPageWidget();
+        $page = $this->findModel($id);
+        $model->page_id = $id;
+
+        if ($model->load($this->request->post()) && $model->validate()) {
+            if ($model->save(false)) {
+                return $this->asJson([
+                    'status' => true,
+                    'message' => Yii::t("biDashboard", 'The Operation Was Successful')
+                ]);
+
+            } else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("biDashboard", 'Error In Add Widget')
+                ]);
+            }
+        }
+
+        $this->performAjaxValidation($model);
+
+        return $this->renderAjax('_add', [
+            'model' => $model,
+            'page' => $page,
+        ]);
+    }
+
+    /** @var $widget ReportWidget */
+    public function actionGetWidgetColumn()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $widget_id = $parents[0];
+                $widget = ReportWidget::findOne(['id' => $widget_id]);
+                if (!$widget) {
+                    return ['output' => [], 'selected' => ''];
+                }
+                $outputColumns = $widget->outputColumn;
+                foreach ($outputColumns as $item) {
+                    $out[] = ['id' => $item['column_name'], 'name' => $item['column_title']];
+                }
+                return ['output' => $out, 'selected' => ''];
+            }
+        }
+        return ['output' => '', 'selected' => ''];
+    }
+
+    /**
+     * @param $id
+     * @param $start_range
+     * @param $end_range
+     * @return mixed
+     * @var $widget ReportWidget
+     */
+    public function actionRunAllWidgets($id, $start_range = null, $end_range = null)
+    {
+        $model = $this->findModel($id);
+        $start_range = $start_range ? (int)$start_range : null;
+        $end_range = $end_range ? (int)$end_range : null;
+        $errors = [];
+        foreach ($model->widgets as $widget) {
+            $widget->runWidget($start_range, $end_range);
+            if ($widget->errors) {
+                $errors[] = $widget->errors;
+            }
+        }
+        return $this->asJson([
+            'status' => true,
+            'success' => true,
+            'message' => $errors ? Yii::t('biDashboard', 'Error In Run Widget') : Yii::t("biDashboard", 'Success'),
+        ]);
     }
 
     /**
@@ -172,7 +379,7 @@ class ReportPageController extends Controller
      * @return ReportPage the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel(int $id): ReportPage
     {
         if (($model = ReportPage::findOne(['id' => $id])) !== null) {
             return $model;
@@ -181,38 +388,7 @@ class ReportPageController extends Controller
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 
-    public function actionAdd($id)
-    {
-        $model = new ReportPageWidget();
-        $page = $this->findModel($id);
-        $model->page_id = $id;
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->validate()) {
-                if ($model->save(false)) {
-                    return $this->asJson([
-                        'success' => true,
-                        'msg' => Yii::t("app", 'Success')
-                    ]);
-                } else {
-                    return $this->asJson([
-                        'success' => false,
-                        'msg' => Yii::t("app", 'fail')
-                    ]);
-                }
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
-
-        $this->performAjaxValidation($model);
-        return $this->renderAjax('_add', [
-            'model' => $model,
-            'page' => $page
-        ]);
-    }
-
-    private function flash($type, $message)
+    private function flash($type, $message): void
     {
         Yii::$app->getSession()->setFlash($type == 'error' ? 'danger' : $type, $message);
     }

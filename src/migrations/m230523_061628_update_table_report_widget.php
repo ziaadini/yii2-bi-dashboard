@@ -4,6 +4,11 @@ use yii\db\Migration;
 
 class m230523_061628_update_table_report_widget extends Migration
 {
+    public function init()
+    {
+        $this->db = 'biDB';
+        parent::init();
+    }
     public function safeUp()
     {
         $this->addColumn('{{%report_widget}}', 'search_route', $this->string(128)->notNull()->after('created_by'));

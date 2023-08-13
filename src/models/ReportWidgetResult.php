@@ -3,6 +3,7 @@
 namespace sadi01\bidashboard\models;
 
 use sadi01\bidashboard\behaviors\Jsonable;
+use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -32,17 +33,32 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  */
 class ReportWidgetResult extends ActiveRecord
 {
+    use CoreTrait;
+
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
+    const FORMAT_NUMBER = 1;
+    const FORMAT_CURRENCY = 2;
+
+    const CHART_LINE = 'line';
+    const CHART_COLUMN = 'column';
+    const CHART_PIE ='pie';
+    const CHART_AREA = 'area';
+    const CHART_WORD_CLOUD = 'word_cloud';
 
     public $result;
+
+    public static function getDb()
+    {
+        return Yii::$app->biDB;
+    }
 
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'report_widget_result';
+        return '{{%report_widget_result}}';
     }
 
     /**
@@ -53,7 +69,7 @@ class ReportWidgetResult extends ActiveRecord
         return [
             [['widget_id'], 'required'],
             [['widget_id', 'start_range', 'end_range', 'status', 'updated_at', 'created_at', 'deleted_at', 'updated_by', 'created_by'], 'integer'],
-            [['add_on','params'], 'safe'],
+            [['add_on', 'params'], 'safe'],
             [['run_controller'], 'string', 'max' => 256],
             [['run_action'], 'string', 'max' => 128],
             [['widget_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportWidget::class, 'targetAttribute' => ['widget_id' => 'id']],
@@ -102,9 +118,26 @@ class ReportWidgetResult extends ActiveRecord
         $query->notDeleted();
         return $query;
     }
+
+    public static function itemAlias($type, $code = NULL)
+    {
+        $_items = [
+            'Chart' => [
+                self::CHART_LINE => Yii::t('biDashboard', 'Chart line'),
+                self::CHART_COLUMN => Yii::t('biDashboard', 'Chart column'),
+                self::CHART_PIE => Yii::t('biDashboard', 'Chart pie'),
+                self::CHART_AREA => Yii::t('biDashboard', 'Chart area'),
+            ],
+        ];
+        if (isset($code))
+            return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
+        else
+            return isset($_items[$type]) ? $_items[$type] : false;
+    }
+
     public function behaviors()
     {
-         return [
+        return [
             'timestamp' => [
                 'class' => TimestampBehavior::class
             ],

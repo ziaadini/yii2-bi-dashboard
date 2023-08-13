@@ -26,20 +26,6 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'add_on') ?>
         </div>
     </div>
-<!--    --><?php //= $form->field($model, 'id') ?>
-
-<!--    --><?php //= $form->field($model, 'status') ?>
-
-<!--    --><?php //= $form->field($model, 'range_type') ?>
-    <?php // echo $form->field($model, 'created_at') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
-
-    <?php // echo $form->field($model, 'deleted_at') ?>
-
-    <?php // echo $form->field($model, 'updated_by') ?>
-
-    <?php // echo $form->field($model, 'created_by') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

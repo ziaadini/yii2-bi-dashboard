@@ -11,20 +11,30 @@ use yii\web\View;
 /** @var ActiveForm $form */
 ?>
 
-<div class="report-page-form">
+<div class="report-widget-create">
+    <div class="page-content container-fluid text-left ">
+        <div class="work-report-index card">
+            <div class="panel-group m-bot20" id="accordion">
+                <div class="card-body">
+                    <div class="report-page-widget-form">
 
-    <?php $form = ActiveForm::begin(['id' => 'page-form','enableClientValidation' => true]); ?>
+                        <?php $form = ActiveForm::begin(['id' => 'page-form','enableClientValidation' => true]); ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+                        <?php if ($model->isNewRecord): ?>
+                        <?= $form->field($model, 'status')->dropDownList(ReportPage::itemAlias('Status')) ?>
 
-    <?= $form->field($model, 'status')->dropDownList(ReportPage::itemAlias('Status'), ['prompt' => Yii::t('biDashboard', 'Select Status')]) ?>
+                        <?= $form->field($model, 'range_type')->dropDownList(ReportPage::itemAlias('RangeType')) ?>
+                        <?php endif; ?>
+                        <div class="form-group">
+                            <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>
+                        </div>
 
-    <?= $form->field($model, 'range_type')->dropDownList(ReportPage::itemAlias('range_type'), ['prompt' => Yii::t('biDashboard', 'Select RANGE')]) ?>
+                        <?php ActiveForm::end(); ?>
+                    </div>
 
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
 </div>
