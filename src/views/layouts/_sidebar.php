@@ -43,14 +43,15 @@ $menu_items = [
         <div class="scroll-sidebar">
             <!-- Sidebar navigation-->
             <nav class="sidebar-nav">
-
-                <?= Menu::widget(
-                    [
-                        'options' => ['id' => 'sidebarnav'],
-                        'itemOptions' => ['class' => 'sidebar-item'],
-                        'items' => $menu_items,
-                    ]
-                ) ?>
+                <?php if (Yii::$app->user->identity): ?>
+                    <?= Menu::widget(
+                        [
+                            'options' => ['id' => 'sidebarnav'],
+                            'itemOptions' => ['class' => 'sidebar-item'],
+                            'items' => $menu_items,
+                        ]
+                    ) ?>
+                <?php endif; ?>
             </nav>
             <!-- End Sidebar navigation -->
         </div>
