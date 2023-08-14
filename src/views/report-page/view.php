@@ -45,8 +45,8 @@ $pdate = Yii::$app->pdate;
                     [
                         'data-pjax' => '0',
                         'class' => "btn text-primary",
-                        'data-size' => 'modal-xl',
-                        'data-title' => Yii::t('app', 'update'),
+                        'data-size' => 'modal-md',
+                        'data-title' => Yii::t('biDashboard', 'update'),
                         'data-toggle' => 'modal',
                         'data-target' => '#modal-pjax',
                         'data-url' => Url::to(['report-page/update', 'id' => $model->id]),

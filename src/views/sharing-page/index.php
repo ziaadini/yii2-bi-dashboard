@@ -139,13 +139,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         'expire' => function ($url, SharingPage $model, $key) {
                             return Html::a('<i class="fa fa-times-circle"></i>', 'javascript:void(0)', [
-                                'title' => Yii::t('yii', 'Expired'),
+                                'title' => Yii::t('biDashboard', 'Expired'),
                                 'aria-label' => Yii::t('biDashboard', 'Expired'),
                                 'data-reload-pjax-container' => 'p-jax-sharing-page',
                                 'data-pjax' => '0',
                                 'data-url' => Url::to(['/bidashboard/sharing-page/expire', 'id' => $model->id]),
                                 'class' => 'p-jax-btn btn-sm text-info p-0',
-                                'data-title' => Yii::t('yii', 'Expired'),
+                                'data-title' => Yii::t('biDashboard', 'Expired'),
                             ]);
                         },
                     ],
