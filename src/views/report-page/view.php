@@ -157,27 +157,26 @@ $pdate = Yii::$app->pdate;
                                 <div class="col-md-2">
                                     <h3><?= $pageWidget->widget->title ?></h3>
                                 </div>
-                                    <div class="col-md-10" style="text-align: left !important;">
-                                        <?= Html::a('<i class="fa fa-chart-line"></i>', "javascript:void(0)",
-                                            [
-                                                'data-pjax' => '0',
-                                                'class' => "btn btn-sm text-secondary fa-lg p-0",
-                                                'data-size' => 'modal-xl',
-                                                'data-title' => Yii::t('biDashboard', 'Chart'),
-                                                'data-toggle' => 'modal',
-                                                'data-target' => '#modal-pjax',
-                                                'data-url' => Url::to(['report-widget/modal-show-chart', 'id' => $pageWidget->widget->id, 'field' => $pageWidget->report_widget_field, 'start_range' => $startRange, 'end_range' => $endRange, 'chart_type' => 'line']),
-                                                'data-handle-form-submit' => 1,
-                                                'data-show-loading' => 0,
-                                                'data-reload-pjax-container' => 'p-jax-report-page-add',
-                                                'data-reload-pjax-container-on-show' => 0
-                                            ]) ?>
-                                        <?php if (Yii::$app->user->identity): ?>
-                                         <?= Html::a(
+                                <div class="col-md-10" style="text-align: left !important;">
+                                    <?= Html::a('<i class="fa fa-chart-line"></i>', "javascript:void(0)",
+                                        [
+                                            'data-pjax' => '0',
+                                            'class' => "btn btn-sm text-secondary fa-lg p-0",
+                                            'data-size' => 'modal-xl',
+                                            'data-title' => Yii::t('biDashboard', 'Chart'),
+                                            'data-toggle' => 'modal',
+                                            'data-target' => '#modal-pjax',
+                                            'data-url' => Url::to(['report-widget/modal-show-chart', 'id' => $pageWidget->widget->id, 'field' => $pageWidget->report_widget_field, 'start_range' => $startRange, 'end_range' => $endRange, 'chart_type' => 'line']),
+                                            'data-handle-form-submit' => 1,
+                                            'data-show-loading' => 0,
+                                            'data-reload-pjax-container' => 'p-jax-report-page-add',
+                                            'data-reload-pjax-container-on-show' => 0
+                                        ]) ?>
+                                    <?php if (Yii::$app->user->identity): ?>
+                                        <?= Html::a(
                                             '<i class="fa fa-external-link fa-lg text-info "></i>',
                                             [$pageWidget->widget->getModelRoute()],
                                             [
-                                                'onclick' => 'window.open("' . Html::encode($pageWidget->widget->getModelRoute()) . '", "_blank"); return false;',
                                                 'title' => Yii::t('biDashboard', 'Show Model'),
                                                 'aria-label' => Yii::t('biDashboard', 'Show Model'),
                                             ]
@@ -218,8 +217,8 @@ $pdate = Yii::$app->pdate;
                                                 'data-title' => Yii::t('yii', 'Delete'),
                                                 'data-toggle' => 'tooltip',
                                             ]); ?>
-                                        <?php endif; ?>
-                                    </div>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                             <div class="text-left my-3">
                                 <div class="row">
