@@ -157,7 +157,7 @@ $pdate = Yii::$app->pdate;
                                 <div class="col-md-2">
                                     <h3><?= $pageWidget->widget->title ?></h3>
                                 </div>
-                                <?php if (Yii::$app->user->identity): ?>
+
                                     <div class="col-md-10" style="text-align: left !important;">
                                         <?= Html::a('<i class="fa fa-chart-line"></i>', "javascript:void(0)",
                                             [
@@ -173,6 +173,7 @@ $pdate = Yii::$app->pdate;
                                                 'data-reload-pjax-container' => 'p-jax-report-page-add',
                                                 'data-reload-pjax-container-on-show' => 0
                                             ]) ?>
+                                        <?php if (Yii::$app->user->identity): ?>
                                         <?= Html::a(
                                             '<i class="fa fa-external-link fa-lg text-info "></i>',
                                             [$pageWidget->widget->getModelRoute()],
@@ -214,8 +215,9 @@ $pdate = Yii::$app->pdate;
                                                 'data-title' => Yii::t('yii', 'Delete'),
                                                 'data-toggle' => 'tooltip',
                                             ]); ?>
+                                        <?php endif; ?>
                                     </div>
-                                <?php endif; ?>
+
                             </div>
                             <div class="text-left my-3">
                                 <div class="row">
