@@ -57,26 +57,53 @@ $this->params['breadcrumbs'][] = $this->title;
                         return $model->page->title;
                     },
                 ],
-                [
-                    'attribute' => 'status',
-                    'value' => function ($model) {
-
-                        return SharingPage::itemAlias('Status', $model->status);
-                    },
-                ],
                 'access_key',
                 [
                     'attribute' => 'expire_time',
-                    'value' => function ($item) {
-                        return Yii::$app->pdate->jdate('Y/m/d-h:i', $item->created_at);
+                    'value' => function (SharingPage $model) {
+                        return Yii::$app->pdate->jdate('Y/m/d-h:i', $model->expire_time);
                     }
+                ],
+                [
+                    'attribute' => 'created_at',
+                    'format' => 'raw',
+                    'value' => function (SharingPage $model) {
+                        $tooltip = $model->created_by ?
+                            Yii::t('biDashboard', 'Created by User ID') . " : {$model->created_by}"
+                            : Yii::t('biDashboard', 'No creator information available');
+
+                        $formattedDate = Yii::$app->pdate->jdate('Y/m/d-h:i', $model->created_at);
+
+                        return Html::tag('span', $formattedDate, [
+                            'data-toggle' => 'tooltip',
+                            'data-placement' => 'top',
+                            'title' => $tooltip,
+                        ]);
+                    },
+                ],
+                [
+                    'attribute' => 'updated_at',
+                    'format' => 'raw',
+                    'value' => function (SharingPage $model) {
+                        $tooltip = $model->updated_by
+                            ? Yii::t('biDashboard', 'Updated by User ID') . " : {$model->updated_by}"
+                            : Yii::t('biDashboard', 'No updater information available');
+
+                        $formattedDate = Yii::$app->pdate->jdate('Y/m/d-h:i', $model->updated_at);
+
+                        return Html::tag('span', $formattedDate, [
+                            'data-toggle' => 'tooltip',
+                            'data-placement' => 'top',
+                            'title' => $tooltip,
+                        ]);
+                    },
                 ],
                 [
                     'class' => ActionColumn::class,
                     'urlCreator' => function ($action, SharingPage $model, $key, $index, $column) {
                         return Url::toRoute([$action, 'id' => $model->id]);
                     },
-                    'template' => '{view} {update} {delete} {expire}',
+                    'template' => '{update} {delete} {expire}',
                     'visibleButtons' => [
                         'expire' => function (SharingPage $model) {
                             return ($model->isExpire());
@@ -100,26 +127,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'data-pjax' => '0',
                                     'class' => "btn text-primary p-0",
-                                    'data-size' => 'modal-xl',
+                                    'data-size' => 'modal-md',
                                     'data-title' => Yii::t('app', 'create'),
                                     'data-toggle' => 'modal',
                                     'data-target' => '#modal-pjax',
                                     'data-url' => Url::to(['sharing-page/update', 'id' => $model->id]),
-                                    'data-handle-form-submit' => 1,
-                                    'data-reload-pjax-container' => 'p-jax-sharing-page'
-                                ]
-                            );
-                        },
-                        'view' => function ($url, SharingPage $model, $key) {
-                            return Html::a('<i class="fa fa-eye"></i>', "javascript:void(0)",
-                                [
-                                    'data-pjax' => '0',
-                                    'class' => "btn text-info p-0",
-                                    'data-size' => 'modal-xl',
-                                    'data-title' => Yii::t('app', 'view'),
-                                    'data-toggle' => 'modal',
-                                    'data-target' => '#modal-pjax',
-                                    'data-url' => Url::to(['sharing-page/view', 'id' => $model->id]),
                                     'data-handle-form-submit' => 1,
                                     'data-reload-pjax-container' => 'p-jax-sharing-page'
                                 ]
@@ -143,3 +155,4 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <?php Pjax::end(); ?>
 </div>
+

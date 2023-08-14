@@ -66,7 +66,9 @@ class SharingPage extends \yii\db\ActiveRecord
 
     public function beforeValidate()
     {
-        $this->access_key = Yii::$app->security->generateRandomString();
+        if($this->isNewRecord){
+            $this->access_key = Yii::$app->security->generateRandomString();
+        }
         $this->expire_time = $this->jalaliToTimestamp($this->expire_time, "Y/m/d H:i:s");
         return parent::beforeValidate();
     }
