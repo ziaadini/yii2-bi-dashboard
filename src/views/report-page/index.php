@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'title',
                             'format' => 'raw',
-                            'value' => function ($model) {
+                            'value' => function (ReportPage $model) {
                                 return Html::a($model->title, ['/bidashboard/report-page/view','id' => $model->id ], [
                                     'title' => $model->title,
                                     'class' => 'btn text-info',
@@ -68,14 +68,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         [
                             'attribute' => 'status',
-                            'value' => function ($model) {
+                            'value' => function (ReportPage $model) {
 
                                 return ReportPage::itemAlias('Status', $model->status);
                             },
                         ],
                         [
                             'attribute' => 'range_type',
-                            'value' => function ($model) {
+                            'value' => function (ReportPage $model) {
                                 return ReportPage::itemAlias('RangeType', $model->range_type);
                             },
                         ],

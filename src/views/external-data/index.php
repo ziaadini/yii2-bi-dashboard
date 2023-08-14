@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'title',
                         [
                             'attribute' => 'created_at',
-                            'value' => function ($item) {
+                            'value' => function (ExternalData $item) {
                                 return Yii::$app->pdate->jdate('Y/m/d-h:i', $item->created_at);
                             }
                         ],

@@ -57,14 +57,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'external_data_id',
                             'label' => Yii::t('biDashboard', 'External Data'),
-                            'value' => function ($item) {
+                            'value' => function (ExternalDataValue $item) {
                                 return $item->externalData?->title;
                             }
                         ],
                         'value',
                         [
                             'attribute' => 'created_at',
-                            'value' => function ($item) {
+                            'value' => function (ExternalDataValue $item) {
                                 return Yii::$app->pdate->jdate('Y/m/d-h:i', $item->created_at);
                             }
                         ],

@@ -153,7 +153,7 @@ class ReportPageController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionViewByAccessKey($access_key)
+    public function actionViewByAccessKey(string $access_key): string
     {
 
         $model = $this->findPage($access_key);
