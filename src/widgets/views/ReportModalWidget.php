@@ -15,8 +15,6 @@ use yii\helpers\ArrayHelper;
 $biAssets = BiAssets::register($this);
 $url = $biAssets->baseUrl;
 
-$this->title = 'Bi dashboard widget';
-
 /**
  * @var $searchModel object
  * @var $searchRoute string
