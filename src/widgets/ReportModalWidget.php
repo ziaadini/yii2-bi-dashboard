@@ -33,7 +33,7 @@ class ReportModalWidget extends Widget
             'searchModelMethod' => $this->searchModelMethod,
             'searchModelRunResultView' => $this->searchModelRunResultView,
             'searchRoute' => $this->searchRoute,
-            'searchModelFormName' => $this->searchModelFormName,
+            'searchModelFormName' => $this->searchModelFormName ?? '',
             'outputColumn' => $this->outputColumn,
         ]);
     }

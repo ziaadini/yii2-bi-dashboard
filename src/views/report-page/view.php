@@ -168,12 +168,18 @@ $pdate = Yii::$app->pdate;
                                             'data-handle-form-submit' => 1,
                                             'data-show-loading' => 0,
                                             'data-reload-pjax-container' => 'p-jax-report-page-add',
-                                            'data-reload-pjax-container-on-show' => 0
+                                            'data-reload-pjax-container-on-show' => 0,
+                                            'title' => Yii::t('biDashboard', 'Show Chart'),
+                                            'aria-label' => Yii::t('biDashboard', 'Show Chart'),
                                         ]) ?>
                                     <?= Html::a(
                                         '<i class="fa fa-external-link fa-lg text-info "></i>',
                                         [$pageWidget->widget->getModelRoute()],
-                                        ['onclick' => 'window.open("' . Html::encode($pageWidget->widget->getModelRoute()) . '", "_blank"); return false;']
+                                        [
+                                            'onclick' => 'window.open("' . Html::encode($pageWidget->widget->getModelRoute()) . '", "_blank"); return false;',
+                                            'title' => Yii::t('biDashboard', 'Show Model'),
+                                            'aria-label' => Yii::t('biDashboard', 'Show Model'),
+                                        ]
                                     ) ?>
                                     <?= Html::a('<i class="fa fa-history text-success" aria-hidden="true"></i>', 'javascript:void(0)',
                                         [
