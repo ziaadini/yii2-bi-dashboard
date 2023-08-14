@@ -28,7 +28,7 @@ use sadi01\bidashboard\models\ExternalDataValue;
             <?= $form->field($model, 'external_data_id')->widget(Select2::class, [
                 'data' => ArrayHelper::map(ExternalData::find()->all(), 'id', 'title'),
                 'options' => [
-                    'placeholder' => Yii::t('biDashboard', 'Select ...'),
+                    'placeholder' => Yii::t('biDashboard', 'Select...'),
                 ],
                 'pluginOptions' => [
                     'allowClear' => true

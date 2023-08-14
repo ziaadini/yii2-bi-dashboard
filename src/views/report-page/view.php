@@ -150,7 +150,7 @@ $pdate = Yii::$app->pdate;
                 if ($runWidget instanceof ReportWidgetResult):
                     ?>
                     <tr>
-                        <th class="bg-light ">
+                        <th class="bg-light" style="min-width: 500px;">
                             <div class="border-bottom row">
                                 <div class="col-md-2">
                                     <h3><?= $pageWidget->widget->title ?></h3>
