@@ -54,6 +54,11 @@ it does:
       bidashboard. These permissions determine which users or user groups have access to view or interact with specific
       pages. Additionally, users can set the validity period for the shared access, allowing them to control the
       duration during which shared access remains active.
+- `/bidashboard/report-model-class`:
+    - Purpose: Retrieve and manage available model widget classes for the bidashboard application.
+    - Description: This route provides an organized list of model classes , showcasing their names and descriptions.
+      Users can customize each model class with various options, preview how they look with sample data, and create new
+      instances. Existing widget instances can be edited or deleted.
 
 # Explain Different Part
 
