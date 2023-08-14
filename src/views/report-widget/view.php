@@ -62,8 +62,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return $data->itemAlias('Visibility', $data->visibility);
                                 },
                             ],
-                            'updated_at',
-                            'created_at',
+                            [
+                                'attribute' => 'updated_at',
+                                'value' => function ($item) {
+                                    return Yii::$app->pdate->jdate('Y/m/d-h:i', $item->updated_at);
+                                }
+                            ],
+                            [
+                                'attribute' => 'created_at',
+                                'value' => function ($item) {
+                                    return Yii::$app->pdate->jdate('Y/m/d-h:i', $item->created_at);
+                                }
+                            ],
                         ],
                     ]) ?>
                 </div>

@@ -19,10 +19,9 @@ $this->title = Yii::t('biDashboard', 'Sharing Pages');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sharing-page-management container text-left">
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12">
             <div class="sharing-page-form">
                 <?php $form = ActiveForm::begin(['id' => 'sharing-form', 'enableClientValidation' => true]); ?>
                 <div class="row">
@@ -53,13 +52,19 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                         ?>
                     </div>
-                </div>
-                <div class="form-group">
-                    <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>
+                    <div class="col-sm-4 pt-4">
+                        <div class="form-group">
+                            <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>
+                        </div>
+                    </div>
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>
+        </div>
+
+        <div class="col-md-12">
             <div class="sharing-page-index">
+                <h4><?= Html::encode($this->title) ?></h4>
                 <table class="table table-striped">
                     <thead>
                     <tr>

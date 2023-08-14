@@ -143,7 +143,7 @@ class ReportWidgetController extends Controller
 
         $modelRoute = $model->getModelRoute();
 
-        return $this->renderAjax('view', [
+        return $this->render('view', [
             'model' => $model,
             'modelRoute' => $modelRoute,
         ]);
@@ -174,7 +174,7 @@ class ReportWidgetController extends Controller
             $model->params = json_decode($queryParams, true);
 
             $output_column = $this->request->post('output_column', null);
-            $model->outputColumn = array_filter($output_column, fn($value) => array_filter($value));
+            $model->outputColumn = $output_column ? array_filter($output_column, fn($value) => array_filter($value)) : [];
             if ($model->load($this->request->post()) && $model->validate()) {
                 $model->save();
                 return $this->asJson([

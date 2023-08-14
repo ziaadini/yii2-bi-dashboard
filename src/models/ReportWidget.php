@@ -75,16 +75,16 @@ class ReportWidget extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'search_model_method', 'search_model_class', 'search_route', 'search_model_form_name', 'range_type'], 'required'],
+            [['title', 'search_model_method', 'search_model_class', 'search_route', 'range_type'], 'required'],
             [['title'], 'required', 'on' => $this::SCENARIO_UPDATE],
             [['description'], 'safe', 'on' => $this::SCENARIO_UPDATE],
+            ['search_model_method','validateSearchModelMethod'],
             [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by'], 'integer'],
             [['add_on', 'search_model_class', 'params', 'outputColumn'], 'safe'],
             [['title', 'search_model_method', 'search_model_run_result_view', 'search_route', 'search_model_form_name'], 'string', 'max' => 128],
             [['description', 'search_model_class'], 'string', 'max' => 255],
         ];
     }
-
     /**
      * {@inheritdoc}
      */
@@ -342,9 +342,7 @@ class ReportWidget extends ActiveRecord
         return $runWidget;
     }
 
-    public function validate($attributeNames = null, $clearErrors = true)
-    {
-        $isValid = parent::validate($attributeNames, $clearErrors);
+    public function validateSearchModelMethod($attribute, $params, $validator){
         if ($this->search_model_class) {
             $searchModel = new ($this->search_model_class);
             $methodExists = method_exists($searchModel, $this->search_model_method);
@@ -352,15 +350,12 @@ class ReportWidget extends ActiveRecord
                 $reflection = new \ReflectionMethod($searchModel, $this->search_model_method);
                 $parameters = $reflection->getParameters();
                 if (count($parameters) <= 3) {
-                    $isValid = false;
+                    $this->addError('search_model_method','function in search model not found');
                 }
-                $this->addError('status','function in search model not found');
-            } else {
-                $isValid = false;
+            }else{
+                $this->addError('search_model_method','function in search model not exists');
             }
         }
-
-        return $isValid;
     }
 
     public function createReportWidgetResult($modelQueryResults, $start_range, $end_range)

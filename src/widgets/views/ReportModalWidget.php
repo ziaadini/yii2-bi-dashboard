@@ -28,7 +28,6 @@ $this->title = 'Bi dashboard widget';
  */
 
 ?>
-<?php if ($searchModelFormName): ?>
 <?= Html::a(Html::tag('span', 'افزودن ویجت', ['class' => ['btn btn-info']]), "javascript:void(0)",
     [
         'data-pjax' => '0',
@@ -45,9 +44,10 @@ $this->title = 'Bi dashboard widget';
             'search_route' => $searchRoute,
             'search_model_form_name' => $searchModelFormName,
             'queryParams' => json_encode($queryParams),
-            'output_column' => json_encode($outputColumn),
+            'output_column' => json_encode($outputColumn ?? []),
         ]),
-        'data-handle-form-submit' => 1
+        'data-handle-form-submit' => 1,
+        'class' => 'm-1',
     ]) ?>
 
 <?= Html::a(Html::tag('span', 'لیست ویجت‌ها', ['class' => ['btn btn-info']]), "javascript:void(0)",
@@ -63,6 +63,6 @@ $this->title = 'Bi dashboard widget';
             'ReportWidgetSearch[search_model_class]' => $searchModel::class,
             'ReportWidgetSearch[search_model_method]' => $searchModelMethod,
         ]),
-        'data-handle-form-submit' => 0
+        'data-handle-form-submit' => 0,
+        'class' => 'm-1',
     ]) ?>
-<?php endif; ?>
