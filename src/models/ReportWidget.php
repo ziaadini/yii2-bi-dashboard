@@ -78,13 +78,14 @@ class ReportWidget extends ActiveRecord
             [['title', 'search_model_method', 'search_model_class', 'search_route', 'range_type'], 'required'],
             [['title'], 'required', 'on' => $this::SCENARIO_UPDATE],
             [['description'], 'safe', 'on' => $this::SCENARIO_UPDATE],
-            ['search_model_method','validateSearchModelMethod'],
+            ['search_model_method', 'validateSearchModelMethod'],
             [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by'], 'integer'],
             [['add_on', 'search_model_class', 'params', 'outputColumn'], 'safe'],
             [['title', 'search_model_method', 'search_model_run_result_view', 'search_route', 'search_model_form_name'], 'string', 'max' => 128],
             [['description', 'search_model_class'], 'string', 'max' => 255],
         ];
     }
+
     /**
      * {@inheritdoc}
      */
@@ -139,7 +140,7 @@ class ReportWidget extends ActiveRecord
             }
         }
 
-        /**@var $searchModel ActiveRecord*/
+        /**@var $searchModel ActiveRecord */
         $searchModel = new ($this->search_model_class);
 
         return $searchModel->getAttributeLabel($field);
@@ -342,7 +343,8 @@ class ReportWidget extends ActiveRecord
         return $runWidget;
     }
 
-    public function validateSearchModelMethod($attribute, $params, $validator){
+    public function validateSearchModelMethod($attribute, $params, $validator)
+    {
         if ($this->search_model_class) {
             $searchModel = new ($this->search_model_class);
             $methodExists = method_exists($searchModel, $this->search_model_method);
@@ -350,10 +352,10 @@ class ReportWidget extends ActiveRecord
                 $reflection = new \ReflectionMethod($searchModel, $this->search_model_method);
                 $parameters = $reflection->getParameters();
                 if (count($parameters) <= 3) {
-                    $this->addError('search_model_method','function in search model not found');
+                    $this->addError('search_model_method', 'function in search model not found');
                 }
-            }else{
-                $this->addError('search_model_method','function in search model not exists');
+            } else {
+                $this->addError('search_model_method', 'function in search model not exists');
             }
         }
     }
@@ -374,5 +376,19 @@ class ReportWidget extends ActiveRecord
     public function canDelete()
     {
         return true;
+    }
+
+    public function createReportModelClass(): void
+    {
+        $reportModelClass = ReportModelClass::find()->where(['model_class' => $this->search_model_class])->limit(1)->one();
+        if (!$reportModelClass) {
+            $reportModelClass = new ReportModelClass();
+            $reportModelClass->model_class = $this->search_model_class;
+            $reportModelClass->title = $this->search_model_class;
+            $reportModelClass->status = ReportModelClass::STATUS_ACTIVE;
+            $reportModelClass->created_at = time();
+            $reportModelClass->updated_at = time();
+            $reportModelClass->save();
+        }
     }
 }
