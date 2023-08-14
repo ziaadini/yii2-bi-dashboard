@@ -114,20 +114,20 @@ $this->params['breadcrumbs'][] = $this->title;
 <script>
     function copyAccessKey(itemId) {
         const numberDiv = document.getElementById('access_key_' + itemId);
-        const range = document.createRange();
-        var link = location.hostname+'/report-page/view-by-access-key/'+numberDiv;
-        range.selectNode(link);
-        const selection = window.getSelection();
-        selection.removeAllRanges();
-        selection.addRange(range);
+        const tempInput = document.createElement('input');
+        const linkText = location.hostname + '/bidashboard/report-page/view-by-access-key?access_key=' + numberDiv.textContent.trim();
+        tempInput.value = linkText;
+        document.body.appendChild(tempInput);
+        tempInput.select();
         document.execCommand('copy');
-        selection.removeAllRanges();
+        document.body.removeChild(tempInput);
+
         Swal.fire({
             position: 'bottom-end',
             icon: 'success',
             html: '<?= Yii::t('biDashboard', 'Copy success') ?>',
             showConfirmButton: false,
             timer: 1000
-        })
+        });
     }
 </script>

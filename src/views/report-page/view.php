@@ -56,6 +56,7 @@ $pdate = Yii::$app->pdate;
                         'data-reload-pjax-container-on-show' => 0
                     ]) ?>
             </div>
+            <?php if (Yii::$app->user->identity): ?>
             <div class="col-sm-10 d-flex justify-content-end">
                 <form>
                     <div class="d-flex justify-content-end">
@@ -124,6 +125,7 @@ $pdate = Yii::$app->pdate;
                         ]) ?>
                 </div>
             </div>
+            <?php endif; ?>
         </div>
     </div>
     <div class="table-responsive text-nowrap">
