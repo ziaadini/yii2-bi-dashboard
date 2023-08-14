@@ -14,7 +14,7 @@ use yii\widgets\Pjax;
 /** @var ReportPageSearch $searchModel */
 /** @var ActiveDataProvider $dataProvider */
 
-$this->title = Yii::t('app', 'Report Pages');
+$this->title = Yii::t('biDashboard', 'Report Pages');
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -35,8 +35,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'data-pjax' => '0',
                             'class' => "btn btn-primary",
-                            'data-size' => 'modal-xl',
-                            'data-title' => Yii::t('app', 'create'),
+                            'data-size' => 'modal-md',
+                            'data-title' => Yii::t('biDashboard', 'create'),
                             'data-toggle' => 'modal',
                             'data-target' => '#modal-pjax',
                             'data-url' => Url::to(['report-page/create']),
@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'title',
                             'format' => 'raw',
-                            'value' => function ($model) {
+                            'value' => function (ReportPage $model) {
                                 return Html::a($model->title, ['/bidashboard/report-page/view','id' => $model->id ], [
                                     'title' => $model->title,
                                     'class' => 'btn text-info',
@@ -68,18 +68,20 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         [
                             'attribute' => 'status',
-                            'value' => function ($model) {
+                            'value' => function (ReportPage $model) {
+
                                 return ReportPage::itemAlias('Status', $model->status);
                             },
                         ],
                         [
                             'attribute' => 'range_type',
-                            'value' => function ($model) {
+                            'value' => function (ReportPage $model) {
                                 return ReportPage::itemAlias('RangeType', $model->range_type);
                             },
                         ],
                         [
                             'class' => ActionColumn::class,
+                            'template' => '{view} {delete}',
                             'urlCreator' => function ($action, ReportPage $model, $key, $index, $column) {
                                 return Url::toRoute([$action, 'id' => $model->id]);
                             },
@@ -102,8 +104,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                         [
                                             'data-pjax' => '0',
                                             'class' => "btn text-primary",
-                                            'data-size' => 'modal-xl',
-                                            'data-title' => Yii::t('app', 'create'),
+                                            'data-size' => 'modal-md',
+                                            'data-title' => Yii::t('biDashboard', 'update'),
                                             'data-toggle' => 'modal',
                                             'data-target' => '#modal-pjax',
                                             'data-url' => Url::to(['report-page/update', 'id' => $model->id]),

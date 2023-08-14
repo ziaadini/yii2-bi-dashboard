@@ -88,7 +88,6 @@ class ReportWidgetController extends Controller
                             ],
                             [
                                 'allow' => true,
-                                'roles' => ['BI/ReportWidget/modal-show-chart'],
                                 'actions' => [
                                     'modal-show-chart'
                                 ]

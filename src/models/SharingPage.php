@@ -57,6 +57,7 @@ class SharingPage extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['page_id', 'expire_time'],'required'],
             [['page_id', 'expire_time'], 'integer'],
             [['access_key'], 'string', 'max' => 64],
             [['access_key'], 'unique'],

@@ -18,13 +18,12 @@ use yii\widgets\Pjax;
  */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Report Widgets'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'Report Widgets'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
 ?>
 <div class="report-widget-view">
 
-    <div class="page-content container-fluid text-left pt-5">
+    <div class="page-content container-fluid text-left">
         <div class="work-report-index card">
             <div class="panel-group m-bot20" id="accordion">
                 <div class="card-header d-flex justify-content-between">

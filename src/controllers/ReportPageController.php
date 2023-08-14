@@ -7,6 +7,7 @@ use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageSearch;
 use sadi01\bidashboard\models\ReportPageWidget;
 use sadi01\bidashboard\models\ReportWidget;
+use sadi01\bidashboard\models\SharingPage;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
@@ -39,6 +40,12 @@ class ReportPageController extends Controller
                     'class' => AccessControl::class,
                     'rules' =>
                         [
+                            [
+                                'allow' => true,
+                                'actions' => [
+                                    'view-by-access-key'
+                                ]
+                            ],
                             [
                                 'allow' => true,
                                 'roles' => ['BI/ReportPage/index'],
@@ -110,13 +117,14 @@ class ReportPageController extends Controller
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'create' => ['GET','POST'],
-                        'update' => ['GET','POST'],
+                        'create' => ['GET', 'POST'],
+                        'update' => ['GET', 'POST'],
                         'delete' => ['POST', 'DELETE'],
                         'update-widget' => ['POST'],
-                        'add' => ['GET','POST'],
+                        'add' => ['GET', 'POST'],
                         'get-widget-column' => ['POST'],
-                        'run-all-widgets' => ['POST']
+                        'run-all-widgets' => ['POST'],
+                        'view-by-access-key' => ['GET'],
                     ],
                 ],
             ]
@@ -145,12 +153,51 @@ class ReportPageController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
+    public function actionViewByAccessKey(string $access_key): string
+    {
+
+        $model = $this->findPage($access_key);
+
+        $month = CoreHelper::getCurrentMonth();
+        $year = CoreHelper::getCurrentYear();
+
+        if ($model->range_type == $model::RANGE_DAY) {
+            if ($month) {
+                $date_array = $this->getStartAndEndOfMonth($year . '/' . $month);
+            } else {
+                $date_array = $this->getStartAndEndOfMonth();
+            }
+        } else {
+            if ($year) {
+                $date_array = $this->getStartAndEndOfYear($year);
+            } else {
+                $date_array = $this->getStartAndEndOfYear();
+            }
+        }
+
+        if ($model->range_type == $model::RANGE_DAY) {
+            $rangeDateNumber = count($this->getCurrentMonthDays());
+        } else {
+            $rangeDateNumber = 12;
+        }
+
+        return $this->render('view', [
+            'model' => $model,
+            'pageWidgets' => $model->reportPageWidgets,
+            'startRange' => $date_array['start'],
+            'endRange' => $date_array['end'],
+            'rangeDateNumber' => $rangeDateNumber,
+            'month' => $month,
+            'year' => $year,
+        ]);
+    }
+
     public function actionView($id, $year = null, $month = null)
     {
         $model = $this->findModel($id);
 
         $month = $month ?: CoreHelper::getCurrentMonth();
-        $year = $year ?: CoreHelper::getCurrentYear();;
+        $year = $year ?: CoreHelper::getCurrentYear();
 
         if ($model->range_type == $model::RANGE_DAY) {
             if ($month) {
@@ -383,6 +430,21 @@ class ReportPageController extends Controller
     {
         if (($model = ReportPage::findOne(['id' => $id])) !== null) {
             return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    protected function findPage(string $access_key)
+    {
+        $model = SharingPage::find()
+            ->where(['access_key' => $access_key])
+            ->andWhere(['>=','expire_time',time()])
+            ->limit(1)
+            ->one();
+
+        if ($model !== NULL) {
+            return $this->findModel($model->page_id);
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));

@@ -20,7 +20,7 @@ use yii\bootstrap4\ActiveForm;
         <div class="col-3">
             <?= $form->field($model, 'year')->dropDownList(
                 array_combine(ReportYear::itemAlias('List'), ReportYear::itemAlias('List')),
-                ['prompt' => Yii::t('biDashboard','Select a year')]
+                ['prompt' => Yii::t('biDashboard', 'Select a year')]
             ) ?>
         </div>
     </div>

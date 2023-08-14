@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'title',
                         [
                             'attribute' => 'created_at',
-                            'value' => function ($item) {
+                            'value' => function (ExternalData $item) {
                                 return Yii::$app->pdate->jdate('Y/m/d-h:i', $item->created_at);
                             }
                         ],
@@ -84,13 +84,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                 },
                                 'delete' => function ($url, ExternalData $model, $key) {
                                     return Html::a('<i class="fa fa-trash"></i>', 'javascript:void(0)', [
-                                        'title' => Yii::t('yii', 'Delete'),
-                                        'aria-label' => Yii::t('yii', 'Delete'),
+                                        'title' => Yii::t('biDashboard', 'Delete'),
+                                        'aria-label' => Yii::t('biDashboard', 'Delete'),
                                         'data-reload-pjax-container' => 'p-jax-external-data',
                                         'data-pjax' => '0',
                                         'data-url' => Url::to(['/bidashboard/external-data/delete', 'id' => $model->id]),
                                         'class' => 'p-jax-btn text-danger p-0',
-                                        'data-title' => Yii::t('yii', 'Delete'),
+                                        'data-title' => Yii::t('biDashboard', 'Delete'),
                                         'data-toggle' => 'tooltip',
                                     ]);
                                 },
