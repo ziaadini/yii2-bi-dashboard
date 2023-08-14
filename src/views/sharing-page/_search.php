@@ -24,13 +24,13 @@ use yii\bootstrap4\ActiveForm;
         <div class="col-3">
             <?= $form->field($model, 'page_id')->dropDownList(
                 ArrayHelper::map(SharingPage::itemAlias('List'), 'id', 'title'),
-                ['prompt' => 'Select a page']
+                ['prompt' => Yii::t('biDashboard', 'Select a page')]
             ) ?>
         </div>
     </div>
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::submitButton(Yii::t('biDashboard', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton(Yii::t('biDashboard', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

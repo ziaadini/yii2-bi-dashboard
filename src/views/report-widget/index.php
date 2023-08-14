@@ -39,7 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         ['class' => 'yii\grid\SerialColumn'],
                         'id',
                         'title',
-                        'description',
                         'search_model_class',
                         'search_model_method',
                         [
@@ -51,13 +50,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             'buttons' => [
                                 'delete' => function ($url, ReportWidget $model, $key) {
                                     return Html::a('<i class="fa fa-trash"></i>', 'javascript:void(0)', [
-                                        'title' => Yii::t('yii', 'Delete'),
-                                        'aria-label' => Yii::t('yii', 'Delete'),
+                                        'title' => Yii::t('biDashboard', 'Delete'),
+                                        'aria-label' => Yii::t('biDashboard', 'Delete'),
                                         'data-reload-pjax-container' => 'p-jax-report-widget',
                                         'data-pjax' => '0',
                                         'data-url' => Url::to(['report-widget/delete', 'id' => $model->id]),
                                         'class' => 'p-jax-btn text-danger',
-                                        'data-title' => Yii::t('yii', 'Delete'),
+                                        'data-title' => Yii::t('biDashboard', 'Delete'),
                                         'data-toggle' => 'tooltip',
                                     ]);
                                 },
@@ -67,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'data-pjax' => '0',
                                             'class' => "btn text-info p-0",
                                             'data-size' => 'modal-xl',
-                                            'data-title' => Yii::t('app', 'view'),
+                                            'data-title' => Yii::t('biDashboard', 'view'),
                                             'data-toggle' => 'modal',
                                             'data-target' => '#modal-pjax',
                                             'data-url' => Url::to(['report-widget/view', 'id' => $model->id]),

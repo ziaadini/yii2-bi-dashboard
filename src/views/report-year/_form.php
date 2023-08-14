@@ -12,7 +12,7 @@ use yii\bootstrap4\ActiveForm;
     <?php $form = ActiveForm::begin(['id' => 'year-form', 'enableClientValidation' => true]); ?>
     <?= $form->field($model, 'year')->textInput() ?>
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 </div>

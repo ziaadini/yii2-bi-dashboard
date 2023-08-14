@@ -136,5 +136,18 @@ return [
     'Created by User ID' => 'ایجاد شده توسط شناسه کاربری',
     'No updater information available' => 'هیچ اطلاعات به روز رسانی در دسترس نیست',
     'No creator information available' => 'هیچ اطلاعات سازنده در دسترس نیست',
+    'create' => 'ایجاد',
+    'Select a page' => 'انتخاب صفحه',
+    'Status' => 'وضعیت',
+    'Select a year' => 'انتخاب سال',
+    'view' => 'نمایش',
+    'Report Pages' => 'صفحه نمایش',
+    'Add On' => 'اضافه کردن',
+
+    'Access Key' => 'کلید دسترسی',
+    'Updated by User ID' => 'به روز شده توسط شناسه کاربری',
+    'Created by User ID' => 'ایجاد شده توسط شناسه کاربری',
+    'No updater information available' => 'هیچ اطلاعات به روز رسانی در دسترس نیست',
+    'No creator information available' => 'هیچ اطلاعات سازنده در دسترس نیست',
     'Select a year' => 'انتخاب سال'
 ];

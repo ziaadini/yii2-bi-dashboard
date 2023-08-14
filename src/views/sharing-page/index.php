@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-pjax' => '0',
                             'class' => "btn btn-primary",
                             'data-size' => 'modal-md',
-                            'data-title' => Yii::t('app', 'create'),
+                            'data-title' => Yii::t('biDashboard', 'create'),
                             'data-toggle' => 'modal',
                             'data-target' => '#modal-pjax',
                             'data-url' => Url::to(['sharing-page/create']),
@@ -113,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'delete' => function ($url, SharingPage $model, $key) {
                             return Html::a('<i class="fa fa-trash"></i>', 'javascript:void(0)', [
                                 'title' => Yii::t('yii', 'Delete'),
-                                'aria-label' => Yii::t('yii', 'Delete'),
+                                'aria-label' => Yii::t('biDashboard', 'Delete'),
                                 'data-reload-pjax-container' => 'p-jax-sharing-page',
                                 'data-pjax' => '0',
                                 'data-url' => Url::to(['/bidashboard/sharing-page/delete', 'id' => $model->id]),
@@ -128,7 +128,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'data-pjax' => '0',
                                     'class' => "btn text-primary p-0",
                                     'data-size' => 'modal-md',
-                                    'data-title' => Yii::t('app', 'create'),
+                                    'data-title' => Yii::t('biDashboard', 'update'),
                                     'data-toggle' => 'modal',
                                     'data-target' => '#modal-pjax',
                                     'data-url' => Url::to(['sharing-page/update', 'id' => $model->id]),
@@ -140,7 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'expire' => function ($url, SharingPage $model, $key) {
                             return Html::a('<i class="fa fa-times-circle"></i>', 'javascript:void(0)', [
                                 'title' => Yii::t('yii', 'Expired'),
-                                'aria-label' => Yii::t('yii', 'Expired'),
+                                'aria-label' => Yii::t('biDashboard', 'Expired'),
                                 'data-reload-pjax-container' => 'p-jax-sharing-page',
                                 'data-pjax' => '0',
                                 'data-url' => Url::to(['/bidashboard/sharing-page/expire', 'id' => $model->id]),
