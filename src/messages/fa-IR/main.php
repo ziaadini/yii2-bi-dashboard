@@ -144,4 +144,6 @@ return [
     'Select a year' => 'انتخاب سال',
     'Select...' => 'انتخاب...',
     'Reload' => 'اجرا مجدد',
+    'Show Model' => 'نمایش مدل',
+    'Show Chart' => 'نمایش نمودار',
 ];

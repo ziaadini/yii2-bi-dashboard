@@ -157,7 +157,6 @@ $pdate = Yii::$app->pdate;
                                 <div class="col-md-2">
                                     <h3><?= $pageWidget->widget->title ?></h3>
                                 </div>
-
                                     <div class="col-md-10" style="text-align: left !important;">
                                         <?= Html::a('<i class="fa fa-chart-line"></i>', "javascript:void(0)",
                                             [
@@ -174,10 +173,14 @@ $pdate = Yii::$app->pdate;
                                                 'data-reload-pjax-container-on-show' => 0
                                             ]) ?>
                                         <?php if (Yii::$app->user->identity): ?>
-                                        <?= Html::a(
+                                         <?= Html::a(
                                             '<i class="fa fa-external-link fa-lg text-info "></i>',
                                             [$pageWidget->widget->getModelRoute()],
-                                            ['onclick' => 'window.open("' . Html::encode($pageWidget->widget->getModelRoute()) . '", "_blank"); return false;']
+                                            [
+                                                'onclick' => 'window.open("' . Html::encode($pageWidget->widget->getModelRoute()) . '", "_blank"); return false;',
+                                                'title' => Yii::t('biDashboard', 'Show Model'),
+                                                'aria-label' => Yii::t('biDashboard', 'Show Model'),
+                                            ]
                                         ) ?>
                                         <?= Html::a('<i class="fa fa-history text-success" aria-hidden="true"></i>', 'javascript:void(0)',
                                             [
@@ -217,7 +220,6 @@ $pdate = Yii::$app->pdate;
                                             ]); ?>
                                         <?php endif; ?>
                                     </div>
-
                             </div>
                             <div class="text-left my-3">
                                 <div class="row">
