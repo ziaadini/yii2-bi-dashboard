@@ -53,23 +53,33 @@ $this->params['breadcrumbs'][] = $this->title;
                     'dataProvider' => $dataProvider,
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-                        'title',
+                        [
+                            'attribute' => 'title',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return Html::a($model->title, ['/bidashboard/report-page/view','id' => $model->id ], [
+                                    'title' => $model->title,
+                                    'class' => 'btn text-info',
+                                    'data-toggle' => 'tooltip',
+                                    'data-pjax' => '0',
+                                    'style' => 'font-size:18px;'
+                                ]);
+                            },
+                        ],
                         [
                             'attribute' => 'status',
                             'value' => function ($model) {
-
                                 return ReportPage::itemAlias('Status', $model->status);
                             },
                         ],
                         [
                             'attribute' => 'range_type',
                             'value' => function ($model) {
-                                return ReportPage::itemAlias('range_type', $model->range_type);
+                                return ReportPage::itemAlias('RangeType', $model->range_type);
                             },
                         ],
                         [
                             'class' => ActionColumn::class,
-                            'template' => '{view} {delete}',
                             'urlCreator' => function ($action, ReportPage $model, $key, $index, $column) {
                                 return Url::toRoute([$action, 'id' => $model->id]);
                             },
@@ -108,6 +118,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'aria-label' => Yii::t('yii', 'View'),
                                         'class' => 'btn text-info p-0',
                                         'data-toggle' => 'tooltip',
+                                        'data-pjax' => '0',
                                     ]);
                                 },
                             ],

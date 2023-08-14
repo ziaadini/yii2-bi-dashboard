@@ -66,6 +66,7 @@ class ReportYear extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('biDashboard', 'ID'),
             'year' => Yii::t('biDashboard', 'Year'),
+            'status' => Yii::t('biDashboard', 'Status'),
             'created_at' => Yii::t('biDashboard', 'Created At'),
             'created_by' => Yii::t('biDashboard', 'Created By'),
             'updated_at' => Yii::t('biDashboard', 'Updated At'),
