@@ -35,6 +35,12 @@ $menu_items = [
         'icon' => 'fas fa-file-excel',
         'url' => ['/bidashboard/external-data']
     ],
+    [
+        'group' => 'Model Class',
+        'label' => Yii::t('biDashboard', 'Model Class'),
+        'icon' => '	fa fa-at',
+        'url' => ['/bidashboard/report-model-class']
+    ],
 ];
 ?>
     <aside class="left-sidebar">

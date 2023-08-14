@@ -146,4 +146,5 @@ return [
     'Reload' => 'اجرا مجدد',
     'Show Model' => 'نمایش مدل',
     'Show Chart' => 'نمایش نمودار',
+    'Model Class' => 'مدل کلاس',
 ];

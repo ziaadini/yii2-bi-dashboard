@@ -11,7 +11,7 @@ use yii\web\View;
 use yii\widgets\DetailView;
 use yii\widgets\Pjax;
 use sadi01\bidashboard\widgets\Alert;
-
+use sadi01\bidashboard\models\ReportModelClass;
 /**
  * @var View $this
  * @var ReportPage $model
@@ -224,7 +224,9 @@ $pdate = Yii::$app->pdate;
                                 <div class="row">
                                     <div class="col-sm-6 d-flex justify-content-between">
                                         <span>ویجت گزارش :</span>
-                                        <span class="bg-warning px-1"><?= $pageWidget->widget->search_model_form_name ?></span>
+                                        <span class="bg-warning px-1">
+                                            <?= ReportModelClass::itemAlias('list',$pageWidget->widget->search_model_class) ?>
+                                        </span>
                                     </div>
                                     <div class="col-sm-6 d-flex justify-content-between">
                                         <span>فیلد ویجت گزارش :</span>
