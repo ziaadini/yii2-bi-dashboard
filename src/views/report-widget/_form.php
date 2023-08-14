@@ -78,7 +78,7 @@ use yii\web\View;
             <tr data-repeater-item>
                 <th>
                     <div class="form-group">
-                        <label>Field Name</label>
+                        <label>فیلد</label>
                         <input type="text" name="column_name" class="form-control"/>
                     </div>
                 </th>
