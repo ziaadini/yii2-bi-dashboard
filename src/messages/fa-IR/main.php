@@ -138,4 +138,5 @@ return [
     'No creator information available' => 'هیچ اطلاعات سازنده در دسترس نیست',
     'Select a year' => 'انتخاب سال',
     'Select...' => 'انتخاب...',
+    'Reload' => 'اجرا مجدد',
 ];

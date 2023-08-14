@@ -177,13 +177,13 @@ $pdate = Yii::$app->pdate;
                                     ) ?>
                                     <?= Html::a('<i class="fa fa-history text-success" aria-hidden="true"></i>', 'javascript:void(0)',
                                         [
-                                            'title' => Yii::t('yii', 'Reload'),
-                                            'aria-label' => Yii::t('yii', 'Reload'),
+                                            'title' => Yii::t('biDashboard', 'Reload'),
+                                            'aria-label' => Yii::t('biDashboard', 'Reload'),
                                             'data-reload-pjax-container' => 'p-jax-report-page-add',
                                             'data-pjax' => '0',
                                             'data-url' => Url::to(['/bidashboard/report-widget/run', 'id' => $pageWidget->widget->id, 'start_range' => $startRange, 'end_range' => $endRange]),
                                             'class' => " p-jax-btn btn-sm text-info fa-lg p-0",
-                                            'data-title' => Yii::t('yii', 'Reload'),
+                                            'data-title' => Yii::t('biDashboard', 'Reload'),
                                             'data-toggle' => 'tooltip',
                                         ]); ?>
                                     <?= Html::a('<i class="fa fa-edit"></i>', "javascript:void(0)",
