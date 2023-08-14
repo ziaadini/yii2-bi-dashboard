@@ -74,7 +74,7 @@ return [
     "range_type" => "نوع",
     "widget_id" => "ویجت",
     "report_widget_field_format" => "ویجت فیلد",
-    "Report Widget Field" => "نوع ویجت",
+    "Report Widget Field" => "فیلد نمایش",
     "Widget ID" => "ویجت",
     "share" => "اشتراک گذاری صفحه",
     "Expire Time" => "زمان انقضا",
@@ -144,4 +144,7 @@ return [
     'Report Pages' => 'صفحه نمایش',
     'Add On' => 'اضافه کردن',
     'Show model' => 'نمایش مدل',
+    'Select a year' => 'انتخاب سال',
+    'Select...' => 'انتخاب...',
+    'Reload' => 'اجرا مجدد',
 ];

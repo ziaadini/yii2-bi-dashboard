@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'urlCreator' => function ($action, ExternalData $model, $key, $index, $column) {
                                 return Url::toRoute([$action, 'id' => $model->id]);
                             },
-                            'template' => ' {view}  {update}  {delete}',
+                            'template' => '{add-value} {view}  {update}  {delete}',
                             'buttons' => [
                                 'update' => function ($url, ExternalData $model, $key) {
                                     return Html::a('<i class="fa fa-pen"></i>', "javascript:void(0)",
@@ -92,6 +92,21 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'class' => 'p-jax-btn text-danger p-0',
                                         'data-title' => Yii::t('biDashboard', 'Delete'),
                                         'data-toggle' => 'tooltip',
+                                    ]);
+                                },
+                                'add-value' => function ($url, ExternalData $model, $key) {
+                                    return Html::a('<i class="fa fa-plus-circle"></i>', "javascript:void(0)", [
+                                        'title' => Yii::t('biDashboard', 'Add new value'),
+                                        'aria-label' => Yii::t('biDashboard', 'Add new value'),
+                                        'data-pjax' => '0',
+                                        'class' => "btn text-success",
+                                        'data-size' => 'modal-md',
+                                        'data-title' => Yii::t('biDashboard', 'Add new value'),
+                                        'data-toggle' => 'modal',
+                                        'data-target' => '#modal-pjax',
+                                        'data-url' => Url::to(['/bidashboard/external-data-value/create', 'external_data_id' => $model->id]),
+                                        'data-handle-form-submit' => 1,
+                                        'data-reload-pjax-container' => 'p-jax-external-data',
                                     ]);
                                 },
                             ],

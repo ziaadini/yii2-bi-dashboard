@@ -53,7 +53,7 @@ class ReportPageWidget extends ActiveRecord
     public function rules()
     {
         return [
-            [['page_id', 'widget_id'], 'required'],
+            [['page_id', 'widget_id','report_widget_field'], 'required'],
             [['page_id', 'widget_id', 'report_widget_field_format', 'status'], 'integer'],
             [['report_widget_field'], 'string', 'max' => 64],
             [['page_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportPage::class, 'targetAttribute' => ['page_id' => 'id']],
