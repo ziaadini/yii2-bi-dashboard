@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = Yii::t('biDashboard', 'Update');
                         <?= $form->field($model, 'title')->textInput() ?>
                         <?= $form->field($model, 'description')->textInput() ?>
                         <div class="form-group">
-                            <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+                            <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>
                         </div>
                         <?php ActiveForm::end(); ?>
                     </div>

@@ -190,7 +190,7 @@ $pdate = Yii::$app->pdate;
                                         [
                                             'data-pjax' => '0',
                                             'class' => "btn btn-sm text-primary fa-lg p-0",
-                                            'data-size' => 'modal-xl',
+                                            'data-size' => 'modal-md',
                                             'data-title' => Yii::t('biDashboard', 'update',),
                                             'data-toggle' => 'modal',
                                             'data-target' => '#modal-pjax',
