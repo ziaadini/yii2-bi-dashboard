@@ -78,7 +78,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php foreach ($page_model as $key): ?>
                         <tr>
                             <td><?= $key['id'] ?></td>
-                            <td><?= $key['access_key'] ?></td>
+                            <td>
+                                <span id="access_key_<?=$key->id?>">
+                                    <?= $key['access_key'] ?>
+                                </span>
+                                <span class="fa fa-copy text-info p-1" onclick="copyAccessKey(<?=$key->id?>)"></span>
+                            </td>
                             <td><?= Yii::$app->pdate->jdate("Y/m/d H:i", intval($key['expire_time'])) ?></td>
                             <td>
                                 <?php Pjax::begin(['id' => 'p-jax-sharing-page']); ?>
@@ -106,3 +111,23 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+<script>
+    function copyAccessKey(itemId) {
+        const numberDiv = document.getElementById('access_key_' + itemId);
+        const range = document.createRange();
+        var link = location.hostname+'/report-page/view-by-access-key/'+numberDiv;
+        range.selectNode(link);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand('copy');
+        selection.removeAllRanges();
+        Swal.fire({
+            position: 'bottom-end',
+            icon: 'success',
+            html: '<?= Yii::t('biDashboard', 'Copy success') ?>',
+            showConfirmButton: false,
+            timer: 1000
+        })
+    }
+</script>
