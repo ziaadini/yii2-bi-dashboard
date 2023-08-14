@@ -60,14 +60,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'access_key',
                 [
                     'attribute' => 'expire_time',
-                    'value' => function ($item) {
-                        return Yii::$app->pdate->jdate('Y/m/d-h:i', $item->expire_time);
+                    'value' => function (SharingPage $model) {
+                        return Yii::$app->pdate->jdate('Y/m/d-h:i', $model->expire_time);
                     }
                 ],
                 [
                     'attribute' => 'created_at',
                     'format' => 'raw',
-                    'value' => function ($model) {
+                    'value' => function (SharingPage $model) {
                         $tooltip = $model->created_by ?
                             Yii::t('biDashboard', 'Created by User ID') . " : {$model->created_by}"
                             : Yii::t('biDashboard', 'No creator information available');
@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'updated_at',
                     'format' => 'raw',
-                    'value' => function ($model) {
+                    'value' => function (SharingPage $model) {
                         $tooltip = $model->updated_by
                             ? Yii::t('biDashboard', 'Updated by User ID') . " : {$model->updated_by}"
                             : Yii::t('biDashboard', 'No updater information available');
