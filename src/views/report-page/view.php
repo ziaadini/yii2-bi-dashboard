@@ -217,11 +217,11 @@ $pdate = Yii::$app->pdate;
                                 <div class="row">
                                     <div class="col-sm-6 d-flex justify-content-between">
                                         <span>ویجت گزارش :</span>
-                                        <span class=" bg-warning"><?= $pageWidget->widget->search_model_form_name ?></span>
+                                        <span class="bg-warning px-1"><?= $pageWidget->widget->search_model_form_name ?></span>
                                     </div>
                                     <div class="col-sm-6 d-flex justify-content-between">
                                         <span>فیلد ویجت گزارش :</span>
-                                        <span class="bg-warning" data-toggle="tooltip"
+                                        <span class="bg-warning px-1" data-toggle="tooltip"
                                               title="<?= $pageWidget->report_widget_field ?>">
                                      <?= $pageWidget->widget->getOutputColumnTitle($pageWidget->report_widget_field) ?>
                                     </span>

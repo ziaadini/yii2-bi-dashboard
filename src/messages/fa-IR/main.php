@@ -74,7 +74,7 @@ return [
     "range_type" => "نوع",
     "widget_id" => "ویجت",
     "report_widget_field_format" => "ویجت فیلد",
-    "Report Widget Field" => "نوع ویجت",
+    "Report Widget Field" => "فیلد نمایش",
     "Widget ID" => "ویجت",
     "share" => "اشتراک گذاری صفحه",
     "Expire Time" => "زمان انقضا",
@@ -136,5 +136,6 @@ return [
     'Created by User ID' => 'ایجاد شده توسط شناسه کاربری',
     'No updater information available' => 'هیچ اطلاعات به روز رسانی در دسترس نیست',
     'No creator information available' => 'هیچ اطلاعات سازنده در دسترس نیست',
-    'Select a year' => 'انتخاب سال'
+    'Select a year' => 'انتخاب سال',
+    'Select...' => 'انتخاب...',
 ];
