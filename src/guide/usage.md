@@ -19,7 +19,7 @@ To use this widget, Write a function in your search model that queries your data
 in the widget section, use the names of these functions when placing the widget in your codes. Subsequently, when the
 widget is triggered and this function is called, it retrieves the output data and stores it back in the database.
 
-Four parameters, namely string $params, int $rangeType, int $startRange, and int $endRange, must be mandatory and
+Four parameters, namely array $params, int $rangeType, int $startRange, and int $endRange, must be mandatory and
 received by the function according to their specified types.
 
 For example, let's assume we have a table called 'invoice' where financial invoice values of the system are stored.
@@ -36,32 +36,32 @@ public function searchWidget(array $params,int $rangeType,int $startRange,int $e
     ]);
     $this->load($params, '');
     $query->andFilterWhere(['like', 'title', $this->title]);
-    $query->andFilterWhere(['between', 'updated_at', $startRange, $endRange]);
+    $query->andFilterWhere(['between', 'created_at', $startRange, $endRange]);
     
     if ($rangeType == ReportWidget::RANGE_TYPE_MONTHLY) {
         $query->select([
             'total_count' => 'COUNT(' . Invoice::tableName() . '.id)',
             'total_amount' => 'SUM(' . Invoice::tableName() . '.price)',
-            'year' => 'pyear(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))',
-            'month' => 'pmonth(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))',
-            'month_name' => 'pmonthname(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))',
+            'year' => 'pyear(FROM_UNIXTIME(' . Invoice::tableName() . '.created_at))',
+            'month' => 'pmonth(FROM_UNIXTIME(' . Invoice::tableName() . '.created_at))',
+            'month_name' => 'pmonthname(FROM_UNIXTIME(' . Invoice::tableName() . '.created_at))',
         ]);
         $query
-            ->groupBy('pyear(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at)), pmonth(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))')
-            ->orderBy(Invoice::tableName() . '.updated_at');
+            ->groupBy('pyear(FROM_UNIXTIME(' . Invoice::tableName() . '.created_at)), pmonth(FROM_UNIXTIME(' . Invoice::tableName() . '.created_at))')
+            ->orderBy(Invoice::tableName() . '.created_at');
     }
     elseif ($rangeType == ReportWidget::RANGE_TYPE_DAILY) {
         $query->select([
             'total_count' => 'COUNT(' . Invoice::tableName() . '.id)',
             'total_amount' => 'SUM(' . Invoice::tableName() . '.price)',
-            'year' => 'pyear(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))',
-            'day' => 'pday(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))',
-            'month' => 'pmonth(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))',
-            'month_name' => 'pmonthname(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))',
+            'year' => 'pyear(FROM_UNIXTIME(' . Invoice::tableName() . '.created_at))',
+            'day' => 'pday(FROM_UNIXTIME(' . Invoice::tableName() . '.created_at))',
+            'month' => 'pmonth(FROM_UNIXTIME(' . Invoice::tableName() . '.created_at))',
+            'month_name' => 'pmonthname(FROM_UNIXTIME(' . Invoice::tableName() . '.created_at))',
         ]);
         $query
-            ->groupBy('pday(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at)), pmonth(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at)), pyear(FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at))')
-            ->orderBy('FROM_UNIXTIME(' . Invoice::tableName() . '.updated_at)');
+            ->groupBy('pday(FROM_UNIXTIME(' . Invoice::tableName() . '.created_at)), pmonth(FROM_UNIXTIME(' . Invoice::tableName() . '.created_at)), pyear(FROM_UNIXTIME(' . Invoice::tableName() . '.created_at))')
+            ->orderBy('FROM_UNIXTIME(' . Invoice::tableName() . '.created_at)');
     }
 
     return $dataProvider;
@@ -144,7 +144,6 @@ To use this widget, insert the following code into a index file:
 | `searchModelMethod`          | `string`                    | **Required**         | 'searchWidget'                    |
 | `searchModelRunResultView`   | `string`                    | **Required**         | 'view'                            |
 | `searchRoute`                | `string`                    | **Required**         | 'invoice/index'                   |
-
 | `searchModelFormName`        | `string`                    | **Required**         | 'InvoiceSearch'                   |
 | `outputColumn`               | `array`                     | **Required**         | ---                               |
 

@@ -19,25 +19,23 @@ use sadi01\dateRangePicker\dateRangePicker;
     <?= $form->field($model, 'created_at')->widget(dateRangePicker::class,[
         'options'  => [
             'drops' => 'down',
-            'placement' => 'right',
+            'placement' => 'left',
             'opens' => 'left',
             'language' => 'fa',
             'jalaali'=> true,
             'showDropdowns'=> true,
             'singleDatePicker' => true,
             'useTimestamp' => true,
-            'timePicker' => true,
-            'timePicker24Hour' => true,
-            'timePickerSeconds' => true,
+            'timePicker' => false,
             'locale'=> [
                 'format' => 'jYYYY/jMM/jDD HH:mm:ss',
             ],
         ],
         'htmlOptions' => [
-            'class'	=> 'form-control',
+            'class'	=> 'form-control text-left',
             'id' => 'external_data_edit_range_date',
             'autocomplete' => 'off',
-            'value' => $model->created_at,
+            'value' => $model->created_at ?: time(),
         ]
     ]);
     ?>

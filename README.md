@@ -129,7 +129,7 @@ public function searchWidget(array $params,int $rangeType,int $startRange,int $e
         'query' => $query,
     ]);
     $this->load($params, '');
-    $query->andFilterWhere(['between', 'updated_at', $startRange, $endRange]);
+    $query->andFilterWhere(['between', 'created_at', $startRange, $endRange]);
     if ($rangeType == ReportWidget::RANGE_TYPE_MONTHLY) {
     ...
      }

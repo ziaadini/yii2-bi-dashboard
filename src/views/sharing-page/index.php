@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'expire_time',
                     'value' => function (SharingPage $model) {
-                        return Yii::$app->pdate->jdate('Y/m/d-h:i', $model->expire_time);
+                        return $model->expire_time ? Yii::$app->pdate->jdate('Y/m/d-h:i', $model->expire_time) : '';
                     }
                 ],
                 [
