@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var \ReportPageSearch $model */
+/** @var \sadi01\bidashboard\models\ReportPageSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
@@ -23,7 +23,7 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'title') ?>
         </div>
         <div class="col-3">
-            <?= $form->field($model, 'add_on') ?>
+            <?= $form->field($model, 'range_type')->dropDownList($model->itemAlias('RangeType')) ?>
         </div>
     </div>
 
