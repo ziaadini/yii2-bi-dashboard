@@ -83,15 +83,15 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td>
                                 <?php Pjax::begin(['id' => 'p-jax-sharing-page']); ?>
                                 <?php if ($key['expire_time'] > time()): ?>
-                                    <?= Html::a('expire', 'javascript:void(0)',
+                                    <?= Html::a(Yii::t('biDashboard', 'Expired'), 'javascript:void(0)',
                                         [
-                                            'title' => Yii::t('yii', 'Expired'),
-                                            'aria-label' => Yii::t('yii', 'Expired'),
+                                            'title' => Yii::t('biDashboard', 'Expired'),
+                                            'aria-label' => Yii::t('biDashboard', 'Expired'),
                                             'data-reload-pjax-container' => 'p-jax-sharing-page',
                                             'data-pjax' => '0',
                                             'data-url' => Url::to(['/bidashboard/sharing-page/expire','id' => $key['id']]),
                                             'class' => " p-jax-btn btn-sm text-info",
-                                            'data-title' => Yii::t('yii', 'Expired'),
+                                            'data-title' => Yii::t('biDashboard', 'Expired'),
                                         ]); ?>
 
                                 <?php endif; ?>

@@ -113,7 +113,7 @@ $pdate = Yii::$app->pdate;
                             'data-pjax' => '0',
                             'class' => "btn btn-primary",
                             'data-size' => 'modal-xl',
-                            'data-title' => Yii::t('app', 'create'),
+                            'data-title' => Yii::t('biDashboard', 'create'),
                             'data-toggle' => 'modal',
                             'data-target' => '#modal-pjax',
                             'data-url' => Url::to(['sharing-page/management', 'id' => $model->id]),
