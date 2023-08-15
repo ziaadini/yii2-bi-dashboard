@@ -257,6 +257,7 @@ $pdate = Yii::$app->pdate;
                                 }
                                 if ($key === false) {
                                     echo '<th scope="col"></th>';
+                                    $lastNumber = null;
                                 } else {
                                     $resultData = key_exists($pageWidget->report_widget_field, $runWidget->result[$key]) ? $runWidget->result[$key][$pageWidget->report_widget_field] : '.::field error(1)::.';
 

@@ -5,6 +5,7 @@ namespace sadi01\bidashboard\models;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\caching\Cache;
 use yii\caching\TagDependency;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -89,13 +90,20 @@ class ReportModelClass extends ActiveRecord
         return $query;
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        TagDependency::invalidate(Yii::$app->cache, 'reportModelTable');
+    }
+
     public static function itemAlias($type, $code = NULL)
     {
         $query = null;
         if ($type == 'list'){
+            $dependency = new TagDependency(['tags' => 'reportModelTable']);
             $query = ReportModelClass::getDb()->cache(function ($db) {
                 return self::find()->select(['model_class', 'title'])->asArray()->all();
-            });
+            },180,$dependency);
         }
         $_items = [
             'list' => ArrayHelper::map($query, 'model_class', 'title'),
