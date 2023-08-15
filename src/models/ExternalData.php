@@ -104,6 +104,17 @@ class ExternalData extends ActiveRecord
         return parent::afterDelete();
     }
 
+    /**
+     * {@inheritdoc}
+     * @return ExternalDataQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        $query = new ExternalDataQuery(get_called_class());
+        $query->notDeleted();
+        return $query;
+    }
+
     public static function itemAlias($type, $code = NULL)
     {
         $_items = [
@@ -117,17 +128,6 @@ class ExternalData extends ActiveRecord
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
         else
             return isset($_items[$type]) ? $_items[$type] : false;
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return ExternalDataQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        $query = new ExternalDataQuery(get_called_class());
-        $query->notDeleted();
-        return $query;
     }
 
     public function behaviors()

@@ -113,6 +113,11 @@ class SharingPage extends \yii\db\ActiveRecord
         return ($this->expire_time > time());
     }
 
+    public function canDelete()
+    {
+        return true;
+    }
+
     /**
      * {@inheritdoc}
      * @return SharingPageQuery the active query used by this AR class.
@@ -176,10 +181,5 @@ class SharingPage extends \yii\db\ActiveRecord
                 'invokeDeleteEvents' => false
             ],
         ];
-    }
-
-    public function canDelete()
-    {
-        return true;
     }
 }

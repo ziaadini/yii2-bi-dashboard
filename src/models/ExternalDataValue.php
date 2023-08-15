@@ -95,6 +95,17 @@ class ExternalDataValue extends ActiveRecord
         return parent::beforeValidate();
     }
 
+    /**
+     * {@inheritdoc}
+     * @return ExternalDataValueQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        $query = new ExternalDataValueQuery(get_called_class());
+        $query->notDeleted();
+        return $query;
+    }
+
     public static function itemAlias($type, $code = NULL)
     {
         $_items = [
@@ -108,17 +119,6 @@ class ExternalDataValue extends ActiveRecord
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
         else
             return isset($_items[$type]) ? $_items[$type] : false;
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return ExternalDataValueQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        $query = new ExternalDataValueQuery(get_called_class());
-        $query->notDeleted();
-        return $query;
     }
 
     public function behaviors()

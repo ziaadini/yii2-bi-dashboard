@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 
-$this->title = 'Bi dashboard';
+$this->title = 'Bi Dashboard';
 $url = Yii::$app->assetManager->getPublishedUrl('@sadi01/bidashboard/assets');
 
 $this->params['breadcrumbs'][] = $this->title;

@@ -11,8 +11,8 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
-use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use yii\helpers\ArrayHelper;
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
 
 /**
  * This is the model class for table "report_widget".
@@ -112,6 +112,23 @@ class ReportWidget extends ActiveRecord
         ];
     }
 
+    public function validateSearchModelMethod($attribute, $params, $validator)
+    {
+        if ($this->search_model_class) {
+            $searchModel = new ($this->search_model_class);
+            $methodExists = method_exists($searchModel, $this->search_model_method);
+            if ($methodExists) {
+                $reflection = new \ReflectionMethod($searchModel, $this->search_model_method);
+                $parameters = $reflection->getParameters();
+                if (count($parameters) <= 3) {
+                    $this->addError('search_model_method', 'function in search model not found');
+                }
+            } else {
+                $this->addError('search_model_method', 'function in search model not exists');
+            }
+        }
+    }
+
     /**
      * Gets query for [[ReportPages]].
      *
@@ -147,83 +164,6 @@ class ReportWidget extends ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
-     * @return ReportWidgetQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        $query = new ReportWidgetQuery(get_called_class());
-        $query->notDeleted();
-        return $query;
-    }
-
-    public static function itemAlias($type, $code = NULL)
-    {
-        $data = [];
-        if ($type == 'List') {
-            $data = ArrayHelper::map(ReportWidget::find()->where(['range_type' => $code])->all(), 'id', 'title');
-            $code = null;
-        }
-        $_items = [
-            'Status' => [
-                self::STATUS_ACTIVE => Yii::t('biDashboard', 'Active'),
-                self::STATUS_DELETED => Yii::t('biDashboard', 'Deleted')
-            ],
-            'RangeTypes' => [
-                self::RANGE_TYPE_DAILY => Yii::t('biDashboard', 'Daily'),
-                self::RANGE_TYPE_MONTHLY => Yii::t('biDashboard', 'Monthly'),
-            ],
-            'Visibility' => [
-                self::VISIBILITY_PUBLIC => Yii::t('biDashboard', 'Public'),
-                self::VISIBILITY_PRIVATE => Yii::t('biDashboard', 'Private'),
-            ],
-            'List' => $data,
-        ];
-
-        if (isset($code))
-            return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
-        else
-            return isset($_items[$type]) ? $_items[$type] : false;
-    }
-
-    public function behaviors()
-    {
-        return [
-            'timestamp' => [
-                'class' => TimestampBehavior::class
-            ],
-            [
-                'class' => BlameableBehavior::class,
-                'createdByAttribute' => 'created_by',
-                'updatedByAttribute' => 'updated_by',
-            ],
-            'softDeleteBehavior' => [
-                'class' => SoftDeleteBehavior::class,
-                'softDeleteAttributeValues' => [
-                    'deleted_at' => time(),
-                    'status' => self::STATUS_DELETED
-                ],
-                'restoreAttributeValues' => [
-                    'deleted_at' => 0,
-                    'status' => self::STATUS_ACTIVE
-                ],
-                'replaceRegularDelete' => false, // mutate native `delete()` method
-                'invokeDeleteEvents' => false
-            ],
-            'jsonable' => [
-                'class' => Jsonable::class,
-                'jsonAttributes' => [
-                    'add_on' => [
-                        'params',
-                        'outputColumn',
-                    ],
-                ],
-            ],
-        ];
-    }
-
-
-    /**
      * @param $id
      * @param $start_range
      * @param $end_rage
@@ -251,9 +191,9 @@ class ReportWidget extends ActiveRecord
     {
         if (!$modelQueryResults) {
             $isValid = true;
-        } elseif ($modelQueryResults and $this->range_type == $this::RANGE_TYPE_DAILY) {
+        } elseif ($this->range_type == $this::RANGE_TYPE_DAILY) {
             $isValid = key_exists('day', $modelQueryResults[0]) && key_exists('month', $modelQueryResults[0]) && key_exists('year', $modelQueryResults[0]);
-        } elseif ($modelQueryResults and $this->range_type == $this::RANGE_TYPE_MONTHLY) {
+        } elseif ($this->range_type == $this::RANGE_TYPE_MONTHLY) {
             $isValid = key_exists('month', $modelQueryResults[0]) && key_exists('year', $modelQueryResults[0]);
         } else {
             $isValid = false;
@@ -266,7 +206,7 @@ class ReportWidget extends ActiveRecord
     {
         $pDate = Yii::$app->pdate;
 
-        if ($start_range and $end_range) {
+        if ($start_range && $end_range) {
             if (gettype($start_range) != 'integer') {
                 if ($this->range_type == $this::RANGE_TYPE_DAILY) {
                     $start_range = $pDate->jmktime('', '', '', $start_range['mon'], $start_range['day'], $start_range['year']);
@@ -343,23 +283,6 @@ class ReportWidget extends ActiveRecord
         return $runWidget;
     }
 
-    public function validateSearchModelMethod($attribute, $params, $validator)
-    {
-        if ($this->search_model_class) {
-            $searchModel = new ($this->search_model_class);
-            $methodExists = method_exists($searchModel, $this->search_model_method);
-            if ($methodExists) {
-                $reflection = new \ReflectionMethod($searchModel, $this->search_model_method);
-                $parameters = $reflection->getParameters();
-                if (count($parameters) <= 3) {
-                    $this->addError('search_model_method', 'function in search model not found');
-                }
-            } else {
-                $this->addError('search_model_method', 'function in search model not exists');
-            }
-        }
-    }
-
     public function createReportWidgetResult($modelQueryResults, $start_range, $end_range)
     {
         $reportWidgetResult = new ReportWidgetResult();
@@ -370,6 +293,7 @@ class ReportWidget extends ActiveRecord
         $reportWidgetResult->run_controller = Yii::$app->controller->id;
         $reportWidgetResult->result = $modelQueryResults;
         $reportWidgetResult->save();
+
         return $reportWidgetResult;
     }
 
@@ -378,17 +302,95 @@ class ReportWidget extends ActiveRecord
         return true;
     }
 
-    public function createReportModelClass(): void
+    public function createReportModelClass(): bool
     {
         $reportModelClass = ReportModelClass::find()->where(['model_class' => $this->search_model_class])->limit(1)->one();
         if (!$reportModelClass) {
-            $reportModelClass = new ReportModelClass();
-            $reportModelClass->model_class = $this->search_model_class;
-            $reportModelClass->title = $this->search_model_class;
-            $reportModelClass->status = ReportModelClass::STATUS_ACTIVE;
-            $reportModelClass->created_at = time();
-            $reportModelClass->updated_at = time();
-            $reportModelClass->save();
+            $reportModelClass = new ReportModelClass([
+                'model_class' => $this->search_model_class,
+                'title' => $this->search_model_class,
+            ]);
+            $reportModelClass->loadDefaultValues();
+
+            return $reportModelClass->save();
         }
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return ReportWidgetQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        $query = new ReportWidgetQuery(get_called_class());
+        $query->notDeleted();
+        return $query;
+    }
+
+    public static function itemAlias($type, $code = NULL)
+    {
+        $data = [];
+        if ($type == 'List') {
+            $data = ArrayHelper::map(ReportWidget::find()->where(['range_type' => $code])->all(), 'id', 'title');
+            $code = null;
+        }
+        $_items = [
+            'Status' => [
+                self::STATUS_ACTIVE => Yii::t('biDashboard', 'Active'),
+                self::STATUS_DELETED => Yii::t('biDashboard', 'Deleted')
+            ],
+            'RangeTypes' => [
+                self::RANGE_TYPE_DAILY => Yii::t('biDashboard', 'Daily'),
+                self::RANGE_TYPE_MONTHLY => Yii::t('biDashboard', 'Monthly'),
+            ],
+            'Visibility' => [
+                self::VISIBILITY_PUBLIC => Yii::t('biDashboard', 'Public'),
+                self::VISIBILITY_PRIVATE => Yii::t('biDashboard', 'Private'),
+            ],
+            'List' => $data,
+        ];
+
+        if (isset($code))
+            return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
+        else
+            return isset($_items[$type]) ? $_items[$type] : false;
+    }
+
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::class
+            ],
+            [
+                'class' => BlameableBehavior::class,
+                'createdByAttribute' => 'created_by',
+                'updatedByAttribute' => 'updated_by',
+            ],
+            'softDeleteBehavior' => [
+                'class' => SoftDeleteBehavior::class,
+                'softDeleteAttributeValues' => [
+                    'deleted_at' => time(),
+                    'status' => self::STATUS_DELETED
+                ],
+                'restoreAttributeValues' => [
+                    'deleted_at' => 0,
+                    'status' => self::STATUS_ACTIVE
+                ],
+                'replaceRegularDelete' => false, // mutate native `delete()` method
+                'invokeDeleteEvents' => false
+            ],
+            'jsonable' => [
+                'class' => Jsonable::class,
+                'jsonAttributes' => [
+                    'add_on' => [
+                        'params',
+                        'outputColumn',
+                    ],
+                ],
+            ],
+        ];
     }
 }

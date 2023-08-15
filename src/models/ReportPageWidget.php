@@ -101,6 +101,11 @@ class ReportPageWidget extends ActiveRecord
         return $this->hasOne(ReportWidget::class, ['id' => 'widget_id']);
     }
 
+    public function canDelete()
+    {
+        return true;
+    }
+
     /**
      * {@inheritdoc}
      * @return ReportPageWidgetQuery the active query used by this AR class.
@@ -110,32 +115,6 @@ class ReportPageWidget extends ActiveRecord
         $query = new ReportPageWidgetQuery(get_called_class());
         $query->notDeleted();
         return $query;
-    }
-    public function behaviors()
-    {
-        return [
-            'timestamp' => [
-                'class' => TimestampBehavior::class
-            ],
-            [
-                'class' => BlameableBehavior::class,
-                'createdByAttribute' => 'created_by',
-                'updatedByAttribute' => 'updated_by',
-            ],
-            'softDeleteBehavior' => [
-                'class' => SoftDeleteBehavior::class,
-                'softDeleteAttributeValues' => [
-                    'deleted_at' => time(),
-                    'status' => self::STATUS_DELETED
-                ],
-                'restoreAttributeValues' => [
-                    'deleted_at' => 0,
-                    'status' => self::STATUS_ACTIVE
-                ],
-                'replaceRegularDelete' => false,
-                'invokeDeleteEvents' => false
-            ],
-        ];
     }
 
     public static function itemAlias($type, $code = NULL)
@@ -162,9 +141,30 @@ class ReportPageWidget extends ActiveRecord
             return isset($_items[$type]) ? $_items[$type] : false;
     }
 
-    public function canDelete()
+    public function behaviors()
     {
-        return true;
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::class
+            ],
+            [
+                'class' => BlameableBehavior::class,
+                'createdByAttribute' => 'created_by',
+                'updatedByAttribute' => 'updated_by',
+            ],
+            'softDeleteBehavior' => [
+                'class' => SoftDeleteBehavior::class,
+                'softDeleteAttributeValues' => [
+                    'deleted_at' => time(),
+                    'status' => self::STATUS_DELETED
+                ],
+                'restoreAttributeValues' => [
+                    'deleted_at' => 0,
+                    'status' => self::STATUS_ACTIVE
+                ],
+                'replaceRegularDelete' => false,
+                'invokeDeleteEvents' => false
+            ],
+        ];
     }
-
 }
