@@ -154,7 +154,7 @@ $pdate = Yii::$app->pdate;
                 if ($runWidget instanceof ReportWidgetResult):
                     ?>
                     <tr>
-                        <th class="bg-light" style="min-width: 500px;">
+                        <th class="bg-light" >
                             <div class="border-bottom row">
                                 <div class="col-md-2">
                                     <h3><?= $pageWidget->widget->title ?></h3>
@@ -223,14 +223,14 @@ $pdate = Yii::$app->pdate;
                                 </div>
                             </div>
                             <div class="text-left my-3">
-                                <div class="row">
-                                    <div class="col-sm-6 d-flex justify-content-between">
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex justify-content-start pr-1">
                                         <span>ویجت گزارش :</span>
                                         <span class="bg-warning px-1">
                                             <?= ReportModelClass::itemAlias('list',$pageWidget->widget->search_model_class) ?>
                                         </span>
                                     </div>
-                                    <div class="col-sm-6 d-flex justify-content-between">
+                                    <div class="d-flex justify-content-start">
                                         <span>فیلد ویجت گزارش :</span>
                                         <span class="bg-warning px-1" data-toggle="tooltip"
                                               title="<?= $pageWidget->report_widget_field ?>">
