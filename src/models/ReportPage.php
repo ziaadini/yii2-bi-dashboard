@@ -114,6 +114,11 @@ class ReportPage extends ActiveRecord
         return parent::afterDelete();
     }
 
+    public function canDelete()
+    {
+        return true;
+    }
+
     /**
      * {@inheritdoc}
      * @return ReportPageQuery the active query used by this AR class.
@@ -184,10 +189,5 @@ class ReportPage extends ActiveRecord
                 'invokeDeleteEvents' => true
             ],
         ];
-    }
-
-    public function canDelete()
-    {
-        return true;
     }
 }
