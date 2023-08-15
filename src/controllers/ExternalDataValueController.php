@@ -97,11 +97,19 @@ class ExternalDataValueController extends Controller
         $dataProvider = $searchModel->search($this->request->queryParams);
         $queryParams = array_filter(Yii::$app->request->getQueryParam('ExternalDataValueSearch') ?: []);
 
-        return $this->renderAjax('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'queryParams' => $queryParams,
-        ]);
+        if ($this->request->isPjax) {
+            return $this->renderAjax('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'queryParams' => $queryParams,
+            ]);
+        } else {
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'queryParams' => $queryParams,
+            ]);
+        }
     }
 
     /**
