@@ -147,4 +147,5 @@ return [
     'Show Model' => 'نمایش مدل',
     'Show Chart' => 'نمایش نمودار',
     'Model Class' => 'مدل کلاس',
+    'Widget data source' => 'منبع داده ویجت',
 ];

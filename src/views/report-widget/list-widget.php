@@ -24,14 +24,41 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'description',
-            'search_model_class',
-            'search_model_method',
+            [
+                'attribute' => 'range_type',
+                'value' => function ($data) {
+                    return $data->itemAlias('RangeTypes', $data->range_type);
+                },
+            ],
+            [
+                'attribute' => 'visibility',
+                'value' => function ($data) {
+                    return $data->itemAlias('Visibility', $data->visibility);
+                },
+            ],
             [
                 'class' => ActionColumn::class,
-                'template' => '{view}',
                 'urlCreator' => function ($action, ReportWidget $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                }
+                },
+                'template' => '{view}',
+                'buttons' => [
+                    'view' => function ($url, ReportWidget $model, $key) {
+                        return Html::a('<i class="fa fa-eye"></i>', "javascript:void(0)",
+                            [
+                                'data-pjax' => '0',
+                                'class' => "btn text-info p-0",
+                                'data-size' => 'modal-xl',
+                                'data-title' => Yii::t('biDashboard', 'view'),
+                                'data-toggle' => 'modal',
+                                'data-target' => '#modal-pjax',
+                                'data-url' => Url::to(['report-widget/view', 'id' => $model->id]),
+                                'data-handle-form-submit' => 1,
+                                'data-reload-pjax-container' => 'p-jax-external-data'
+                            ]
+                        );
+                    },
+                ],
             ],
         ],
     ]); ?>
