@@ -21,8 +21,8 @@ $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'Report Widgets'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<?php Pjax::begin(['id' => 'p-jax-report-widget', 'enablePushState' => false]); ?>
 <div class="report-widget-view">
-
     <div class="page-content container-fluid text-left">
         <div class="work-report-index card">
             <div class="panel-group m-bot20" id="accordion">
@@ -31,7 +31,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= Html::encode($this->title) ?>
                     </h4>
                     <div>
-                        <?= Html::a(Html::tag('span', Yii::t('biDashboard', 'Widget data source'), ['class' => ['btn btn-info']]), $modelRoute) ?>
+                        <?= Html::a(Html::tag('span', Yii::t('biDashboard', 'Widget data source'),
+                            [
+                                'class' => ['btn btn-info'],
+                                'data-pjax' => 0,
+                                'data-reload-pjax-container' => 'p-jax-report-widget',
+                            ]
+                        ), $modelRoute) ?>
                     </div>
                 </div>
                 <div class="card-body">
@@ -92,10 +98,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         </thead>
                         <tbody>
                         <?php foreach ($model->params as $key => $value): ?>
-                        <tr>
-                            <td><?= $key ?></td>
-                            <td><?= json_encode($value) ?></td>
-                        </tr>
+                            <tr>
+                                <td><?= $key ?></td>
+                                <td><?= json_encode($value) ?></td>
+                            </tr>
                         <?php endforeach; ?>
                         </tbody>
                     </table>
@@ -123,3 +129,4 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+<?php Pjax::end(); ?>
