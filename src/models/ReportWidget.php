@@ -37,6 +37,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  *
  * @property string $outputColumnTitle
  * @property ReportPage[] $reportPages
+ * @property ReportPageWidget[] $reportPageWidgets
  * @property ReportWidgetResult[] $reportWidgetResults
  *
  * @mixin SoftDeleteBehavior
@@ -137,6 +138,16 @@ class ReportWidget extends ActiveRecord
     public function getReportPages()
     {
         return $this->hasMany(ReportPage::class, ['widget_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[ReportPageWidget]].
+     *
+     * @return ActiveQuery|ReportPageWidgetQuery
+     */
+    public function getReportPageWidgets()
+    {
+        return $this->hasMany(ReportPageWidget::class, ['widget_id' => 'id']);
     }
 
     /**
@@ -318,6 +329,14 @@ class ReportWidget extends ActiveRecord
         return true;
     }
 
+    public function afterDelete()
+    {
+        foreach ($this->reportPageWidgets as $item) {
+            $item->softDelete();
+        }
+        return parent::afterDelete();
+    }
+
     /**
      * {@inheritdoc}
      * @return ReportWidgetQuery the active query used by this AR class.
@@ -380,7 +399,7 @@ class ReportWidget extends ActiveRecord
                     'status' => self::STATUS_ACTIVE
                 ],
                 'replaceRegularDelete' => false, // mutate native `delete()` method
-                'invokeDeleteEvents' => false
+                'invokeDeleteEvents' => true
             ],
             'jsonable' => [
                 'class' => Jsonable::class,

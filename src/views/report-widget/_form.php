@@ -55,7 +55,7 @@ use yii\web\View;
                             <?= Yii::t('app', $Pkey) ?>
                         </td>
                         <td>
-                            <?= $Pvalue ?>
+                            <?= json_encode($Pvalue) ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

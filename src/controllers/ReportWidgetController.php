@@ -139,10 +139,9 @@ class ReportWidgetController extends Controller
     public function actionView($id, $method = null)
     {
         $model = $this->findModel($id);
-
         $modelRoute = $model->getModelRoute();
 
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $model,
             'modelRoute' => $modelRoute,
         ]);
@@ -151,7 +150,7 @@ class ReportWidgetController extends Controller
     /**
      * Creates a new ReportWidget model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
+     * @return string|Response
      */
     public function actionCreate($searchModelClass = null,
                                  $searchModelMethod = null,
@@ -229,7 +228,7 @@ class ReportWidgetController extends Controller
      * Deletes an existing ReportWidget model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
-     * @return \yii\web\Response
+     * @return Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
