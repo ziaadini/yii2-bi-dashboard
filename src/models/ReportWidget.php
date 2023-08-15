@@ -121,7 +121,7 @@ class ReportWidget extends ActiveRecord
                 $reflection = new \ReflectionMethod($searchModel, $this->search_model_method);
                 $parameters = $reflection->getParameters();
                 if (count($parameters) <= 3) {
-                    $this->addError('search_model_method', 'function in search model not found');
+                    $this->addError('search_model_method', 'The input parameters of the function are invalid');
                 }
             } else {
                 $this->addError('search_model_method', 'function in search model not exists');
