@@ -2,6 +2,7 @@
 
 
 use yii\db\Migration;
+use sadi01\bidashboard\models\ExternalDataValueSearch;
 
 /**
  * Class m230814_112418_create_table_model_class
@@ -30,7 +31,7 @@ class m230814_112418_create_table_model_class extends Migration
                 'model_class' => $this->string(128)->notNull(),
                 'title' => $this->string(128)->notNull(),
                 'status' => $this->tinyInteger()->unsigned()->notNull()->defaultValue('1'),
-                'created_at' => $this->integer()->unsigned()->notNull(),
+                'created_at' => $this->integer()->unsigned(),
                 'created_by' => $this->integer()->unsigned(),
                 'updated_at' => $this->integer()->unsigned()->notNull(),
                 'updated_by' => $this->integer()->unsigned(),
@@ -39,8 +40,8 @@ class m230814_112418_create_table_model_class extends Migration
             $tableOptions
         );
         $this->insert('{{%report_model_class}}', [
-            'model_class' => 'ExternalDataValue',
-            'title' => 'داده خارج از سیستم',
+            'model_class' => ExternalDataValueSearch::class,
+            'title' => 'داده‌های خارج از سیستم',
             'status' => 1,
             'created_at' => time(),
             'created_by' => null,
