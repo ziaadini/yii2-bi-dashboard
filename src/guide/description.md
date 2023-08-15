@@ -54,6 +54,10 @@ it does:
       bidashboard. These permissions determine which users or user groups have access to view or interact with specific
       pages. Additionally, users can set the validity period for the shared access, allowing them to control the
       duration during which shared access remains active.
+- `/bidashboard/report-model-class`:
+    - Purpose: Retrieve and manage available model widget classes for the bidashboard application.
+    - Description: This path provides an organized list of model classes, showing their names and descriptions. Users can customize each model class with various options, preview how they will look with sample data, and create new samples. Existing widget instances can be edited. 
+  Each item is created when creating a widget, if it does not already have a widget
 
 # Explain Different Part
 
@@ -127,3 +131,12 @@ with versatile data representations. Currently, the extension supports the follo
 
 3. Pie Chart
    ![Pie Chart](https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/guide/chart-pie.png)
+
+
+
+
+### Report Model Class
+
+In this image, you can see an example of reportModelClass that was created when the widget was created, and the user registered a desired title for them.
+
+![report model class](https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/guide/report_model_class.png)

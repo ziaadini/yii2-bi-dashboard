@@ -89,6 +89,12 @@ permission: ['BI/SharingPage/managment']
 ### Action: expire
 permission: ['BI/SharingPage/expire']
 
+## permissions for ReportModelClass
+## Action: index
+permission: ['BI/ReportModelClass/index']
+### Action: view
+permission: ['BI/ReportModelClass/view']
+
 This project document provides an overview of the Role-Based Access Control (RBAC) configuration for the controllers and
 their respective actions. The defined access rules ensure that only authorized users with specific roles can access and
 perform actions within the system. If you have any further questions or need assistance, please feel free to reach out

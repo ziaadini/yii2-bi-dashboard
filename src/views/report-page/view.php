@@ -41,6 +41,7 @@ $pdate = Yii::$app->pdate;
         <div class="row d-flex">
             <div class="pt-2 col-sm-2 text-left mr-auto">
                 <h2 class="d-inline"><?= $model->title ?></h2>
+                <?php if (Yii::$app->user->identity): ?>
                 <?= Html::a('<i class="fa fa-edit"></i>', "javascript:void(0)",
                     [
                         'data-pjax' => '0',
@@ -55,6 +56,7 @@ $pdate = Yii::$app->pdate;
                         'data-reload-pjax-container' => 'p-jax-report-page-add',
                         'data-reload-pjax-container-on-show' => 0
                     ]) ?>
+                <?php endif;?>
             </div>
             <?php if (Yii::$app->user->identity): ?>
                 <div class="col-sm-10 d-flex justify-content-end">
