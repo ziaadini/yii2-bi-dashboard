@@ -11,8 +11,8 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
-use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use yii\helpers\ArrayHelper;
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
 
 /**
  * This is the model class for table "report_widget".
@@ -110,6 +110,23 @@ class ReportWidget extends ActiveRecord
             'search_route' => Yii::t('biDashboard', 'Search Route'),
             'search_model_form_name' => Yii::t('biDashboard', 'Search Model Form Name'),
         ];
+    }
+
+    public function validateSearchModelMethod($attribute, $params, $validator)
+    {
+        if ($this->search_model_class) {
+            $searchModel = new ($this->search_model_class);
+            $methodExists = method_exists($searchModel, $this->search_model_method);
+            if ($methodExists) {
+                $reflection = new \ReflectionMethod($searchModel, $this->search_model_method);
+                $parameters = $reflection->getParameters();
+                if (count($parameters) <= 3) {
+                    $this->addError('search_model_method', 'function in search model not found');
+                }
+            } else {
+                $this->addError('search_model_method', 'function in search model not exists');
+            }
+        }
     }
 
     /**
@@ -266,23 +283,6 @@ class ReportWidget extends ActiveRecord
         return $runWidget;
     }
 
-    public function validateSearchModelMethod($attribute, $params, $validator)
-    {
-        if ($this->search_model_class) {
-            $searchModel = new ($this->search_model_class);
-            $methodExists = method_exists($searchModel, $this->search_model_method);
-            if ($methodExists) {
-                $reflection = new \ReflectionMethod($searchModel, $this->search_model_method);
-                $parameters = $reflection->getParameters();
-                if (count($parameters) <= 3) {
-                    $this->addError('search_model_method', 'The input parameters of the function are invalid');
-                }
-            } else {
-                $this->addError('search_model_method', 'function in search model not exists');
-            }
-        }
-    }
-
     public function createReportWidgetResult($modelQueryResults, $start_range, $end_range)
     {
         $reportWidgetResult = new ReportWidgetResult();
@@ -293,6 +293,7 @@ class ReportWidget extends ActiveRecord
         $reportWidgetResult->run_controller = Yii::$app->controller->id;
         $reportWidgetResult->result = $modelQueryResults;
         $reportWidgetResult->save();
+
         return $reportWidgetResult;
     }
 
@@ -301,18 +302,20 @@ class ReportWidget extends ActiveRecord
         return true;
     }
 
-    public function createReportModelClass(): void
+    public function createReportModelClass(): bool
     {
         $reportModelClass = ReportModelClass::find()->where(['model_class' => $this->search_model_class])->limit(1)->one();
         if (!$reportModelClass) {
-            $reportModelClass = new ReportModelClass();
-            $reportModelClass->model_class = $this->search_model_class;
-            $reportModelClass->title = $this->search_model_class;
-            $reportModelClass->status = ReportModelClass::STATUS_ACTIVE;
-            $reportModelClass->created_at = time();
-            $reportModelClass->updated_at = time();
-            $reportModelClass->save();
+            $reportModelClass = new ReportModelClass([
+                'model_class' => $this->search_model_class,
+                'title' => $this->search_model_class,
+            ]);
+            $reportModelClass->loadDefaultValues();
+
+            return $reportModelClass->save();
         }
+
+        return true;
     }
 
     /**
