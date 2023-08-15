@@ -41,7 +41,6 @@ class ReportYear extends \yii\db\ActiveRecord
         return '{{%report_year}}';
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -56,7 +55,6 @@ class ReportYear extends \yii\db\ActiveRecord
             [['year', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at'], 'integer'],
         ];
     }
-
 
     /**
      * {@inheritdoc}
@@ -74,6 +72,11 @@ class ReportYear extends \yii\db\ActiveRecord
             'deleted_at' => Yii::t('biDashboard', 'Deleted At'),
             'status' => Yii::t('biDashboard', 'Status'),
         ];
+    }
+
+    public function canDelete(): bool
+    {
+        return true;
     }
 
     /**
@@ -140,10 +143,5 @@ class ReportYear extends \yii\db\ActiveRecord
                 'invokeDeleteEvents' => false
             ],
         ];
-    }
-
-    public function canDelete(): bool
-    {
-        return true;
     }
 }
