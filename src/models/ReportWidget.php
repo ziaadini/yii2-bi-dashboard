@@ -11,8 +11,8 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
-use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use yii\helpers\ArrayHelper;
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
 
 /**
  * This is the model class for table "report_widget".
@@ -78,7 +78,7 @@ class ReportWidget extends ActiveRecord
             [['title', 'search_model_method', 'search_model_class', 'search_route', 'range_type'], 'required'],
             [['title'], 'required', 'on' => $this::SCENARIO_UPDATE],
             [['description'], 'safe', 'on' => $this::SCENARIO_UPDATE],
-            ['search_model_method','validateSearchModelMethod'],
+            ['search_model_method', 'validateSearchModelMethod'],
             [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by'], 'integer'],
             [['add_on', 'search_model_class', 'params', 'outputColumn'], 'safe'],
             [['title', 'search_model_method', 'search_model_run_result_view', 'search_route', 'search_model_form_name'], 'string', 'max' => 128],
@@ -112,6 +112,23 @@ class ReportWidget extends ActiveRecord
         ];
     }
 
+    public function validateSearchModelMethod($attribute, $params, $validator)
+    {
+        if ($this->search_model_class) {
+            $searchModel = new ($this->search_model_class);
+            $methodExists = method_exists($searchModel, $this->search_model_method);
+            if ($methodExists) {
+                $reflection = new \ReflectionMethod($searchModel, $this->search_model_method);
+                $parameters = $reflection->getParameters();
+                if (count($parameters) <= 3) {
+                    $this->addError('search_model_method', 'The input parameters of the function are invalid');
+                }
+            } else {
+                $this->addError('search_model_method', 'function in search model not exists');
+            }
+        }
+    }
+
     /**
      * Gets query for [[ReportPages]].
      *
@@ -140,7 +157,7 @@ class ReportWidget extends ActiveRecord
             }
         }
 
-        /**@var $searchModel ActiveRecord*/
+        /**@var $searchModel ActiveRecord */
         $searchModel = new ($this->search_model_class);
 
         return $searchModel->getAttributeLabel($field);
@@ -266,22 +283,6 @@ class ReportWidget extends ActiveRecord
         return $runWidget;
     }
 
-    public function validateSearchModelMethod($attribute, $params, $validator){
-        if ($this->search_model_class) {
-            $searchModel = new ($this->search_model_class);
-            $methodExists = method_exists($searchModel, $this->search_model_method);
-            if ($methodExists) {
-                $reflection = new \ReflectionMethod($searchModel, $this->search_model_method);
-                $parameters = $reflection->getParameters();
-                if (count($parameters) <= 3) {
-                    $this->addError('search_model_method','function in search model not found');
-                }
-            }else{
-                $this->addError('search_model_method','function in search model not exists');
-            }
-        }
-    }
-
     public function createReportWidgetResult($modelQueryResults, $start_range, $end_range)
     {
         $reportWidgetResult = new ReportWidgetResult();
@@ -292,11 +293,28 @@ class ReportWidget extends ActiveRecord
         $reportWidgetResult->run_controller = Yii::$app->controller->id;
         $reportWidgetResult->result = $modelQueryResults;
         $reportWidgetResult->save();
+
         return $reportWidgetResult;
     }
 
     public function canDelete()
     {
+        return true;
+    }
+
+    public function createReportModelClass(): bool
+    {
+        $reportModelClass = ReportModelClass::find()->where(['model_class' => $this->search_model_class])->limit(1)->one();
+        if (!$reportModelClass) {
+            $reportModelClass = new ReportModelClass([
+                'model_class' => $this->search_model_class,
+                'title' => $this->search_model_class,
+            ]);
+            $reportModelClass->loadDefaultValues();
+
+            return $reportModelClass->save();
+        }
+
         return true;
     }
 
