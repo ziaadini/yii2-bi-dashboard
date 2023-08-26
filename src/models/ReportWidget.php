@@ -18,6 +18,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * This is the model class for table "report_widget".
  *
  * @property int $id
+ * @property int $bi_client_id
  * @property string $title
  * @property string|null $description
  * @property string|null $search_model_class
@@ -76,11 +77,12 @@ class ReportWidget extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'search_model_method', 'search_model_class', 'search_route', 'range_type'], 'required'],
+            [['title', 'search_model_method', 'search_model_class', 'search_route', 'range_type', 'bi_client_id'], 'required'],
             [['title'], 'required', 'on' => $this::SCENARIO_UPDATE],
             [['description'], 'safe', 'on' => $this::SCENARIO_UPDATE],
+            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
             ['search_model_method', 'validateSearchModelMethod'],
-            [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by'], 'integer'],
+            [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by', 'bi_client_id'], 'integer'],
             [['add_on', 'search_model_class', 'params', 'outputColumn'], 'safe'],
             [['title', 'search_model_method', 'search_model_run_result_view', 'search_route', 'search_model_form_name'], 'string', 'max' => 128],
             [['description', 'search_model_class'], 'string', 'max' => 255],
@@ -344,6 +346,7 @@ class ReportWidget extends ActiveRecord
     public static function find()
     {
         $query = new ReportWidgetQuery(get_called_class());
+        $query->byClentId();
         $query->notDeleted();
         return $query;
     }

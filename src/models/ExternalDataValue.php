@@ -14,6 +14,7 @@ use yii\db\ActiveQuery;
  * This is the model class for table "{{%bid_external_data_value}}".
  *
  * @property int $id
+ * @property int bi_client_id
  * @property int $external_data_id
  * @property float $value
  * @property int $status
@@ -55,8 +56,9 @@ class ExternalDataValue extends ActiveRecord
     public function rules()
     {
         return [
-            [['external_data_id', 'value'], 'required'],
+            [['external_data_id', 'value', 'bi_client_id'], 'required'],
             [['external_data_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at'], 'integer'],
+            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
             [['value'], 'number'],
         ];
     }
@@ -102,6 +104,7 @@ class ExternalDataValue extends ActiveRecord
     public static function find()
     {
         $query = new ExternalDataValueQuery(get_called_class());
+        $query->byClentId();
         $query->notDeleted();
         return $query;
     }

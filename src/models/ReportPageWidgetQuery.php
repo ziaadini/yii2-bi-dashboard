@@ -19,6 +19,7 @@ class ReportPageWidgetQuery extends \yii\db\ActiveQuery
             ],
         ];
     }
+
     /**
      * {@inheritdoc}
      * @return ReportPageWidget[]|array
@@ -35,5 +36,10 @@ class ReportPageWidgetQuery extends \yii\db\ActiveQuery
     public function one($db = null)
     {
         return parent::one($db);
+    }
+
+    public function byClentId()
+    {
+        return $this->onCondition([ReportPageWidget::tableName() . '.bi_client_id' => \Yii::$app->params['bi_client_id']]);
     }
 }

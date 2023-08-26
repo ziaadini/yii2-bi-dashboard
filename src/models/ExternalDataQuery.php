@@ -39,4 +39,9 @@ class ExternalDataQuery extends ActiveQuery
             ],
         ];
     }
+
+    public function byClentId()
+    {
+        return $this->onCondition([ExternalData::tableName() . '.bi_client_id' => \Yii::$app->params['bi_client_id']]);
+    }
 }

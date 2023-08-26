@@ -44,4 +44,9 @@ class ReportWidgetQuery extends ActiveQuery
             ],
         ];
     }
+
+    public function byClentId()
+    {
+        return $this->onCondition([ReportWidget::tableName() . '.bi_client_id' => \Yii::$app->params['bi_client_id']]);
+    }
 }

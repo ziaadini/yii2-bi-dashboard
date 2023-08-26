@@ -16,6 +16,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * This is the model class for table "report_widget_result".
  *
  * @property int $id
+ * @property int $bi_client_id
  * @property string|null $add_on
  * @property int $widget_id
  * @property int $start_range
@@ -42,7 +43,7 @@ class ReportWidgetResult extends ActiveRecord
 
     const CHART_LINE = 'line';
     const CHART_COLUMN = 'column';
-    const CHART_PIE ='pie';
+    const CHART_PIE = 'pie';
     const CHART_AREA = 'area';
     const CHART_WORD_CLOUD = 'word_cloud';
 
@@ -67,11 +68,12 @@ class ReportWidgetResult extends ActiveRecord
     public function rules()
     {
         return [
-            [['widget_id'], 'required'],
-            [['widget_id', 'start_range', 'end_range', 'status', 'updated_at', 'created_at', 'deleted_at', 'updated_by', 'created_by'], 'integer'],
+            [['widget_id', 'bi_client_id'], 'required'],
+            [['widget_id', 'start_range', 'end_range', 'status', 'updated_at', 'created_at', 'deleted_at', 'updated_by', 'created_by', 'bi_client_id'], 'integer'],
             [['add_on', 'params'], 'safe'],
             [['run_controller'], 'string', 'max' => 256],
             [['run_action'], 'string', 'max' => 128],
+            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
             [['widget_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportWidget::class, 'targetAttribute' => ['widget_id' => 'id']],
         ];
     }
@@ -115,6 +117,7 @@ class ReportWidgetResult extends ActiveRecord
     public static function find()
     {
         $query = new ReportWidgetResultQuery(get_called_class());
+        $query->byClentId();
         $query->notDeleted();
         return $query;
     }

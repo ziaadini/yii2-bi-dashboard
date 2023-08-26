@@ -20,6 +20,7 @@ class ReportYearQuery extends \yii\db\ActiveQuery
             ],
         ];
     }
+
     /**
      * {@inheritdoc}
      * @return ReportYear[]|array
@@ -36,5 +37,10 @@ class ReportYearQuery extends \yii\db\ActiveQuery
     public function one($db = null): ReportYear|array|null
     {
         return parent::one($db);
+    }
+
+    public function byClentId()
+    {
+        return $this->onCondition([ReportYear::tableName() . '.bi_client_id' => \Yii::$app->params['bi_client_id']]);
     }
 }

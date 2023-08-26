@@ -37,4 +37,9 @@ class ReportWidgetResultQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    public function byClentId()
+    {
+        return $this->onCondition([ReportWidgetResult::tableName() . '.bi_client_id' => \Yii::$app->params['bi_client_id']]);
+    }
 }

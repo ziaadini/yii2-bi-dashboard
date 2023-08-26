@@ -12,6 +12,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * This is the model class for table "report_year".
  *
  * @property int $id
+ * @property int $bi_client_id
  * @property int $year
  * @property int $created_at
  * @property int|null $created_by
@@ -33,6 +34,7 @@ class ReportYear extends \yii\db\ActiveRecord
     {
         return Yii::$app->biDB;
     }
+
     /**
      * {@inheritdoc}
      */
@@ -47,9 +49,10 @@ class ReportYear extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['year'], 'required'],
+            [['year', 'bi_client_id'], 'required'],
             [['year'], 'unique'],
-            [['year'], 'integer'],
+            [['year', 'bi_client_id'], 'integer'],
+            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
             ['year', 'compare', 'operator' => '>', 'compareValue' => (int)(CoreHelper::getCurrentYear()) - 100],
             ['year', 'compare', 'operator' => '<', 'compareValue' => (int)(CoreHelper::getCurrentYear()) + 100],
             [['year', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at'], 'integer'],
@@ -86,6 +89,7 @@ class ReportYear extends \yii\db\ActiveRecord
     public static function find(): ReportYearQuery
     {
         $query = new ReportYearQuery(get_called_class());
+        $query->byClentId();
         $query->notDeleted();
         return $query;
     }

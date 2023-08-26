@@ -37,4 +37,9 @@ class SharingPageQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    public function byClentId()
+    {
+        return $this->onCondition([SharingPage::tableName() . '.bi_client_id' => \Yii::$app->params['bi_client_id']]);
+    }
 }

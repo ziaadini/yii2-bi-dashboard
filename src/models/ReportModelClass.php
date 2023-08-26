@@ -15,6 +15,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * This is the model class for table "{{%report_model_class}}".
  *
  * @property int $id
+ * @property int bi_client_id
  * @property string $model_class
  * @property string $title
  * @property int $status
@@ -54,9 +55,10 @@ class ReportModelClass extends ActiveRecord
     public function rules()
     {
         return [
-            [['model_class', 'title'], 'required'],
+            [['model_class', 'title', 'bi_client_id'], 'required'],
             [['title'], 'required', 'on' => $this::SCENARIO_UPDATE],
-            [['status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at'], 'integer'],
+            [['status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'bi_client_id'], 'integer'],
+            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
             [['model_class', 'title'], 'string', 'max' => 128],
         ];
     }
@@ -86,6 +88,7 @@ class ReportModelClass extends ActiveRecord
     public static function find()
     {
         $query = new ReportModelClassQuery(get_called_class());
+        $query->byClentId();
         $query->notDeleted();
         return $query;
     }
@@ -99,11 +102,11 @@ class ReportModelClass extends ActiveRecord
     public static function itemAlias($type, $code = NULL)
     {
         $query = null;
-        if ($type == 'list'){
+        if ($type == 'list') {
             $dependency = new TagDependency(['tags' => 'reportModelTable']);
             $query = ReportModelClass::getDb()->cache(function ($db) {
                 return self::find()->select(['model_class', 'title'])->asArray()->all();
-            },180,$dependency);
+            }, 180, $dependency);
         }
         $_items = [
             'list' => ArrayHelper::map($query, 'model_class', 'title'),

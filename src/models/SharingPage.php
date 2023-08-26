@@ -15,6 +15,7 @@ use sadi01\bidashboard\models\ReportPage;
  * This is the model class for table "sharing_page".
  *
  * @property int $id
+ * @property int $bi_client_id
  * @property int $page_id
  * @property string $access_key
  * @property int|null $expire_time
@@ -43,6 +44,7 @@ class SharingPage extends \yii\db\ActiveRecord
     {
         return Yii::$app->biDB;
     }
+
     /**
      * {@inheritdoc}
      */
@@ -57,8 +59,9 @@ class SharingPage extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['page_id', 'expire_time'],'required'],
-            [['page_id', 'expire_time'], 'integer'],
+            [['page_id', 'expire_time', 'bi_client_id'], 'required'],
+            [['page_id', 'expire_time', 'bi_client_id'], 'integer'],
+            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
             [['access_key'], 'string', 'max' => 64],
             [['access_key'], 'unique'],
             [['page_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportPage::class, 'targetAttribute' => ['page_id' => 'id']],
@@ -67,7 +70,7 @@ class SharingPage extends \yii\db\ActiveRecord
 
     public function beforeValidate()
     {
-        if($this->isNewRecord){
+        if ($this->isNewRecord) {
             $this->access_key = Yii::$app->security->generateRandomString();
         }
         $this->expire_time = $this->jalaliToTimestamp($this->expire_time, "Y/m/d H:i:s");
@@ -125,8 +128,8 @@ class SharingPage extends \yii\db\ActiveRecord
     public static function find()
     {
         $query = new SharingPageQuery(get_called_class());
+        $query->byClentId();
         $query->notDeleted();
-
         return $query;
     }
 

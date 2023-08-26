@@ -13,6 +13,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * This is the model class for table "report_page".
  *
  * @property int $id
+ * @property int $bi_client_id
  * @property string $title
  * @property int $status
  * @property int|null $range_type
@@ -58,10 +59,11 @@ class ReportPage extends ActiveRecord
     public function rules()
     {
         return [
-            [['title'], 'required'],
-            [['status', 'range_type', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by'], 'integer'],
+            [['title', 'bi_client_id'], 'required'],
+            [['status', 'range_type', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'bi_client_id'], 'integer'],
             [['add_on'], 'safe'],
             [['title'], 'string', 'max' => 128],
+            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']]
         ];
     }
 
@@ -126,6 +128,7 @@ class ReportPage extends ActiveRecord
     public static function find()
     {
         $query = new ReportPageQuery(get_called_class());
+        $query->byClentId();
         $query->notDeleted();
         return $query;
     }
