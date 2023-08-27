@@ -89,7 +89,6 @@ class ReportYear extends \yii\db\ActiveRecord
     public static function find(): ReportYearQuery
     {
         $query = new ReportYearQuery(get_called_class());
-        $query->byClentId();
         $query->notDeleted();
         return $query;
     }
