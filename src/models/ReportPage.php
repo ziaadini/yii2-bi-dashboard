@@ -59,11 +59,11 @@ class ReportPage extends ActiveRecord
     public function rules()
     {
         return [
+            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
             [['title', 'bi_client_id'], 'required'],
             [['status', 'range_type', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'bi_client_id'], 'integer'],
             [['add_on'], 'safe'],
-            [['title'], 'string', 'max' => 128],
-            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']]
+            [['title'], 'string', 'max' => 128]
         ];
     }
 

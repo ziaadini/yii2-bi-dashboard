@@ -56,9 +56,9 @@ class ExternalDataValue extends ActiveRecord
     public function rules()
     {
         return [
+            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
             [['external_data_id', 'value', 'bi_client_id'], 'required'],
             [['external_data_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at'], 'integer'],
-            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
             [['value'], 'number'],
         ];
     }

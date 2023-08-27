@@ -77,10 +77,10 @@ class ReportWidget extends ActiveRecord
     public function rules()
     {
         return [
+            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
             [['title', 'search_model_method', 'search_model_class', 'search_route', 'range_type', 'bi_client_id'], 'required'],
             [['title'], 'required', 'on' => $this::SCENARIO_UPDATE],
             [['description'], 'safe', 'on' => $this::SCENARIO_UPDATE],
-            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
             ['search_model_method', 'validateSearchModelMethod'],
             [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by', 'bi_client_id'], 'integer'],
             [['add_on', 'search_model_class', 'params', 'outputColumn'], 'safe'],

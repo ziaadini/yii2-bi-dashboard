@@ -56,9 +56,9 @@ class ExternalData extends ActiveRecord
     public function rules()
     {
         return [
+            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
             [['title', 'bi_client_id'], 'required'],
             [['status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'bi_client_id'], 'integer'],
-            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
             [['title'], 'string', 'max' => 128],
         ];
     }
