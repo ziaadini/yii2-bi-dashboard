@@ -40,6 +40,6 @@ class SharingPageQuery extends \yii\db\ActiveQuery
 
     public function bySlaveId()
     {
-        return $this->onCondition([SharingPage::tableName() . '.bi_slave_id' => \Yii::$app->params['bi_slave_id']]);
+        return $this->onCondition([SharingPage::tableName() . '.slave_id' => \Yii::$app->params['bi_slave_id']]);
     }
 }

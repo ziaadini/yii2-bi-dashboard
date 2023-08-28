@@ -469,7 +469,7 @@ ab.Session = function (wsuri, onopen, onclose, options) {
                     console.groupEnd();
                 }
 
-                // only now that we have received the initial server-to-slave
+                // only now that we have received the initial server-to-client
                 // welcome message, fire application onopen() hook
                 if (self._websocket_onopen !== null) {
                     self._websocket_onopen(self._session_id, self._wamp_version, self._server);

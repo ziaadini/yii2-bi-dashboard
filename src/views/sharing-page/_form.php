@@ -17,7 +17,7 @@ use yii\widgets\Pjax;
 
 <div class="sharing-page-form">
 
-    <?php $form = ActiveForm::begin(['id' => 'sharing-form', 'enableslaveValidation' => true]); ?>
+    <?php $form = ActiveForm::begin(['id' => 'sharing-form', 'enableClientValidation' => true]); ?>
     <?= $form->field($model, 'page_id')->dropDownList(
         ArrayHelper::map(\sadi01\bidashboard\models\ReportPage::find()->all(), 'id', 'title'),
         ['prompt' => 'Select a page']

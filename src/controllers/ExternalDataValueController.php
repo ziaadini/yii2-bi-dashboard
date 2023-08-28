@@ -30,48 +30,48 @@ class ExternalDataValueController extends Controller
         return array_merge(
             parent::behaviors(),
             [
-//                'access' => [
-//                    'class' => AccessControl::class,
-//                    'rules' =>
-//                        [
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ExternalDataValue/index'],
-//                                'actions' => [
-//                                    'index'
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ExternalDataValue/view'],
-//                                'actions' => [
-//                                    'view'
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ExternalDataValue/create'],
-//                                'actions' => [
-//                                    'create',
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ExternalDataValue/update'],
-//                                'actions' => [
-//                                    'update',
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ExternalDataValue/delete'],
-//                                'actions' => [
-//                                    'delete'
-//                                ]
-//                            ],
-//
-//                        ]
-//                ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' =>
+                        [
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ExternalDataValue/index'],
+                                'actions' => [
+                                    'index'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ExternalDataValue/view'],
+                                'actions' => [
+                                    'view'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ExternalDataValue/create'],
+                                'actions' => [
+                                    'create',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ExternalDataValue/update'],
+                                'actions' => [
+                                    'update',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ExternalDataValue/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+
+                        ]
+                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [

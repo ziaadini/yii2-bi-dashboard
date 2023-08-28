@@ -1,7 +1,6 @@
 <?php
 
 use sadi01\bidashboard\models\ReportPage;
-use Yii;
 use yii\bootstrap4\ActiveForm;
 use yii\helpers\Html;
 use yii\web\View;
@@ -14,7 +13,7 @@ use yii\web\View;
 
 <div class="report-page-widget-form">
 
-    <?php $form = ActiveForm::begin(['id' => 'page-form', 'enableslaveValidation' => true]); ?>
+    <?php $form = ActiveForm::begin(['id' => 'page-form', 'enableClientValidation' => true]); ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
     <?php if ($model->isNewRecord): ?>

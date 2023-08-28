@@ -41,6 +41,6 @@ class ReportYearQuery extends \yii\db\ActiveQuery
 
     public function bySlaveId()
     {
-        return $this->onCondition([ReportYear::tableName() . '.bi_slave_id' => \Yii::$app->params['bi_slave_id']]);
+        return $this->onCondition([ReportYear::tableName() . '.slave_id' => \Yii::$app->params['bi_slave_id']]);
     }
 }

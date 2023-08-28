@@ -317,8 +317,8 @@ var env = {
 var updateGeometry = function(i) {
   var element = i.element;
 
-  i.containerWidth = element.slaveWidth;
-  i.containerHeight = element.slaveHeight;
+  i.containerWidth = element.clientWidth;
+  i.containerHeight = element.clientHeight;
   i.contentWidth = element.scrollWidth;
   i.contentHeight = element.scrollHeight;
 
@@ -472,7 +472,7 @@ var clickRail = function(i) {
     var positionTop =
       e.pageY -
       window.pageYOffset -
-      i.scrollbarYRail.getBoundingslaveRect().top;
+      i.scrollbarYRail.getBoundingClientRect().top;
     var direction = positionTop > i.scrollbarYTop ? 1 : -1;
 
     i.element.scrollTop += direction * i.containerHeight;
@@ -486,7 +486,7 @@ var clickRail = function(i) {
     var positionLeft =
       e.pageX -
       window.pageXOffset -
-      i.scrollbarXRail.getBoundingslaveRect().left;
+      i.scrollbarXRail.getBoundingClientRect().left;
     var direction = positionLeft > i.scrollbarXLeft ? 1 : -1;
 
     i.element.scrollLeft += direction * i.containerWidth;
@@ -786,7 +786,7 @@ var wheel = function(i) {
 
       // if scrollable
       if (overflow.match(/(scroll|auto)/)) {
-        var maxScrollTop = cursor.scrollHeight - cursor.slaveHeight;
+        var maxScrollTop = cursor.scrollHeight - cursor.clientHeight;
         if (maxScrollTop > 0) {
           if (
             !(cursor.scrollTop === 0 && deltaY > 0) &&
@@ -795,7 +795,7 @@ var wheel = function(i) {
             return true;
           }
         }
-        var maxScrollLeft = cursor.scrollLeft - cursor.slaveWidth;
+        var maxScrollLeft = cursor.scrollLeft - cursor.clientWidth;
         if (maxScrollLeft > 0) {
           if (
             !(cursor.scrollLeft === 0 && deltaX < 0) &&
@@ -974,7 +974,7 @@ var touch = function(i) {
 
       // if scrollable
       if (overflow.match(/(scroll|auto)/)) {
-        var maxScrollTop = cursor.scrollHeight - cursor.slaveHeight;
+        var maxScrollTop = cursor.scrollHeight - cursor.clientHeight;
         if (maxScrollTop > 0) {
           if (
             !(cursor.scrollTop === 0 && deltaY > 0) &&
@@ -983,7 +983,7 @@ var touch = function(i) {
             return true;
           }
         }
-        var maxScrollLeft = cursor.scrollLeft - cursor.slaveWidth;
+        var maxScrollLeft = cursor.scrollLeft - cursor.clientWidth;
         if (maxScrollLeft > 0) {
           if (
             !(cursor.scrollLeft === 0 && deltaX < 0) &&
@@ -1136,7 +1136,7 @@ var PerfectScrollbar = function PerfectScrollbar(element, userSettings) {
     return result;
   })();
   this.negativeScrollAdjustment = this.isNegativeScroll
-    ? element.scrollWidth - element.slaveWidth
+    ? element.scrollWidth - element.clientWidth
     : 0;
   this.event = new EventManager();
   this.ownerDocument = element.ownerDocument || document;
@@ -1229,7 +1229,7 @@ PerfectScrollbar.prototype.update = function update () {
 
   // Recalcuate negative scrollLeft adjustment
   this.negativeScrollAdjustment = this.isNegativeScroll
-    ? this.element.scrollWidth - this.element.slaveWidth
+    ? this.element.scrollWidth - this.element.clientWidth
     : 0;
 
   // Recalculate rail margins

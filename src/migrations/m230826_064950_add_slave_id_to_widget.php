@@ -17,6 +17,7 @@ class m230826_064950_add_slave_id_to_widget extends Migration
     public function safeUp()
     {
         $this->dropForeignKey('page_widget_ibfk_2', '{{%report_page_widget}}');
+        $this->dropForeignKey('widget_result_ibfk_1', '{{%report_widget_result}}');
         $this->addColumn('{{%report_widget}}', 'slave_id', $this->tinyInteger()->unsigned()->notNull()->after('id'));
         $this->alterColumn('{{%report_widget}}', 'id', $this->integer());
         $this->dropPrimaryKey('PRIMARYKEY', '{{%report_widget}}');

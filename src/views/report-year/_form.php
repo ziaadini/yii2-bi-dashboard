@@ -9,7 +9,7 @@ use yii\bootstrap4\ActiveForm;
 ?>
 
 <div class="report-year-form">
-    <?php $form = ActiveForm::begin(['id' => 'year-form', 'enableslaveValidation' => true]); ?>
+    <?php $form = ActiveForm::begin(['id' => 'year-form', 'enableClientValidation' => true]); ?>
     <?= $form->field($model, 'year')->textInput() ?>
     <div class="form-group">
         <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>

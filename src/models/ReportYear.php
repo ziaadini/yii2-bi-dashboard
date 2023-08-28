@@ -12,7 +12,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * This is the model class for table "report_year".
  *
  * @property int $id
- * @property int $bi_slave_id
+ * @property int $slave_id
  * @property int $year
  * @property int $created_at
  * @property int|null $created_by
@@ -49,10 +49,10 @@ class ReportYear extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['bi_slave_id'], 'default', 'value' => Yii::$app->params['bi_slave_id']],
-            [['year', 'bi_slave_id'], 'required'],
+            [['slave_id'], 'default', 'value' => Yii::$app->params['bi_slave_id']],
+            [['year', 'slave_id'], 'required'],
             [['year'], 'unique'],
-            [['year', 'bi_slave_id'], 'integer'],
+            [['year', 'slave_id'], 'integer'],
             ['year', 'compare', 'operator' => '>', 'compareValue' => (int)(CoreHelper::getCurrentYear()) - 100],
             ['year', 'compare', 'operator' => '<', 'compareValue' => (int)(CoreHelper::getCurrentYear()) + 100],
             [['year', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at'], 'integer'],

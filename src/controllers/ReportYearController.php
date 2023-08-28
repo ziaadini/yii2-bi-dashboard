@@ -31,47 +31,47 @@ class ReportYearController extends Controller
         return array_merge(
             parent::behaviors(),
             [
-//                'access' => [
-//                    'class' => AccessControl::class,
-//                    'rules' =>
-//                        [
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ReportYear/index'],
-//                                'actions' => [
-//                                    'index'
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ReportYear/view'],
-//                                'actions' => [
-//                                    'view'
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ReportYear/create'],
-//                                'actions' => [
-//                                    'create',
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ReportYear/update'],
-//                                'actions' => [
-//                                    'update',
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ReportYear/delete'],
-//                                'actions' => [
-//                                    'delete'
-//                                ]
-//                            ],
-//                        ]
-//                ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' =>
+                        [
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportYear/index'],
+                                'actions' => [
+                                    'index'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportYear/view'],
+                                'actions' => [
+                                    'view'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportYear/create'],
+                                'actions' => [
+                                    'create',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportYear/update'],
+                                'actions' => [
+                                    'update',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportYear/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+                        ]
+                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [

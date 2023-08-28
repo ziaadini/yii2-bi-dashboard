@@ -33,69 +33,69 @@ class ReportWidgetController extends Controller
         return array_merge(
             parent::behaviors(),
             [
-//                'access' => [
-//                    'class' => AccessControl::class,
-//                    'rules' =>
-//                        [
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ReportWidget/index'],
-//                                'actions' => [
-//                                    'index'
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ReportWidget/view'],
-//                                'actions' => [
-//                                    'view'
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ReportWidget/create'],
-//                                'actions' => [
-//                                    'create',
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ReportWidget/update'],
-//                                'actions' => [
-//                                    'update',
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ReportWidget/delete'],
-//                                'actions' => [
-//                                    'delete'
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ReportWidget/open-modal'],
-//                                'actions' => [
-//                                    'open-modal'
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/ReportWidget/run'],
-//                                'actions' => [
-//                                    'run'
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'actions' => [
-//                                    'modal-show-chart'
-//                                ]
-//                            ],
-//
-//
-//                        ]
-//                ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' =>
+                        [
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportWidget/index'],
+                                'actions' => [
+                                    'index'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportWidget/view'],
+                                'actions' => [
+                                    'view'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportWidget/create'],
+                                'actions' => [
+                                    'create',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportWidget/update'],
+                                'actions' => [
+                                    'update',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportWidget/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportWidget/open-modal'],
+                                'actions' => [
+                                    'open-modal'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportWidget/run'],
+                                'actions' => [
+                                    'run'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'actions' => [
+                                    'modal-show-chart'
+                                ]
+                            ],
+
+
+                        ]
+                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [

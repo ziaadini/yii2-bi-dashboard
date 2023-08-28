@@ -32,61 +32,61 @@ class SharingPageController extends Controller
         return array_merge(
             parent::behaviors(),
             [
-//                'access' => [
-//                    'class' => AccessControl::class,
-//                    'rules' =>
-//                        [
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/SharingPage/index'],
-//                                'actions' => [
-//                                    'index'
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/SharingPage/view'],
-//                                'actions' => [
-//                                    'view'
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/SharingPage/create'],
-//                                'actions' => [
-//                                    'create',
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/SharingPage/update'],
-//                                'actions' => [
-//                                    'update',
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/SharingPage/delete'],
-//                                'actions' => [
-//                                    'delete'
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/SharingPage/management'],
-//                                'actions' => [
-//                                    'management',
-//                                ]
-//                            ],
-//                            [
-//                                'allow' => true,
-//                                'roles' => ['BI/SharingPage/expire'],
-//                                'actions' => [
-//                                    'expire'
-//                                ]
-//                            ],
-//                        ]
-//                ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' =>
+                        [
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/SharingPage/index'],
+                                'actions' => [
+                                    'index'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/SharingPage/view'],
+                                'actions' => [
+                                    'view'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/SharingPage/create'],
+                                'actions' => [
+                                    'create',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/SharingPage/update'],
+                                'actions' => [
+                                    'update',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/SharingPage/delete'],
+                                'actions' => [
+                                    'delete'
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/SharingPage/management'],
+                                'actions' => [
+                                    'management',
+                                ]
+                            ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/SharingPage/expire'],
+                                'actions' => [
+                                    'expire'
+                                ]
+                            ],
+                        ]
+                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [

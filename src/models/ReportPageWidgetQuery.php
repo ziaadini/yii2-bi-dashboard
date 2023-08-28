@@ -40,6 +40,6 @@ class ReportPageWidgetQuery extends \yii\db\ActiveQuery
 
     public function bySlaveId()
     {
-        return $this->onCondition([ReportPageWidget::tableName() . '.bi_slave_id' => \Yii::$app->params['bi_slave_id']]);
+        return $this->onCondition([ReportPageWidget::tableName() . '.slave_id' => \Yii::$app->params['bi_slave_id']]);
     }
 }

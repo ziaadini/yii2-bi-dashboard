@@ -14,7 +14,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * This is the model class for table "external_data".
  *
  * @property int $id
- * @property int $bi_slave_id
+ * @property int $slave_id
  * @property string $title
  * @property int $status
  * @property int $created_at
@@ -56,9 +56,9 @@ class ExternalData extends ActiveRecord
     public function rules()
     {
         return [
-            [['bi_slave_id'], 'default', 'value' => Yii::$app->params['bi_slave_id']],
-            [['title', 'bi_slave_id'], 'required'],
-            [['status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'bi_slave_id'], 'integer'],
+            [['slave_id'], 'default', 'value' => Yii::$app->params['bi_slave_id']],
+            [['title', 'slave_id'], 'required'],
+            [['status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'slave_id'], 'integer'],
             [['title'], 'string', 'max' => 128],
         ];
     }

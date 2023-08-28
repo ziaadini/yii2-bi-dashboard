@@ -13,7 +13,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * This is the model class for table "report_page".
  *
  * @property int $id
- * @property int $bi_slave_id
+ * @property int $slave_id
  * @property string $title
  * @property int $status
  * @property int|null $range_type
@@ -59,9 +59,9 @@ class ReportPage extends ActiveRecord
     public function rules()
     {
         return [
-            [['bi_slave_id'], 'default', 'value' => Yii::$app->params['bi_slave_id']],
-            [['title', 'bi_slave_id'], 'required'],
-            [['status', 'range_type', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'bi_slave_id'], 'integer'],
+            [['slave_id'], 'default', 'value' => Yii::$app->params['bi_slave_id']],
+            [['title', 'slave_id'], 'required'],
+            [['status', 'range_type', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'slave_id'], 'integer'],
             [['add_on'], 'safe'],
             [['title'], 'string', 'max' => 128]
         ];

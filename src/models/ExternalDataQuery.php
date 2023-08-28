@@ -42,6 +42,6 @@ class ExternalDataQuery extends ActiveQuery
 
     public function bySlaveId()
     {
-        return $this->onCondition([ExternalData::tableName() . '.bi_slave_id' => \Yii::$app->params['bi_slave_id']]);
+        return $this->onCondition([ExternalData::tableName() . '.slave_id' => \Yii::$app->params['bi_slave_id']]);
     }
 }
