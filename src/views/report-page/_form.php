@@ -14,7 +14,7 @@ use yii\web\View;
 
 <div class="report-page-widget-form">
 
-    <?php $form = ActiveForm::begin(['id' => 'page-form', 'enableClientValidation' => true]); ?>
+    <?php $form = ActiveForm::begin(['id' => 'page-form', 'enableslaveValidation' => true]); ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
     <?php if ($model->isNewRecord): ?>

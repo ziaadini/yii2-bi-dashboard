@@ -2647,14 +2647,14 @@ function getSizedParentNode(element) {
 // @function getScale(el: HTMLElement): Object
 // Computes the CSS scale currently applied on the element.
 // Returns an object with `x` and `y` members as horizontal and vertical scales respectively,
-// and `boundingClientRect` as the result of [`getBoundingClientRect()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).
+// and `boundingslaveRect` as the result of [`getBoundingslaveRect()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingslaveRect).
 function getScale(element) {
-	var rect = element.getBoundingClientRect(); // Read-only in old browsers.
+	var rect = element.getBoundingslaveRect(); // Read-only in old browsers.
 
 	return {
 		x: rect.width / element.offsetWidth || 1,
 		y: rect.height / element.offsetHeight || 1,
-		boundingClientRect: rect
+		boundingslaveRect: rect
 	};
 }
 
@@ -2934,17 +2934,17 @@ function getPropagationPath(ev) {
 // `container` (border excluded) or to the whole page if not specified.
 function getMousePosition(e, container) {
 	if (!container) {
-		return new Point(e.clientX, e.clientY);
+		return new Point(e.slaveX, e.slaveY);
 	}
 
 	var scale = getScale(container),
-	    offset = scale.boundingClientRect; // left and top  values are in page scale (like the event clientX/Y)
+	    offset = scale.boundingslaveRect; // left and top  values are in page scale (like the event slaveX/Y)
 
 	return new Point(
-		// offset.left/top values are in page scale (like clientX/Y),
-		// whereas clientLeft/Top (border width) values are the original values (before CSS scale applies).
-		(e.clientX - offset.left) / scale.x - container.clientLeft,
-		(e.clientY - offset.top) / scale.y - container.clientTop
+		// offset.left/top values are in page scale (like slaveX/Y),
+		// whereas slaveLeft/Top (border width) values are the original values (before CSS scale applies).
+		(e.slaveX - offset.left) / scale.x - container.slaveLeft,
+		(e.slaveY - offset.top) / scale.y - container.slaveTop
 	);
 }
 
@@ -4000,8 +4000,8 @@ var Map = Evented.extend({
 	getSize: function () {
 		if (!this._size || this._sizeChanged) {
 			this._size = new Point(
-				this._container.clientWidth || 0,
-				this._container.clientHeight || 0);
+				this._container.slaveWidth || 0,
+				this._container.slaveHeight || 0);
 
 			this._sizeChanged = false;
 		}
@@ -5175,7 +5175,7 @@ var Layers = Control.extend({
 		addClass(this._container, 'leaflet-control-layers-expanded');
 		this._section.style.height = null;
 		var acceptableHeight = this._map.getSize().y - (this._container.offsetTop + 50);
-		if (acceptableHeight < this._section.clientHeight) {
+		if (acceptableHeight < this._section.slaveHeight) {
 			addClass(this._section, 'leaflet-control-layers-scrollbar');
 			this._section.style.height = acceptableHeight + 'px';
 		} else {
@@ -6036,7 +6036,7 @@ var Draggable = Evented.extend({
 		var first = e.touches ? e.touches[0] : e,
 		    sizedParent = getSizedParentNode(this._element);
 
-		this._startPoint = new Point(first.clientX, first.clientY);
+		this._startPoint = new Point(first.slaveX, first.slaveY);
 		this._startPos = getPosition(this._element);
 
 		// Cache the scale, so that we can continuously compensate for it during drag (_onMove).
@@ -6058,7 +6058,7 @@ var Draggable = Evented.extend({
 		}
 
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
-		    offset = new Point(first.clientX, first.clientY)._subtract(this._startPoint);
+		    offset = new Point(first.slaveX, first.slaveY)._subtract(this._startPoint);
 
 		if (!offset.x && !offset.y) { return; }
 		if (Math.abs(offset.x) + Math.abs(offset.y) < this.options.clickTolerance) { return; }
@@ -14159,7 +14159,7 @@ var TapHold = Handler.extend({
 		if (e.touches.length !== 1) { return; }
 
 		var first = e.touches[0];
-		this._startPos = this._newPos = new Point(first.clientX, first.clientY);
+		this._startPos = this._newPos = new Point(first.slaveX, first.slaveY);
 
 		this._holdTimeout = setTimeout(bind(function () {
 			this._cancel();
@@ -14188,7 +14188,7 @@ var TapHold = Handler.extend({
 
 	_onMove: function (e) {
 		var first = e.touches[0];
-		this._newPos = new Point(first.clientX, first.clientY);
+		this._newPos = new Point(first.slaveX, first.slaveY);
 	},
 
 	_isTapValid: function () {
@@ -14203,8 +14203,8 @@ var TapHold = Handler.extend({
 			// detail: 1,
 			screenX: e.screenX,
 			screenY: e.screenY,
-			clientX: e.clientX,
-			clientY: e.clientY,
+			slaveX: e.slaveX,
+			slaveY: e.slaveY,
 			// button: 2,
 			// buttons: 2
 		});

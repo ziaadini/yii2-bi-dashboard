@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-sm-12">
             <div class="sharing-page-form">
-                <?php $form = ActiveForm::begin(['id' => 'sharing-form', 'enableClientValidation' => true]); ?>
+                <?php $form = ActiveForm::begin(['id' => 'sharing-form', 'enableslaveValidation' => true]); ?>
                 <div class="row">
                     <div class="col-md-4">
                         <?= $form->field($model, 'expire_time')->widget(dateRangePicker::class,[

@@ -14,7 +14,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * This is the model class for table "external_data".
  *
  * @property int $id
- * @property int $bi_client_id
+ * @property int $bi_slave_id
  * @property string $title
  * @property int $status
  * @property int $created_at
@@ -56,9 +56,9 @@ class ExternalData extends ActiveRecord
     public function rules()
     {
         return [
-            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
-            [['title', 'bi_client_id'], 'required'],
-            [['status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'bi_client_id'], 'integer'],
+            [['bi_slave_id'], 'default', 'value' => Yii::$app->params['bi_slave_id']],
+            [['title', 'bi_slave_id'], 'required'],
+            [['status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'bi_slave_id'], 'integer'],
             [['title'], 'string', 'max' => 128],
         ];
     }
@@ -114,9 +114,7 @@ class ExternalData extends ActiveRecord
     public static function find()
     {
         $query = new ExternalDataQuery(get_called_class());
-        $query->byClentId();
-        $query->notDeleted();
-        return $query;
+        return $query->bySlaveId()->notDeleted();
     }
 
     public static function itemAlias($type, $code = NULL)

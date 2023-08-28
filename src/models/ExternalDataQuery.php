@@ -40,8 +40,8 @@ class ExternalDataQuery extends ActiveQuery
         ];
     }
 
-    public function byClentId()
+    public function bySlaveId()
     {
-        return $this->onCondition([ExternalData::tableName() . '.bi_client_id' => \Yii::$app->params['bi_client_id']]);
+        return $this->onCondition([ExternalData::tableName() . '.bi_slave_id' => \Yii::$app->params['bi_slave_id']]);
     }
 }

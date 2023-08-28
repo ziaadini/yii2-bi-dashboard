@@ -16,7 +16,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * This is the model class for table "report_widget_result".
  *
  * @property int $id
- * @property int $bi_client_id
+ * @property int $bi_slave_id
  * @property string|null $add_on
  * @property int $widget_id
  * @property int $start_range
@@ -68,9 +68,9 @@ class ReportWidgetResult extends ActiveRecord
     public function rules()
     {
         return [
-            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
-            [['widget_id', 'bi_client_id'], 'required'],
-            [['widget_id', 'start_range', 'end_range', 'status', 'updated_at', 'created_at', 'deleted_at', 'updated_by', 'created_by', 'bi_client_id'], 'integer'],
+            [['bi_slave_id'], 'default', 'value' => Yii::$app->params['bi_slave_id']],
+            [['widget_id', 'bi_slave_id'], 'required'],
+            [['widget_id', 'start_range', 'end_range', 'status', 'updated_at', 'created_at', 'deleted_at', 'updated_by', 'created_by', 'bi_slave_id'], 'integer'],
             [['add_on', 'params'], 'safe'],
             [['run_controller'], 'string', 'max' => 256],
             [['run_action'], 'string', 'max' => 128],
@@ -117,9 +117,7 @@ class ReportWidgetResult extends ActiveRecord
     public static function find()
     {
         $query = new ReportWidgetResultQuery(get_called_class());
-        $query->byClentId();
-        $query->notDeleted();
-        return $query;
+        return $query->bySlaveId()->notDeleted();
     }
 
     public static function itemAlias($type, $code = NULL)

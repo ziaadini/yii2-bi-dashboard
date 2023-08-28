@@ -39,8 +39,8 @@ class ReportYearQuery extends \yii\db\ActiveQuery
         return parent::one($db);
     }
 
-    public function byClentId()
+    public function bySlaveId()
     {
-        return $this->onCondition([ReportYear::tableName() . '.bi_client_id' => \Yii::$app->params['bi_client_id']]);
+        return $this->onCondition([ReportYear::tableName() . '.bi_slave_id' => \Yii::$app->params['bi_slave_id']]);
     }
 }

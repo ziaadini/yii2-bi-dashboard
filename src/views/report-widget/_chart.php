@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="page-content container-fluid text-left">
         <div class="work-report-index card">
             <div class="panel-group m-bot20" id="accordion">
-                <?php Pjax::begin(['id' => 'p-jax-report-page-widget-chart', 'enablePushState' => false,'clientOptions' => ['push' => false],]); ?>
+                <?php Pjax::begin(['id' => 'p-jax-report-page-widget-chart', 'enablePushState' => false,'slaveOptions' => ['push' => false],]); ?>
                 <div class="card-body">
                     <?= Html::dropDownList('your-dropdown-name', Yii::$app->request->get('chart_type'), ReportWidgetResult::itemAlias('Chart'), [
                         'id' => 'chart_type_id',

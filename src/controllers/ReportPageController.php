@@ -36,82 +36,82 @@ class ReportPageController extends Controller
         return array_merge(
             parent::behaviors(),
             [
-                'access' => [
-                    'class' => AccessControl::class,
-                    'rules' =>
-                        [
-                            [
-                                'allow' => true,
-                                'actions' => [
-                                    'view-by-access-key'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/index'],
-                                'actions' => [
-                                    'index'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/view'],
-                                'actions' => [
-                                    'view'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/create'],
-                                'actions' => [
-                                    'create',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/update'],
-                                'actions' => [
-                                    'update',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/delete'],
-                                'actions' => [
-                                    'delete'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/update-widget'],
-                                'actions' => [
-                                    'update-widget'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/add'],
-                                'actions' => [
-                                    'add'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/get-widget-column'],
-                                'actions' => [
-                                    'get-widget-column'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/run-all-widgets'],
-                                'actions' => [
-                                    'run-all-widgets'
-                                ]
-                            ],
-
-                        ]
-                ],
+//                'access' => [
+//                    'class' => AccessControl::class,
+//                    'rules' =>
+//                        [
+//                            [
+//                                'allow' => true,
+//                                'actions' => [
+//                                    'view-by-access-key'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ReportPage/index'],
+//                                'actions' => [
+//                                    'index'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ReportPage/view'],
+//                                'actions' => [
+//                                    'view'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ReportPage/create'],
+//                                'actions' => [
+//                                    'create',
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ReportPage/update'],
+//                                'actions' => [
+//                                    'update',
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ReportPage/delete'],
+//                                'actions' => [
+//                                    'delete'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ReportPage/update-widget'],
+//                                'actions' => [
+//                                    'update-widget'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ReportPage/add'],
+//                                'actions' => [
+//                                    'add'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ReportPage/get-widget-column'],
+//                                'actions' => [
+//                                    'get-widget-column'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ReportPage/run-all-widgets'],
+//                                'actions' => [
+//                                    'run-all-widgets'
+//                                ]
+//                            ],
+//
+//                        ]
+//                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
@@ -218,7 +218,6 @@ class ReportPageController extends Controller
         } else {
             $rangeDateNumber = 12;
         }
-
         return $this->render('view', [
             'model' => $model,
             'pageWidgets' => $model->reportPageWidgets,

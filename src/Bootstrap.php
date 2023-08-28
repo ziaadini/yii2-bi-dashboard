@@ -23,8 +23,8 @@ class Bootstrap implements BootstrapInterface
         $app->set('pdate', [
             'class' => Pdate::class,
         ]);
-        if (!(Yii::$app->params['bi_client_id'] ?? null)) {
-            throw new InvalidConfigException(Yii::t('biDashboard', 'The bi_client_id parameter is not set or empty.'));
+        if (!(Yii::$app->params['bi_slave_id'] ?? null)) {
+            throw new InvalidConfigException(Yii::t('biDashboard', 'The bi_slave_id parameter is not set or empty.'));
         }
         Yii::$app->params['bsVersion'] = 4;
 

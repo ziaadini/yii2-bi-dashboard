@@ -15,19 +15,19 @@ class DefaultController extends Controller
         return array_merge(
             parent::behaviors(),
             [
-                'access' => [
-                    'class' => AccessControl::class,
-                    'rules' =>
-                        [
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/Default/index'],
-                                'actions' => [
-                                    'index'
-                                ]
-                            ],
-                        ]
-                ],
+//                'access' => [
+//                    'class' => AccessControl::class,
+//                    'rules' =>
+//                        [
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/Default/index'],
+//                                'actions' => [
+//                                    'index'
+//                                ]
+//                            ],
+//                        ]
+//                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [

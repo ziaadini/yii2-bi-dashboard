@@ -29,26 +29,26 @@ class ReportModelClassController extends Controller
         return array_merge(
             parent::behaviors(),
             [
-                'access' => [
-                    'class' => AccessControl::class,
-                    'rules' =>
-                        [
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportModelClass/index'],
-                                'actions' => [
-                                    'index'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportModelClass/update'],
-                                'actions' => [
-                                    'update'
-                                ]
-                            ],
-                        ],
-                ],
+//                'access' => [
+//                    'class' => AccessControl::class,
+//                    'rules' =>
+//                        [
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ReportModelClass/index'],
+//                                'actions' => [
+//                                    'index'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ReportModelClass/update'],
+//                                'actions' => [
+//                                    'update'
+//                                ]
+//                            ],
+//                        ],
+//                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [

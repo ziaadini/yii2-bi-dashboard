@@ -37,7 +37,7 @@ return [
 
 ### Important
 
-Important: You need to set the bi_client_id parameter in your params.php configuration file. This parameter is crucial
+Important: You need to set the bi_slave_id parameter in your params.php configuration file. This parameter is crucial
 for the proper functioning of the bidashboard extension. Make sure it's set to a valid value before proceeding further.
 
 ### Env

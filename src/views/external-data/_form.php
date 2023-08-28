@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 
 <div class="external-data-form">
 
-    <?php $form = ActiveForm::begin(['id' => 'external-data-form', 'enableClientValidation' => true]); ?>
+    <?php $form = ActiveForm::begin(['id' => 'external-data-form', 'enableslaveValidation' => true]); ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 

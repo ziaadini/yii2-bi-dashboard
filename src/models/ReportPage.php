@@ -13,7 +13,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * This is the model class for table "report_page".
  *
  * @property int $id
- * @property int $bi_client_id
+ * @property int $bi_slave_id
  * @property string $title
  * @property int $status
  * @property int|null $range_type
@@ -59,9 +59,9 @@ class ReportPage extends ActiveRecord
     public function rules()
     {
         return [
-            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
-            [['title', 'bi_client_id'], 'required'],
-            [['status', 'range_type', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'bi_client_id'], 'integer'],
+            [['bi_slave_id'], 'default', 'value' => Yii::$app->params['bi_slave_id']],
+            [['title', 'bi_slave_id'], 'required'],
+            [['status', 'range_type', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'bi_slave_id'], 'integer'],
             [['add_on'], 'safe'],
             [['title'], 'string', 'max' => 128]
         ];
@@ -128,9 +128,7 @@ class ReportPage extends ActiveRecord
     public static function find()
     {
         $query = new ReportPageQuery(get_called_class());
-        $query->byClentId();
-        $query->notDeleted();
-        return $query;
+        return $query->bySlaveId()->notDeleted();
     }
 
     public static function itemAlias($type, $code = NULL)

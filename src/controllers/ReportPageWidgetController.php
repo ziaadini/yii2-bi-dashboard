@@ -26,19 +26,19 @@ class ReportPageWidgetController extends Controller
         return array_merge(
             parent::behaviors(),
             [
-                'access' => [
-                    'class' => AccessControl::class,
-                    'rules' =>
-                        [
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPageWidget/delete'],
-                                'actions' => [
-                                    'delete'
-                                ]
-                            ],
-                        ]
-                ],
+//                'access' => [
+//                    'class' => AccessControl::class,
+//                    'rules' =>
+//                        [
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ReportPageWidget/delete'],
+//                                'actions' => [
+//                                    'delete'
+//                                ]
+//                            ],
+//                        ]
+//                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [

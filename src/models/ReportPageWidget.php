@@ -12,7 +12,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * This is the model class for table "report_page_widget".
  *
  * @property int $id
- * @property int $bi_client_id
+ * @property int $bi_slave_id
  * @property int $page_id
  * @property int $widget_id
  * @property string|null $report_widget_field
@@ -54,9 +54,9 @@ class ReportPageWidget extends ActiveRecord
     public function rules()
     {
         return [
-            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
-            [['page_id', 'widget_id', 'report_widget_field', 'bi_client_id'], 'required'],
-            [['page_id', 'widget_id', 'report_widget_field_format', 'status', 'bi_client_id'], 'integer'],
+            [['bi_slave_id'], 'default', 'value' => Yii::$app->params['bi_slave_id']],
+            [['page_id', 'widget_id', 'report_widget_field', 'bi_slave_id'], 'required'],
+            [['page_id', 'widget_id', 'report_widget_field_format', 'status', 'bi_slave_id'], 'integer'],
             [['report_widget_field'], 'string', 'max' => 64],
             [['page_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportPage::class, 'targetAttribute' => ['page_id' => 'id']],
             [['widget_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportWidget::class, 'targetAttribute' => ['widget_id' => 'id']],
@@ -115,9 +115,7 @@ class ReportPageWidget extends ActiveRecord
     public static function find()
     {
         $query = new ReportPageWidgetQuery(get_called_class());
-        $query->byClentId();
-        $query->notDeleted();
-        return $query;
+        return $query->bySlaveId()->notDeleted();
     }
 
     public static function itemAlias($type, $code = NULL)

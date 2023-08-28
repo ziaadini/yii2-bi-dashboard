@@ -32,48 +32,48 @@ class ExternalDataController extends Controller
         return array_merge(
             parent::behaviors(),
             [
-                'access' => [
-                    'class' => AccessControl::class,
-                    'rules' =>
-                        [
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ExternalData/index'],
-                                'actions' => [
-                                    'index'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ExternalData/view'],
-                                'actions' => [
-                                    'view'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ExternalData/create'],
-                                'actions' => [
-                                    'create',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ExternalData/update'],
-                                'actions' => [
-                                    'update',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ExternalData/delete'],
-                                'actions' => [
-                                    'delete'
-                                ]
-                            ],
-
-                        ]
-                ],
+//                'access' => [
+//                    'class' => AccessControl::class,
+//                    'rules' =>
+//                        [
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ExternalData/index'],
+//                                'actions' => [
+//                                    'index'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ExternalData/view'],
+//                                'actions' => [
+//                                    'view'
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ExternalData/create'],
+//                                'actions' => [
+//                                    'create',
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ExternalData/update'],
+//                                'actions' => [
+//                                    'update',
+//                                ]
+//                            ],
+//                            [
+//                                'allow' => true,
+//                                'roles' => ['BI/ExternalData/delete'],
+//                                'actions' => [
+//                                    'delete'
+//                                ]
+//                            ],
+//
+//                        ]
+//                ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [

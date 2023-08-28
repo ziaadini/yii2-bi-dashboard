@@ -2919,7 +2919,7 @@
 		 * @returns {number}
 		 */
 		getViewportWidth: function(){
-			return Math.max(document.documentElement.clientWidth, window.innerWidth, 0);
+			return Math.max(document.documentElement.slaveWidth, window.innerWidth, 0);
 		}
 	});
 

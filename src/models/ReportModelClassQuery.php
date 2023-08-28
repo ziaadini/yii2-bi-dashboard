@@ -40,7 +40,7 @@ class ReportModelClassQuery extends \yii\db\ActiveQuery
         ];
     }
 
-    public function byClentId()
+    public function bySlaveId()
     {
         return $this->onCondition([ReportModelClass::tableName() . '.bi_client_id' => \Yii::$app->params['bi_client_id']]);
     }

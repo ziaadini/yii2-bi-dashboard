@@ -12,7 +12,7 @@ use sadi01\dateRangePicker\dateRangePicker;
 
 <div class="external-data-value-form">
 
-    <?php $form = ActiveForm::begin(['id' => 'external-data-value-form','enableClientValidation' => true]); ?>
+    <?php $form = ActiveForm::begin(['id' => 'external-data-value-form','enableslaveValidation' => true]); ?>
 
     <?= $form->field($model, 'value')->textInput(['maxlength' => true]) ?>
 

@@ -88,9 +88,7 @@ class ReportModelClass extends ActiveRecord
     public static function find()
     {
         $query = new ReportModelClassQuery(get_called_class());
-        $query->byClentId();
-        $query->notDeleted();
-        return $query;
+        return $query->bySlaveId()->notDeleted();
     }
 
     public function afterSave($insert, $changedAttributes)

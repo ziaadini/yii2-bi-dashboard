@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = Yii::t('biDashboard', 'Update');
             <div class="panel-group m-bot20" id="accordion">
                 <div class="card-body">
                     <div class="report-year-form">
-                        <?php $form = ActiveForm::begin(['enableClientValidation' => true]); ?>
+                        <?php $form = ActiveForm::begin(['enableslaveValidation' => true]); ?>
                         <?= $form->field($model, 'title')->textInput() ?>
                         <?= $form->field($model, 'description')->textInput() ?>
                         <div class="form-group">
