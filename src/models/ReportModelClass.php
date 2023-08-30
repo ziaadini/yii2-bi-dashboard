@@ -15,7 +15,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * This is the model class for table "{{%report_model_class}}".
  *
  * @property int $id
- * @property int bi_client_id
+ * @property int $slave_id
  * @property string $model_class
  * @property string $title
  * @property int $status
@@ -55,10 +55,10 @@ class ReportModelClass extends ActiveRecord
     public function rules()
     {
         return [
-            [['bi_client_id'], 'default', 'value' => Yii::$app->params['bi_client_id']],
-            [['model_class', 'title', 'bi_client_id'], 'required'],
+            [['slave_id'], 'default', 'value' => Yii::$app->params['bi_slave_id']],
+            [['model_class', 'title', 'slave_id'], 'required'],
             [['title'], 'required', 'on' => $this::SCENARIO_UPDATE],
-            [['status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'bi_client_id'], 'integer'],
+            [['status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'slave_id'], 'integer'],
             [['model_class', 'title'], 'string', 'max' => 128],
         ];
     }

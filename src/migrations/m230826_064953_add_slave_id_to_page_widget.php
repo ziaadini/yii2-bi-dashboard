@@ -17,9 +17,10 @@ class m230826_064953_add_slave_id_to_page_widget extends Migration
     public function safeUp()
     {
         $this->addColumn('{{%report_page_widget}}', 'slave_id', $this->tinyInteger()->unsigned()->notNull()->after('id'));
-        $this->alterColumn('{{%report_page_widget}}', 'id', $this->integer());
+        $this->alterColumn('{{%report_page_widget}}', 'id', $this->integer()->unsigned()->notNull());
         $this->dropPrimaryKey('PRIMARYKEY', '{{%report_page_widget}}');
         $this->addPrimaryKey('PRIMARYKEY', '{{%report_page_widget}}', ['id', 'slave_id']);
+        $this->alterColumn('{{%report_page_widget}}', 'id', $this->integer()->unsigned()->notNull()->append('AUTO_INCREMENT'));
     }
 
     public function safeDown()
@@ -28,5 +29,6 @@ class m230826_064953_add_slave_id_to_page_widget extends Migration
         $this->alterColumn('{{%report_page_widget}}', 'id', $this->primaryKey());
         $this->dropPrimaryKey('PRIMARYKEY', '{{%report_page_widget}}');
         $this->addPrimaryKey('PRIMARYKEY', '{{%report_page_widget}}', 'id');
+        $this->alterColumn('{{%report_page_widget}}', 'id', $this->integer()->append('PRIMARY KEY'));
     }
 }

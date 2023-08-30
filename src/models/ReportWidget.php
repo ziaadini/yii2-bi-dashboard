@@ -77,7 +77,6 @@ class ReportWidget extends ActiveRecord
     public function rules()
     {
         return [
-            [['slave_id'], 'default', 'value' => Yii::$app->params['bi_slave_id']],
             [['title', 'search_model_method', 'search_model_class', 'search_route', 'range_type', 'slave_id'], 'required'],
             [['title'], 'required', 'on' => $this::SCENARIO_UPDATE],
             [['description'], 'safe', 'on' => $this::SCENARIO_UPDATE],
@@ -88,6 +87,15 @@ class ReportWidget extends ActiveRecord
             [['description', 'search_model_class'], 'string', 'max' => 255],
         ];
     }
+
+    public function beforeValidate()
+    {
+        if ($this->isNewRecord) {
+            $this->slave_id = Yii::$app->params['bi_slave_id'];
+        }
+        return parent::beforeValidate();
+    }
+
 
     /**
      * {@inheritdoc}
