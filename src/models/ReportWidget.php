@@ -77,7 +77,8 @@ class ReportWidget extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'search_model_method', 'search_model_class', 'search_route', 'range_type', 'slave_id'], 'required'],
+            [['slave_id'], 'safe'],
+            [['title', 'search_model_method', 'search_model_class', 'search_route', 'range_type'], 'required'],
             [['title'], 'required', 'on' => $this::SCENARIO_UPDATE],
             [['description'], 'safe', 'on' => $this::SCENARIO_UPDATE],
             ['search_model_method', 'validateSearchModelMethod'],

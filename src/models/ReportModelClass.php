@@ -55,8 +55,8 @@ class ReportModelClass extends ActiveRecord
     public function rules()
     {
         return [
-            [['slave_id'], 'default', 'value' => Yii::$app->params['bi_slave_id']],
-            [['model_class', 'title', 'slave_id'], 'required'],
+            [['slave_id'], 'safe'],
+            [['model_class', 'title'], 'required'],
             [['title'], 'required', 'on' => $this::SCENARIO_UPDATE],
             [['status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'slave_id'], 'integer'],
             [['model_class', 'title'], 'string', 'max' => 128],

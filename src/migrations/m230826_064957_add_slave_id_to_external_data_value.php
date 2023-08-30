@@ -24,10 +24,11 @@ class m230826_064957_add_slave_id_to_external_data_value extends Migration
 
     public function safeDown()
     {
-        $this->dropColumn('{{%external_data_value}}', 'slave_id');
-        $this->alterColumn('{{%external_data_value}}', 'id', $this->primaryKey());
+        $this->alterColumn('{{%external_data_value}}', 'id', $this->integer()->unsigned()->notNull());
         $this->dropPrimaryKey('PRIMARYKEY', '{{%external_data_value}}');
         $this->addPrimaryKey('PRIMARYKEY', '{{%external_data_value}}', 'id');
-        $this->alterColumn('{{%report_page_widget}}', 'id', $this->integer()->append('PRIMARY KEY'));
+        $this->dropColumn('{{%external_data_value}}', 'slave_id');
+        $this->alterColumn('{{%external_data_value}}', 'id', $this->integer()->unsigned()->notNull()->append('AUTO_INCREMENT'));
     }
+
 }

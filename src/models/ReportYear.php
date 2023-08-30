@@ -49,10 +49,9 @@ class ReportYear extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['slave_id'], 'default', 'value' => Yii::$app->params['bi_slave_id']],
-            [['year', 'slave_id'], 'required'],
+            [['year'], 'required'],
             [['year'], 'unique'],
-            [['year', 'slave_id'], 'integer'],
+            [['year'], 'integer'],
             ['year', 'compare', 'operator' => '>', 'compareValue' => (int)(CoreHelper::getCurrentYear()) - 100],
             ['year', 'compare', 'operator' => '<', 'compareValue' => (int)(CoreHelper::getCurrentYear()) + 100],
             [['year', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at'], 'integer'],
