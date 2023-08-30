@@ -59,9 +59,11 @@ class SharingPage extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['slave_id'], 'safe'],
+            [['slave_id'], 'default', 'value' => function () {
+                return Yii::$app->params['bi_slave_id'] ?? null;
+            }],
             [['page_id', 'expire_time'], 'required'],
-            [['page_id', 'expire_time'], 'integer'],
+            [['page_id', 'expire_time', 'slave_id'], 'integer'],
             [['access_key'], 'string', 'max' => 64],
             [['access_key'], 'unique'],
             [['page_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportPage::class, 'targetAttribute' => ['page_id' => 'id']],

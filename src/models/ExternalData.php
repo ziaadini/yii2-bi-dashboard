@@ -56,7 +56,9 @@ class ExternalData extends ActiveRecord
     public function rules()
     {
         return [
-            [['slave_id'], 'safe'],
+            [['slave_id'], 'default', 'value' => function () {
+                return Yii::$app->params['bi_slave_id'] ?? null;
+            }],
             [['title'], 'required'],
             [['status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'slave_id'], 'integer'],
             [['title'], 'string', 'max' => 128],

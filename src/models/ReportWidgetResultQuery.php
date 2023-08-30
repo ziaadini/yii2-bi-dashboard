@@ -40,6 +40,10 @@ class ReportWidgetResultQuery extends \yii\db\ActiveQuery
 
     public function bySlaveId()
     {
-        return $this->onCondition([ReportWidgetResult::tableName() . '.slave_id' => \Yii::$app->params['bi_slave_id']]);
+        if (\Yii::$app->params['bi_slave_id']) {
+            return $this->onCondition([ReportWidgetResult::tableName() . '.slave_id' => \Yii::$app->params['bi_slave_id']]);
+        } else {
+            return $this;
+        }
     }
 }

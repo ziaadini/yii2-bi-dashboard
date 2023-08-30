@@ -59,7 +59,9 @@ class ReportPage extends ActiveRecord
     public function rules()
     {
         return [
-            [['slave_id'], 'safe'],
+            [['slave_id'], 'default', 'value' => function () {
+                return Yii::$app->params['bi_slave_id'] ?? null;
+            }],
             [['title'], 'required'],
             [['status', 'range_type', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'slave_id'], 'integer'],
             [['add_on'], 'safe'],

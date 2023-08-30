@@ -54,7 +54,9 @@ class ReportPageWidget extends ActiveRecord
     public function rules()
     {
         return [
-            [['slave_id'], 'safe'],
+            [['slave_id'], 'default', 'value' => function () {
+                return Yii::$app->params['bi_slave_id'] ?? null;
+            }],
             [['page_id', 'widget_id', 'report_widget_field'], 'required'],
             [['page_id', 'widget_id', 'report_widget_field_format', 'status', 'slave_id'], 'integer'],
             [['report_widget_field'], 'string', 'max' => 64],

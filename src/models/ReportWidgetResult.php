@@ -68,7 +68,9 @@ class ReportWidgetResult extends ActiveRecord
     public function rules()
     {
         return [
-            [['slave_id'], 'safe'],
+            [['slave_id'], 'default', 'value' => function () {
+                return Yii::$app->params['bi_slave_id'] ?? null;
+            }],
             [['widget_id'], 'required'],
             [['widget_id', 'start_range', 'end_range', 'status', 'updated_at', 'created_at', 'deleted_at', 'updated_by', 'created_by', 'slave_id'], 'integer'],
             [['add_on', 'params'], 'safe'],
