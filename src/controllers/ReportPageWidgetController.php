@@ -19,8 +19,6 @@ class ReportPageWidgetController extends Controller
 {
     use AjaxValidationTrait;
 
-    public $layout = 'bid_main';
-
     public function behaviors(): array
     {
         return array_merge(

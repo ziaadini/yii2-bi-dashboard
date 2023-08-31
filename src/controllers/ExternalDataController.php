@@ -21,7 +21,6 @@ class ExternalDataController extends Controller
 {
     use AjaxValidationTrait;
 
-    public $layout = 'bid_main';
 
 
     /**

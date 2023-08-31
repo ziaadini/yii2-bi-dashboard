@@ -20,9 +20,6 @@ use yii\web\Response;
 class ReportYearController extends Controller
 {
     use AjaxValidationTrait;
-
-    public $layout = 'bid_main';
-
     /**
      * @inheritDoc
      */
