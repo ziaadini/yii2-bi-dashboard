@@ -12,6 +12,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * This is the model class for table "report_year".
  *
  * @property int $id
+ * @property int $slave_id
  * @property int $year
  * @property int $created_at
  * @property int|null $created_by
@@ -33,6 +34,7 @@ class ReportYear extends \yii\db\ActiveRecord
     {
         return Yii::$app->biDB;
     }
+
     /**
      * {@inheritdoc}
      */
@@ -86,8 +88,7 @@ class ReportYear extends \yii\db\ActiveRecord
     public static function find(): ReportYearQuery
     {
         $query = new ReportYearQuery(get_called_class());
-        $query->notDeleted();
-        return $query;
+        return  $query->notDeleted();
     }
 
     public static function itemAlias($type, $code = NULL)

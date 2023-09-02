@@ -8,7 +8,6 @@ use yii\web\Controller;
 
 class DefaultController extends Controller
 {
-    public $layout = 'bid_main';
 
     public function behaviors()
     {

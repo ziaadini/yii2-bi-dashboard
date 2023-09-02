@@ -20,8 +20,6 @@ class ExternalDataValueController extends Controller
 
     use AjaxValidationTrait;
 
-    public $layout = 'bid_main';
-
     /**
      * @inheritDoc
      */

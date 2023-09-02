@@ -40,4 +40,13 @@ class ReportPageQuery extends ActiveQuery
     {
         return parent::one($db);
     }
+
+    public function bySlaveId()
+    {
+        if (\Yii::$app->params['bi_slave_id'] ?? null) {
+            return $this->onCondition([ReportPage::tableName() . '.slave_id' => \Yii::$app->params['bi_slave_id']]);
+        } else {
+            return $this;
+        }
+    }
 }

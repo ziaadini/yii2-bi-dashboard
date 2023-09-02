@@ -21,7 +21,6 @@ class ExternalDataController extends Controller
 {
     use AjaxValidationTrait;
 
-    public $layout = 'bid_main';
 
 
     /**
@@ -79,8 +78,8 @@ class ExternalDataController extends Controller
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'create' => ['GET','POST'],
-                        'update' => ['GET','POST'],
+                        'create' => ['GET', 'POST'],
+                        'update' => ['GET', 'POST'],
                         'delete' => ['POST', 'DELETE'],
                     ],
                 ],

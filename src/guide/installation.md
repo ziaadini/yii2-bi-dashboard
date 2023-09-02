@@ -34,10 +34,14 @@ return [
     ]
 ];
 ```
-Env
--------------
-You have to add the database configuration to env, its example is in - [Env.example](./src/env-config/.env.example)
 
+### Important
+
+Important: You need to set the bi_slave_id parameter in your params.php configuration file. This parameter is crucial
+for the proper functioning of the bidashboard extension. Make sure it's set to a valid value before proceeding further.
+
+### Env
+You have to add the database configuration to env, its example is in - [Env.example](./src/env-config/.env.example)
 
 ### DB Migrations
 
@@ -66,8 +70,10 @@ Or, Add migrations path in console application config:
 
 ## Handling PersianDate4MySQL in Migrations
 
-The [PersianDate4MySQL](https://github.com/zoghal/PersianDate4MySQL) library is used to handle Persian (Jalali) dates in MySQL migrations. The library provides six
+The [PersianDate4MySQL](https://github.com/zoghal/PersianDate4MySQL) library is used to handle Persian (Jalali) dates in
+MySQL migrations. The library provides six
 handy functions that enable you to work with Persian dates seamlessly.
+
 ## License
 
 BSD 3-Clause License

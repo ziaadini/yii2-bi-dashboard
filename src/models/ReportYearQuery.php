@@ -20,6 +20,7 @@ class ReportYearQuery extends \yii\db\ActiveQuery
             ],
         ];
     }
+
     /**
      * {@inheritdoc}
      * @return ReportYear[]|array

@@ -26,8 +26,6 @@ class ReportPageController extends Controller
     use AjaxValidationTrait;
     use CoreTrait;
 
-    public $layout = 'bid_main';
-
     /**
      * @inheritDoc
      */
@@ -218,7 +216,6 @@ class ReportPageController extends Controller
         } else {
             $rangeDateNumber = 12;
         }
-
         return $this->render('view', [
             'model' => $model,
             'pageWidgets' => $model->reportPageWidgets,

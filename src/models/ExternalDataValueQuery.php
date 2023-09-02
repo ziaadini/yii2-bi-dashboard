@@ -4,6 +4,7 @@ namespace sadi01\bidashboard\models;
 
 use yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
 use yii\db\ActiveQuery;
+
 /**
  * This is the ActiveQuery class for [[ExternalDataValue]].
  *
@@ -37,5 +38,14 @@ class ExternalDataValueQuery extends ActiveQuery
                 'class' => SoftDeleteQueryBehavior::class,
             ],
         ];
+    }
+
+    public function bySlaveId()
+    {
+        if (\Yii::$app->params['bi_slave_id'] ?? null) {
+            return $this->onCondition([ExternalDataValue::tableName() . '.slave_id' => \Yii::$app->params['bi_slave_id']]);
+        } else {
+            return $this;
+        }
     }
 }

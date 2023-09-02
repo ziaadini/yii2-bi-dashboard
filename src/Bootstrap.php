@@ -23,7 +23,6 @@ class Bootstrap implements BootstrapInterface
         $app->set('pdate', [
             'class' => Pdate::class,
         ]);
-
         Yii::$app->params['bsVersion'] = 4;
 
         if (!isset($app->get('i18n')->translations['biDashboard*'])) {

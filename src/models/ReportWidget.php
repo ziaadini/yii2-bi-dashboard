@@ -10,7 +10,6 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 
@@ -18,6 +17,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * This is the model class for table "report_widget".
  *
  * @property int $id
+ * @property int $slave_id
  * @property string $title
  * @property string|null $description
  * @property string|null $search_model_class
@@ -76,16 +76,20 @@ class ReportWidget extends ActiveRecord
     public function rules()
     {
         return [
+            [['slave_id'], 'default', 'value' => function () {
+                return Yii::$app->params['bi_slave_id'] ?? null;
+            }],
             [['title', 'search_model_method', 'search_model_class', 'search_route', 'range_type'], 'required'],
             [['title'], 'required', 'on' => $this::SCENARIO_UPDATE],
             [['description'], 'safe', 'on' => $this::SCENARIO_UPDATE],
             ['search_model_method', 'validateSearchModelMethod'],
-            [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by'], 'integer'],
+            [['status', 'deleted_at', 'range_type', 'visibility', 'updated_at', 'created_at', 'updated_by', 'created_by', 'slave_id'], 'integer'],
             [['add_on', 'search_model_class', 'params', 'outputColumn'], 'safe'],
             [['title', 'search_model_method', 'search_model_run_result_view', 'search_route', 'search_model_form_name'], 'string', 'max' => 128],
             [['description', 'search_model_class'], 'string', 'max' => 255],
         ];
     }
+
 
     /**
      * {@inheritdoc}
@@ -344,8 +348,7 @@ class ReportWidget extends ActiveRecord
     public static function find()
     {
         $query = new ReportWidgetQuery(get_called_class());
-        $query->notDeleted();
-        return $query;
+        return $query->bySlaveId()->notDeleted();
     }
 
     public static function itemAlias($type, $code = NULL)

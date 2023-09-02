@@ -22,9 +22,6 @@ class ReportWidgetController extends Controller
 {
     use AjaxValidationTrait;
     use CoreTrait;
-
-    public $layout = 'bid_main';
-
     /**
      * @inheritDoc
      */

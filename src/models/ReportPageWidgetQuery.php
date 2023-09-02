@@ -19,6 +19,7 @@ class ReportPageWidgetQuery extends \yii\db\ActiveQuery
             ],
         ];
     }
+
     /**
      * {@inheritdoc}
      * @return ReportPageWidget[]|array
@@ -35,5 +36,14 @@ class ReportPageWidgetQuery extends \yii\db\ActiveQuery
     public function one($db = null)
     {
         return parent::one($db);
+    }
+
+    public function bySlaveId()
+    {
+        if (\Yii::$app->params['bi_slave_id'] ?? null) {
+            return $this->onCondition([ReportPageWidget::tableName() . '.slave_id' => \Yii::$app->params['bi_slave_id']]);
+        } else {
+            return $this;
+        }
     }
 }

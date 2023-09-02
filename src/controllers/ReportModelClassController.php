@@ -19,7 +19,6 @@ class ReportModelClassController extends Controller
 {
     use AjaxValidationTrait;
 
-    public $layout = 'bid_main';
 
     /**
      * @inheritDoc
