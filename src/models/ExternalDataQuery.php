@@ -42,7 +42,7 @@ class ExternalDataQuery extends ActiveQuery
 
     public function bySlaveId()
     {
-        if (\Yii::$app->params['bi_slave_id']) {
+        if (\Yii::$app->params['bi_slave_id'] ?? null) {
             return $this->onCondition([ExternalData::tableName() . '.slave_id' => \Yii::$app->params['bi_slave_id']]);
         } else {
             return $this;

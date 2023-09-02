@@ -10,7 +10,6 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 
@@ -89,14 +88,6 @@ class ReportWidget extends ActiveRecord
             [['title', 'search_model_method', 'search_model_run_result_view', 'search_route', 'search_model_form_name'], 'string', 'max' => 128],
             [['description', 'search_model_class'], 'string', 'max' => 255],
         ];
-    }
-
-    public function beforeValidate()
-    {
-        if ($this->isNewRecord) {
-            $this->slave_id = Yii::$app->params['bi_slave_id'];
-        }
-        return parent::beforeValidate();
     }
 
 

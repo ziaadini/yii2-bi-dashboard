@@ -21,5 +21,5 @@ class Module extends \yii\base\Module
      * The module name
      */
     const MODULE = "bidashboard";
-    public $layout="bid_main.php";
+    public $layout="bid_main";
 }
