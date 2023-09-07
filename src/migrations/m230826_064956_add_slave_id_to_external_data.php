@@ -24,9 +24,9 @@ class m230826_064956_add_slave_id_to_external_data extends Migration
         $this->addForeignKey(
             'external_data_value_FK_external_data_id',
             '{{%external_data_value}}',
-            'external_data_id',
+            ['external_data_id', 'slave_id'],
             '{{%external_data}}',
-            'id',
+            ['id', 'slave_id'],
             'RESTRICT',
             'RESTRICT'
         );
