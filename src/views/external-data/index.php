@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-size' => 'modal-md',
                             'data-title' => Yii::t('app', 'create'),
                             'data-toggle' => 'modal',
-                            'data-target' => '#modal-pjax',
+                            'data-target' => '#modal-pjax-bi',
                             'data-url' => Url::to(['/bidashboard/external-data/create']),
                             'data-handle-form-submit' => 1,
                             'data-reload-pjax-container' => 'p-jax-external-data'
@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'data-size' => 'modal-md',
                                             'data-title' => Yii::t('biDashboard', 'update'),
                                             'data-toggle' => 'modal',
-                                            'data-target' => '#modal-pjax',
+                                            'data-target' => '#modal-pjax-bi',
                                             'data-url' => Url::to(['/bidashboard/external-data/update', 'id' => $model->id]),
                                             'data-handle-form-submit' => 1,
                                             'data-reload-pjax-container' => 'p-jax-external-data'
@@ -103,7 +103,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'data-size' => 'modal-md',
                                         'data-title' => Yii::t('biDashboard', 'Add new value'),
                                         'data-toggle' => 'modal',
-                                        'data-target' => '#modal-pjax',
+                                        'data-target' => '#modal-pjax-bi',
                                         'data-url' => Url::to(['/bidashboard/external-data-value/create', 'external_data_id' => $model->id]),
                                         'data-handle-form-submit' => 1,
                                         'data-reload-pjax-container' => 'p-jax-external-data',
