@@ -36,34 +36,36 @@ class Bootstrap implements BootstrapInterface
             ];
         }
 
-        $parameter = null;
-        if (!Env::get('BI_DB_DSN')) {
-            $parameter = 'BI_DB_DSN';
-        } elseif (!Env::get('BI_DB_USERNAME')) {
-            $parameter = 'BI_DB_USERNAME';
-        } elseif (!Env::get('BI_DB_PASSWORD')) {
-            $parameter = 'BI_DB_PASSWORD';
+        if (!Yii::$app->has('biDB')) {
+            $parameter = null;
+            if (!Env::get('BI_DB_DSN')) {
+                $parameter = 'BI_DB_DSN';
+            } elseif (!Env::get('BI_DB_USERNAME')) {
+                $parameter = 'BI_DB_USERNAME';
+            } elseif (!Env::get('BI_DB_PASSWORD')) {
+                $parameter = 'BI_DB_PASSWORD';
+            }
+            if ($parameter) {
+                throw new InvalidConfigException(Yii::t('biDashboard', 'The {env_parameter} parameter is not set, add the parameter in the env file of the project.', ['env_parameter' => $parameter]));
+            }
+    
+            Yii::$app->setComponents([
+                'biDB' => [
+                    'class' => 'yii\db\Connection',
+                    'dsn' => Env::get('BI_DB_DSN'),
+                    'username' => Env::get('BI_DB_USERNAME'),
+                    'password' => Env::get('BI_DB_PASSWORD'),
+                    'charset' => Env::get('BI_DB_CHARSET'),
+                    'tablePrefix' => Env::get('BI_DB_TABLE_PREFIX'),
+                    'enableQueryCache' => Env::get('BI_DB_ENABLE_QUERY_CACHE', true),
+                    'queryCacheDuration' => Env::get('BI_DB_QUERY_CACHE_DURATION', 5), // five seconds
+                    'enableSchemaCache' => Env::get('BI_DB_ENABLE_SCHEMA_CACHE', true),
+                    'schemaCacheDuration' => Env::get('BI_DB_SCHEMA_CACHE_DURATION', 86400), // 3600*24, 1DAY
+                    'schemaCache' => Env::get('BI_DB_SCHEMA_CACHE_COMPONENT', 'cache'),
+    
+                ],
+            ]);
         }
-        if ($parameter) {
-            throw new InvalidConfigException(Yii::t('biDashboard', 'The {env_parameter} parameter is not set, add the parameter in the env file of the project.', ['env_parameter' => $parameter]));
-        }
-
-        Yii::$app->setComponents([
-            'biDB' => [
-                'class' => 'yii\db\Connection',
-                'dsn' => Env::get('BI_DB_DSN'),
-                'username' => Env::get('BI_DB_USERNAME'),
-                'password' => Env::get('BI_DB_PASSWORD'),
-                'charset' => Env::get('BI_DB_CHARSET'),
-                'tablePrefix' => Env::get('BI_DB_TABLE_PREFIX'),
-                'enableQueryCache' => Env::get('BI_DB_ENABLE_QUERY_CACHE', true),
-                'queryCacheDuration' => Env::get('BI_DB_QUERY_CACHE_DURATION', 5), // five seconds
-                'enableSchemaCache' => Env::get('BI_DB_ENABLE_SCHEMA_CACHE', true),
-                'schemaCacheDuration' => Env::get('BI_DB_SCHEMA_CACHE_DURATION', 86400), // 3600*24, 1DAY
-                'schemaCache' => Env::get('BI_DB_SCHEMA_CACHE_COMPONENT', 'cache'),
-
-            ],
-        ]);
 
         Yii::$app->setModules([
             'gridview' => [
