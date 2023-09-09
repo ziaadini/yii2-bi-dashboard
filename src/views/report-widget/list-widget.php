@@ -3,11 +3,12 @@
 use sadi01\bidashboard\models\ReportWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\ActionColumn;
-use yii\grid\GridView;
+use sadi01\bidashboard\widgets\grid\ActionColumn;
+use sadi01\bidashboard\widgets\grid\GridView;
 use yii\web\View;
 use sadi01\bidashboard\models\search\ReportWidgetSearch;
 use yii\data\ActiveDataProvider;
+use yii\widgets\Pjax;
 
 /** @var View $this */
 /** @var ReportWidgetSearch $searchModel */
@@ -17,6 +18,7 @@ $this->title = Yii::t('biDashboard', 'Report Widgets');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="page-content container-fluid text-left">
+    <?php Pjax::begin(['id' => 'p-jax-report-list-widgets-bi', 'enablePushState' => false, 'timeout' => false]); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
@@ -51,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-size' => 'modal-xl',
                                 'data-title' => Yii::t('biDashboard', 'view'),
                                 'data-toggle' => 'modal',
-                                'data-target' => '#modal-pjax-over',
+                                'data-target' => '#modal-pjax-over-bi',
                                 'data-url' => Url::to(['report-widget/view', 'id' => $model->id]),
                                 'data-handle-form-submit' => 1,
                                 'data-reload-pjax-container' => 'p-jax-external-data'
@@ -62,4 +64,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
+    <?php Pjax::end() ?>
 </div>

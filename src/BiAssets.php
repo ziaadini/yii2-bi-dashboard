@@ -3,6 +3,7 @@
 namespace sadi01\bidashboard;
 
 use yii\web\AssetBundle;
+
 class BiAssets extends AssetBundle
 {
     public $sourcePath = '@sadi01/bidashboard/assets';
@@ -30,15 +31,13 @@ class BiAssets extends AssetBundle
         'bidashboard/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js',
         'bidashboard/dist/js/assets/libs/jquery.repeater/jquery.repeater.min.js',
         'bidashboard/dist/js/sidebarmenu.js',
-        'bidashboard/dist/js/pjax-utility.js?v=1.2',
+        'bidashboard/dist/js/pjax-utility.js',
         'bidashboard/dist/js/jquery.pjax.js',
         'bidashboard/dist/js/sweetalert2.min.js',
         'bidashboard/dist/js/sweetalert2.all.min.js',
         'bidashboard/dist/js/sweet-alert.init.js',
         'bidashboard/dist/js/custom.min.js?v=1.2',
         'bidashboard/dist/js/assets/libs/sparkline/sparkline.js',
-
-
     ];
 
     public $depends = [

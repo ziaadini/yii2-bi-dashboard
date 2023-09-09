@@ -77,40 +77,6 @@ BiAssets::register($this);
                 <?= Alert::widget() ?>
             </div>
             <?= $content ?>
-            <?php
-            Modal::begin([
-                'headerOptions' => ['id' => 'modalPjaxHeader'],
-                'id' => 'modal-pjax',
-                'bodyOptions' => [
-                    'id' => 'modalPjaxContent',
-                    'class' => 'p-3',
-                    'data' => ['show-preloader' => 0]
-                ],
-                'options' => ['tabindex' => false]
-            ]); ?>
-            <div class="text-center">
-                <div class="spinner-border text-info" role="status" style="width: 3rem; height: 3rem;">
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </div>
-            <?php Modal::end(); ?>
-            <?php
-            Modal::begin([
-                'headerOptions' => ['id' => 'modalPjaxOverHeader'],
-                'id' => 'modal-pjax-over',
-                'bodyOptions' => [
-                    'id' => 'modalPjaxOverContent',
-                    'class' => 'p-3',
-                    'data' => ['show-preloader' => 0]
-                ],
-                'options' => ['tabindex' => false, 'style' => 'z-index:1051;']
-            ]); ?>
-            <div class="text-center">
-                <div class="spinner-border text-info" role="status" style="width: 3rem; height: 3rem;">
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </div>
-            <?php Modal::end(); ?>
             <div class="modal fade top-modal-with-space" id="quickAccessModal" tabindex="-1" role="dialog"
                  aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-md">
@@ -173,10 +139,10 @@ BiAssets::register($this);
 
     <?php
     Modal::begin([
-        'headerOptions' => ['id' => 'modalPjaxOverHeader'],
-        'id' => 'modal-pjax-over',
+        'headerOptions' => ['id' => 'modalPjaxOverHeader-bi'],
+        'id' => 'modal-pjax-over-bi',
         'bodyOptions' => [
-            'id' => 'modalPjaxOverContent',
+            'id' => 'modalPjaxOverContent-bi',
             'class' => 'p-3 text-left',
             'data' => ['show-preloader' => 0]
         ],
@@ -191,10 +157,10 @@ BiAssets::register($this);
 
     <?php
     Modal::begin([
-        'headerOptions' => ['id' => 'modalPjaxHeader'],
-        'id' => 'modal-pjax',
+        'headerOptions' => ['id' => 'modalPjaxHeader-bi'],
+        'id' => 'modal-pjax-bi',
         'bodyOptions' => [
-            'id' => 'modalPjaxContent',
+            'id' => 'modalPjaxContent-bi',
             'class' => 'p-3',
             'data' => ['show-preloader' => 0]
         ],
