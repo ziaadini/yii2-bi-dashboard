@@ -28,6 +28,21 @@ $(function () {
             };
 
         handleFormSubmit = handleFormSubmit !== undefined ? handleFormSubmit : true;
+
+        $('#modalPjaxContent-bi').off('pjax:click');
+        $('#modalPjaxContent-bi').on('pjax:click', function (event, options) {
+            urlVars = getUrlVars(options.url);
+            pjaxContainer = decodeURIComponent(urlVars['_pjax']);
+            if (pjaxContainer != undefined) {
+                options.container = pjaxContainer;
+                if (pjaxContainer == '#modalPjaxContent-bi') {
+                    options.push = false;
+                    options.timeout = false;
+                    options.skipOuterContainers = true;
+                }
+            }
+        });
+
         $('#modalPjaxContent-bi').off('pjax:error');
         $('#modalPjaxContent-bi').on('pjax:error', function (event, xhr, textStatus, error, options) {
             modalPjax.modal('hide');
@@ -207,6 +222,21 @@ $(function () {
             };
 
         handleFormSubmit = handleFormSubmit !== undefined ? handleFormSubmit : true;
+
+        $('#modalPjaxOverContent-bi').off('pjax:click');
+        $('#modalPjaxOverContent-bi').on('pjax:click', function (event, options) {
+            urlVars = getUrlVars(options.url);
+            pjaxContainer = decodeURIComponent(urlVars['_pjax']);
+            if (pjaxContainer != undefined) {
+                options.container = pjaxContainer;
+                if (pjaxContainer == '#modalPjaxOverContent-bi') {
+                    options.push = false;
+                    options.timeout = false;
+                    options.skipOuterContainers = true;
+                }
+            }
+        });
+
         $('#modalPjaxOverContent-bi').off('pjax:error');
         $('#modalPjaxOverContent-bi').on('pjax:error', function (event, xhr, textStatus, error, options) {
             modalPjaxOver.modal('hide');
@@ -535,3 +565,16 @@ $(function () {
         });
     });
 });
+
+function getUrlVars(url)
+{
+    var vars = [], hash;
+    var hashes = url.slice(url.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
