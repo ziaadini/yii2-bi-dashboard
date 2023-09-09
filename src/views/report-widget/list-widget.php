@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-size' => 'modal-xl',
                                 'data-title' => Yii::t('biDashboard', 'view'),
                                 'data-toggle' => 'modal',
-                                'data-target' => '#modal-pjax-over-bi',
+                                'data-target' => '#modal-pjax-widget-over-bi',
                                 'data-url' => Url::to(['report-widget/view', 'id' => $model->id]),
                                 'data-handle-form-submit' => 1,
                                 'data-reload-pjax-container' => 'p-jax-report-list-widgets-bi'

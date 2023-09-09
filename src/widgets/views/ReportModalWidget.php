@@ -35,7 +35,7 @@ $url = $biAssets->baseUrl;
         'title' => Yii::t('biDashboard', 'Save As Report Widget'),
         'data-title' => Yii::t('biDashboard', 'Save As Report Widget'),
         'data-toggle' => 'modal',
-        'data-target' => '#modal-pjax-bi',
+        'data-target' => '#modal-pjax-widget-bi',
         'data-url' => Url::to([
             '/bidashboard/report-widget/create',
             'searchModelClass' => $searchModel::class,
@@ -57,7 +57,7 @@ $url = $biAssets->baseUrl;
         'title' => Yii::t('biDashboard', 'Report Widgets'),
         'data-title' => Yii::t('biDashboard', 'Report Widgets'),
         'data-toggle' => 'modal',
-        'data-target' => '#modal-pjax-bi',
+        'data-target' => '#modal-pjax-widget-bi',
         'data-url' => Url::to([
             '/bidashboard/report-widget/open-modal',
             'ReportWidgetSearch[search_model_class]' => $searchModel::class,
