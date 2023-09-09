@@ -9,7 +9,6 @@ class BiAssets extends AssetBundle
     public $sourcePath = '@sadi01/bidashboard/assets';
 
     public $css = [
-        'bidashboard/dist/css/style.min.css',
         'bidashboard/dist/css/fontiran.css',
         'bidashboard/dist/css/footable.bootstrap.min.css',
         'bidashboard/dist/css/horizontal-timeline.css',
@@ -30,9 +29,7 @@ class BiAssets extends AssetBundle
         'bidashboard/dist/js/app.init.mini-sidebar.js',
         'bidashboard/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js',
         'bidashboard/dist/js/assets/libs/jquery.repeater/jquery.repeater.min.js',
-        'bidashboard/dist/js/sidebarmenu.js',
         'bidashboard/dist/js/pjax-utility.js',
-        'bidashboard/dist/js/pjax-widget-utility.js',
         'bidashboard/dist/js/jquery.pjax.js',
         'bidashboard/dist/js/sweetalert2.min.js',
         'bidashboard/dist/js/sweetalert2.all.min.js',

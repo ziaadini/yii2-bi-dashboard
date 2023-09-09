@@ -172,42 +172,6 @@ BiAssets::register($this);
         </div>
     </div>
     <?php Modal::end(); ?>
-    <?php
-    Modal::begin([
-        'headerOptions' => ['id' => 'modalPjaxOverHeader-widget-bi'],
-        'id' => 'modal-pjax-widget-over-bi',
-        'bodyOptions' => [
-            'id' => 'modalPjaxOverContent-widget-bi',
-            'class' => 'p-3 text-left',
-            'data' => ['show-preloader' => 0]
-        ],
-        'options' => ['tabindex' => false, 'style' => 'z-index:1051;']
-    ]); ?>
-    <div class="text-center">
-        <div class="spinner-border text-info" role="status" style="width: 3rem; height: 3rem;">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-    <?php Modal::end(); ?>
-
-    <?php
-    Modal::begin([
-        'headerOptions' => ['id' => 'modalPjaxHeader-widget-bi'],
-        'id' => 'modal-pjax-widget-bi',
-        'bodyOptions' => [
-            'id' => 'modalPjaxContent-widget-bi',
-            'class' => 'p-3',
-            'data' => ['show-preloader' => 0]
-        ],
-        'options' => ['tabindex' => false]
-    ]); ?>
-    <div class="text-center">
-        <div class="spinner-border text-info" role="status" style="width: 3rem; height: 3rem;">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-    <?php Modal::end(); ?>
-
 
     <?= $this->render('_footer') ?>
 </div>
