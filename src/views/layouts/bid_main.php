@@ -139,10 +139,10 @@ BiAssets::register($this);
 
     <?php
     Modal::begin([
-        'headerOptions' => ['id' => 'modalPjaxOverHeader-id'],
-        'id' => 'modal-pjax-over-id',
+        'headerOptions' => ['id' => 'modalPjaxOverHeader-bi'],
+        'id' => 'modal-pjax-over-bi',
         'bodyOptions' => [
-            'id' => 'modalPjaxOverContent-id',
+            'id' => 'modalPjaxOverContent-bi',
             'class' => 'p-3 text-left',
             'data' => ['show-preloader' => 0]
         ],
@@ -157,10 +157,10 @@ BiAssets::register($this);
 
     <?php
     Modal::begin([
-        'headerOptions' => ['id' => 'modalPjaxHeader-id'],
-        'id' => 'modal-pjax-id',
+        'headerOptions' => ['id' => 'modalPjaxHeader-bi'],
+        'id' => 'modal-pjax-bi',
         'bodyOptions' => [
-            'id' => 'modalPjaxContent-id',
+            'id' => 'modalPjaxContent-bi',
             'class' => 'p-3',
             'data' => ['show-preloader' => 0]
         ],
