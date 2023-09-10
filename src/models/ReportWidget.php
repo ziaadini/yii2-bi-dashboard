@@ -291,10 +291,6 @@ class ReportWidget extends ActiveRecord
             ->limit(1)
             ->one();
 
-        if (!$runWidget) {
-            $runWidget = $this->runWidget($startRange, $endRange);
-        }
-
         return $runWidget;
     }
 

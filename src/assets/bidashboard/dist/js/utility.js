@@ -15,7 +15,35 @@ function copyToClipboard(text) {
     });
     return false;
 }
+
 function generateAccessKeyLink(accessKey) {
     const urlPrefix = location.hostname + '/bidashboard/report-page/view-by-access-key?access_key=';
     return urlPrefix + accessKey;
 }
+
+$(function () {
+    "use strict";
+
+    // ==============================================================
+    //tooltip
+    // ==============================================================
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip({container: 'body'})
+    })
+
+    $(document).on("pjax:send", function (xhr, options) {
+        $('[data-toggle="tooltip"]').tooltip({container: 'body'});
+        $(window).on('scroll', function () {
+            $('[data-toggle="tooltip"]').tooltip('hide');
+            $('.tooltip').remove();
+        });
+    });
+
+    $(document).on("pjax:end", function (xhr, options) {
+        $('[data-toggle="tooltip"]').tooltip({container: 'body'});
+        $(window).on('scroll', function () {
+            $('[data-toggle="tooltip"]').tooltip('hide');
+            $('.tooltip').remove();
+        });
+    });
+});
