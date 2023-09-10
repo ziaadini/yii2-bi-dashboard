@@ -26,9 +26,9 @@ class m230826_064952_add_slave_id_to_page extends Migration
         $this->addForeignKey(
             'page_widget_ibfk_1',
             '{{%report_page_widget}}',
-            ['page_id', 'slave_id'],
+            'page_id',
             '{{%report_page}}',
-            ['id', 'slave_id'],
+            'id',
             'RESTRICT',
             'RESTRICT'
         );
