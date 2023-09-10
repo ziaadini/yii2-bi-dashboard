@@ -181,6 +181,8 @@ $pdate = Yii::$app->pdate;
                                             [
                                                 'title' => Yii::t('biDashboard', 'Show Model'),
                                                 'aria-label' => Yii::t('biDashboard', 'Show Model'),
+                                                'data-pjax' => '0',
+                                                'target' => '_blank',
                                             ]
                                         ) ?>
                                         <?= Html::a('<i class="fa fa-history text-success" aria-hidden="true"></i>', 'javascript:void(0)',
