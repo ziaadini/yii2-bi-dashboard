@@ -1,14 +1,11 @@
-// ('#modalButton').click( function () {
-//     window.alert('message');
-// });
 $(function () {
     // Pjax Modal
 
-    var modalPjax = $('#modal-pjax');
+    var modalPjax = $('#modal-pjax-bi');
     modalPjax.on('show.bs.modal', function (e) {
         var button = $(e.relatedTarget);
         modalPjax.find('.modal-dialog').addClass(button.data('size'));
-        modalPjax.find('#modalPjaxHeader').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4>' + button.data('title') + '</h4>');
+        modalPjax.find('#modalPjaxHeader-widget-bi').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4>' + button.data('title') + '</h4>');
     });
 
     modalPjax.on('shown.bs.modal', function (e) {
@@ -27,12 +24,12 @@ $(function () {
                 push: false,
                 skipOuterContainers: true,
                 url: button.data('url'),
-                container: '#modalPjaxContent'
+                container: '#modalPjaxContent-widget-bi'
             };
 
         handleFormSubmit = handleFormSubmit !== undefined ? handleFormSubmit : true;
-        $('#modalPjaxContent').off('pjax:error');
-        $('#modalPjaxContent').on('pjax:error', function (event, xhr, textStatus, error, options) {
+        $('#modalPjaxContent-widget-bi').off('pjax:error');
+        $('#modalPjaxContent-widget-bi').on('pjax:error', function (event, xhr, textStatus, error, options) {
             modalPjax.modal('hide');
             swal({
                 position: 'top-end',
@@ -45,8 +42,8 @@ $(function () {
             });
             return false;
         });
-        $('#modalPjaxContent').off('pjax:complete');
-        $('#modalPjaxContent').on('pjax:complete', function (event, xhr, textStatus, options) {
+        $('#modalPjaxContent-widget-bi').off('pjax:complete');
+        $('#modalPjaxContent-widget-bi').on('pjax:complete', function (event, xhr, textStatus, options) {
 
             // ==============================================================
             //tooltip
@@ -81,17 +78,19 @@ $(function () {
                 var fd = new FormData(document.getElementById($form.attr('id')));
                 submitBtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="sr-only">Loading...</span>').attr('disabled', true);
                 $.ajax({
+
                     url: $form.attr('action'),
                     data: fd,
                     processData: false,
                     contentType: false,
                     type: 'POST',
                     success: function (data) {
-                        if (data.success === true) {
+
+                        if (data.status === true) {
                             swal({
                                 position: 'top-end',
                                 timer: 2000,
-                                title: "<span class='text-success'>" + data.msg + "</span>",
+                                title: "<span class='text-success'>" + data.message + "</span>",
                                 type: "success",
                                 background: '#d4edda',
                                 showConfirmButton: false,
@@ -106,7 +105,6 @@ $(function () {
                                     url: url
                                 });
                             }
-
                             if (hideModal == undefined || data.hideModal) {
                                 modalPjax.modal('hide');
                             }
@@ -125,11 +123,11 @@ $(function () {
                                 $form[0].reset();
                             }
 
-                        } else if (data.success === false) {
+                        } else if (data.status === false) {
                             swal({
                                 position: 'top-end',
                                 timer: 2000,
-                                title: "<span class='text-danger'>" + data.msg + "</span>",
+                                title: "<span class='text-danger'>" + data.message + "</span>",
                                 type: "error",
                                 background: '#f8d7da',
                                 showConfirmButton: false,
@@ -178,16 +176,16 @@ $(function () {
     });
 
     modalPjax.on('hidden.bs.modal', function (e) {
-        $(this).find('#modalPjaxContent').html('<div class="d-flex justify-content-center align-items-center" style="min-height:150px;"> <div class="spinner-grow text-mobit p-3" role="status"> <span class="sr-only">Loading ...</span> </div> </div>');
+        $(this).find('#modalPjaxContent-widget-bi').html('<div class="d-flex justify-content-center align-items-center" style="min-height:150px;"> <div class="spinner-grow text-mobit p-3" role="status"> <span class="sr-only">Loading ...</span> </div> </div>');
     });
 
     // Pjax Over Modal
 
-    var modalPjaxOver = $('#modal-pjax-over');
+    var modalPjaxOver = $('#modal-pjax-widget-over-bi');
     modalPjaxOver.on('show.bs.modal', function (e) {
         var button = $(e.relatedTarget);
         modalPjaxOver.find('.modal-dialog').addClass(button.data('size'));
-        modalPjaxOver.find('#modalPjaxOverHeader').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4>' + button.data('title') + '</h4>');
+        modalPjaxOver.find('#modalPjaxOverHeader-bi').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4>' + button.data('title') + '</h4>');
     });
 
     modalPjaxOver.on('shown.bs.modal', function (e) {
@@ -205,12 +203,12 @@ $(function () {
                 push: false,
                 skipOuterContainers: true,
                 url: button.data('url'),
-                container: '#modalPjaxOverContent'
+                container: '#modalPjaxOverContent-widget-bi'
             };
 
         handleFormSubmit = handleFormSubmit !== undefined ? handleFormSubmit : true;
-        $('#modalPjaxOverContent').off('pjax:error');
-        $('#modalPjaxOverContent').on('pjax:error', function (event, xhr, textStatus, error, options) {
+        $('#modalPjaxOverContent-widget-bi').off('pjax:error');
+        $('#modalPjaxOverContent-widget-bi').on('pjax:error', function (event, xhr, textStatus, error, options) {
             modalPjaxOver.modal('hide');
             swal({
                 position: 'top-end',
@@ -223,8 +221,8 @@ $(function () {
             });
             return false;
         });
-        $('#modalPjaxOverContent').off('pjax:complete');
-        $('#modalPjaxOverContent').on('pjax:complete', function (event, xhr, textStatus, options) {
+        $('#modalPjaxOverContent-widget-bi').off('pjax:complete');
+        $('#modalPjaxOverContent-widget-bi').on('pjax:complete', function (event, xhr, textStatus, options) {
             // ==============================================================
             //tooltip
             // ==============================================================
@@ -265,11 +263,11 @@ $(function () {
                     contentType: false,
                     type: 'POST',
                     success: function (data) {
-                        if (data.success === true) {
+                        if (data.status === true) {
                             swal({
                                 position: 'top-end',
                                 timer: 2000,
-                                title: "<span class='text-success'>" + data.msg + "</span>",
+                                title: "<span class='text-success'>" + data.message + "</span>",
                                 type: "success",
                                 background: '#d4edda',
                                 showConfirmButton: false,
@@ -298,11 +296,11 @@ $(function () {
                             if (redirect !== undefined || data.redirect) {
                                 window.location.replace(data.url);
                             }
-                        } else if (data.success === false) {
+                        } else if (data.status === false) {
                             swal({
                                 position: 'top-end',
                                 timer: 2000,
-                                title: "<span class='text-danger'>" + data.msg + "</span>",
+                                title: "<span class='text-danger'>" + data.message + "</span>",
                                 type: "error",
                                 background: '#f8d7da',
                                 showConfirmButton: false,
@@ -342,13 +340,13 @@ $(function () {
                     skipOuterContainers: true
                 });
             });
-            $("#modal-pjax").css({overflow: "auto"});
+            $("#modal-pjax-widget-bi").css({overflow: "auto"});
         }
         $.pjax(pjaxSettings);
     });
 
     modalPjaxOver.on('hidden.bs.modal', function (e) {
-        $(this).find('#modalPjaxOverContent').html('<div class="d-flex justify-content-center align-items-center" style="min-height:150px;"> <div class="spinner-grow text-mobit p-3" role="status"> <span class="sr-only">Loading ...</span> </div> </div>');
+        $(this).find('#modalPjaxOverContent-widget-bi').html('<div class="d-flex justify-content-center align-items-center" style="min-height:150px;"> <div class="spinner-grow text-mobit p-3" role="status"> <span class="sr-only">Loading ...</span> </div> </div>');
     });
 
     // Pjax Btn
@@ -370,7 +368,7 @@ $(function () {
 
         var btnOldHtml = button.html();
         button.html('<i class="fas fa-spinner fa-pulse"></i>').prop("disabled", true);
-        var modalPjax = $('#modal-pjax');
+        var modalPjax = $('#modal-pjax-widget-bi');
 
         // Prevent of bad request exception (Unable to verify your data submission.)
         if (closeForm !== undefined) {
