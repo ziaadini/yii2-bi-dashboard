@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <span id="access_key_<?=$key->id?>">
                                     <?= $key['access_key'] ?>
                                 </span>
-                                <span class="fa fa-copy text-info p-1" onclick="copyAccessKey(<?=$key->id?>)"></span>
+                                <span class="fa fa-copy text-info p-1" onclick="copyToClipboard(generateAccessKeyLink('<?= $key['access_key'] ?>'))"></span>
                             </td>
                             <td><?= Yii::$app->pdate->jdate("Y/m/d H:i", intval($key['expire_time'])) ?></td>
                             <td>
@@ -111,23 +111,3 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
-<script>
-    function copyAccessKey(itemId) {
-        const numberDiv = document.getElementById('access_key_' + itemId);
-        const tempInput = document.createElement('input');
-        const linkText = location.hostname + '/bidashboard/report-page/view-by-access-key?access_key=' + numberDiv.textContent.trim();
-        tempInput.value = linkText;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
-
-        Swal.fire({
-            position: 'bottom-end',
-            icon: 'success',
-            html: '<?= Yii::t('biDashboard', 'Copy success') ?>',
-            showConfirmButton: false,
-            timer: 1000
-        });
-    }
-</script>

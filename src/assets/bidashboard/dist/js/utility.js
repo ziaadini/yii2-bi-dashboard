@@ -15,3 +15,7 @@ function copyToClipboard(text) {
     });
     return false;
 }
+function generateAccessKeyLink(accessKey) {
+    const urlPrefix = location.hostname + '/bidashboard/report-page/view-by-access-key?access_key=';
+    return urlPrefix + accessKey;
+}
