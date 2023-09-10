@@ -57,7 +57,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         return $model->page->title;
                     },
                 ],
-                'access_key',
+                [
+                    'attribute' => 'access_key',
+                    'format' => 'raw',
+                    'value' => function (SharingPage $model) {
+                        return '<span class="fa fa-copy text-info p-1" onclick="copyToClipboard(generateAccessKeyLink(\'' . $model->access_key . '\'))"></span> ' . $model->access_key;
+                    },
+                ],
                 [
                     'attribute' => 'expire_time',
                     'value' => function (SharingPage $model) {
@@ -155,4 +161,3 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <?php Pjax::end(); ?>
 </div>
-

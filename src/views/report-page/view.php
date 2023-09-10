@@ -181,6 +181,8 @@ $pdate = Yii::$app->pdate;
                                             [
                                                 'title' => Yii::t('biDashboard', 'Show Model'),
                                                 'aria-label' => Yii::t('biDashboard', 'Show Model'),
+                                                'data-pjax' => '0',
+                                                'target' => '_blank',
                                             ]
                                         ) ?>
                                         <?= Html::a('<i class="fa fa-history text-success" aria-hidden="true"></i>', 'javascript:void(0)',
@@ -275,7 +277,7 @@ $pdate = Yii::$app->pdate;
 
                                     echo '<th scope="col" class="text-center" style="font-size: 20px;">';
                                     echo '<span id="number_item_' . $i . '">' . $resultData . '</span>';
-                                    echo '<span class="fa fa-copy text-info p-1" onclick="copyNumber(' . $i . ')"></span>';
+                                    echo "<span class='fa fa-copy text-info p-1' onclick='copyToClipboard(\"$resultData\")'></span>";
 
                                     if ($rateNumber != 0) {
                                         echo '<br />';
@@ -297,22 +299,3 @@ $pdate = Yii::$app->pdate;
 </div>
 <?php Pjax::end(); ?>
 </div>
-<script>
-    function copyNumber(itemId) {
-        const numberDiv = document.getElementById('number_item_' + itemId);
-        const range = document.createRange();
-        range.selectNode(numberDiv);
-        const selection = window.getSelection();
-        selection.removeAllRanges();
-        selection.addRange(range);
-        document.execCommand('copy');
-        selection.removeAllRanges();
-        Swal.fire({
-            position: 'bottom-end',
-            icon: 'success',
-            html: '<?= Yii::t('biDashboard', 'Copy success') ?>',
-            showConfirmButton: false,
-            timer: 1000
-        })
-    }
-</script>
