@@ -148,4 +148,6 @@ return [
     'Show Chart' => 'نمایش نمودار',
     'Model Class' => 'مدل کلاس',
     'Widget data source' => 'منبع داده ویجت',
+    'title'=>'عنوان ',
+    'create'=>'ایجاد',
 ];
