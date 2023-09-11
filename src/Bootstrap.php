@@ -48,7 +48,7 @@ class Bootstrap implements BootstrapInterface
             if ($parameter) {
                 throw new InvalidConfigException(Yii::t('biDashboard', 'The {env_parameter} parameter is not set, add the parameter in the env file of the project.', ['env_parameter' => $parameter]));
             }
-    
+
             Yii::$app->setComponents([
                 'biDB' => [
                     'class' => 'yii\db\Connection',
@@ -62,7 +62,6 @@ class Bootstrap implements BootstrapInterface
                     'enableSchemaCache' => Env::get('BI_DB_ENABLE_SCHEMA_CACHE', true),
                     'schemaCacheDuration' => Env::get('BI_DB_SCHEMA_CACHE_DURATION', 86400), // 3600*24, 1DAY
                     'schemaCache' => Env::get('BI_DB_SCHEMA_CACHE_COMPONENT', 'cache'),
-    
                 ],
             ]);
         }
@@ -72,6 +71,5 @@ class Bootstrap implements BootstrapInterface
                 'class' => 'kartik\grid\Module',
             ],
         ]);
-
     }
 }
