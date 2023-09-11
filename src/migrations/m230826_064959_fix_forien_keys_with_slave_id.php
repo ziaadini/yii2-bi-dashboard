@@ -12,7 +12,7 @@ class m230826_064959_fix_forien_keys_with_slave_id extends Migration
         $this->db = 'biDB';
         parent::init();
     }
-    
+
     public function safeUp()
     {
         $this->dropForeignKey('external_data_value_FK_external_data_id', '{{%external_data_value}}');
@@ -28,6 +28,7 @@ class m230826_064959_fix_forien_keys_with_slave_id extends Migration
         );
 
         $this->dropForeignKey('page_widget_ibfk_1', '{{%report_page_widget}}');
+        $this->dropIndex('page_widget_ibfk_1', '{{%report_page_widget}}');
 
         $this->addForeignKey(
             'page_widget_ibfk_1',
@@ -40,6 +41,7 @@ class m230826_064959_fix_forien_keys_with_slave_id extends Migration
         );
 
         $this->dropForeignKey('page_widget_ibfk_2', '{{%report_page_widget}}');
+        $this->dropIndex('page_widget_ibfk_2', '{{%report_page_widget}}');
 
         $this->addForeignKey(
             'page_widget_ibfk_2',
@@ -52,6 +54,7 @@ class m230826_064959_fix_forien_keys_with_slave_id extends Migration
         );
 
         $this->dropForeignKey('widget_result_ibfk_1', '{{%report_widget_result}}');
+        $this->dropIndex('widget_result_ibfk_1', '{{%report_widget_result}}');
 
         $this->addForeignKey(
             'widget_result_ibfk_1',
@@ -64,6 +67,7 @@ class m230826_064959_fix_forien_keys_with_slave_id extends Migration
         );
 
         $this->dropForeignKey('fk-sharing_page-page_id', '{{%report_sharing_page}}');
+        $this->dropIndex('id-sharing_page-page_id', '{{%report_sharing_page}}');
 
         $this->addForeignKey(
             'fk-sharing_page-page_id',
@@ -79,6 +83,7 @@ class m230826_064959_fix_forien_keys_with_slave_id extends Migration
     public function safeDown()
     {
         $this->dropForeignKey('external_data_value_FK_external_data_id', '{{%external_data_value}}');
+        $this->dropIndex('external_data_value_FK_external_data_id', '{{%external_data_value}}');
 
         $this->addForeignKey(
             'external_data_value_FK_external_data_id',
@@ -91,6 +96,7 @@ class m230826_064959_fix_forien_keys_with_slave_id extends Migration
         );
 
         $this->dropForeignKey('page_widget_ibfk_1', '{{%report_page_widget}}');
+        $this->dropIndex('page_widget_ibfk_1', '{{%report_page_widget}}');
 
         $this->addForeignKey(
             'page_widget_ibfk_1',
@@ -103,6 +109,7 @@ class m230826_064959_fix_forien_keys_with_slave_id extends Migration
         );
 
         $this->dropForeignKey('page_widget_ibfk_2', '{{%report_page_widget}}');
+        $this->dropIndex('page_widget_ibfk_2', '{{%report_page_widget}}');
 
         $this->addForeignKey(
             'page_widget_ibfk_2',
@@ -115,6 +122,7 @@ class m230826_064959_fix_forien_keys_with_slave_id extends Migration
         );
 
         $this->dropForeignKey('widget_result_ibfk_1', '{{%report_widget_result}}');
+        $this->dropIndex('widget_result_ibfk_1', '{{%report_widget_result}}');
 
         $this->addForeignKey(
             'widget_result_ibfk_1',
@@ -127,6 +135,7 @@ class m230826_064959_fix_forien_keys_with_slave_id extends Migration
         );
 
         $this->dropForeignKey('fk-sharing_page-page_id', '{{%report_sharing_page}}');
+        $this->dropIndex('fk-sharing_page-page_id', '{{%report_sharing_page}}');
 
         $this->addForeignKey(
             'fk-sharing_page-page_id',
