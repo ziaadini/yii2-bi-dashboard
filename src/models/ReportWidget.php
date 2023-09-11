@@ -263,12 +263,15 @@ class ReportWidget extends ActiveRecord
 
     public function getModelRoute()
     {
-        $modelRoute = "/" . $this->search_route . "?";
-        $modalRouteParams = "";
-        foreach ($this->params as $key => $param) {
-            $modalRouteParams .= $this->search_model_form_name . "[" . $key . "]=" . $param . "&";
+        $modelRoute = "/" . $this->search_route;
+        if (!$this->params) {
+            return $modelRoute;
         }
-        $modelRoute .= $modalRouteParams;
+
+        $params[$this->search_model_form_name] = $this->params;
+        $modalRouteParams = http_build_query($params);
+        $modelRoute .= "?" . $modalRouteParams;
+
         return $modelRoute;
     }
 
