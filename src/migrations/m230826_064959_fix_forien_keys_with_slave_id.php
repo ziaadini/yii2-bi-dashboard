@@ -1,6 +1,5 @@
 <?php
 
-
 use yii\db\Migration;
 
 /**
@@ -13,6 +12,7 @@ class m230826_064959_fix_forien_keys_with_slave_id extends Migration
         $this->db = 'biDB';
         parent::init();
     }
+    
     public function safeUp()
     {
         $this->dropForeignKey('external_data_value_FK_external_data_id', '{{%external_data_value}}');
@@ -74,8 +74,6 @@ class m230826_064959_fix_forien_keys_with_slave_id extends Migration
             'RESTRICT',
             'RESTRICT'
         );
-
-        // --------------------
     }
 
     public function safeDown()
@@ -140,5 +138,4 @@ class m230826_064959_fix_forien_keys_with_slave_id extends Migration
             'RESTRICT'
         );
     }
-
 }
