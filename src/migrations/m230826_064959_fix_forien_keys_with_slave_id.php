@@ -16,6 +16,7 @@ class m230826_064959_fix_forien_keys_with_slave_id extends Migration
     public function safeUp()
     {
         $this->dropForeignKey('external_data_value_FK_external_data_id', '{{%external_data_value}}');
+        $this->dropIndex('external_data_value_FK_external_data_id', '{{%external_data_value}}');
 
         $this->addForeignKey(
             'external_data_value_FK_external_data_id',
