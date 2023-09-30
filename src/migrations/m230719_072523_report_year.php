@@ -28,7 +28,7 @@ class m230719_072523_report_year extends Migration
 
         // Create 10 Last Years
         $now = yii::$app->pdate->jgetdate();
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 10; $i > 0; $i--) {
             $year = (int)$now['year'] - $i;
             $this->insert('{{%report_year}}', ['year' => $year, 'created_at' => time(), 'updated_at' => time()]);
         }

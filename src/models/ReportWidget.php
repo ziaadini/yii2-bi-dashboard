@@ -8,6 +8,7 @@ use sadi01\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -252,13 +253,17 @@ class ReportWidget extends ActiveRecord
         $params = $this->params;
         $searchModel = new ($this->search_model_class);
         $methodExists = method_exists($searchModel, $this->search_model_method);
-        if ($methodExists) {
-            $dataProvider = $searchModel->{$this->search_model_method}($params, $this->range_type, $startDate, $endDate);
-            $modelQueryResults = $dataProvider->query->asArray()->all();
-        } else {
-            $modelQueryResults = null;
+
+        if (!$methodExists) {
+            return null;
         }
-        return $modelQueryResults;
+
+        $result = $searchModel->{$this->search_model_method}($params, $this->range_type, $startDate, $endDate);
+        if ($result instanceof ActiveDataProvider) {
+            $result = $result->query->hasMethod('asArray') ? $result->query->asArray()->all() : $result->query->all();
+        }
+
+        return $result;
     }
 
     public function getModelRoute()
