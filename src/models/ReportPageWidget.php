@@ -85,6 +85,16 @@ class ReportPageWidget extends ActiveRecord
         ];
     }
 
+    public function getFormattedValue($value)
+    {
+        switch ($this->report_widget_field_format) {
+            case self::FORMAT_NUMBER:
+                return Yii::$app->formatter->asInteger($value);
+            case self::FORMAT_CURRENCY:
+                return Yii::$app->formatter->asCurrency($value);
+        }
+    }
+
     /**
      * Gets query for [[Page]].
      *
@@ -137,7 +147,9 @@ class ReportPageWidget extends ActiveRecord
                 self::STATUS_DELETED => '#ff5050',
                 self::STATUS_ACTIVE => '#04AA6D',
                 self::STATUS_INACTIVE => '#eea236',
-            ],];
+            ],
+        ];
+
         if (isset($code))
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
         else

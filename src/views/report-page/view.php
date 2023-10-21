@@ -242,9 +242,7 @@ $pdate = Yii::$app->pdate;
                         <?php } ?>
                     </td>
                     <?php
-                    $formatter = Yii::$app->formatter;
                     if ($runWidget) {
-
                         $lastNumber = null;
                         $rateNumber = null;
                         $typeRate = null;
@@ -267,12 +265,8 @@ $pdate = Yii::$app->pdate;
                                 $rateNumber = $lastNumber ? round(($salesChange / $lastNumber) * 100, 2) : 0;
                                 $lastNumber = $resultData;
 
-                                if ($pageWidget->report_widget_field_format == $pageWidget::FORMAT_CURRENCY) {
-                                    $resultData = $formatter->asCurrency($resultData);
-                                }
-
                                 echo '<td scope="col" class="text-center font-bold">';
-                                echo '<span id="number_item_' . $i . '">' . $resultData . '</span>';
+                                echo '<span id="number_item_' . $i . '">' . $pageWidget->getFormattedValue($resultData) . '</span>';
                                 echo "<a class='far fa-copy text-info p-1' onclick='copyToClipboard(\"$resultData\")' href='javascript:void(0)' data-pjax='0'></a>";
 
                                 if ($rateNumber != 0) {
