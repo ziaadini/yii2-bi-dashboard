@@ -193,5 +193,6 @@ return [
     'Save' => 'ذخیره',
     'Dashboard List' => 'لیست داشبورد ها',
     'update box widgets' => 'لیست داشبورد ها',
+    'Add and Edit Widgets' => 'افزودن | ویرایش ویجت',
 
 ];

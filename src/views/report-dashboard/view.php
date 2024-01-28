@@ -177,32 +177,18 @@ $this->registerJsFile('https://code.highcharts.com/modules/wordcloud.js', [
                         <div class="card-footer d-flex align-items-center justify-content-between px-3">
                             <span class="text-muted font-12 mr-3"><?= $box->description ?? '(توضیحات باکس)' ?></span>
                             <div class="d-flex">
-                                <?= Html::a(Yii::t('biDashboard', 'Add Widget'), "javascript:void(0)",
+                                <?= Html::a(Yii::t('biDashboard', 'Add and Edit Widgets'), "javascript:void(0)",
                                     [
                                         'data-pjax' => '0',
-                                        'class' => "btn btn-success btn-sm rounded-md font-12",
+                                        'class' => "btn btn-info btn-sm rounded-md font-12 ml-2",
                                         'data-size' => 'modal-xl',
-                                        'data-title' => Yii::t('biDashboard', 'Add Widget'),
+                                        'data-title' => Yii::t('biDashboard', 'Add and Edit Widgets'),
                                         'data-toggle' => 'modal',
                                         'data-target' => '#modal-pjax-bi',
-                                        'data-url' => Url::to(['report-box-widget/create', 'boxId' => $box->id]),
+                                        'data-url' => Url::to(['report-box-widget/update', 'boxId' => $box->id]),
                                         'data-handle-form-submit' => 1,
                                         'data-reload-pjax-container' => 'p-jax-report-dashboard-view'
                                     ]) ?>
-                                <?php if (!empty($box->boxWidgets)): ?>
-                                    <?= Html::a(Yii::t('biDashboard', 'Edit Widgets'), "javascript:void(0)",
-                                        [
-                                            'data-pjax' => '0',
-                                            'class' => "btn btn-info btn-sm rounded-md font-12 ml-2",
-                                            'data-size' => 'modal-xl',
-                                            'data-title' => Yii::t('biDashboard', 'Edit Widgets'),
-                                            'data-toggle' => 'modal',
-                                            'data-target' => '#modal-pjax-bi',
-                                            'data-url' => Url::to(['report-box-widget/update', 'boxId' => $box->id]),
-                                            'data-handle-form-submit' => 1,
-                                            'data-reload-pjax-container' => 'p-jax-report-dashboard-view'
-                                        ]) ?>
-                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -299,32 +285,18 @@ $this->registerJsFile('https://code.highcharts.com/modules/wordcloud.js', [
                         <div class="card-footer d-flex align-items-center justify-content-between px-3">
                             <span class="text-muted font-12 mr-3"><?= $box->description ?? '(توضیحات باکس)' ?></span>
                             <div class="d-flex">
-                                <?= Html::a(Yii::t('biDashboard', 'Add Widget'), "javascript:void(0)",
+                                <?= Html::a(Yii::t('biDashboard', 'Add and Edit Widgets'), "javascript:void(0)",
                                     [
                                         'data-pjax' => '0',
-                                        'class' => "btn btn-success btn-sm rounded-md font-12",
+                                        'class' => "btn btn-info btn-sm rounded-md font-12 ml-1",
                                         'data-size' => 'modal-xl',
-                                        'data-title' => Yii::t('biDashboard', 'Add Widget To Box'),
+                                        'data-title' => Yii::t('biDashboard', 'Edit Box Widgets'),
                                         'data-toggle' => 'modal',
                                         'data-target' => '#modal-pjax-bi',
-                                        'data-url' => Url::to(['/bidashboard/report-box-widget/create', 'boxId' => $box->id]),
+                                        'data-url' => Url::to(['/bidashboard/report-box-widget/update', 'boxId' => $box->id]),
                                         'data-handle-form-submit' => 1,
                                         'data-reload-pjax-container' => 'p-jax-report-dashboard-view'
                                     ]) ?>
-                                <?php if (!empty($box->boxWidgets)): ?>
-                                    <?= Html::a(Yii::t('biDashboard', 'Edit Widgets'), "javascript:void(0)",
-                                        [
-                                            'data-pjax' => '0',
-                                            'class' => "btn btn-info btn-sm rounded-md font-12 ml-1",
-                                            'data-size' => 'modal-xl',
-                                            'data-title' => Yii::t('biDashboard', 'Edit Box Widgets'),
-                                            'data-toggle' => 'modal',
-                                            'data-target' => '#modal-pjax-bi',
-                                            'data-url' => Url::to(['/bidashboard/report-box-widget/update', 'boxId' => $box->id]),
-                                            'data-handle-form-submit' => 1,
-                                            'data-reload-pjax-container' => 'p-jax-report-dashboard-view'
-                                        ]) ?>
-                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -428,32 +400,18 @@ $this->registerJsFile('https://code.highcharts.com/modules/wordcloud.js', [
                     <div class="card-footer d-flex align-items-center justify-content-between px-3">
                         <span class="text-muted font-12 mr-3"><?= $box->description ?? '(توضیحات باکس)' ?></span>
                         <div class="d-flex">
-                            <?= Html::a(Yii::t('biDashboard', 'Add Widget'), "javascript:void(0)",
+                            <?= Html::a(Yii::t('biDashboard', 'Add and Edit Widgets'), "javascript:void(0)",
                                 [
                                     'data-pjax' => '0',
-                                    'class' => "btn btn-success btn-sm rounded-md font-12",
+                                    'class' => "btn btn-info btn-sm rounded-md font-12 ml-2",
                                     'data-size' => 'modal-xl',
-                                    'data-title' => Yii::t('biDashboard', 'Add Widget'),
+                                    'data-title' => Yii::t('biDashboard', 'Add and Edit Widgets'),
                                     'data-toggle' => 'modal',
                                     'data-target' => '#modal-pjax-bi',
-                                    'data-url' => Url::to(['report-box-widget/create', 'boxId' => $box->id]),
+                                    'data-url' => Url::to(['report-box-widget/update', 'boxId' => $box->id]),
                                     'data-handle-form-submit' => 1,
                                     'data-reload-pjax-container' => 'p-jax-report-dashboard-view'
                                 ]) ?>
-                            <?php if (!empty($box->boxWidgets)): ?>
-                                <?= Html::a(Yii::t('biDashboard', 'Edit Widgets'), "javascript:void(0)",
-                                    [
-                                        'data-pjax' => '0',
-                                        'class' => "btn btn-info btn-sm rounded-md font-12 ml-2",
-                                        'data-size' => 'modal-xl',
-                                        'data-title' => Yii::t('biDashboard', 'Edit Widgets'),
-                                        'data-toggle' => 'modal',
-                                        'data-target' => '#modal-pjax-bi',
-                                        'data-url' => Url::to(['report-box-widget/update', 'boxId' => $box->id]),
-                                        'data-handle-form-submit' => 1,
-                                        'data-reload-pjax-container' => 'p-jax-report-dashboard-view'
-                                    ]) ?>
-                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
