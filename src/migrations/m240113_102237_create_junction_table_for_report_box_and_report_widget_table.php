@@ -11,6 +11,11 @@ use yii\db\Migration;
  */
 class m240113_102237_create_junction_table_for_report_box_and_report_widget_table extends Migration
 {
+    public function init()
+    {
+        $this->db = 'biDB';
+        parent::init();
+    }
     /**
      * {@inheritdoc}
      */

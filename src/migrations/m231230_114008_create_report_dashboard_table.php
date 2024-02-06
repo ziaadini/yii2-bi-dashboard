@@ -7,6 +7,11 @@ use yii\db\Migration;
  */
 class m231230_114008_create_report_dashboard_table extends Migration
 {
+    public function init()
+    {
+        $this->db = 'biDB';
+        parent::init();
+    }
     /**
      * {@inheritdoc}
      */
