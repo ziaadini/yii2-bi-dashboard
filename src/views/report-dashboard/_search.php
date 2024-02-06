@@ -25,15 +25,8 @@ use yii\widgets\ActiveForm;
                 'placeholder' => 'عنوان داشبورد را وارد کنید...'
             ])->label(false) ?>
         </div>
-        <!--<div class="search-filed mx-3 min-w-60">
-            <?php /*= $form->field($model, 'description')->textInput([
-                'class' => 'form-control rounded-md',
-                'placeholder' => 'توضیحات داشبورد را وارد کنید...'
-            ])->label(false) */?>
-        </div>-->
         <div class="">
             <?= Html::submitButton(Yii::t('biDashboard', 'Search'), ['class' => 'btn btn-primary rounded-md']) ?>
-            <?php /*= Html::resetButton(Yii::t('biDashboard', 'Clean'), ['class' => 'btn btn-outline-secondary rounded-md']) */?>
         </div>
     </div>
 

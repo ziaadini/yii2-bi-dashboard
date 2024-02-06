@@ -8,15 +8,6 @@ use sadi01\bidashboard\models\ReportBoxWidgets;
 
 class ReportBoxWidgetQuery extends ActiveQuery
 {
-    public function behaviors()
-    {
-        return [
-            'softDelete' => [
-                'class' => SoftDeleteQueryBehavior::class,
-            ],
-        ];
-    }
-
     /**
      * {@inheritdoc}
      * @return ReportBoxWidget[]|array
@@ -42,6 +33,15 @@ class ReportBoxWidgetQuery extends ActiveQuery
         } else {
             return $this;
         }
+    }
+
+    public function behaviors()
+    {
+        return [
+            'softDelete' => [
+                'class' => SoftDeleteQueryBehavior::class,
+            ],
+        ];
     }
 
 }

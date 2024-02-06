@@ -44,7 +44,7 @@ class m240113_100847_create_report_box_table extends Migration
             'dashboard_id',
             '{{%report_dashboard}}',
             'id',
-            'CASCADE'
+            'RESTRICT'
         );
     }
 

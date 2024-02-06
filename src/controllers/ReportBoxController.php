@@ -27,21 +27,20 @@ class ReportBoxController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
-                    'except' => ['chart-types', 'get-widgets-by-range'],
                     'rules' =>
                         [
                             [
                                 'allow' => true,
                                 'roles' => ['BI/ReportBox/create'],
                                 'actions' => [
-                                    'create',
+                                    'create','chart-types','get-widgets-by-range',
                                 ]
                             ],
                             [
                                 'allow' => true,
                                 'roles' => ['BI/ReportBox/update'],
                                 'actions' => [
-                                    'update',
+                                    'update','chart-types','get-widgets-by-range',
                                 ]
                             ],
                             [
@@ -68,8 +67,7 @@ class ReportBoxController extends Controller
     public function actionCreate($dashboardId)
     {
         $model = new ReportBox();
-        $model->scenario = 'create';
-        $errors = [];
+        $model->scenario = $model::SCENARIO_CREATE;
 
         if ($model->load($this->request->post())) {
 
@@ -78,7 +76,6 @@ class ReportBoxController extends Controller
 
             if ($valid) {
                 try {
-
                     $model->save(false);
                     return $this->asJson([
                         'status' => true,
@@ -86,10 +83,10 @@ class ReportBoxController extends Controller
                     ]);
 
                 } catch (Exception $e) {
+                    Yii::error($e->getMessage() . $e->getTraceAsString(), Yii::$app->controller->id . '/' . Yii::$app->controller->action->id);
                     return $this->asJson([
                         'status' => false,
-                        'message' => Yii::t("biDashboard", 'Error In Save Box'),
-                        'ERROR' => $model->errors,
+                        'message' => $e->getMessage() . PHP_EOL . Yii::t("biDashboard", 'Error In Save Box'),
                     ]);
                 }
             }
@@ -97,12 +94,12 @@ class ReportBoxController extends Controller
             else {
                 return $this->asJson([
                     'status' => false,
-                    'message' => Yii::t("biDashboard", 'Error In Save Box'),
-                    'ERROR' => $model->errors,
+                    'message' => $model->errors,
                 ]);
             }
         }
 
+        $this->performAjaxValidation($model);
         return $this->renderAjax('create', [
             'model' => $model,
         ]);
@@ -112,7 +109,7 @@ class ReportBoxController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->scenario = 'update';
+        $model->scenario = $model::SCENARIO_UPDATE;
 
         if ($model->load($this->request->post()) && $model->validate()) {
 
@@ -125,7 +122,7 @@ class ReportBoxController extends Controller
             else {
                 return $this->asJson([
                     'status' => false,
-                    'message' => Yii::t("biDashboard", 'Error In Update Dashboard')
+                    'message' => $model->errors,
                 ]);
             }
         }
@@ -157,8 +154,6 @@ class ReportBoxController extends Controller
 
     public function actionChartTypes() {
 
-        Yii::$app->response->format = Response::FORMAT_JSON;
-
         $out = [];
 
         if (isset($_POST['depdrop_parents'])) {
@@ -173,16 +168,20 @@ class ReportBoxController extends Controller
                     ];
                 }
 
-                return ['output' => $out, 'selected' => ''];
+                return $this->asJson([
+                    'output' => $out,
+                    'selected' => '',
+                ]);
             }
         }
 
-        return ['output' => '', 'selected' => ''];
+        return $this->asJson([
+            'output' => '',
+            'selected' => '',
+        ]);
     }
 
     public function actionGetWidgetsByRange(){
-
-        Yii::$app->response->format = Response::FORMAT_JSON;
 
         $out = [];
 
@@ -197,11 +196,17 @@ class ReportBoxController extends Controller
                         "name" => $widget
                     ];
                 }
-                return ['output' => $out, 'selected' => ''];
+                return $this->asJson([
+                    'output' => $out,
+                    'selected' => '',
+                ]);
             }
         }
 
-        return ['output' => '', 'selected' => ''];
+        return $this->asJson([
+            'output' => '',
+            'selected' => '',
+        ]);
     }
 
     protected function findModel(int $id): ReportBox

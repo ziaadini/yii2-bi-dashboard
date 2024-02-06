@@ -37,7 +37,11 @@ $this->registerJsFile('https://code.highcharts.com/modules/wordcloud.js', [
 
 <div class="report-dashboard-view">
 
-    <?php Pjax::begin(['id' => 'p-jax-report-dashboard-view', 'enablePushState' => false]); ?>
+    <?php Pjax::begin([
+        'id' => 'p-jax-report-dashboard-view',
+        'enablePushState' => false,
+        'timeout' => false,
+        ]); ?>
 
     <div class="bg-white p-3 d-flex justify-content-between rounded-md mb-4 shadow-sm">
         <?= Alert::widget() ?>

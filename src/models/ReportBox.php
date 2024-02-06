@@ -15,9 +15,20 @@ use Yii;
  * This is the model class for table "report_dashboard".
  *
  * @property int $id
-* @property int $slave_id
-*
-*
+ * @property int $slave_id
+ * @property string $title
+ * @property string $description
+ * @property int $dashboard_id
+ * @property int $display_type
+ * @property int $chart_type
+ * @property int $range_type
+ * @property int $status
+ * @property int $created_at
+ * @property int $updated_at
+ * @property int $deleted_at
+ * @property int $updated_by
+ * @property int $created_by
+ *
  * @property ReportBoxWidgets $boxWidgets
 *
  * @mixin SoftDeleteBehavior
@@ -33,15 +44,19 @@ class ReportBox extends ActiveRecord
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 2;
 
+    const SCENARIO_DEFAULT = 'default';
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = 'update';
+
     const DISPLAY_CARD = 1;
     const DISPLAY_CHART = 2;
     const DISPLAY_TABLE = 3;
 
     const CHART_LINE = 1;
     const CHART_COLUMN = 2;
-    //const CHART_PIE = 3;
+    const CHART_PIE = 3;
     const CHART_AREA = 4;
-    //const CHART_WORD_CLOUD = 5;
+    const CHART_WORD_CLOUD = 5;
 
     const FORMAT_NUMBER = 1;
     const FORMAT_CURRENCY = 2;
@@ -66,8 +81,8 @@ class ReportBox extends ActiveRecord
     public function rules()
     {
         return [
-            [['dashboard_id', 'display_type', 'range_type', 'title'], 'required', 'on' => 'create'],
-            [['dashboard_id', 'display_type', 'title'], 'required', 'on' => 'update'],
+            [['dashboard_id', 'display_type', 'range_type', 'title'], 'required', 'on' => self::SCENARIO_CREATE],
+            [['dashboard_id', 'display_type', 'title'], 'required', 'on' => self::SCENARIO_UPDATE],
 
             [['title'], 'string', 'max' => 128],
             [['description'], 'string', 'max' => 255],
@@ -86,9 +101,9 @@ class ReportBox extends ActiveRecord
     public function scenarios()
     {
         return [
-            'default' => ['dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
-            'create' => ['dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
-            'update' => ['dashboard_id', 'display_type', 'title', 'description', 'slave_id', 'chart_type'],
+            self::SCENARIO_DEFAULT => ['dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
+            self::SCENARIO_CREATE => ['dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
+            self::SCENARIO_UPDATE => ['dashboard_id', 'display_type', 'title', 'description', 'slave_id', 'chart_type'],
         ];
     }
 

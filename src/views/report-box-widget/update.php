@@ -10,8 +10,6 @@ use yii\web\View;
 /** @var View $this */
 
 $this->title = Yii::t('biDashboard', 'update box widgets');
-/*$this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'Dashboard'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;*/
 ?>
 <div class="report-widget-create">
     <div class="page-content container-fluid text-left">

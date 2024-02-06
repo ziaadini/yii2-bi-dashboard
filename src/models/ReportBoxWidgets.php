@@ -80,9 +80,6 @@ class ReportBoxWidgets extends ActiveRecord
             [['slave_id'], 'default', 'value' => function () {
                 return Yii::$app->params['bi_slave_id'] ?? null;
             }],
-            /*['widget_card_color', 'required', 'when' => function($model) {
-                return $model->box->display_type == ReportBox::DISPLAY_CARD;
-            }],*/
             [['title'], 'string', 'max' => 128],
             [['title'], 'default', 'value' => null],
             [['widget_card_color'], 'default', 'value' => null],
@@ -112,20 +109,6 @@ class ReportBoxWidgets extends ActiveRecord
         ];
     }
 
-    public function canDelete()
-    {
-        return true;
-    }
-
-    public static function getFormattedValue($format, $value)
-    {
-        return match ($format) {
-            self::FORMAT_NUMBER => Yii::$app->formatter->asInteger($value),
-            self::FORMAT_CURRENCY => Yii::$app->formatter->asCurrency($value),
-            default => null,
-        };
-    }
-
     /**
      *
      * @return \yii\db\ActiveQuery|ReportBoxQuery
@@ -153,6 +136,30 @@ class ReportBoxWidgets extends ActiveRecord
     {
         $query = new ReportBoxWidgetQuery(get_called_class());
         return $query->bySlaveId()->notDeleted();
+    }
+
+    public function canDelete()
+    {
+        return true;
+    }
+
+    public static function softDeleteAll($condition = null, $params = [])
+    {
+        $attributes = [
+            'deleted_at' => time(),
+            'status' => self::STATUS_DELETED,
+        ];
+
+        return static::updateAll($attributes, $condition, $params);
+    }
+
+    public static function getFormattedValue($format, $value)
+    {
+        return match ($format) {
+            self::FORMAT_NUMBER => Yii::$app->formatter->asInteger($value),
+            self::FORMAT_CURRENCY => Yii::$app->formatter->asCurrency($value),
+            default => null,
+        };
     }
 
     public function setWidgetProperties() {

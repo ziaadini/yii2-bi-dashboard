@@ -28,21 +28,13 @@ class ReportBoxWidgetController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
-                    'except' => ['card-colors', 'get-widget-columns'],
                     'rules' =>
                         [
                             [
                                 'allow' => true,
-                                'roles' => ['BI/ReportBoxWidget/create'],
-                                'actions' => [
-                                    'create',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
                                 'roles' => ['BI/ReportBoxWidget/update'],
                                 'actions' => [
-                                    'update',
+                                    'update', 'card-colors', 'get-widget-columns',
                                 ]
                             ],
                             [
@@ -57,88 +49,12 @@ class ReportBoxWidgetController extends Controller
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
-                        'create' => ['GET', 'POST'],
                         'update' => ['GET', 'POST'],
                         'delete' => ['POST', 'DELETE'],
                     ],
                 ],
             ]
         );
-    }
-
-    public function actionCreate($boxId)
-    {
-        if ($this->request->get())
-            $modelBox = ReportBox::find()->where(['id' => $boxId])->one();
-
-        elseif($this->request->post())
-            $modelBox = new ReportBox;
-
-        $modelsWidget = [new ReportBoxWidgets];
-        $errors = [];
-
-        if ($modelBox->load($this->request->post())) {
-
-            $modelsWidget = ReportBaseModel::createMultiple(ReportBoxWidgets::class, multipleModels: $modelsWidget);
-            Model::loadMultiple($modelsWidget, Yii::$app->request->post());
-            $validWidgets = Model::validateMultiple($modelsWidget);
-
-            if ($validWidgets) {
-
-                try {
-
-                    foreach ($modelsWidget as $modelWidget)
-                    {
-                        $modelWidget->box_id = $boxId;
-
-                        if ( !($flag = $modelWidget->save(false)) ) {
-                            return $this->asJson([
-                                'status' => true,
-                                'message' => Yii::t("biDashboard", 'The Operation Was Successful')
-                            ]);
-                        }
-                        else {
-                            $errors[] = $modelWidget->errors;
-                            break;
-                        }
-
-                    }
-
-                    if ($flag) {
-                        return $this->asJson([
-                            'status' => true,
-                            'message' => Yii::t("biDashboard", 'The Operation Was Successful')
-                        ]);
-                    }
-                    else {
-                        return $this->asJson([
-                            'status' => false,
-                            'message' => Yii::t("biDashboard", 'The Operation Failed'),
-                        ]);
-                    }
-                }
-
-                catch (Exception $e) {
-                    return $this->asJson([
-                        'status' => false,
-                        'message' => Yii::t("biDashboard", 'The Operation Failed'),
-                    ]);
-                }
-            }
-
-            else {
-                return $this->asJson([
-                    'status' => false,
-                    'message' => Yii::t("biDashboard", 'The Operation Failed'),
-                ]);
-            }
-        }
-
-        return $this->renderAjax('create', [
-            'modelBox' => $modelBox,
-            'modelsWidget' => $modelsWidget,
-        ]);
-
     }
 
     public function actionUpdate($boxId)
@@ -150,7 +66,7 @@ class ReportBoxWidgetController extends Controller
 
             $oldIDs = ArrayHelper::map($modelsWidget, 'id', 'id');
             $modelsWidget = ReportBaseModel::createMultiple(ReportBoxWidgets::class, multipleModels: $modelsWidget);
-            Model::loadMultiple($modelsWidget, Yii::$app->request->post());
+            $valid = Model::loadMultiple($modelsWidget, Yii::$app->request->post());
             $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsWidget, 'id', 'id')));
 
             // validate all models
@@ -162,10 +78,10 @@ class ReportBoxWidgetController extends Controller
                 try {
                     if ($flag = $modelBox->save(false)) {
                         if (!empty($deletedIDs)) {
-                            ReportBoxWidgets::deleteAll(['id' => $deletedIDs]);
+                            ReportBoxWidgets::softDeleteAll(['id' => $deletedIDs]);
                         }
                         foreach ($modelsWidget as $modelWidget) {
-                            //$modelWidget->customer_id = $modelBox->id;
+
                             $modelWidget->box_id = $boxId;
                             if (! ($flag = $modelWidget->save(false))) {
                                 $transaction->rollBack();
@@ -181,6 +97,7 @@ class ReportBoxWidgetController extends Controller
                         ]);
                     }
                     else {
+                        $transaction->rollBack();
                         return $this->asJson([
                             'status' => false,
                             'message' => Yii::t("biDashboard", 'The Operation Failed'),
@@ -188,10 +105,22 @@ class ReportBoxWidgetController extends Controller
                     }
                 } catch (Exception $e) {
                     $transaction->rollBack();
+                    Yii::error($e->getMessage() . $e->getTraceAsString(), Yii::$app->controller->id . '/' . Yii::$app->controller->action->id);
+                    return $this->asJson([
+                        'status' => false,
+                        'message' => $e->getMessage(),
+                    ]);
                 }
+            }
+            else {
+                return $this->asJson([
+                    'status' => false,
+                    'message' => Yii::t("biDashboard", 'The Operation Failed'),
+                ]);
             }
         }
 
+        $this->performAjaxMultipleError($modelsWidget);
         return $this->renderAjax('update', [
             'modelBox' => $modelBox,
             'modelsWidget' => (empty($modelsWidget)) ? [new ReportBoxWidgets()] : $modelsWidget

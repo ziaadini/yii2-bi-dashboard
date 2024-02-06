@@ -7,15 +7,6 @@ use yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
 
 class ReportBoxQuery extends ActiveQuery
 {
-    public function behaviors()
-    {
-        return [
-            'softDelete' => [
-                'class' => SoftDeleteQueryBehavior::class,
-            ],
-        ];
-    }
-
     /**
      * {@inheritdoc}
      * @return ReportBox[]|array
@@ -41,6 +32,15 @@ class ReportBoxQuery extends ActiveQuery
         } else {
             return $this;
         }
+    }
+
+    public function behaviors()
+    {
+        return [
+            'softDelete' => [
+                'class' => SoftDeleteQueryBehavior::class,
+            ],
+        ];
     }
 
 }

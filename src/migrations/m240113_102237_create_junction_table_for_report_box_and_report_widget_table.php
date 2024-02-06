@@ -48,7 +48,7 @@ class m240113_102237_create_junction_table_for_report_box_and_report_widget_tabl
             'box_id',
             '{{%report_box}}',
             'id',
-            'CASCADE'
+            'RESTRICT'
         );
 
         // creates index for column `widget_id`
@@ -65,7 +65,7 @@ class m240113_102237_create_junction_table_for_report_box_and_report_widget_tabl
             'widget_id',
             '{{%report_widget}}',
             'id',
-            'CASCADE'
+            'RESTRICT'
         );
     }
 

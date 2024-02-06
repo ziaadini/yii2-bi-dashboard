@@ -35,7 +35,6 @@ class ReportDashboardController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
-                    'except' => ['run-all-widgets'],
                     'rules' =>
                         [
                             [
@@ -130,54 +129,43 @@ class ReportDashboardController extends Controller
         $cards = [];
         $tables = [];
 
-        if (!empty($boxes)){
+        foreach ($boxes as $box){
 
-            foreach ($boxes as $box){
+            if ($box->display_type == ReportBox::DISPLAY_CHART)
+                $box->chartCategories = $box->getChartCategories($year,$month);
 
-                $widgets = $box->boxWidgets;
+            if ($box->range_type == ReportBox::RANGE_TYPE_DAILY)
+                $box->rangeDateCount = count($this->getMonthDays("$year/$month"));
 
-                if ($box->display_type == ReportBox::DISPLAY_CHART)
-                    $box->chartCategories = $box->getChartCategories($year,$month);
+            foreach ($box->boxWidgets as $widget){
 
-                if ($box->range_type == ReportBox::RANGE_TYPE_DAILY)
-                    $box->rangeDateCount = count($this->getMonthDays($year . '/' . $month));
+                $widget->setWidgetProperties();
+                $date_array = $widget->getStartAndEndTimestamps($widget, $year, $month, $day);
 
-                if (!empty($widgets)){
+                if ($mustBeUpdated)
+                    $widget->widget->runWidget($date_array['start'], $date_array['end']);
 
-                    foreach ($widgets as $widget){
+                $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
+                $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
+                $results = array_reverse($widgetLastResult);
 
-                        $widget->setWidgetProperties();
-                        $date_array = $widget->getStartAndEndTimestamps($widget, $year, $month, $day);
-
-                        if ($mustBeUpdated)
-                            $widget->widget->runWidget($date_array['start'], $date_array['end']);
-
-                        $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
-                        $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
-                        $results = array_reverse($widgetLastResult);
-
-                        if (!empty($results)) {
-                            $widget->collectResults($widget, $results);
-                        }
-
-                        if ($widget->errors) {
-                            $errors[] = $widget->errors;
-                        }
-                    }
+                if (!empty($results)) {
+                    $widget->collectResults($widget, $results);
                 }
 
-                // Separate Boxes based on display_type
-                match ($box->display_type)
-                {
-                    ReportBox::DISPLAY_CARD => $cards[] = $box,
-                    ReportBox::DISPLAY_CHART => $charts[] = $box,
-                    ReportBox::DISPLAY_TABLE => $tables[] = $box,
-                };
+                if ($widget->errors) {
+                    $errors[] = $widget->errors;
+                }
             }
-        }
 
-        /*if (!empty($cards))
-            $cards = array_merge(...array_values($cards));*/
+            // Separate Boxes based on display_type
+            match ($box->display_type)
+            {
+                ReportBox::DISPLAY_CARD => $cards[] = $box,
+                ReportBox::DISPLAY_CHART => $charts[] = $box,
+                ReportBox::DISPLAY_TABLE => $tables[] = $box,
+            };
+        }
 
         // Collect chart series data
         foreach ($charts as $chart) {
@@ -186,17 +174,15 @@ class ReportDashboardController extends Controller
             }
         }
 
-        //dd($cards, $charts, $tables);
-
         $monthDaysCount = count($this->getMonthDays($year . '/' . $month));
 
         if ($mustBeUpdated){
             return $this->asJson([
                 'status' => true,
-                'success' => true,
                 'message' => $errors ? Yii::t('biDashboard', 'Error In Run Widget') : Yii::t("biDashboard", 'Success'),
             ]);
         }
+
         else {
             return $this->render('view', [
                 'model' => $model,
@@ -213,33 +199,14 @@ class ReportDashboardController extends Controller
 
     }
 
-    public function actionRunAllWidgets($id, $start_range = null, $end_range = null)
-    {
-        $model = $this->findModel($id);
-        $start_range = $start_range ? (int)$start_range : null;
-        $end_range = $end_range ? (int)$end_range : null;
-        $errors = [];
-        foreach ($model->widgets as $widget) {
-            $widget->runWidget($start_range, $end_range);
-            if ($widget->errors) {
-                $errors[] = $widget->errors;
-            }
-        }
-        return $this->asJson([
-            'status' => true,
-            'success' => true,
-            'message' => $errors ? Yii::t('biDashboard', 'Error In Run Widget') : Yii::t("biDashboard", 'Success'),
-        ]);
-    }
-
     public function actionCreate()
     {
         $model = new ReportDashboard();
 
-        if ($model->load($this->request->post())) {
+        if ($model->load($this->request->post()) && $model->validate()) {
 
             if($model->save())
-                return $this->redirect(['view', 'id' => $model->id,]);
+                return $this->redirect(['view', 'id' => $model->id]);
 
             else {
                 return $this->asJson([
@@ -249,6 +216,7 @@ class ReportDashboardController extends Controller
             }
         }
 
+        $this->performAjaxValidation($model);
         return $this->renderAjax('create', [
             'model' => $model,
         ]);
