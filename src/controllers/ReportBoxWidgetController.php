@@ -105,7 +105,7 @@ class ReportBoxWidgetController extends Controller
                     }
                 } catch (Exception $e) {
                     $transaction->rollBack();
-                    Yii::error($e->getMessage() . $e->getTraceAsString(), Yii::$app->controller->id . '/' . Yii::$app->controller->action->id);
+                    Yii::error($e->getMessage() .PHP_EOL. $e->getTraceAsString(), Yii::$app->controller->id . '/' . Yii::$app->controller->action->id);
                     return $this->asJson([
                         'status' => false,
                         'message' => $e->getMessage(),
