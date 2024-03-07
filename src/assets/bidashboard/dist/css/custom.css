@@ -94,3 +94,20 @@
 .search-filed div{
     margin-bottom: 0;
 }
+.text-overflow-ellipsis{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.link-button{
+    border: 0;
+    background: none;
+    cursor: pointer;
+    outline: none!important;
+}
+.btn-red{
+    padding: 0.25rem;
+    background-color: #ffe3e3;
+    color: #ff5050;
+    border-radius: 0.375rem;
+}

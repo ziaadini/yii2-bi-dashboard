@@ -89,19 +89,17 @@ $this->params['breadcrumbs'][] = ' ' . $this->title;
                                     ]);
                                 },
                                 'update' => function ($url, ReportDashboard $model, $key) {
-                                    return Html::a('<i class="fas fa-edit"></i>', "javascript:void(0)",
-                                        [
-                                            'data-pjax' => '0',
-                                            'class' => "btn text-primary",
-                                            'data-size' => 'modal-xl',
-                                            'data-title' => Yii::t('biDashboard', 'update'),
-                                            'data-toggle' => 'modal',
-                                            'data-target' => '#modal-pjax-bi',
-                                            'data-url' => Url::to(['report-dashboard/update', 'id' => $model->id]),
-                                            'data-handle-form-submit' => 1,
-                                            'data-reload-pjax-container' => 'p-jax-report-dashboard'
-                                        ]
-                                    );
+                                    return Html::a('<i class="fas fa-edit"></i>', "javascript:void(0)", [
+                                        'data-pjax' => '0',
+                                        'class' => "btn text-primary",
+                                        'data-size' => 'modal-xl',
+                                        'data-title' => Yii::t('biDashboard', 'update'),
+                                        'data-toggle' => 'modal',
+                                        'data-target' => '#modal-pjax-bi',
+                                        'data-url' => Url::to(['report-dashboard/update', 'id' => $model->id]),
+                                        'data-handle-form-submit' => 1,
+                                        'data-reload-pjax-container' => 'p-jax-report-dashboard'
+                                    ]);
                                 },
                                 'view' => function ($url, ReportDashboard $model, $key) {
                                     return Html::a('<i class="fas fa-eye"></i>', $url, [

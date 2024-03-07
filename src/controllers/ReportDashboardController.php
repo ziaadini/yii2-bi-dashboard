@@ -47,14 +47,14 @@ class ReportDashboardController extends Controller
                                 'allow' => true,
                                 'roles' => ['BI/ReportDashboard/index'],
                                 'actions' => [
-                                    'index'
+                                    'index',
                                 ]
                             ],
                             [
                                 'allow' => true,
                                 'roles' => ['BI/ReportDashboard/view'],
                                 'actions' => [
-                                    'view'
+                                    'view',
                                 ]
                             ],
                             [
@@ -75,7 +75,7 @@ class ReportDashboardController extends Controller
                                 'allow' => true,
                                 'roles' => ['BI/ReportDashboard/delete'],
                                 'actions' => [
-                                    'delete'
+                                    'delete',
                                 ]
                             ],
                         ]
@@ -108,21 +108,15 @@ class ReportDashboardController extends Controller
     /**
      * @param $id
      * @param $mustBeUpdated
-     * @param $year
-     * @param $month
-     * @param $day
      * @return string|Response
      *
      *
      */
-    public function actionView($id, $mustBeUpdated = false, $year = null, $month = null, $day = null)
+    //public function actionView($id, $mustBeUpdated = false, $year = null, $month = null, $day = null)
+    public function actionView($id)
     {
         $model = $this->findModel($id);
         $boxes = $model->dashboardBoxes;
-
-        $year = $year ?? CoreHelper::getCurrentYear();
-        $month = $month ?? CoreHelper::getCurrentMonth();
-        $day = $day ?? CoreHelper::getCurrentDay();
 
         $errors = [];
         $charts = [];
@@ -131,19 +125,19 @@ class ReportDashboardController extends Controller
 
         foreach ($boxes as $box){
 
+            $box->lastRunDate = $box->getLastRunDate($box->last_run);
+
             if ($box->display_type == ReportBox::DISPLAY_CHART)
-                $box->chartCategories = $box->getChartCategories($year,$month);
+                $box->chartCategories = $box->getChartCategories($box->lastRunDate['year'],$box->lastRunDate['month']);
 
             if ($box->range_type == ReportBox::RANGE_TYPE_DAILY)
-                $box->rangeDateCount = count($this->getMonthDays("$year/$month"));
+                //$box->rangeDateCount = count($this->getMonthDays("$box->lastRunDate['year']/$box->lastRunDate['month']"));
+                $box->rangeDateCount = count($this->getMonthDays($box->lastRunDate['year']."/".$box->lastRunDate['month']));
 
             foreach ($box->boxWidgets as $widget){
 
                 $widget->setWidgetProperties();
-                $date_array = $widget->getStartAndEndTimestamps($widget, $year, $month, $day);
-
-                if ($mustBeUpdated)
-                    $widget->widget->runWidget($date_array['start'], $date_array['end']);
+                $date_array = $widget->getStartAndEndTimestamps($widget, $box->lastRunDate['year'], $box->lastRunDate['month'], $box->lastRunDate['day']);
 
                 $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
                 $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
@@ -174,28 +168,14 @@ class ReportDashboardController extends Controller
             }
         }
 
-        $monthDaysCount = count($this->getMonthDays($year . '/' . $month));
-
-        if ($mustBeUpdated){
-            return $this->asJson([
-                'status' => true,
-                'message' => $errors ? Yii::t('biDashboard', 'Error In Run Widget') : Yii::t("biDashboard", 'Success'),
-            ]);
-        }
-
-        else {
-            return $this->render('view', [
-                'model' => $model,
-                'boxes' => $boxes,
-                'day' => $day,
-                'month' => $month,
-                'year' => $year,
-                'charts' => $charts,
-                'tables' => $tables,
-                'cards' => $cards,
-                'monthDaysCount' => $monthDaysCount,
-            ]);
-        }
+        //dd($tables);
+        return $this->render('view', [
+            'model' => $model,
+            'boxes' => $boxes,
+            'charts' => $charts,
+            'tables' => $tables,
+            'cards' => $cards,
+        ]);
 
     }
 
@@ -273,5 +253,7 @@ class ReportDashboardController extends Controller
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
+
+
 
 }

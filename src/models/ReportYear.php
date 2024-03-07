@@ -87,7 +87,7 @@ class ReportYear extends \yii\db\ActiveRecord
     public static function find(): ReportYearQuery
     {
         $query = new ReportYearQuery(get_called_class());
-        return  $query->notDeleted();
+        return $query->bySlaveId()->notDeleted();
     }
 
     public static function itemAlias($type, $code = NULL)

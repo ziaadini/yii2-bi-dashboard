@@ -46,7 +46,7 @@ BiAssets::register($this);
         <?php if (isset($this->params['breadcrumbs'])): ?>
             <div class="page-breadcrumb bg-white">
                 <div class="row flex-column flex-md-row">
-                    <div class="col-12 col-lg-6 align-self-start align-self-md-center">
+                    <div class="col-12 align-self-start align-self-md-center">
                         <nav class="mt-2">
                             <?= Breadcrumbs::widget([
                                 'options' => ['class' => 'breadcrumb mb-0 justify-content-start  p-0 bg-white'],
@@ -57,7 +57,7 @@ BiAssets::register($this);
                                 ],
                                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                                 'itemTemplate' => "<li class=\"breadcrumb-item\">{link}</li>\n",
-                                'activeItemTemplate' => "<li class=\"breadcrumb-item active\">{link}</li>\n",
+                                'activeItemTemplate' => "<li class=\"breadcrumb-item active text-overflow-ellipsis\">{link}</li>\n",
                             ]) ?>
                         </nav>
                     </div>

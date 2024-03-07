@@ -2,6 +2,7 @@
 
 namespace sadi01\bidashboard\models;
 
+use sadi01\bidashboard\helpers\CoreHelper;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use sadi01\bidashboard\traits\CoreTrait;
 use yii\behaviors\BlameableBehavior;
@@ -22,6 +23,7 @@ use Yii;
  * @property int $display_type
  * @property int $chart_type
  * @property int $range_type
+ * @property int $last_run
  * @property int $status
  * @property int $created_at
  * @property int $updated_at
@@ -47,6 +49,7 @@ class ReportBox extends ActiveRecord
     const SCENARIO_DEFAULT = 'default';
     const SCENARIO_CREATE = 'create';
     const SCENARIO_UPDATE = 'update';
+    //const SCENARIO_UPDATE_LAST_RUN = 'update_last_run';
 
     const DISPLAY_CARD = 1;
     const DISPLAY_CHART = 2;
@@ -64,6 +67,7 @@ class ReportBox extends ActiveRecord
     public $chartCategories = [];
     public $chartSeries = [];
     public $rangeDateCount = 12;
+    public $lastRunDate = [];
 
     const RANGE_TYPE_DAILY = 1;
     const RANGE_TYPE_MONTHLY = 2;
@@ -180,8 +184,8 @@ class ReportBox extends ActiveRecord
                 //self::CHART_WORD_CLOUD => Yii::t('biDashboard', 'Chart world cloud'),
             ],
             'RangeType' => [
-                self::RANGE_TYPE_DAILY => Yii::t('biDashboard', 'روزانه'),
-                self::RANGE_TYPE_MONTHLY => Yii::t('biDashboard', 'ماهانه'),
+                self::RANGE_TYPE_DAILY => Yii::t('biDashboard', 'Daily'),
+                self::RANGE_TYPE_MONTHLY => Yii::t('biDashboard', 'Monthly'),
             ],
             'Format' => [
                 self::FORMAT_CURRENCY => Yii::t('biDashboard', 'Currency'),
@@ -213,6 +217,15 @@ class ReportBox extends ActiveRecord
         }
 
         return $categories;
+    }
+
+    public function getLastRunDate(int $last_run) : Array
+    {
+        return [
+            'day' => CoreHelper::getDay($last_run),
+            'month' => CoreHelper::getMonth($last_run),
+            'year' => CoreHelper::getYear($last_run),
+        ];
     }
 
     public function behaviors()

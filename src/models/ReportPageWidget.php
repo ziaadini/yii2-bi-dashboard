@@ -32,8 +32,11 @@ class ReportPageWidget extends ActiveRecord
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 2;
+
     const FORMAT_NUMBER = 1;
     const FORMAT_CURRENCY = 2;
+    const FORMAT_GRAM = 3;
+    const FORMAT_KILOGRAM= 4;
 
     public static function getDb()
     {
@@ -92,6 +95,10 @@ class ReportPageWidget extends ActiveRecord
                 return Yii::$app->formatter->asInteger($value);
             case self::FORMAT_CURRENCY:
                 return Yii::$app->formatter->asCurrency($value);
+            case self::FORMAT_GRAM:
+                return number_format($value) . ' ' . Yii::t('biDashboard', 'Gram');
+            case self::FORMAT_KILOGRAM:
+                return Yii::$app->formatter->asWeight($value);
         }
     }
 
@@ -137,6 +144,12 @@ class ReportPageWidget extends ActiveRecord
                 self::STATUS_DELETED => Yii::t('biDashboard', 'DELETED'),
                 self::STATUS_ACTIVE => Yii::t('biDashboard', 'ACTIVE'),
                 self::STATUS_INACTIVE => Yii::t('biDashboard', 'INACTIVE'),
+            ],
+            'Format' => [
+                self::FORMAT_CURRENCY => Yii::t('biDashboard', 'Currency'),
+                self::FORMAT_NUMBER => Yii::t('biDashboard', 'Number'),
+                self::FORMAT_GRAM => Yii::t('biDashboard', 'Gram'),
+                self::FORMAT_KILOGRAM => Yii::t('biDashboard', 'Kilo Gram'),
             ],
             'StatusClass' => [
                 self::STATUS_DELETED => 'danger',

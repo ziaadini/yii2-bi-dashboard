@@ -16,7 +16,7 @@ $this->title = Yii::t('biDashboard', 'Report Widgets');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php Pjax::begin(['id' => 'p-jax-report-widget', 'enablePushState' => false]); ?>
-    <div class="page-content container-fluid text-left pt-5">
+    <div class="page-content container-fluid text-left">
         <div class="work-report-index card">
             <div class="panel-group m-bot20" id="accordion">
                 <div class="card-header d-flex justify-content-between">
@@ -38,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ['class' => 'yii\grid\SerialColumn'],
                             'id',
                             'title',
+                            'description',
                             'search_model_class',
                             'search_model_method',
                             [
@@ -48,15 +49,17 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'template' => '{view} {delete}',
                                 'buttons' => [
                                     'delete' => function ($url, ReportWidget $model, $key) {
-                                        return Html::a('<i class="fa fa-trash"></i>', 'javascript:void(0)', [
-                                            'title' => Yii::t('biDashboard', 'Delete'),
-                                            'aria-label' => Yii::t('biDashboard', 'Delete'),
-                                            'data-reload-pjax-container' => 'p-jax-report-widget',
+                                    return Html::a('<i class="fas fa-trash-alt"></i>', "javascript:void(0)",
+                                        [
                                             'data-pjax' => '0',
+                                            'class' => "btn text-danger",
+                                            'data-size' => 'modal-dialog-centered modal-lg',
+                                            'data-title' => Yii::t('biDashboard', 'Remove Widget'),
+                                            'data-toggle' => 'modal',
+                                            'data-target' => '#modal-pjax-bi',
                                             'data-url' => Url::to(['report-widget/delete', 'id' => $model->id]),
-                                            'class' => 'p-jax-btn text-danger',
-                                            'data-title' => Yii::t('biDashboard', 'Delete'),
-                                            'data-toggle' => 'tooltip',
+                                            'data-handle-form-submit' => 1,
+                                            'data-reload-pjax-container' => 'p-jax-report-widget'
                                         ]);
                                     },
                                     'view' => function ($url, ReportWidget $model, $key) {

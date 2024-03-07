@@ -43,6 +43,8 @@ class ReportBoxWidgets extends ActiveRecord
 
     const FORMAT_NUMBER = 1;
     const FORMAT_CURRENCY = 2;
+    const FORMAT_GRAM = 3;
+    const FORMAT_KILOGRAM= 4;
 
     const CARD_PRIMARY = 1;
     const CARD_SECONDARY = 2;
@@ -158,6 +160,8 @@ class ReportBoxWidgets extends ActiveRecord
         return match ($format) {
             self::FORMAT_NUMBER => Yii::$app->formatter->asInteger($value),
             self::FORMAT_CURRENCY => Yii::$app->formatter->asCurrency($value),
+            self::FORMAT_GRAM => number_format($value) . ' ' . Yii::t('biDashboard', 'Gram'),
+            self::FORMAT_KILOGRAM =>Yii::$app->formatter->asWeight($value),
             default => null,
         };
     }
@@ -216,9 +220,9 @@ class ReportBoxWidgets extends ActiveRecord
 
             $widget->results['categories'] = array_map(function ($item) use ($widget) {
                 if ($widget->rangeType == ReportWidget::RANGE_TYPE_DAILY) {
-                    return $item["day"];
+                    return $item['day'];
                 } else {
-                    return $item["month_name"];
+                    return $item['month_name'];
                 }
             }, $results);
 
@@ -247,6 +251,25 @@ class ReportBoxWidgets extends ActiveRecord
                 }
             }
 
+            $chartData = $widget->results['chartData'];
+            $percentageOfChange = &$widget->results['percentageOfChange'];
+
+            $percentageOfChange[0] = 0;
+            $dataCount = count($chartData);
+
+            for ($i = 0; $i < $dataCount - 1; $i++) {
+                $currentData = $chartData[$i];
+                $nextData = $chartData[$i + 1];
+
+                if ($currentData != 0 && $nextData != 0) {
+                    $change = $nextData - $currentData;
+                    $percentageOfChange[$i + 1] = round(($change / $currentData) * 100, 2);
+                }
+                else {
+                    $percentageOfChange[$i + 1] = 0;
+                }
+            }
+
         }
     }
 
@@ -262,6 +285,8 @@ class ReportBoxWidgets extends ActiveRecord
             'Format' => [
                 self::FORMAT_CURRENCY => Yii::t('biDashboard', 'Currency'),
                 self::FORMAT_NUMBER => Yii::t('biDashboard', 'Number'),
+                self::FORMAT_GRAM => Yii::t('biDashboard', 'Gram'),
+                self::FORMAT_KILOGRAM => Yii::t('biDashboard', 'Kilo Gram'),
             ],
             'CardColorsClass' => [
                 self::CARD_PRIMARY => 'bg-primary',
