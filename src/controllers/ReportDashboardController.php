@@ -112,7 +112,6 @@ class ReportDashboardController extends Controller
      *
      *
      */
-    //public function actionView($id, $mustBeUpdated = false, $year = null, $month = null, $day = null)
     public function actionView($id)
     {
         $model = $this->findModel($id);
@@ -168,7 +167,6 @@ class ReportDashboardController extends Controller
             }
         }
 
-        //dd($tables);
         return $this->render('view', [
             'model' => $model,
             'boxes' => $boxes,

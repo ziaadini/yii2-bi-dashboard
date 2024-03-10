@@ -217,11 +217,35 @@ $pdate = Yii::$app->pdate;
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <p class="text-center mb-0 mt-2">
-                            <a class="text-info font-12" data-toggle="collapse" href="#collapseExample_<?= $pageWidget->id ?>" role="button" aria-expanded="false" aria-controls="collapseExample_<?= $pageWidget->id ?>">
+                        <div class="d-flex align-items-center justify-content-between mt-4">
+                            <a class="text-info font-12 mr-5" data-toggle="collapse" href="#collapseExample_<?= $pageWidget->id ?>" role="button" aria-expanded="false" aria-controls="collapseExample_<?= $pageWidget->id ?>">
                                 <?= Yii::t('biDashboard', 'Show Details') ?>
                             </a>
-                        </p>
+                            <div>
+                                <?= Html::a('<i class="fas fa-arrow-up font-light"></i>', 'javascript:void(0)',
+                                    [
+                                        'title' => Yii::t('biDashboard', 'Moving'),
+                                        'aria-label' => Yii::t('yii', 'Moving'),
+                                        'data-reload-pjax-container' => 'p-jax-report-page-add',
+                                        'data-pjax' => '0',
+                                        /*'data-url' => Url::to(['/bidashboard/report-box/dec-order', 'id' => $box->id]),*/
+                                        'class' => "p-jax-btn text-secondary mr-2",
+                                        'data-title' => Yii::t('biDashboard', 'Moving'),
+                                        'data-toggle' => 'tooltip',
+                                    ]); ?>
+                                <?= Html::a('<i class="fas fa-arrow-down font-light"></i>', 'javascript:void(0)',
+                                    [
+                                        'title' => Yii::t('biDashboard', 'Moving'),
+                                        'aria-label' => Yii::t('yii', 'Moving'),
+                                        'data-reload-pjax-container' => 'p-jax-report-page-add',
+                                        'data-pjax' => '0',
+                                        /*'data-url' => Url::to(['/bidashboard/report-box/inc-order', 'id' => $box->id]),*/
+                                        'class' => "p-jax-btn text-secondary",
+                                        'data-title' => Yii::t('biDashboard', 'Moving'),
+                                        'data-toggle' => 'tooltip',
+                                    ]); ?>
+                            </div>
+                        </div>
                         <div class="collapse" id="collapseExample_<?= $pageWidget->id ?>">
                             <div class="text-left my-2">
                                 <div class="d-flex justify-content-between">

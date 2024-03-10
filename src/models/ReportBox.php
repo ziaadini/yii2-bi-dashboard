@@ -97,25 +97,45 @@ class ReportBox extends ActiveRecord
             ['chart_type', 'required', 'when' => function($model) {
                 return $model->display_type == self::DISPLAY_CHART;
             }],
+
             [['dashboard_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportDashboard::class, 'targetAttribute' => ['dashboard_id' => 'id']],
-            [['dashboard_id', 'display_type', 'chart_type', 'status', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'slave_id'], 'integer'],
+
+            // The combination of 'display_type', 'dashboard_id' and 'order' must be unique
+            // Must be check!
+            /*[['dashboard_id', 'display_type', 'order'], 'unique', 'targetAttribute' => ['dashboard_id', 'display_type', 'order']],*/
+
+            [['order', 'dashboard_id', 'display_type', 'chart_type', 'status', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'slave_id'], 'integer'],
         ];
     }
 
     public function scenarios()
     {
         return [
-            self::SCENARIO_DEFAULT => ['dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
-            self::SCENARIO_CREATE => ['dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
-            self::SCENARIO_UPDATE => ['dashboard_id', 'display_type', 'title', 'description', 'slave_id', 'chart_type'],
+            self::SCENARIO_DEFAULT => ['order', 'dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
+            self::SCENARIO_CREATE => ['order', 'dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
+            self::SCENARIO_UPDATE => ['order', 'dashboard_id', 'display_type', 'title', 'description', 'slave_id', 'chart_type'],
         ];
     }
 
+    //beforeSave() is overridden to calculate the maximum order value for the current display_type and dashboard_id
+    // before a new record is saved, and then increment that value by 1.
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $maxOrder = $this->getOrderExtreme('max');
+                $this->order = $maxOrder !== 0 ? $maxOrder + 1 : 1;
+            }
+            return true;
+        }
+        return false;
+    }
 
     public function attributeLabels()
     {
         return [
             'id' => Yii::t('biDashboard', 'ID'),
+            'order' => Yii::t('biDashboard', 'Order'),
             'title' => Yii::t('biDashboard', 'Title'),
             'description' => Yii::t('biDashboard', 'Description'),
             'dashboard_id' => Yii::t('biDashboard', 'Dashboard ID'),
@@ -139,6 +159,80 @@ class ReportBox extends ActiveRecord
     public function getBoxWidgets()
     {
         return $this->hasMany(ReportBoxWidgets::class, ['box_id' => 'id']);
+    }
+
+    //this find the maximum/minimum order value for the current display_type and dashboard_id
+    public function getOrderExtreme($type)
+    {
+        if ($type == 'max') {
+            return ReportBox::find()
+                ->where([
+                    'display_type' => $this->display_type,
+                    'dashboard_id' => $this->dashboard_id
+                ])->max('`order`');
+
+        } elseif ($type == 'min') {
+            return ReportBox::find()
+                ->where([
+                    'display_type' => $this->display_type,
+                    'dashboard_id' => $this->dashboard_id
+                ])->min('`order`');
+
+        } else {
+            throw new Exception("Invalid type: $type. Expected 'max' or 'min'.");
+        }
+    }
+
+    public function changeBoxOrder($direction)
+    {
+        $transaction = self::getDb()->beginTransaction();
+        $result = ['status' => false, 'message' => ''];
+
+        try {
+            //find the next or previous order based on direction
+            if ($direction === 'inc') {
+                $orderCondition = ['>', 'order', $this->order];
+                $orderSort = SORT_ASC;
+            } else if ($direction === 'dec') {
+                $orderCondition = ['<', 'order', $this->order];
+                $orderSort = SORT_DESC;
+            } else {
+                throw new \Exception('Invalid direction');
+            }
+
+            $box = ReportBox::find()
+                ->where(['dashboard_id' => $this->dashboard_id, 'display_type' => $this->display_type])
+                ->andWhere($orderCondition)
+                ->orderBy(['order' => $orderSort])
+                ->one();
+
+            if (!$box) {
+                throw new \Exception('The Box not found!');
+            }
+
+            // Swap the orders
+            list($this->order, $box->order) = [$box->order, $this->order];
+
+            if ($box->save(false) && $this->save(false)) {
+                $result['status'] = true;
+                $result['message'] = Yii::t("biDashboard", 'The Operation Was Successful');
+                $transaction->commit();
+            } else {
+                throw new \Exception(Yii::t("biDashboard", 'The Operation Failed'));
+            }
+
+        } catch (\Exception | \Throwable $e) {
+            $transaction->rollBack();
+            $result['message'] = $e->getMessage();
+        }
+
+        return $result;
+    }
+
+    public function getWidgets()
+    {
+        return $this->hasMany(ReportWidget::class, ['id' => 'widget_id'])
+            ->viaTable('report_box_widgets', ['box_id' => 'id']);
     }
 
     /**

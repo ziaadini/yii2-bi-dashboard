@@ -34,7 +34,7 @@ class ReportBoxController extends Controller
                                 'allow' => true,
                                 'roles' => ['BI/ReportBox/create'],
                                 'actions' => [
-                                    'create','chart-types','get-widgets-by-range','run','run-box'
+                                    'create','chart-types','get-widgets-by-range','run','run-box','inc-order', 'dec-order'
                                 ]
                             ],
                             [
@@ -167,6 +167,41 @@ class ReportBoxController extends Controller
             'status' => $status,
             'message' => $message
         ]);
+    }
+
+    /**
+     * @param $id
+     * @param $addOrder
+     * @return Response
+     */
+    public function actionIncOrder($id)
+    {
+        $box = $this->findModel($id);
+
+        if ($box->order >= $box->getOrderExtreme('max')) {
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t("biDashboard", 'The Operation Failed')
+            ]);
+        }
+
+        $result = $box->changeBoxOrder('inc');
+        return $this->asJson($result);
+    }
+
+    public function actionDecOrder($id)
+    {
+        $box = $this->findModel($id);
+
+        if ($box->order <= $box->getOrderExtreme('min')) {
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t("biDashboard", 'The Operation Failed')
+            ]);
+        }
+
+        $result = $box->changeBoxOrder('dec');
+        return $this->asJson($result);
     }
 
     public function actionDelete(int $id)

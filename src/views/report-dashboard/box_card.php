@@ -137,6 +137,30 @@ $pdate = Yii::$app->pdate;
         <div class="card-footer d-flex align-items-center justify-content-between px-3">
             <span class="text-muted font-12 mr-3"><?= $box->description ?? '(توضیحات باکس)' ?></span>
             <div class="d-flex">
+                <div class="d-flex align-items-center mr-2">
+                    <?= Html::a('<i class="fas fa-arrow-up font-light"></i>', 'javascript:void(0)',
+                        [
+                            'title' => Yii::t('biDashboard', 'Moving'),
+                            'aria-label' => Yii::t('yii', 'Moving'),
+                            'data-reload-pjax-container' => 'p-jax-report-dashboard-view',
+                            'data-pjax' => '0',
+                            'data-url' => Url::to(['/bidashboard/report-box/dec-order', 'id' => $box->id]),
+                            'class' => "p-jax-btn text-secondary mr-2",
+                            'data-title' => Yii::t('biDashboard', 'Moving'),
+                            'data-toggle' => 'tooltip',
+                        ]); ?>
+                    <?= Html::a('<i class="fas fa-arrow-down font-light"></i>', 'javascript:void(0)',
+                        [
+                            'title' => Yii::t('biDashboard', 'Moving'),
+                            'aria-label' => Yii::t('yii', 'Moving'),
+                            'data-reload-pjax-container' => 'p-jax-report-dashboard-view',
+                            'data-pjax' => '0',
+                            'data-url' => Url::to(['/bidashboard/report-box/inc-order', 'id' => $box->id]),
+                            'class' => "p-jax-btn text-secondary",
+                            'data-title' => Yii::t('biDashboard', 'Moving'),
+                            'data-toggle' => 'tooltip',
+                        ]); ?>
+                </div>
                 <?= Html::a(Yii::t('biDashboard', 'Add and Edit Widgets'), "javascript:void(0)",
                     [
                         'data-pjax' => '0',

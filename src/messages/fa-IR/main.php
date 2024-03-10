@@ -116,6 +116,8 @@ return [
     'Sharing' => 'اشتراک گذاری',
     'Year' => 'سال',
     'Page' => 'صفحه',
+    'Order' => 'ترتیب',
+    'Moving' => 'جا به جا کردن',
     'The Operation Was Successful' => 'عملیات با موفقیت انجام شد',
     'The Operation Failed' => 'عملیات با خطا مواجه شد',
     'Error In Save External Data' => 'خطا در ذخیره داده های خارجی',

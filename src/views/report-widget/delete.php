@@ -31,7 +31,7 @@ use sadi01\bidashboard\models\ReportDashboard;
 <?php if (!empty($dashboards) || !empty($pages)): ?>
     <div class="card border rounded-md mt-4 mb-0">
     <div class="card-header d-flex align-items-center justify-content-center px-3">
-        <span class="btn-red"><?= Yii::t('biDashboard', 'This widget is used in the following pages and dashboards') ?></span>
+        <span class="alert alert-danger mb-0 px-2 py-1 rounded-md"><?= Yii::t('biDashboard', 'This widget is used in the following pages and dashboards') ?></span>
     </div>
     <div class="card-body row min-h-60 py-3">
 
