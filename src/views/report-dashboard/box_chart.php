@@ -49,14 +49,14 @@ $pdate = Yii::$app->pdate;
                         <div>
                             <select name="month" class="form-control rounded-md" id="select_month_<?= $box->id ?>">
                                 <?php for ($i = 1; $i <= 12; $i++): ?>
-                                    <option value="<?= $i ?>" <?= $box->lastRunDate['month'] == $i ? 'selected' : '' ?> ><?= $pdate->jdate_words(['mm' => $i])['mm'] ?></option>
+                                    <option value="<?= $i ?>" <?= $box->lastDateSet['month'] == $i ? 'selected' : '' ?> ><?= $pdate->jdate_words(['mm' => $i])['mm'] ?></option>
                                 <?php endfor; ?>
                             </select>
                         </div>
                         <div class="px-1">
                             <select name="year" class="form-control rounded-md" id="select_year_<?= $box->id ?>">
                                 <?php foreach (ReportYear::itemAlias('List') as $Year): ?>
-                                    <option <?= $Year ?> <?= $box->lastRunDate['year'] == $Year ? 'selected' : '' ?> ><?= $Year ?></option>
+                                    <option <?= $Year ?> <?= $box->lastDateSet['year'] == $Year ? 'selected' : '' ?> ><?= $Year ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -64,7 +64,7 @@ $pdate = Yii::$app->pdate;
                         <div class="px-1">
                             <select name="year" class="form-control rounded-md" id="select_year_<?= $box->id ?>">
                                 <?php foreach (ReportYear::itemAlias('List') as $Year): ?>
-                                    <option <?= $Year ?> <?= $box->lastRunDate['year'] == $Year ? 'selected' : '' ?> ><?= $Year ?></option>
+                                    <option <?= $Year ?> <?= $box->lastDateSet['year'] == $Year ? 'selected' : '' ?> ><?= $Year ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -78,7 +78,7 @@ $pdate = Yii::$app->pdate;
                         'aria-label' => Yii::t('yii', 'Update Box'),
                         'data-reload-pjax-container' => 'p-jax-report-dashboard-view',
                         'data-pjax' => '0',
-                        'data-url' => Url::to(['/bidashboard/report-box/run-box', 'id' => $box->id, 'year' => $box->lastRunDate['year'], 'month' => $box->lastRunDate['month'], 'day' => $box->lastRunDate['day']]),
+                        'data-url' => Url::to(['/bidashboard/report-box/run-box', 'id' => $box->id, 'year' => $box->lastDateSet['year'], 'month' => $box->lastDateSet['month'], 'day' => $box->lastDateSet['day']]),
                         'class' => "p-jax-btn d-flex",
                         'data-title' => Yii::t('biDashboard', 'Update Box'),
                         'data-toggle' => 'tooltip',
@@ -158,7 +158,24 @@ $pdate = Yii::$app->pdate;
     <div class="card-footer d-flex align-items-center justify-content-between px-3">
         <span class="text-muted font-12 mr-3"><?= $box->description ?? '(توضیحات باکس)' ?></span>
         <div class="d-flex">
-            <div class="d-flex align-items-center mr-2">
+            <button type="button" class="btn btn-sm btn-warning disabled mr-2 rounded-md shadow-none"> بروزرسانی:
+                <?php if ($box->last_run != 0): ?>
+                    <?= Yii::$app->formatter->asRelativeTime($box->last_run, 'now'); ?>
+                <?php endif; ?>
+            </button>
+            <?= Html::a(Yii::t('biDashboard', 'Add and Edit Widgets'), "javascript:void(0)",
+                [
+                    'data-pjax' => '0',
+                    'class' => "btn btn-info btn-sm rounded-md font-12",
+                    'data-size' => 'modal-xl',
+                    'data-title' => Yii::t('biDashboard', 'Add and Edit Widgets'),
+                    'data-toggle' => 'modal',
+                    'data-target' => '#modal-pjax-bi',
+                    'data-url' => Url::to(['report-box-widget/update', 'boxId' => $box->id]),
+                    'data-handle-form-submit' => 1,
+                    'data-reload-pjax-container' => 'p-jax-report-dashboard-view'
+                ]) ?>
+            <div class="d-flex align-items-center ml-2">
                 <?= Html::a('<i class="fas fa-arrow-up font-light"></i>', 'javascript:void(0)',
                     [
                         'title' => Yii::t('biDashboard', 'Moving'),
@@ -182,18 +199,6 @@ $pdate = Yii::$app->pdate;
                         'data-toggle' => 'tooltip',
                     ]); ?>
             </div>
-            <?= Html::a(Yii::t('biDashboard', 'Add and Edit Widgets'), "javascript:void(0)",
-                [
-                    'data-pjax' => '0',
-                    'class' => "btn btn-info btn-sm rounded-md font-12 ml-1",
-                    'data-size' => 'modal-xl',
-                    'data-title' => Yii::t('biDashboard', 'Edit Box Widgets'),
-                    'data-toggle' => 'modal',
-                    'data-target' => '#modal-pjax-bi',
-                    'data-url' => Url::to(['/bidashboard/report-box-widget/update', 'boxId' => $box->id]),
-                    'data-handle-form-submit' => 1,
-                    'data-reload-pjax-container' => 'p-jax-report-dashboard-view'
-                ]) ?>
         </div>
     </div>
 </div>

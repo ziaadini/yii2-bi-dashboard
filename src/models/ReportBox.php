@@ -25,6 +25,7 @@ use Yii;
  * @property int $chart_type
  * @property int $range_type
  * @property int $last_run
+ * @property int $last_date_set
  * @property int $status
  * @property int $created_at
  * @property int $updated_at
@@ -68,7 +69,8 @@ class ReportBox extends ActiveRecord
     public $chartCategories = [];
     public $chartSeries = [];
     public $rangeDateCount = 12;
-    public $lastRunDate = [];
+    public $lastRun = [];
+    public $lastDateSet = [];
 
     const RANGE_TYPE_DAILY = 1;
     const RANGE_TYPE_MONTHLY = 2;
@@ -312,12 +314,12 @@ class ReportBox extends ActiveRecord
         return $categories;
     }
 
-    public function getLastRunDate(int $last_run) : Array
+    public function getLastDateSet(int $last_date_set) : Array
     {
         return [
-            'day' => CoreHelper::getDay($last_run),
-            'month' => CoreHelper::getMonth($last_run),
-            'year' => CoreHelper::getYear($last_run),
+            'day' => CoreHelper::getDay($last_date_set),
+            'month' => CoreHelper::getMonth($last_date_set),
+            'year' => CoreHelper::getYear($last_date_set),
         ];
     }
 

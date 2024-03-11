@@ -124,19 +124,19 @@ class ReportDashboardController extends Controller
 
         foreach ($boxes as $box){
 
-            $box->lastRunDate = $box->getLastRunDate($box->last_run);
+            $box->lastDateSet = $box->getLastDateSet($box->last_date_set);
 
             if ($box->display_type == ReportBox::DISPLAY_CHART)
-                $box->chartCategories = $box->getChartCategories($box->lastRunDate['year'],$box->lastRunDate['month']);
+                $box->chartCategories = $box->getChartCategories($box->lastDateSet['year'],$box->lastDateSet['month']);
 
             if ($box->range_type == ReportBox::RANGE_TYPE_DAILY)
-                //$box->rangeDateCount = count($this->getMonthDays("$box->lastRunDate['year']/$box->lastRunDate['month']"));
-                $box->rangeDateCount = count($this->getMonthDays($box->lastRunDate['year']."/".$box->lastRunDate['month']));
+                //$box->rangeDateCount = count($this->getMonthDays("$box->lastDateSet['year']/$box->lastDateSet['month']"));
+                $box->rangeDateCount = count($this->getMonthDays($box->lastDateSet['year']."/".$box->lastDateSet['month']));
 
             foreach ($box->boxWidgets as $widget){
 
                 $widget->setWidgetProperties();
-                $date_array = $widget->getStartAndEndTimestamps($widget, $box->lastRunDate['year'], $box->lastRunDate['month'], $box->lastRunDate['day']);
+                $date_array = $widget->getStartAndEndTimestamps($widget, $box->lastDateSet['year'], $box->lastDateSet['month'], $box->lastDateSet['day']);
 
                 $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
                 $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];

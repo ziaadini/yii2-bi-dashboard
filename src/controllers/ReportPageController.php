@@ -192,6 +192,13 @@ class ReportPageController extends Controller
 
     public function actionView($id, $year = null, $month = null)
     {
+        /*$slaves = ReportPageWidget::find()->select(['slave_id'])->distinct()->all();
+        foreach ($slaves as $slave)
+        {
+            $slaveIds[] = $slave['slave_id'];
+        }
+        dd($slaveIds);*/
+
         $model = $this->findModel($id);
 
         $month = $month ?: CoreHelper::getCurrentMonth();
@@ -216,6 +223,7 @@ class ReportPageController extends Controller
         } else {
             $rangeDateNumber = 12;
         }
+
         return $this->render('view', [
             'model' => $model,
             'pageWidgets' => $model->reportPageWidgets,

@@ -73,7 +73,7 @@ class ReportBoxController extends Controller
         if ($model->load($this->request->post())) {
 
             $model->dashboard_id = $dashboardId;
-            $model->last_run = time();
+            $model->last_date_set = time();
             $valid = $model->validate();
 
             if ($valid) {
@@ -156,10 +156,11 @@ class ReportBoxController extends Controller
         }
 
         if ($date_array) {
-            $box->last_run = $date_array['start'];
-            $box->lastRunDate = $box->getLastRunDate($box->last_run);
+            $box->last_date_set = $date_array['start'];
+            $box->lastDateSet = $box->getLastDateSet($box->last_date_set);
         }
 
+        $box->last_run = time();
         $status = $box->save();
         $message = Yii::t("biDashboard", $status ? 'The Operation Was Successful' : 'The Operation Failed');
 
