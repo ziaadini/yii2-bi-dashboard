@@ -32,7 +32,7 @@ class ReportPageWidgetController extends Controller
                                 'allow' => true,
                                 'roles' => ['BI/ReportPageWidget/delete'],
                                 'actions' => [
-                                    'delete'
+                                    'delete','inc-order','dec-order'
                                 ]
                             ],
                         ]
@@ -61,6 +61,36 @@ class ReportPageWidgetController extends Controller
                 'message' => Yii::t("biDashboard", 'Error In Delete Action')
             ]);
         }
+    }
+
+    public function actionIncOrder($id)
+    {
+        $pageWidget = $this->findModel($id);
+
+        if ($pageWidget->display_order >= $pageWidget->getDisplayOrderExtreme('max')) {
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t("biDashboard", 'The Operation Failed')
+            ]);
+        }
+
+        $result = $pageWidget->changeWidgetOrder('inc');
+        return $this->asJson($result);
+    }
+
+    public function actionDecOrder($id)
+    {
+        $pageWidget = $this->findModel($id);
+
+        if ($pageWidget->display_order <= $pageWidget->getDisplayOrderExtreme('min')) {
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t("biDashboard", 'The Operation Failed')
+            ]);
+        }
+
+        $result = $pageWidget->changeWidgetOrder('dec');
+        return $this->asJson($result);
     }
 
     /**

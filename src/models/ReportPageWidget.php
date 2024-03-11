@@ -15,6 +15,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @property int $slave_id
  * @property int $page_id
  * @property int $widget_id
+ * @property int $display_order
  * @property string|null $report_widget_field
  * @property int|null $report_widget_field_format
  * @property int $status
@@ -61,7 +62,7 @@ class ReportPageWidget extends ActiveRecord
                 return Yii::$app->params['bi_slave_id'] ?? null;
             }],
             [['page_id', 'widget_id', 'report_widget_field'], 'required'],
-            [['page_id', 'widget_id', 'report_widget_field_format', 'status', 'slave_id'], 'integer'],
+            [['page_id', 'display_order', 'widget_id', 'report_widget_field_format', 'status', 'slave_id'], 'integer'],
             [['report_widget_field'], 'string', 'max' => 64],
             [['page_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportPage::class, 'targetAttribute' => ['page_id' => 'id']],
             [['widget_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportWidget::class, 'targetAttribute' => ['widget_id' => 'id']],
@@ -100,6 +101,89 @@ class ReportPageWidget extends ActiveRecord
             case self::FORMAT_KILOGRAM:
                 return Yii::$app->formatter->asWeight($value);
         }
+    }
+
+    //beforeSave() is overridden to calculate the maximum display_order value for the current page_id
+    // before a new record is saved, and then increment that value by 1.
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $maxdisplayOrder = $this->getDisplayOrderExtreme('max');
+                $this->display_order = $maxdisplayOrder !== 0 ? $maxdisplayOrder + 1 : 1;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    //this find the maximum/minimum order value for the current display_type and dashboard_id
+    public function getDisplayOrderExtreme($type)
+    {
+        if ($type == 'max') {
+            return ReportPageWidget::find()
+                ->where([
+                    'page_id' => $this->page_id
+                ])->max('display_order');
+
+        } elseif ($type == 'min') {
+            return ReportPageWidget::find()
+                ->where([
+                    'page_id' => $this->page_id
+                ])->min('display_order');
+
+        } else {
+            throw new Exception("Invalid type: $type. Expected 'max' or 'min'.");
+        }
+    }
+
+    public function changeWidgetOrder($direction)
+    {
+        $transaction = self::getDb()->beginTransaction();
+        $result = ['status' => false, 'message' => ''];
+
+        try {
+
+            if ($direction === 'inc') {
+                $orderCondition = ['>', 'display_order', $this->display_order];
+                $orderSort = SORT_ASC;
+            }
+            else if ($direction === 'dec') {
+                $orderCondition = ['<', 'display_order', $this->display_order];
+                $orderSort = SORT_DESC;
+            }
+            else {
+                throw new \Exception('Invalid direction');
+            }
+
+            //find the next or previous display_order valuse
+            $pageWidget = ReportPageWidget::find()
+                ->where(['page_id' => $this->page_id])
+                ->andWhere($orderCondition)
+                ->orderBy(['display_order' => $orderSort])
+                ->one();
+
+            if (!$pageWidget) {
+                throw new \Exception('The Widget not found!');
+            }
+
+            // Swap the orders
+            list($this->display_order, $pageWidget->display_order) = [$pageWidget->display_order, $this->display_order];
+
+            if ($pageWidget->save(false) && $this->save(false)) {
+                $result['status'] = true;
+                $result['message'] = Yii::t("biDashboard", 'The Operation Was Successful');
+                $transaction->commit();
+            } else {
+                throw new \Exception(Yii::t("biDashboard", 'The Operation Failed'));
+            }
+
+        } catch (\Exception | \Throwable $e) {
+            $transaction->rollBack();
+            $result['message'] = $e->getMessage();
+        }
+
+        return $result;
     }
 
     /**

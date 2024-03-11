@@ -16,6 +16,7 @@ use Yii;
  * This is the model class for table "report_dashboard".
  *
  * @property int $id
+ * @property int $display_order
  * @property int $slave_id
  * @property string $title
  * @property string $description
@@ -99,12 +100,7 @@ class ReportBox extends ActiveRecord
             }],
 
             [['dashboard_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportDashboard::class, 'targetAttribute' => ['dashboard_id' => 'id']],
-
-            // The combination of 'display_type', 'dashboard_id' and 'order' must be unique
-            // Must be check!
-            /*[['dashboard_id', 'display_type', 'order'], 'unique', 'targetAttribute' => ['dashboard_id', 'display_type', 'order']],*/
-
-            [['order', 'dashboard_id', 'display_type', 'chart_type', 'status', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'slave_id'], 'integer'],
+            [['display_order', 'dashboard_id', 'display_type', 'chart_type', 'status', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'slave_id'], 'integer'],
         ];
     }
 
@@ -117,14 +113,14 @@ class ReportBox extends ActiveRecord
         ];
     }
 
-    //beforeSave() is overridden to calculate the maximum order value for the current display_type and dashboard_id
+    //beforeSave() is overridden to calculate the maximum display_order value for the current display_type and dashboard_id
     // before a new record is saved, and then increment that value by 1.
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
-                $maxOrder = $this->getOrderExtreme('max');
-                $this->order = $maxOrder !== 0 ? $maxOrder + 1 : 1;
+                $maxdisplayOrder = $this->getDisplayOrderExtreme('max');
+                $this->display_order = $maxdisplayOrder !== 0 ? $maxdisplayOrder + 1 : 1;
             }
             return true;
         }
@@ -162,21 +158,21 @@ class ReportBox extends ActiveRecord
     }
 
     //this find the maximum/minimum order value for the current display_type and dashboard_id
-    public function getOrderExtreme($type)
+    public function getDisplayOrderExtreme($type)
     {
         if ($type == 'max') {
             return ReportBox::find()
                 ->where([
                     'display_type' => $this->display_type,
                     'dashboard_id' => $this->dashboard_id
-                ])->max('`order`');
+                ])->max('display_order');
 
         } elseif ($type == 'min') {
             return ReportBox::find()
                 ->where([
                     'display_type' => $this->display_type,
                     'dashboard_id' => $this->dashboard_id
-                ])->min('`order`');
+                ])->min('display_order');
 
         } else {
             throw new Exception("Invalid type: $type. Expected 'max' or 'min'.");
@@ -189,21 +185,24 @@ class ReportBox extends ActiveRecord
         $result = ['status' => false, 'message' => ''];
 
         try {
-            //find the next or previous order based on direction
+
             if ($direction === 'inc') {
-                $orderCondition = ['>', 'order', $this->order];
+                $orderCondition = ['>', 'display_order', $this->display_order];
                 $orderSort = SORT_ASC;
-            } else if ($direction === 'dec') {
-                $orderCondition = ['<', 'order', $this->order];
+            }
+            else if ($direction === 'dec') {
+                $orderCondition = ['<', 'display_order', $this->display_order];
                 $orderSort = SORT_DESC;
-            } else {
+            }
+            else {
                 throw new \Exception('Invalid direction');
             }
 
+            //find the next or previous display_order valuse based on direction
             $box = ReportBox::find()
                 ->where(['dashboard_id' => $this->dashboard_id, 'display_type' => $this->display_type])
                 ->andWhere($orderCondition)
-                ->orderBy(['order' => $orderSort])
+                ->orderBy(['display_order' => $orderSort])
                 ->one();
 
             if (!$box) {
@@ -211,7 +210,7 @@ class ReportBox extends ActiveRecord
             }
 
             // Swap the orders
-            list($this->order, $box->order) = [$box->order, $this->order];
+            list($this->display_order, $box->display_order) = [$box->display_order, $this->display_order];
 
             if ($box->save(false) && $this->save(false)) {
                 $result['status'] = true;

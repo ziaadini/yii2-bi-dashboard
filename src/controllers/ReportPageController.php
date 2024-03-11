@@ -62,7 +62,7 @@ class ReportPageController extends Controller
                                 'allow' => true,
                                 'roles' => ['BI/ReportPage/create'],
                                 'actions' => [
-                                    'create',
+                                    'create','inc-order','dec-order'
                                 ]
                             ],
                             [

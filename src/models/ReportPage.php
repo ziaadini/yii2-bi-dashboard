@@ -98,7 +98,7 @@ class ReportPage extends ActiveRecord
      */
     public function getReportPageWidgets()
     {
-        return $this->hasMany(ReportPageWidget::class, ['page_id' => 'id']);
+        return $this->hasMany(ReportPageWidget::class, ['page_id' => 'id'])->orderBy('display_order');
     }
 
     public function getWidgets()

@@ -228,7 +228,7 @@ $pdate = Yii::$app->pdate;
                                         'aria-label' => Yii::t('yii', 'Moving'),
                                         'data-reload-pjax-container' => 'p-jax-report-page-add',
                                         'data-pjax' => '0',
-                                        /*'data-url' => Url::to(['/bidashboard/report-box/dec-order', 'id' => $box->id]),*/
+                                        'data-url' => Url::to(['/bidashboard/report-page-widget/dec-order', 'id' => $pageWidget->id]),
                                         'class' => "p-jax-btn text-secondary mr-2",
                                         'data-title' => Yii::t('biDashboard', 'Moving'),
                                         'data-toggle' => 'tooltip',
@@ -239,7 +239,7 @@ $pdate = Yii::$app->pdate;
                                         'aria-label' => Yii::t('yii', 'Moving'),
                                         'data-reload-pjax-container' => 'p-jax-report-page-add',
                                         'data-pjax' => '0',
-                                        /*'data-url' => Url::to(['/bidashboard/report-box/inc-order', 'id' => $box->id]),*/
+                                        'data-url' => Url::to(['/bidashboard/report-page-widget/inc-order', 'id' => $pageWidget->id]),
                                         'class' => "p-jax-btn text-secondary",
                                         'data-title' => Yii::t('biDashboard', 'Moving'),
                                         'data-toggle' => 'tooltip',

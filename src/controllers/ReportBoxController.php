@@ -178,7 +178,7 @@ class ReportBoxController extends Controller
     {
         $box = $this->findModel($id);
 
-        if ($box->order >= $box->getOrderExtreme('max')) {
+        if ($box->display_order >= $box->getDisplayOrderExtreme('max')) {
             return $this->asJson([
                 'status' => false,
                 'message' => Yii::t("biDashboard", 'The Operation Failed')
@@ -193,7 +193,7 @@ class ReportBoxController extends Controller
     {
         $box = $this->findModel($id);
 
-        if ($box->order <= $box->getOrderExtreme('min')) {
+        if ($box->display_order <= $box->getDisplayOrderExtreme('min')) {
             return $this->asJson([
                 'status' => false,
                 'message' => Yii::t("biDashboard", 'The Operation Failed')
