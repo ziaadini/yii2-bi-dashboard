@@ -109,9 +109,9 @@ class ReportBox extends ActiveRecord
     public function scenarios()
     {
         return [
-            self::SCENARIO_DEFAULT => ['order', 'dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
-            self::SCENARIO_CREATE => ['order', 'dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
-            self::SCENARIO_UPDATE => ['order', 'dashboard_id', 'display_type', 'title', 'description', 'slave_id', 'chart_type'],
+            self::SCENARIO_DEFAULT => ['display_order', 'dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
+            self::SCENARIO_CREATE => ['display_order', 'dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
+            self::SCENARIO_UPDATE => ['display_order', 'dashboard_id', 'display_type', 'title', 'description', 'slave_id', 'chart_type'],
         ];
     }
 
@@ -133,7 +133,7 @@ class ReportBox extends ActiveRecord
     {
         return [
             'id' => Yii::t('biDashboard', 'ID'),
-            'order' => Yii::t('biDashboard', 'Order'),
+            'display_order' => Yii::t('biDashboard', 'Order'),
             'title' => Yii::t('biDashboard', 'Title'),
             'description' => Yii::t('biDashboard', 'Description'),
             'dashboard_id' => Yii::t('biDashboard', 'Dashboard ID'),
