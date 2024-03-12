@@ -315,32 +315,13 @@ class ReportWidgetController extends Controller
 
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
+        $widget = $this->findModel($id);
 
-        $dashboards = ReportDashboard::find()
-            ->select(['id', 'title'])
-            ->where(['id' => ReportBox::find()
-                ->select('dashboard_id')
-                ->where(['id' => ReportBoxWidgets::find()
-                    ->select('box_id')
-                    ->where(['widget_id' => $model->id])
-                    ->distinct()
-                    ->column()])
-                ->distinct()
-                ->column()])
-            ->all();
+        $pages = $widget->reportPages;
+        $dashboards = $widget->reportDashboards;
 
-        $pages = ReportPage::find()
-            ->select(['id', 'title'])
-            ->where(['id' => ReportPageWidget::find()
-                ->select('page_id')
-                ->where(['widget_id' => $model->id])
-                ->distinct()
-                ->column()])
-            ->all();
-
-        if ($model->load($this->request->post()) && $model->validate()) {
-            if ($model->canDelete() && $model->softDelete()) {
+        if ($widget->load($this->request->post()) && $widget->validate()) {
+            if ($widget->canDelete() && $widget->softDelete()) {
                 return $this->asJson([
                     'status' => true,
                     'message' => Yii::t("biDashboard", 'Widget Deleted')
@@ -353,11 +334,11 @@ class ReportWidgetController extends Controller
             }
         }
 
-        $this->performAjaxValidation($model);
+        $this->performAjaxValidation($widget);
         return $this->renderAjax('delete', [
-            'model' => $model,
-            'dashboards' => $dashboards,
+            'model' => $widget,
             'pages' => $pages,
+            'dashboards' => $dashboards,
         ]);
     }
 }

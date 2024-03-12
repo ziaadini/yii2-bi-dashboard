@@ -3,8 +3,8 @@
 use yii\helpers\Html;
 use yii\web\View;
 use yii\widgets\ActiveForm;
-use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\models\ReportPage;
+use sadi01\bidashboard\models\ReportBoxWidgets;
 use sadi01\bidashboard\models\ReportDashboard;
 
 /** @var View $this */
@@ -21,14 +21,13 @@ use sadi01\bidashboard\models\ReportDashboard;
         <?= $form->field($model, 'description')->hiddenInput(['value' => $model->id])->label(false) ?>
         <div class="d-flex mt-3">
             <?= Html::submitButton(Yii::t('biDashboard', 'Yes'), ['class' => 'btn btn-primary btn-lg rounded-md mr-2 px-4']) ?>
-            <button type="button" class="btn btn-danger btn-lg rounded-md ml-2 px-4" data-dismiss="modal"
-                    aria-label="ٰclose"><?= Yii::t('biDashboard', 'No') ?></button>
+            <button type="button" class="btn btn-danger btn-lg rounded-md ml-2 px-4" data-dismiss="modal" aria-label="ٰclose"><?= Yii::t('biDashboard', 'No') ?></button>
         </div>
         <?php ActiveForm::end(); ?>
     </div>
 </div>
 
-<?php if (!empty($dashboards) || !empty($pages)): ?>
+<?php if (!empty($pages) || !empty($dashboards)): ?>
     <div class="card border rounded-md mt-4 mb-0">
     <div class="card-header d-flex align-items-center justify-content-center px-3">
         <span class="alert alert-danger mb-0 px-2 py-1 rounded-md"><?= Yii::t('biDashboard', 'This widget is used in the following pages and dashboards') ?></span>
