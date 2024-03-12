@@ -34,7 +34,6 @@ $script = <<< JS
 JS;
 $this->registerJs($script);
 
-
 $pdate = Yii::$app->pdate;
 
 ?>

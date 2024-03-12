@@ -161,7 +161,7 @@ class ReportBoxWidgets extends ActiveRecord
             self::FORMAT_NUMBER => Yii::$app->formatter->asInteger($value),
             self::FORMAT_CURRENCY => Yii::$app->formatter->asCurrency($value),
             self::FORMAT_GRAM => number_format($value) . ' ' . Yii::t('biDashboard', 'Gram'),
-            self::FORMAT_KILOGRAM =>Yii::$app->formatter->asWeight($value),
+            self::FORMAT_KILOGRAM => $value/1000 . ' ' . Yii::t('biDashboard', 'Kilo Gram'),
             default => null,
         };
     }

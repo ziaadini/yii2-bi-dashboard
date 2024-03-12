@@ -99,7 +99,7 @@ class ReportPageWidget extends ActiveRecord
             case self::FORMAT_GRAM:
                 return number_format($value) . ' ' . Yii::t('biDashboard', 'Gram');
             case self::FORMAT_KILOGRAM:
-                return Yii::$app->formatter->asWeight($value);
+                return $value/1000 . ' ' . Yii::t('biDashboard', 'Kilo Gram');
         }
     }
 

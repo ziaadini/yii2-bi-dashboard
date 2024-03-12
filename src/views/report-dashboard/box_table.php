@@ -26,7 +26,7 @@ $this->registerJs($script);
 
 
 $pdate = Yii::$app->pdate;
-
+$formatter = Yii::$app->formatter;
 ?>
 
 <div class="card text-center table-responsive border rounded-md shadow mb-5">
