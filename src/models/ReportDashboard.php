@@ -80,7 +80,7 @@ class ReportDashboard extends ActiveRecord
 
     public function getDashboardBoxes()
     {
-        return $this->hasMany(ReportBox::class, ['dashboard_id' => 'id'])->orderBy('display_type');
+        return $this->hasMany(ReportBox::class, ['dashboard_id' => 'id'])->orderBy('display_type')->orderBy('display_order');
     }
 
     public static function find()

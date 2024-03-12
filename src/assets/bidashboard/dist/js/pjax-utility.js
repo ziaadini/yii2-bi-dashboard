@@ -42,7 +42,6 @@ $(function () {
                 }
             }
         });
-
         $('#modalPjaxContent-bi').off('pjax:error');
         $('#modalPjaxContent-bi').on('pjax:error', function (event, xhr, textStatus, error, options) {
             modalPjax.modal('hide');
@@ -390,7 +389,7 @@ $(function () {
             cancelBtnText = button.data('cancel-btn-text') !== undefined ? button.data('cancel-btn-text') : 'خیر',
             successTitle = button.data('success-title') !== undefined ? button.data('success-title') : 'عملیات موفق',
             hideModal = button.data('hide-modal') !== undefined ? button.data('hide-modal') : 1,
-            url = button.data('url'),
+            url = button[0].dataset.url,
             reloadUrl = button.data('reload-url'),
             pjaxContainer = button.data('reload-pjax-container'),
             closeForm = button.closest('form'),
@@ -406,11 +405,11 @@ $(function () {
         }
 
         function sendRequest() {
+
             $.post(url, postData, function (data) {
                 if (data.status !== false) {
                     button.prop("disabled", false).html(btnOldHtml);
                 }
-                // errors handling
                 else {
                     return false;
                 }

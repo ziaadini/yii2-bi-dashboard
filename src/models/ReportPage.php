@@ -42,6 +42,8 @@ class ReportPage extends ActiveRecord
 
     const FORMAT_NUMBER = 1;
     const FORMAT_CURRENCY = 2;
+    const FORMAT_GRAM = 3;
+    const FORMAT_KILOGRAM= 4;
 
     public static function getDb()
     {
@@ -96,7 +98,7 @@ class ReportPage extends ActiveRecord
      */
     public function getReportPageWidgets()
     {
-        return $this->hasMany(ReportPageWidget::class, ['page_id' => 'id']);
+        return $this->hasMany(ReportPageWidget::class, ['page_id' => 'id'])->orderBy('display_order');
     }
 
     public function getWidgets()
@@ -143,6 +145,8 @@ class ReportPage extends ActiveRecord
             'Format' => [
                 self::FORMAT_CURRENCY => Yii::t('biDashboard', 'Currency'),
                 self::FORMAT_NUMBER => Yii::t('biDashboard', 'Number'),
+                self::FORMAT_GRAM => Yii::t('biDashboard', 'Gram'),
+                self::FORMAT_KILOGRAM => Yii::t('biDashboard', 'Kilo Gram'),
             ],
             'Status' => [
                 self::STATUS_ACTIVE => Yii::t('biDashboard', 'Active'),

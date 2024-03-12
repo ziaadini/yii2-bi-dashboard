@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
 use Yii;
+use function PHPUnit\Framework\returnArgument;
 
 class ReportBoxController extends Controller
 {
@@ -33,14 +34,14 @@ class ReportBoxController extends Controller
                                 'allow' => true,
                                 'roles' => ['BI/ReportBox/create'],
                                 'actions' => [
-                                    'create','chart-types','get-widgets-by-range',
+                                    'create','chart-types','get-widgets-by-range','run','run-box','inc-order', 'dec-order'
                                 ]
                             ],
                             [
                                 'allow' => true,
                                 'roles' => ['BI/ReportBox/update'],
                                 'actions' => [
-                                    'update','chart-types','get-widgets-by-range',
+                                    'update','chart-types','get-widgets-by-range','run','run-box'
                                 ]
                             ],
                             [
@@ -72,6 +73,7 @@ class ReportBoxController extends Controller
         if ($model->load($this->request->post())) {
 
             $model->dashboard_id = $dashboardId;
+            $model->last_date_set = time();
             $valid = $model->validate();
 
             if ($valid) {
@@ -132,6 +134,75 @@ class ReportBoxController extends Controller
             'model' => $model,
         ]);
 
+    }
+
+    public function actionRunBox($id, $year, $month, $day)
+    {
+        $box = $this->findModel($id);
+        $date_array = null;
+
+        foreach ($box->boxWidgets as $widget) {
+            $widget->setWidgetProperties();
+            $date_array = $widget->getStartAndEndTimestamps($widget, $year, $month, $day);
+            $widget->widget->runWidget($date_array['start'], $date_array['end']);
+
+            $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
+            $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
+            $results = array_reverse($widgetLastResult);
+
+            if (!empty($results)) {
+                $widget->collectResults($widget, $results);
+            }
+        }
+
+        if ($date_array) {
+            $box->last_date_set = $date_array['start'];
+            $box->lastDateSet = $box->getLastDateSet($box->last_date_set);
+        }
+
+        $box->last_run = time();
+        $status = $box->save();
+        $message = Yii::t("biDashboard", $status ? 'The Operation Was Successful' : 'The Operation Failed');
+
+        return $this->asJson([
+            'status' => $status,
+            'message' => $message
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @param $addOrder
+     * @return Response
+     */
+    public function actionIncOrder($id)
+    {
+        $box = $this->findModel($id);
+
+        if ($box->display_order >= $box->getDisplayOrderExtreme('max')) {
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t("biDashboard", 'The Operation Failed')
+            ]);
+        }
+
+        $result = $box->changeBoxOrder('inc');
+        return $this->asJson($result);
+    }
+
+    public function actionDecOrder($id)
+    {
+        $box = $this->findModel($id);
+
+        if ($box->display_order <= $box->getDisplayOrderExtreme('min')) {
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t("biDashboard", 'The Operation Failed')
+            ]);
+        }
+
+        $result = $box->changeBoxOrder('dec');
+        return $this->asJson($result);
     }
 
     public function actionDelete(int $id)

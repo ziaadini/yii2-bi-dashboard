@@ -38,9 +38,9 @@ $pdate = Yii::$app->pdate;
     <?php Pjax::begin(['id' => 'p-jax-report-page-add', 'enablePushState' => false]); ?>
     <div class="p-3 bg-white">
         <?= Alert::widget() ?>
-        <div class="row d-flex">
-            <div class="pt-2 col-sm-2 text-left mr-auto">
-                <h2 class="d-inline"><?= $model->title ?></h2>
+        <div class="d-flex justify-content-between">
+            <div class="d-flex align-items-center w-50">
+                <h2 title="<?= $model->title ?>" class="font-16 mb-0 text-overflow-ellipsis"><?= $model->title ?></h2>
                 <?php if (Yii::$app->user->identity): ?>
                     <?= Html::a('<i class="fa fa-edit"></i>', "javascript:void(0)",
                         [
@@ -59,10 +59,10 @@ $pdate = Yii::$app->pdate;
                 <?php endif; ?>
             </div>
             <?php if (Yii::$app->user->identity): ?>
-                <div class="col-sm-10 d-flex justify-content-end">
+                <div class="d-flex justify-content-end">
                     <form>
                         <div class="d-flex justify-content-end">
-                            <h4 class="bg-info px-2 py-1 text-white">
+                            <h4 class="bg-info mb-0 px-2 py-1 text-white">
                                 <strong><?= ReportPage::itemAlias('RangeType', $model->range_type) ?></strong></h4>
                             <div class="px-1">
                                 <select name="year" class="form-control" onchange="this.form.submit()">
@@ -72,11 +72,10 @@ $pdate = Yii::$app->pdate;
                                 </select>
                             </div>
                             <?php if ($model->range_type == $model::RANGE_DAY): ?>
-                                <div class="">
+                                <div>
                                     <select name="month" class="form-control" onchange="this.form.submit()">
                                         <?php for ($i = 1; $i <= 12; $i++): ?>
-                                            <option
-                                                    value="<?= $i ?>" <?= $month == $i ? 'selected' : '' ?> ><?= Yii::$app->pdate->jdate_words(['mm' => $i])['mm'] ?></option>
+                                            <option value="<?= $i ?>" <?= $month == $i ? 'selected' : '' ?> ><?= Yii::$app->pdate->jdate_words(['mm' => $i])['mm'] ?></option>
                                         <?php endfor; ?>
                                     </select>
                                 </div>
@@ -131,7 +130,7 @@ $pdate = Yii::$app->pdate;
         </div>
     </div>
     <div class="table-responsive text-nowrap">
-        <table class="table table-bordered bg-white">
+        <table class="table table-bordered table-hover table-striped bg-white">
             <thead class="text-white bg-inverse">
             <tr>
                 <th scope="col" class="text-center">ویجت</th>
@@ -150,7 +149,7 @@ $pdate = Yii::$app->pdate;
             <?php foreach ($pageWidgets as $pageWidget): ?>
                 <?php $runWidget = $pageWidget->widget->lastResult($startRange, $endRange); ?>
                 <tr>
-                    <td class="bg-light">
+                    <td class="pb-1 pt-2">
                         <div class="d-flex justify-content-between">
                             <span class="widget-name"><?= $pageWidget->widget->title ?></span>
                             <div class="">
@@ -195,7 +194,7 @@ $pdate = Yii::$app->pdate;
                                             'data-pjax' => '0',
                                             'class' => "btn btn-sm text-primary fa-lg p-0",
                                             'data-size' => 'modal-md',
-                                            'data-title' => Yii::t('biDashboard', 'update',),
+                                            'data-title' => Yii::t('biDashboard', 'update'),
                                             'data-toggle' => 'modal',
                                             'data-target' => '#modal-pjax-bi',
                                             'data-url' => Url::to(['/bidashboard/report-widget/update', 'id' => $pageWidget->widget->id]),
@@ -218,28 +217,58 @@ $pdate = Yii::$app->pdate;
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <div class="text-left my-3">
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex justify-content-start pr-1">
-                                    <span>ویجت گزارش :</span>
-                                    <span class="bg-warning px-1">
-                                            <?= ReportModelClass::itemAlias('list', $pageWidget->widget->search_model_class) ?>
-                                        </span>
-                                </div>
-                                <div class="d-flex justify-content-start">
-                                    <span>فیلد ویجت گزارش :</span>
-                                    <span class="bg-warning px-1" data-toggle="tooltip"
-                                          title="<?= $pageWidget->report_widget_field ?>">
-                                     <?= $pageWidget->widget->getOutputColumnTitle($pageWidget->report_widget_field) ?>
-                                    </span>
-                                </div>
+                        <div class="d-flex align-items-center justify-content-between mt-4">
+                            <a class="text-info font-12 mr-5" data-toggle="collapse" href="#collapseExample_<?= $pageWidget->id ?>" role="button" aria-expanded="false" aria-controls="collapseExample_<?= $pageWidget->id ?>">
+                                <?= Yii::t('biDashboard', 'Show Details') ?>
+                            </a>
+                            <div>
+                                <?= Html::a('<i class="fas fa-arrow-up font-light"></i>', 'javascript:void(0)',
+                                    [
+                                        'title' => Yii::t('biDashboard', 'Moving'),
+                                        'aria-label' => Yii::t('yii', 'Moving'),
+                                        'data-reload-pjax-container' => 'p-jax-report-page-add',
+                                        'data-pjax' => '0',
+                                        'data-url' => Url::to(['/bidashboard/report-page-widget/dec-order', 'id' => $pageWidget->id]),
+                                        'class' => "p-jax-btn text-secondary mr-2",
+                                        'data-title' => Yii::t('biDashboard', 'Moving'),
+                                        'data-toggle' => 'tooltip',
+                                    ]); ?>
+                                <?= Html::a('<i class="fas fa-arrow-down font-light"></i>', 'javascript:void(0)',
+                                    [
+                                        'title' => Yii::t('biDashboard', 'Moving'),
+                                        'aria-label' => Yii::t('yii', 'Moving'),
+                                        'data-reload-pjax-container' => 'p-jax-report-page-add',
+                                        'data-pjax' => '0',
+                                        'data-url' => Url::to(['/bidashboard/report-page-widget/inc-order', 'id' => $pageWidget->id]),
+                                        'class' => "p-jax-btn text-secondary",
+                                        'data-title' => Yii::t('biDashboard', 'Moving'),
+                                        'data-toggle' => 'tooltip',
+                                    ]); ?>
                             </div>
                         </div>
-                        <?php if ($runWidget) { ?>
-                            <div class="border-top text-center text-info">
-                                <?= Yii::$app->formatter->asRelativeTime($runWidget->created_at, 'now'); ?>
+                        <div class="collapse" id="collapseExample_<?= $pageWidget->id ?>">
+                            <div class="text-left my-2">
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex justify-content-start pr-1">
+                                        <span>ویجت گزارش :</span>
+                                        <span class="bg-warning px-1"><?= ReportModelClass::itemAlias('list', $pageWidget->widget->search_model_class) ?></span>
+                                    </div>
+                                    <div class="d-flex justify-content-start">
+                                        <span>فیلد ویجت گزارش :</span>
+                                        <span class="bg-warning px-1" data-toggle="tooltip"
+                                              title="<?= $pageWidget->report_widget_field ?>">
+                                        <?= $pageWidget->widget->getOutputColumnTitle($pageWidget->report_widget_field) ?>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                        <?php } ?>
+                            <?php if ($runWidget) { ?>
+                                <div class="border-top pt-1 text-center text-info">
+                                    <span><?= Yii::$app->formatter->asRelativeTime($runWidget->created_at, 'now'); ?></span>
+                                </div>
+                            <?php } ?>
+                        </div>
+
                     </td>
                     <?php
                     if ($runWidget) {
@@ -260,12 +289,11 @@ $pdate = Yii::$app->pdate;
                                 $resultData = key_exists($pageWidget->report_widget_field, $runWidget->result[$key]) ? $runWidget->result[$key][$pageWidget->report_widget_field] : '.::field error(1)::.';
 
                                 $resultData = (int)$resultData;
-
                                 $salesChange = $lastNumber - $resultData;
                                 $rateNumber = $lastNumber ? round(($salesChange / $lastNumber) * 100, 2) : 0;
                                 $lastNumber = $resultData;
 
-                                echo '<td scope="col" class="text-center font-bold">';
+                                echo '<td scope="col" class="text-center font-bold align-middle">';
                                 echo '<span id="number_item_' . $i . '">' . $pageWidget->getFormattedValue($resultData) . '</span>';
                                 echo "<a class='far fa-copy text-info p-1' onclick='copyToClipboard(\"$resultData\")' href='javascript:void(0)' data-pjax='0'></a>";
 

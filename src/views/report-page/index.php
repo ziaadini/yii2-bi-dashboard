@@ -53,16 +53,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     'dataProvider' => $dataProvider,
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
+                        'id',
                         [
                             'attribute' => 'title',
                             'format' => 'raw',
                             'value' => function (ReportPage $model) {
                                 return Html::a($model->title, ['/bidashboard/report-page/view','id' => $model->id ], [
                                     'title' => $model->title,
-                                    'class' => 'btn text-info',
+                                    'class' => 'btn text-info font-16',
                                     'data-toggle' => 'tooltip',
                                     'data-pjax' => '0',
-                                    'style' => 'font-size:18px;'
                                 ]);
                             },
                         ],

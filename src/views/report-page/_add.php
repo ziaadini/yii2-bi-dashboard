@@ -1,5 +1,6 @@
 <?php
 
+use sadi01\bidashboard\models\ReportPageWidget;
 use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\models\ReportPage;
 use yii\helpers\ArrayHelper;
@@ -42,7 +43,7 @@ use kartik\depdrop\DepDrop;
                             ]
                         ]); ?>
                         <?= $form->field($model, 'report_widget_field_format')
-                            ->dropDownList(ReportPage::itemAlias('Format')); ?>
+                            ->dropDownList(ReportPageWidget::itemAlias('Format')); ?>
                         <div class="form-group">
                             <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success']) ?>
                         </div>
