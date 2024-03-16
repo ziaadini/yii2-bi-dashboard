@@ -172,6 +172,18 @@ $formatter = Yii::$app->formatter;
                     <?= Yii::$app->formatter->asRelativeTime($box->last_run, 'now'); ?>
                 <?php endif; ?>
             </button>
+            <?= Html::a('<i class="fa-file-excel far font-14 mr-1"></i>' . ' ' . Yii::t('biDashboard', 'Export Excel File'), "javascript:void(0)",
+                [
+                    'id' => 'excel_btn_'.$box->id,
+                    'title' => Yii::t('biDashboard', 'Export Excel File'),
+                    'aria-label' => Yii::t('yii', 'Export Excel File'),
+                    'data-reload-pjax-container' => 'p-jax-report-dashboard-view',
+                    'data-pjax' => '0',
+                    'data-url' => Url::to(['/bidashboard/report-box/export-excel', 'id' => $box->id] ),
+                    'class' => "p-jax-btn btn btn-success btn-sm rounded-md font-12 mr-2 d-flex align-items-center",
+                    'data-title' => Yii::t('biDashboard', 'Export Excel File'),
+                    'data-toggle' => 'tooltip',
+                ]) ?>
             <?= Html::a(Yii::t('biDashboard', 'Add and Edit Widgets'), "javascript:void(0)",
                 [
                     'data-pjax' => '0',

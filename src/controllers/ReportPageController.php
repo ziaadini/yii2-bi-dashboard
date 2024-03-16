@@ -2,6 +2,8 @@
 
 namespace sadi01\bidashboard\controllers;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use sadi01\bidashboard\helpers\CoreHelper;
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageSearch;
@@ -48,7 +50,7 @@ class ReportPageController extends Controller
                                 'allow' => true,
                                 'roles' => ['BI/ReportPage/index'],
                                 'actions' => [
-                                    'index'
+                                    'index','export-excel'
                                 ]
                             ],
                             [
@@ -219,7 +221,7 @@ class ReportPageController extends Controller
         }
 
         if ($model->range_type == $model::RANGE_DAY) {
-            $rangeDateNumber = count($this->getCurrentMonthDays());
+            $rangeDateNumber = count($this->getMonthDaysByDateArray($date_array));
         } else {
             $rangeDateNumber = 12;
         }
@@ -422,6 +424,86 @@ class ReportPageController extends Controller
             'success' => true,
             'message' => $errors ? Yii::t('biDashboard', 'Error In Run Widget') : Yii::t("biDashboard", 'Success'),
         ]);
+    }
+
+    public function actionExportExcel($id, $start_range = null, $end_range = null)
+    {
+        $page = $this->findModel($id);
+
+        $date_array = [];
+        $date_array['start'] = $start_range ? (int)$start_range : null;
+        $date_array['end'] = $end_range ? (int)$end_range : null;
+
+        $pdate = Yii::$app->pdate;
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        if (!$page->widgets) {
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t("biDashboard", 'The Operation Failed')
+            ]);
+        }
+
+        if ($page->range_type == $page::RANGE_DAY) {
+            $rangeDateNumber = count($this->getMonthDaysByDateArray($date_array));
+        } else {
+            $rangeDateNumber = 12;
+        }
+
+        $results = [];
+        foreach ($page->reportPageWidgets as $pageWidget) {
+
+            $lastResult = $pageWidget->widget->lastResult($date_array['start'], $date_array['end']);
+            $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
+            $results = array_reverse($widgetLastResult);
+            if (!empty($results)) {
+                $array [] = $pageWidget->collectResults($pageWidget, $results);
+            }
+
+        }
+
+        $columnNames = [];
+        for ($i = 0; $i <= 25; $i++) {
+            for ($j = ($i > 0 ? 0 : 1); $j <= 25; $j++) {
+                $columnNames[] = ($i > 0 ? chr($i + 64) : '') . chr($j + 65);
+                if (count($columnNames) == $rangeDateNumber) {
+                    break 2;
+                }
+            }
+        }
+        $sheet->setCellValue('A1', 'ویجت ها');
+        for ($i = 0; $i < $rangeDateNumber; $i++) {
+            if ($page->range_type == $page::RANGE_DAY){
+                $sheet->setCellValue($columnNames[$i] . 1, $i + 1);
+            }
+            elseif($page->range_type == $page::RANGE_MONTH){
+                $sheet->setCellValue($columnNames[$i] . 1, $pdate->jdate_words(['mm' => $i + 1], ' '));
+            }
+        }
+        foreach ($page->reportPageWidgets as $index => $pageWidget) {
+            $sheet->setCellValue('A' . $index + 2, $pageWidget->widget->title);
+            foreach ($pageWidget->results['final_result'] as $i => $data){
+                $sheet->setCellValue($columnNames[$i] . $index + 2, $pageWidget->results['final_result'][$i]);
+                if ($rangeDateNumber == $i + 1) {
+                    break;
+                }
+            }
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'export-' . time() . '.xlsx';
+        $path = Yii::getAlias('@backend') . '/web/uploads/' . $fileName;
+        $writer->setPreCalculateFormulas(false)->save($path);
+        $status = file_exists($path);
+        $message = Yii::t("biDashboard", $status ? 'The Operation Was Successful' : 'The Operation Failed');
+
+        return $this->asJson([
+            'status' => $status,
+            'message' => $message,
+        ]);
+
     }
 
     /**

@@ -274,11 +274,14 @@ class ReportWidgetController extends Controller
     {
         $model = $this->findModel($id);
         $runWidget = $model->lastResult($start_range, $end_range);
-        $result = array_reverse($runWidget->result);
+        $result = [];
+        if ($runWidget) {
+            $result = array_reverse($runWidget->result);
+        }
         $arrayResult = null;
         $arrayTitle = null;
 
-        if ($result) {
+        if (!empty($result)) {
             $arrayResult = array_map(function ($item) use ($field) {
                 return (int)$item[$field];
             }, $result);
@@ -290,14 +293,14 @@ class ReportWidgetController extends Controller
                     return $item["month_name"];
                 }
             }, $result);
-        }
 
-        if ($chart_type == ReportWidgetResult::CHART_PIE) {
-            $result_pie = [];
-            foreach ($result as $key => $item) {
-                $result_pie[] = ['name' => $arrayTitle[$key], 'y' => $arrayResult[$key]];
+            if ($chart_type == ReportWidgetResult::CHART_PIE) {
+                $result_pie = [];
+                foreach ($result as $key => $item) {
+                    $result_pie[] = ['name' => $arrayTitle[$key], 'y' => $arrayResult[$key]];
+                }
+                $arrayResult = $result_pie;
             }
-            $arrayResult = $result_pie;
         }
 
         return $this->renderAjax('_chart', [

@@ -33,34 +33,41 @@ $pdate = Yii::$app->pdate;
 <div class="m-2">
     <div class="card border rounded-md shadow mb-4">
         <div class="card-header d-flex align-items-center justify-content-between px-3">
-            <span class="mr-3"><?= $box->title ?? 'عنوان باکس' ?> | <span class="font-12 font-normal">(<?= ReportBox::itemAlias('RangeType', $box->range_type) ?>)</span>
+            <span class="mr-3"><?= $box->title ?? 'عنوان باکس' ?>
+                <?php if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE): ?>
+                    <span> | <span class="btn btn-sm btn-warning disabled px-1 py-0 rounded-md"><?= ReportBox::itemAlias('RangeType', $box->range_type) ?></span></span>
+                <?php endif; ?>
             </span>
             <div class="d-flex align-items-center">
                 <div class="d-flex align-items-center">
                     <div class="d-flex mr-1">
-                        <?php if ($box->range_type == ReportBox::RANGE_TYPE_DAILY): ?>
-                        <div class="px-1">
-                            <select name="day" class="form-control rounded-md" id="select_day_<?= $box->id ?>">
-                                <?php for ($i = 1; $i <= 31; $i++): ?>
-                                    <option value="<?= $i ?>" <?= $box->lastDateSet['day'] == $i ? 'selected' : '' ?> ><?= $i ?></option>
-                                <?php endfor; ?>
-                            </select>
-                        </div>
+                        <?php if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE): ?>
+                            <?php if ($box->range_type == ReportBox::RANGE_TYPE_DAILY): ?>
+                                <div class="px-1">
+                                    <select name="day" class="form-control rounded-md btn-sm" id="select_day_<?= $box->id ?>">
+                                        <?php for ($i = 1; $i <= 31; $i++): ?>
+                                            <option value="<?= $i ?>" <?= $box->lastDateSet['day'] == $i ? 'selected' : '' ?> ><?= $i ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </div>
+                            <?php endif; ?>
+                            <div>
+                                <select name="month" class="form-control rounded-md btn-sm" id="select_month_<?= $box->id ?>">
+                                    <?php for ($i = 1; $i <= 12; $i++): ?>
+                                        <option value="<?= $i ?>" <?= $box->lastDateSet['month'] == $i ? 'selected' : '' ?> ><?= $pdate->jdate_words(['mm' => $i])['mm'] ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                            <div class="px-1">
+                                <select name="year" class="form-control rounded-md btn-sm" id="select_year_<?= $box->id ?>">
+                                    <?php foreach (ReportYear::itemAlias('List') as $Year): ?>
+                                        <option <?= $Year ?> <?= $box->lastDateSet['year'] == $Year ? 'selected' : '' ?> ><?= $Year ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        <?php else: ?>
+                            <button class="bg-white border btn btn-sm disabled mr-2 py-2 rounded-md shadow-none"><?= ReportBox::itemAlias('DateTypes', $box->date_type) ?></button>
                         <?php endif; ?>
-                        <div>
-                            <select name="month" class="form-control rounded-md" id="select_month_<?= $box->id ?>">
-                                <?php for ($i = 1; $i <= 12; $i++): ?>
-                                    <option value="<?= $i ?>" <?= $box->lastDateSet['month'] == $i ? 'selected' : '' ?> ><?= $pdate->jdate_words(['mm' => $i])['mm'] ?></option>
-                                <?php endfor; ?>
-                            </select>
-                        </div>
-                        <div class="px-1">
-                            <select name="year" class="form-control rounded-md" id="select_year_<?= $box->id ?>">
-                                <?php foreach (ReportYear::itemAlias('List') as $Year): ?>
-                                    <option <?= $Year ?> <?= $box->lastDateSet['year'] == $Year ? 'selected' : '' ?> ><?= $Year ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
                     </div>
                     <?= Html::a('<i class="fas fa-sync text-success font-18"></i>', "javascript:void(0)",
                         [
@@ -80,7 +87,7 @@ $pdate = Yii::$app->pdate;
                     [
                         'data-pjax' => '0',
                         'class' => "d-flex mr-2",
-                        'data-size' => 'modal-xl',
+                        'data-size' => 'modal-dialog-centered modal-xl',
                         'data-title' => Yii::t('biDashboard', 'Edit Box'),
                         'data-toggle' => 'modal',
                         'data-target' => '#modal-pjax-bi',
@@ -146,7 +153,7 @@ $pdate = Yii::$app->pdate;
                     [
                         'data-pjax' => '0',
                         'class' => "btn btn-info btn-sm rounded-md font-12",
-                        'data-size' => 'modal-xl',
+                        'data-size' => 'modal-xl modal-dialog-centered',
                         'data-title' => Yii::t('biDashboard', 'Add and Edit Widgets'),
                         'data-toggle' => 'modal',
                         'data-target' => '#modal-pjax-bi',

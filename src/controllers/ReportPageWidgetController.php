@@ -70,7 +70,7 @@ class ReportPageWidgetController extends Controller
         if ($pageWidget->display_order >= $pageWidget->getDisplayOrderExtreme('max')) {
             return $this->asJson([
                 'status' => false,
-                'message' => Yii::t("biDashboard", 'The Operation Failed')
+                'message' => Yii::t("biDashboard", 'It is not possible to move')
             ]);
         }
 
@@ -85,7 +85,7 @@ class ReportPageWidgetController extends Controller
         if ($pageWidget->display_order <= $pageWidget->getDisplayOrderExtreme('min')) {
             return $this->asJson([
                 'status' => false,
-                'message' => Yii::t("biDashboard", 'The Operation Failed')
+                'message' => Yii::t("biDashboard", 'It is not possible to move')
             ]);
         }
 

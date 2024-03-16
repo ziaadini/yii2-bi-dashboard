@@ -100,6 +100,16 @@ $pdate = Yii::$app->pdate;
                                 'data-reload-pjax-container' => 'p-jax-report-page-add',
                                 'data-reload-pjax-container-on-show' => 0
                             ]) ?>
+                        <?= Html::a(Yii::t('biDashboard', 'Export Excel File'), "javascript:void(0)",
+                            [
+                                'id' => 'excel_btn',
+                                'aria-label' => Yii::t('yii', 'Export Excel File'),
+                                'data-reload-pjax-container' => 'p-jax-report-page-add',
+                                'data-pjax' => '0',
+                                'data-url' => Url::to(['/bidashboard/report-page/export-excel', 'id' => $model->id, 'start_range' => $startRange, 'end_range' => $endRange]),
+                                'class' => "p-jax-btn btn btn-warning",
+                                'data-title' => Yii::t('biDashboard', 'Export Excel File'),
+                            ]) ?>
                         <?= Html::a(Yii::t('biDashboard', 'run all widget'), 'javascript:void(0)',
                             [
                                 'title' => Yii::t('biDashboard', 'run all widget'),
@@ -157,7 +167,7 @@ $pdate = Yii::$app->pdate;
                                     [
                                         'data-pjax' => '0',
                                         'class' => "btn btn-sm text-secondary fa-lg p-0",
-                                        'data-size' => 'modal-xl',
+                                        'data-size' => 'modal-xl modal-dialog-centered',
                                         'data-title' => Yii::t('biDashboard', 'Chart'),
                                         'data-toggle' => 'modal',
                                         'data-target' => '#modal-pjax-bi',

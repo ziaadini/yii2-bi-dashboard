@@ -68,7 +68,6 @@ $pdate = Yii::$app->pdate;
                             </select>
                         </div>
                     <?php endif; ?>
-
                 </div>
                 <?= Html::a('<i class="fas fa-sync text-success font-18"></i>', "javascript:void(0)",
                     [
@@ -122,7 +121,7 @@ $pdate = Yii::$app->pdate;
                 'chart' => [
                     'style' => [
                         'fontFamily' => 'IRANSans, sans-serif',
-                        /*'direction' => 'rtl'*/
+                        'direction' => 'ltr',
                     ],
                     'type' => ReportBox::itemAlias('ChartTypes', $box->chart_type),
                     'className' => 'high-chart'

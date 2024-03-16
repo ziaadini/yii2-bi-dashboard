@@ -2,6 +2,9 @@
 
 namespace sadi01\bidashboard\controllers;
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use sadi01\bidashboard\models\ReportBaseModel;
 use sadi01\bidashboard\models\ReportBox;
 use sadi01\bidashboard\models\ReportBoxWidgets;
@@ -34,14 +37,14 @@ class ReportBoxController extends Controller
                                 'allow' => true,
                                 'roles' => ['BI/ReportBox/create'],
                                 'actions' => [
-                                    'create','chart-types','get-widgets-by-range','run','run-box','inc-order', 'dec-order'
+                                    'create','chart-types','range-types','date-types','get-widgets-by-range','run','run-box','inc-order', 'dec-order','export-excel'
                                 ]
                             ],
                             [
                                 'allow' => true,
                                 'roles' => ['BI/ReportBox/update'],
                                 'actions' => [
-                                    'update','chart-types','get-widgets-by-range','run','run-box'
+                                    'update','chart-types','range-types','date-types','get-widgets-by-range','run','run-box','export-excel','inc-order', 'dec-order','export-table'
                                 ]
                             ],
                             [
@@ -136,14 +139,18 @@ class ReportBoxController extends Controller
 
     }
 
-    public function actionRunBox($id, $year, $month, $day)
+    public function actionRunBox($id, $year = null, $month = null, $day = null)
     {
         $box = $this->findModel($id);
         $date_array = null;
 
         foreach ($box->boxWidgets as $widget) {
             $widget->setWidgetProperties();
-            $date_array = $widget->getStartAndEndTimestamps($widget, $year, $month, $day);
+            if ($year) {
+                $date_array = $widget->getStartAndEndTimestamps($widget, $year, $month, $day);
+            } else {
+                $date_array = $widget->getStartAndEndTimeStampsForStaticDate($box->date_type);
+            }
             $widget->widget->runWidget($date_array['start'], $date_array['end']);
 
             $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
@@ -182,7 +189,7 @@ class ReportBoxController extends Controller
         if ($box->display_order >= $box->getDisplayOrderExtreme('max')) {
             return $this->asJson([
                 'status' => false,
-                'message' => Yii::t("biDashboard", 'The Operation Failed')
+                'message' => Yii::t("biDashboard", 'It is not possible to move')
             ]);
         }
 
@@ -197,12 +204,108 @@ class ReportBoxController extends Controller
         if ($box->display_order <= $box->getDisplayOrderExtreme('min')) {
             return $this->asJson([
                 'status' => false,
-                'message' => Yii::t("biDashboard", 'The Operation Failed')
+                'message' => Yii::t("biDashboard", 'It is not possible to move')
             ]);
         }
 
         $result = $box->changeBoxOrder('dec');
         return $this->asJson($result);
+    }
+
+    public function actionExportExcel(int $id)
+    {
+        $box = $this->findModel($id);
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        if (!$box->boxWidgets) {
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t("biDashboard", 'The Operation Failed')
+            ]);
+        }
+
+        $box->lastDateSet = $box->getLastDateSet($box->last_date_set);
+
+        if ($box->range_type == ReportBox::RANGE_TYPE_DAILY)
+        {
+            if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
+                $box->rangeDateCount = count($this->getMonthDays($box->lastDateSet['year']."/".$box->lastDateSet['month']));
+            else
+                $box->rangeDateCount = count($this->getMonthDaysByDateArray($box->getStartAndEndTimeStampsForStaticDate($box->date_type)));
+        }
+        foreach ($box->boxWidgets as $widget){
+
+            $widget->setWidgetProperties();
+            if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
+                $date_array = $widget->getStartAndEndTimestamps($widget, $box->lastDateSet['year'], $box->lastDateSet['month'], $box->lastDateSet['day']);
+            else
+                $date_array = $widget->getStartAndEndTimeStampsForStaticDate($box->date_type);
+
+            $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
+            $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
+            $results = array_reverse($widgetLastResult);
+
+            if (!empty($results)) {
+                $widget->collectResults($widget, $results);
+            }
+
+            if ($widget->errors) {
+                $errors[] = $widget->errors;
+            }
+        }
+
+        if (!empty($errors)) {
+            return $this->asJson([
+                'status' => false,
+                'message' => $errors
+            ]);
+        }
+
+        $count = $box->boxWidgets[0]->rangeDateCount;
+        $columnNames = [];
+        for ($i = 0; $i <= 25; $i++) {
+            for ($j = ($i > 0 ? 0 : 1); $j <= 25; $j++) {
+                $columnNames[] = ($i > 0 ? chr($i + 64) : '') . chr($j + 65);
+                if (count($columnNames) == $count) {
+                    break 2;
+                }
+            }
+        }
+
+        $sheet->setCellValue('A1', 'ویجت ها');
+
+        $pdate = Yii::$app->pdate;
+        for ($i = 0; $i < $count; $i++) {
+            if ($box->range_type == ReportBox::RANGE_TYPE_DAILY)
+                $sheet->setCellValue($columnNames[$i] . 1, $i + 1);
+            elseif($box->range_type == ReportBox::RANGE_TYPE_MONTHLY)
+                $sheet->setCellValue($columnNames[$i] . 1, $pdate->jdate_words(['mm' => $i + 1], ' '));
+        }
+
+        foreach ($box->boxWidgets as $index => $boxWidget) {
+            $sheet->setCellValue('A' . $index + 2, $boxWidget->title . ' | ' . $boxWidget->widget->description);
+            foreach ($boxWidget->results['chartData'] as $i => $data){
+                $sheet->setCellValue($columnNames[$i] . $index + 2, $boxWidget->results['chartData'][$i]);
+                if ($count == $i + 1) {
+                    break;
+                }
+            }
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'export-' . time() . '.xlsx';
+        $path = Yii::getAlias('@backend') . '/web/uploads/' . $fileName;
+        $writer->setPreCalculateFormulas(false)->save($path);
+        $status = file_exists($path);
+        $message = Yii::t("biDashboard", $status ? 'The Operation Was Successful' : 'The Operation Failed');
+
+        return $this->asJson([
+            'status' => $status,
+            'message' => $message,
+        ]);
+
     }
 
     public function actionDelete(int $id)
@@ -244,6 +347,74 @@ class ReportBoxController extends Controller
                     'selected' => '',
                 ]);
             }
+        }
+
+        return $this->asJson([
+            'output' => '',
+            'selected' => '',
+        ]);
+    }
+
+    public function actionDateTypes()
+    {
+        $out = [];
+
+        if (isset($_POST['depdrop_parents'])) {
+
+            $display_type = $_POST['depdrop_parents'][0];
+            if ($display_type == ReportBox::DISPLAY_CARD)
+            {
+                $dateTypes = ReportBox::itemAlias('DateTypes');
+                foreach ($dateTypes as $key => $dateType){
+                    $out[] = [
+                        "id" => $key,
+                        "name" => $dateType
+                    ];
+                }
+            }
+            elseif ($display_type == ReportBox::DISPLAY_CHART || $display_type == ReportBox::DISPLAY_TABLE)
+            {
+                $out[] = [
+                    "id" => ReportBox::DATE_TYPE_FLEXIBLE,
+                    "name" => ReportBox::itemAlias('DateTypes', ReportBox::DATE_TYPE_FLEXIBLE)
+                ];
+            }
+
+            return $this->asJson([
+                'output' => $out,
+                'selected' => '',
+            ]);
+        }
+
+        return $this->asJson([
+            'output' => '',
+            'selected' => '',
+        ]);
+    }
+
+    public function actionRangeTypes()
+    {
+        $out = [];
+
+        if (isset($_POST['depdrop_parents'])) {
+
+            $date_type = $_POST['depdrop_parents'][0];
+
+            if ($date_type == ReportBox::DATE_TYPE_FLEXIBLE)
+            {
+                $rangTypes = ReportBox::itemAlias('RangeType');
+                foreach ($rangTypes as $key => $rangType){
+                    $out[] = [
+                        "id" => $key,
+                        "name" => $rangType
+                    ];
+                }
+            }
+
+            return $this->asJson([
+                'output' => $out,
+                'selected' => '',
+            ]);
         }
 
         return $this->asJson([

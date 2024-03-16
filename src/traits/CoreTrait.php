@@ -99,6 +99,17 @@ trait CoreTrait
         ];
     }
 
+    protected function getStartAndEndOfLastWeek()
+    {
+        $current_week = $this->getStartAndEndOfCurrentWeek();
+        $start_of_the_last_week = $current_week['start'] - (60 * 60 * 24 * 7);
+        $end_of_the_last_week = $current_week['end'] - (60 * 60 * 24 * 7);
+        return [
+            'start' => $start_of_the_last_week,
+            'end' => $start_of_the_last_week,
+        ];
+    }
+
     protected function getCurrentWeekDays($time_zone = 'Asia/Tehran', $first_day_of_the_week = 'Saturday')
     {
         $weekDays = [];
@@ -122,10 +133,10 @@ trait CoreTrait
      * @param null|string $ym // e.g. 1399/03
      * @return array
      */
-    protected function getStartAndEndOfMonth($ym = null)
+    protected function getStartAndEndOfMonth($ym = null, $timestamp = null)
     {
         $pdate = Yii::$app->pdate;
-        $time = $ym ? $this->jalaliToTimestamp("$ym/01", "Y/m/d") : time();
+        $time = $ym ? $this->jalaliToTimestamp("$ym/01", "Y/m/d") : ($timestamp ?: time());
         $start_of_the_month = Yii::$app->pdate->jdate('Y-m-01', $time, '', 'Asia/Tehran', 'en');
         $end_of_the_month = Yii::$app->pdate->jdate('Y-m-t', $time, '', 'Asia/Tehran', 'en');
 
@@ -141,9 +152,9 @@ trait CoreTrait
         ];
     }
 
-    protected function getStartAndEndOfYear($year = 'Y')
+    protected function getStartAndEndOfYear($year = 'Y', $timestamp = null)
     {
-        $year = $year == 'Y' ? Yii::$app->pdate->jdate($year, time(), '', 'Asia/Tehran', 'en') : $year;
+        $year = $year == 'Y' ? Yii::$app->pdate->jdate($year, ($timestamp ?: time()), '', 'Asia/Tehran', 'en') : $year;
 
         return [
             'start' => $this->getStartAndEndOfMonth("$year/01")['start'],
@@ -211,6 +222,25 @@ trait CoreTrait
 
         return $monthDays;
     }
+
+    /**
+     * @param array $date_array // e.g: ['start' => start_timestamp, 'end' => end_timestamp]
+     * @return array
+     */
+    public function getMonthDaysByDateArray(Array $date_array)
+    {
+        for ($start = $date_array['start']; $start <= $date_array['end']; $start = $start + (60 * 60 * 24)) {
+            $monthDays[] = [
+                'start' => $start,
+                'end' => $start + (60 * 60 * 24) - 1
+            ];
+        }
+        return $monthDays;
+    }
+
+
+
+
 
     protected function isValidTimeStamp($timestamp)
     {

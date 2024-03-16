@@ -24,6 +24,7 @@ use Yii;
  * @property int $display_type
  * @property int $chart_type
  * @property int $range_type
+ * @property int $date_type
  * @property int $last_run
  * @property int $last_date_set
  * @property int $status
@@ -51,11 +52,20 @@ class ReportBox extends ActiveRecord
     const SCENARIO_DEFAULT = 'default';
     const SCENARIO_CREATE = 'create';
     const SCENARIO_UPDATE = 'update';
-    //const SCENARIO_UPDATE_LAST_RUN = 'update_last_run';
 
     const DISPLAY_CARD = 1;
     const DISPLAY_CHART = 2;
     const DISPLAY_TABLE = 3;
+
+    const DATE_TYPE_FLEXIBLE = 0;
+    const DATE_TYPE_TODAY = 1;
+    const DATE_TYPE_YESTERDAY = 2;
+    const DATE_TYPE_THIS_WEEK = 3;
+    const DATE_TYPE_LAST_WEEK = 4;
+    const DATE_TYPE_THIS_MONTH = 5;
+    const DATE_TYPE_LAST_MONTH = 6;
+    const DATE_TYPE_THIS_YEAR = 7;
+    const DATE_TYPE_LAST_YEAR = 8;
 
     const CHART_LINE = 1;
     const CHART_COLUMN = 2;
@@ -88,7 +98,7 @@ class ReportBox extends ActiveRecord
     public function rules()
     {
         return [
-            [['dashboard_id', 'display_type', 'range_type', 'title'], 'required', 'on' => self::SCENARIO_CREATE],
+            [['dashboard_id', 'display_type', 'range_type', 'title', 'date_type'], 'required', 'on' => self::SCENARIO_CREATE],
             [['dashboard_id', 'display_type', 'title'], 'required', 'on' => self::SCENARIO_UPDATE],
 
             [['title'], 'string', 'max' => 128],
@@ -102,16 +112,16 @@ class ReportBox extends ActiveRecord
             }],
 
             [['dashboard_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportDashboard::class, 'targetAttribute' => ['dashboard_id' => 'id']],
-            [['display_order', 'dashboard_id', 'display_type', 'chart_type', 'status', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'slave_id'], 'integer'],
+            [['display_order', 'dashboard_id', 'display_type', 'date_type', 'chart_type', 'status', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'slave_id'], 'integer'],
         ];
     }
 
     public function scenarios()
     {
         return [
-            self::SCENARIO_DEFAULT => ['order', 'dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
-            self::SCENARIO_CREATE => ['order', 'dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
-            self::SCENARIO_UPDATE => ['order', 'dashboard_id', 'display_type', 'title', 'description', 'slave_id', 'chart_type'],
+            self::SCENARIO_DEFAULT => ['display_order', 'dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
+            self::SCENARIO_CREATE => ['display_order', 'date_type', 'dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
+            self::SCENARIO_UPDATE => ['display_order', 'dashboard_id', 'display_type', 'title', 'description', 'slave_id', 'chart_type'],
         ];
     }
 
@@ -129,17 +139,49 @@ class ReportBox extends ActiveRecord
         return false;
     }
 
+    public function beforeValidate()
+    {
+        if (parent::beforeValidate())
+        {
+            if($this->isNewRecord)
+            {
+                $dailyTypes = [
+                    self::DATE_TYPE_TODAY,
+                    self::DATE_TYPE_YESTERDAY,
+                    self::DATE_TYPE_THIS_WEEK,
+                    self::DATE_TYPE_LAST_WEEK,
+                    self::DATE_TYPE_THIS_MONTH,
+                    self::DATE_TYPE_LAST_MONTH,
+                ];
+
+                $monthlyTypes = [
+                    self::DATE_TYPE_THIS_YEAR,
+                    self::DATE_TYPE_LAST_YEAR
+                ];
+
+                if (in_array($this->date_type, $dailyTypes)) {
+                    $this->range_type = self::RANGE_TYPE_DAILY;
+                } elseif (in_array($this->date_type, $monthlyTypes)) {
+                    $this->range_type = self::RANGE_TYPE_MONTHLY;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     public function attributeLabels()
     {
         return [
             'id' => Yii::t('biDashboard', 'ID'),
-            'order' => Yii::t('biDashboard', 'Order'),
+            'display_order' => Yii::t('biDashboard', 'Order'),
             'title' => Yii::t('biDashboard', 'Title'),
             'description' => Yii::t('biDashboard', 'Description'),
             'dashboard_id' => Yii::t('biDashboard', 'Dashboard ID'),
             'display_type' => Yii::t('biDashboard', 'Display Type'),
             'chart_type' => Yii::t('biDashboard', 'Chart Type'),
             'range_type' => Yii::t('biDashboard', 'Range Type'),
+            'date_type' => Yii::t('biDashboard', 'Date Type'),
             'status' => Yii::t('biDashboard', 'Status'),
             'created_at' => Yii::t('biDashboard', 'Created At'),
             'updated_at' => Yii::t('biDashboard', 'Updated At'),
@@ -264,6 +306,17 @@ class ReportBox extends ActiveRecord
                 self::DISPLAY_TABLE => Yii::t('biDashboard', 'Table'),
                 self::DISPLAY_CARD => Yii::t('biDashboard', 'Card'),
             ],
+            'DateTypes' => [
+              self::DATE_TYPE_FLEXIBLE => Yii::t('biDashboard', 'Flexible'),
+              self::DATE_TYPE_TODAY => Yii::t('biDashboard', 'Today'),
+              self::DATE_TYPE_YESTERDAY => Yii::t('biDashboard', 'Yesterday'),
+              self::DATE_TYPE_THIS_WEEK => Yii::t('biDashboard', 'This Week'),
+              self::DATE_TYPE_LAST_WEEK => Yii::t('biDashboard', 'Last Week'),
+              self::DATE_TYPE_THIS_MONTH => Yii::t('biDashboard', 'This Month'),
+              self::DATE_TYPE_LAST_MONTH => Yii::t('biDashboard', 'Last Month'),
+              self::DATE_TYPE_THIS_YEAR => Yii::t('biDashboard', 'This Year'),
+              self::DATE_TYPE_LAST_YEAR => Yii::t('biDashboard', 'Last Year'),
+            ],
             'ChartTypes' => [
                 self::CHART_LINE => 'line',
                 self::CHART_COLUMN => 'column',
@@ -316,11 +369,52 @@ class ReportBox extends ActiveRecord
 
     public function getLastDateSet(int $last_date_set) : Array
     {
+        if ($this->date_type == self::DATE_TYPE_FLEXIBLE){
+            return [
+                'day' => CoreHelper::getDay($last_date_set),
+                'month' => CoreHelper::getMonth($last_date_set),
+                'year' => CoreHelper::getYear($last_date_set),
+            ];
+        }
         return [
-            'day' => CoreHelper::getDay($last_date_set),
-            'month' => CoreHelper::getMonth($last_date_set),
-            'year' => CoreHelper::getYear($last_date_set),
+            'year' => null,
+            'month' => null,
+            'day' => null
         ];
+    }
+
+    public function getStartAndEndTimeStampsForStaticDate($dateType) : array
+    {
+        $date_array = [];
+
+        switch ($dateType) {
+            case ReportBox::DATE_TYPE_TODAY:
+                $date_array = CoreHelper::getStartAndEndOfDay();
+                break;
+            case ReportBox::DATE_TYPE_YESTERDAY:
+                $date_array = CoreHelper::getStartAndEndOfDay(time: time() - 86400);
+                break;
+            case ReportBox::DATE_TYPE_THIS_WEEK:
+                $date_array = $this->getStartAndEndOfCurrentWeek();
+                break;
+            case ReportBox::DATE_TYPE_LAST_WEEK:
+                $date_array = $this->getStartAndEndOfLastWeek();
+                break;
+            case ReportBox::DATE_TYPE_THIS_MONTH:
+                $date_array = $this->getStartAndEndOfMonth();
+                break;
+            case ReportBox::DATE_TYPE_LAST_MONTH:
+                $date_array = $this->getStartAndEndOfMonth(timestamp: time() - 2592000);
+                break;
+            case ReportBox::DATE_TYPE_THIS_YEAR:
+                $date_array = $this->getStartAndEndOfYear();
+                break;
+            case ReportBox::DATE_TYPE_LAST_YEAR:
+                $date_array = $this->getStartAndEndOfYear(timestamp: time() - 31536000);
+                break;
+        }
+        return $date_array;
+
     }
 
     public function behaviors()
