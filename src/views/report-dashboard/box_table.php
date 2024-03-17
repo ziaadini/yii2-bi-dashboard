@@ -204,7 +204,7 @@ $formatter = Yii::$app->formatter;
                         'data-reload-pjax-container' => 'p-jax-report-dashboard-view',
                         'data-pjax' => '0',
                         'data-url' => Url::to(['/bidashboard/report-box/dec-order', 'id' => $box->id]),
-                        'class' => "p-jax-btn text-secondary mr-2",
+                        'class' => "p-jax-btn-no-confirm text-secondary mr-2",
                         'data-title' => Yii::t('biDashboard', 'Moving'),
                         'data-toggle' => 'tooltip',
                     ]); ?>
@@ -215,7 +215,7 @@ $formatter = Yii::$app->formatter;
                         'data-reload-pjax-container' => 'p-jax-report-dashboard-view',
                         'data-pjax' => '0',
                         'data-url' => Url::to(['/bidashboard/report-box/inc-order', 'id' => $box->id]),
-                        'class' => "p-jax-btn text-secondary",
+                        'class' => "p-jax-btn-no-confirm text-secondary",
                         'data-title' => Yii::t('biDashboard', 'Moving'),
                         'data-toggle' => 'tooltip',
                     ]); ?>

@@ -515,6 +515,146 @@ $(function () {
         }
     });
 
+    // Pjax Btn No Confirm
+    $("body").on("click", ".p-jax-btn-no-confirm", function (e) {
+        e.preventDefault();
+        var button = $(e.currentTarget),
+            confirmAlert = 0,
+            confirmTitle = button.data('confirm-title') !== undefined ? button.data('confirm-title') : 'تایید',
+            confirmText = button.data('confirm-text') !== undefined ? button.data('confirm-text') : 'آیا مطمئن هستید؟',
+            confirmBtnText = button.data('confirm-btn-text') !== undefined ? button.data('confirm-btn-text') : 'بله',
+            cancelBtnText = button.data('cancel-btn-text') !== undefined ? button.data('cancel-btn-text') : 'خیر',
+            successTitle = button.data('success-title') !== undefined ? button.data('success-title') : 'عملیات موفق',
+            hideModal = button.data('hide-modal') !== undefined ? button.data('hide-modal') : 1,
+            url = button[0].dataset.url,
+            reloadUrl = button.data('reload-url'),
+            pjaxContainer = button.data('reload-pjax-container'),
+            closeForm = button.closest('form'),
+            postData = {};
+
+        var btnOldHtml = button.html();
+        button.html('<i class="fas fa-spinner fa-pulse"></i>').prop("disabled", true);
+        var modalPjax = $('#modal-pjax-bi');
+
+        // Prevent of bad request exception (Unable to verify your data submission.)
+        if (closeForm !== undefined) {
+            jQuery.extend(postData, {'_csrf-mnv': closeForm.find("input[name*='_csrf-mnv']").val()});
+        }
+
+        function sendRequest() {
+
+            $.post(url, postData, function (data) {
+                if (data.status !== false) {
+                    button.prop("disabled", false).html(btnOldHtml);
+                }
+                else {
+                    return false;
+                }
+            }).fail(function (xhr, status, error) {
+                defaultSettings = {
+                    title: xhr.responseText,
+                    type: 'error',
+                    confirmButtonText: '<i class ="fas fa-thumbs-up font-22"></i>'
+                };
+                withoutConfirmAlertSettings = {
+                    title: xhr.responseText,
+                    toast: true,
+                    position: 'top-end',
+                    timer: 3000,
+                    background: '#f8d7da',
+                    showConfirmButton: false,
+                };
+                if (confirmAlert === 0) {
+                    jQuery.extend(defaultSettings, withoutConfirmAlertSettings);
+                }
+                swal(defaultSettings);
+                button.prop("disabled", false).html(btnOldHtml);
+            }).then(function (result) {
+                if (result.status === true) {
+                    var defaultSettings = {
+                            title: successTitle,
+                            text: result.message,
+                            type: 'success',
+                            confirmButtonText: '<i class ="fas fa-thumbs-up font-22"></i>',
+                        },
+                        withoutConfirmAlertSettings = {
+                            text: null,
+                            title: result.message,
+                            toast: true,
+                            position: 'top-end',
+                            timer: 3000,
+                            background: '#d4edda',
+                            showConfirmButton: false,
+                        };
+                    if (confirmAlert === 0) {
+                        jQuery.extend(defaultSettings, withoutConfirmAlertSettings);
+                    }
+                    swal(defaultSettings);
+                    pjaxOptions = {
+                        timeout: false,
+                        scrollTo: false,
+                        push: false,
+                        replace: false,
+                        skipOuterContainers: true,
+                    };
+                    if (reloadUrl !== undefined) {
+                        jQuery.extend(pjaxOptions, {url: reloadUrl})
+                    }
+                    $.pjax.reload('#' + pjaxContainer, pjaxOptions);
+                    button.prop("disabled", false).html(btnOldHtml);
+                    if (hideModal) {
+                        modalPjax.modal('hide');
+                    }
+                } else {
+                    defaultSettings = {
+                        title: 'خطا',
+                        text: result.message,
+                        type: 'error',
+                        confirmButtonText: '<i class ="fas fa-thumbs-up font-22"></i>',
+                    };
+                    withoutConfirmAlertSettings = {
+                        text: null,
+                        title: result.message,
+                        toast: true,
+                        position: 'top-end',
+                        timer: 3000,
+                        background: '#f8d7da',
+                        showConfirmButton: false,
+                    };
+                    if (confirmAlert === 0) {
+                        jQuery.extend(defaultSettings, withoutConfirmAlertSettings);
+                    }
+                    swal(defaultSettings);
+                }
+                button.prop("disabled", false).html(btnOldHtml);
+            });
+        }
+
+        if (confirmAlert) {
+            swal({
+                title: confirmTitle,
+                text: confirmText,
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: cancelBtnText,
+                confirmButtonText: confirmBtnText
+            }).then((result) => {
+                if (result.value) {
+                    sendRequest();
+                } else {
+                    button.prop("disabled", false).html(btnOldHtml);
+                }
+            });
+        } else {
+            sendRequest();
+        }
+    });
+
+
+
+
     // Confirm Btn
     $("body").on("click", ".confirm-btn", function (e) {
         e.preventDefault();
