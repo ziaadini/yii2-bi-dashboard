@@ -5,6 +5,8 @@ namespace sadi01\bidashboard\controllers;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use sadi01\bidashboard\components\ExcelReport;
+use sadi01\bidashboard\helpers\CoreHelper;
 use sadi01\bidashboard\models\ReportBaseModel;
 use sadi01\bidashboard\models\ReportBox;
 use sadi01\bidashboard\models\ReportBoxWidgets;
@@ -144,13 +146,14 @@ class ReportBoxController extends Controller
         $box = $this->findModel($id);
         $date_array = null;
 
-        foreach ($box->boxWidgets as $widget) {
+        foreach ($box->boxWidgets as $index => $widget) {
             $widget->setWidgetProperties();
             if ($year) {
                 $date_array = $widget->getStartAndEndTimestamps($widget, $year, $month, $day);
             } else {
-                $date_array = $widget->getStartAndEndTimeStampsForStaticDate($box->date_type);
+                $date_array = CoreHelper::getStartAndEndTimeStampsForStaticDate($box->date_type);
             }
+
             $widget->widget->runWidget($date_array['start'], $date_array['end']);
 
             $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
@@ -215,9 +218,7 @@ class ReportBoxController extends Controller
     public function actionExportExcel(int $id)
     {
         $box = $this->findModel($id);
-
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
+        $excel = new ExcelReport();
 
         if (!$box->boxWidgets) {
             return $this->asJson([
@@ -233,7 +234,7 @@ class ReportBoxController extends Controller
             if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
                 $box->rangeDateCount = count($this->getMonthDays($box->lastDateSet['year']."/".$box->lastDateSet['month']));
             else
-                $box->rangeDateCount = count($this->getMonthDaysByDateArray($box->getStartAndEndTimeStampsForStaticDate($box->date_type)));
+                $box->rangeDateCount = count($this->getMonthDaysByDateArray(CoreHelper::getStartAndEndTimeStampsForStaticDate($box->date_type)));
         }
         foreach ($box->boxWidgets as $widget){
 
@@ -241,7 +242,7 @@ class ReportBoxController extends Controller
             if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
                 $date_array = $widget->getStartAndEndTimestamps($widget, $box->lastDateSet['year'], $box->lastDateSet['month'], $box->lastDateSet['day']);
             else
-                $date_array = $widget->getStartAndEndTimeStampsForStaticDate($box->date_type);
+                $date_array = CoreHelper::getStartAndEndTimeStampsForStaticDate($box->date_type);
 
             $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
             $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
@@ -264,6 +265,7 @@ class ReportBoxController extends Controller
         }
 
         $count = $box->boxWidgets[0]->rangeDateCount;
+
         $columnNames = [];
         for ($i = 0; $i <= 25; $i++) {
             for ($j = ($i > 0 ? 0 : 1); $j <= 25; $j++) {
@@ -274,36 +276,30 @@ class ReportBoxController extends Controller
             }
         }
 
-        $sheet->setCellValue('A1', 'ویجت ها');
+        $excel->sheet->setCellValue('A1', 'ویجت ها');
 
         $pdate = Yii::$app->pdate;
         for ($i = 0; $i < $count; $i++) {
             if ($box->range_type == ReportBox::RANGE_TYPE_DAILY)
-                $sheet->setCellValue($columnNames[$i] . 1, $i + 1);
+                $excel->sheet->setCellValue($columnNames[$i] . 1, $i + 1);
             elseif($box->range_type == ReportBox::RANGE_TYPE_MONTHLY)
-                $sheet->setCellValue($columnNames[$i] . 1, $pdate->jdate_words(['mm' => $i + 1], ' '));
+                $excel->sheet->setCellValue($columnNames[$i] . 1, $pdate->jdate_words(['mm' => $i + 1], ' '));
         }
 
         foreach ($box->boxWidgets as $index => $boxWidget) {
-            $sheet->setCellValue('A' . $index + 2, $boxWidget->title . ' | ' . $boxWidget->widget->description);
+            $excel->sheet->setCellValue('A' . $index + 2, $boxWidget->title . ' | ' . $boxWidget->widget->description);
             foreach ($boxWidget->results['chartData'] as $i => $data){
-                $sheet->setCellValue($columnNames[$i] . $index + 2, $boxWidget->results['chartData'][$i]);
+                $excel->sheet->setCellValue($columnNames[$i] . $index + 2, $boxWidget->results['chartData'][$i]);
                 if ($count == $i + 1) {
                     break;
                 }
             }
         }
-
-        $writer = new Xlsx($spreadsheet);
-        $fileName = 'export-' . time() . '.xlsx';
-        $path = Yii::getAlias('@backend') . '/web/uploads/' . $fileName;
-        $writer->setPreCalculateFormulas(false)->save($path);
-        $status = file_exists($path);
-        $message = Yii::t("biDashboard", $status ? 'The Operation Was Successful' : 'The Operation Failed');
+        $response = $excel->save();
 
         return $this->asJson([
-            'status' => $status,
-            'message' => $message,
+            'status' => $response['status'],
+            'message' => $response['message'],
         ]);
 
     }

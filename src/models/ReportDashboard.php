@@ -48,10 +48,10 @@ class ReportDashboard extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'description'], 'required'],
             [['slave_id'], 'default', 'value' => function () {
                 return Yii::$app->params['bi_slave_id'] ?? null;
             }],
+            [['title', 'description', 'slave_id'], 'required'],
             [['status', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'slave_id'], 'integer'],
             [['title'], 'string', 'max' => 128],
             [['description'], 'string', 'max' => 255]

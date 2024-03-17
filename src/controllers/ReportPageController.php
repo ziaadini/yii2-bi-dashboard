@@ -4,6 +4,7 @@ namespace sadi01\bidashboard\controllers;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use sadi01\bidashboard\components\ExcelReport;
 use sadi01\bidashboard\helpers\CoreHelper;
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageSearch;
@@ -430,14 +431,14 @@ class ReportPageController extends Controller
     {
         $page = $this->findModel($id);
 
+        $excel = new ExcelReport();
+
         $date_array = [];
         $date_array['start'] = $start_range ? (int)$start_range : null;
         $date_array['end'] = $end_range ? (int)$end_range : null;
 
         $pdate = Yii::$app->pdate;
 
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
 
         if (!$page->widgets) {
             return $this->asJson([
@@ -473,35 +474,30 @@ class ReportPageController extends Controller
                 }
             }
         }
-        $sheet->setCellValue('A1', 'ویجت ها');
+        $excel->sheet->setCellValue('A1', 'ویجت ها');
         for ($i = 0; $i < $rangeDateNumber; $i++) {
             if ($page->range_type == $page::RANGE_DAY){
-                $sheet->setCellValue($columnNames[$i] . 1, $i + 1);
+                $excel->sheet->setCellValue($columnNames[$i] . 1, $i + 1);
             }
             elseif($page->range_type == $page::RANGE_MONTH){
-                $sheet->setCellValue($columnNames[$i] . 1, $pdate->jdate_words(['mm' => $i + 1], ' '));
+                $excel->sheet->setCellValue($columnNames[$i] . 1, $pdate->jdate_words(['mm' => $i + 1], ' '));
             }
         }
         foreach ($page->reportPageWidgets as $index => $pageWidget) {
-            $sheet->setCellValue('A' . $index + 2, $pageWidget->widget->title);
+            $excel->sheet->setCellValue('A' . $index + 2, $pageWidget->widget->title);
             foreach ($pageWidget->results['final_result'] as $i => $data){
-                $sheet->setCellValue($columnNames[$i] . $index + 2, $pageWidget->results['final_result'][$i]);
+                $excel->sheet->setCellValue($columnNames[$i] . $index + 2, $pageWidget->results['final_result'][$i]);
                 if ($rangeDateNumber == $i + 1) {
                     break;
                 }
             }
         }
 
-        $writer = new Xlsx($spreadsheet);
-        $fileName = 'export-' . time() . '.xlsx';
-        $path = Yii::getAlias('@backend') . '/web/uploads/' . $fileName;
-        $writer->setPreCalculateFormulas(false)->save($path);
-        $status = file_exists($path);
-        $message = Yii::t("biDashboard", $status ? 'The Operation Was Successful' : 'The Operation Failed');
+        $response = $excel->save();
 
         return $this->asJson([
-            'status' => $status,
-            'message' => $message,
+            'status' => $response['status'],
+            'message' => $response['message'],
         ]);
 
     }

@@ -7,36 +7,28 @@ use Yii;
 
 class ExcelReport
 {
-    public $queryParams;
+    public $sheet;
+    public $spreadsheet;
 
-
-    public function save()
+    public function __construct()
     {
-        $searchModel = new OrderSearch();
-        $dataProvider = $searchModel->search(json_decode($this->queryParams, true));
+        $this->spreadsheet = new Spreadsheet();
+        $this->sheet = $this->spreadsheet->getActiveSheet();
+    }
 
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
 
-        // Fetch data from DataProvider
-        $data = $dataProvider->query->asArray()->all();
-        $count = $dataProvider->query->count() + 1;
+    public function save() : Array
+    {
+        $response = [];
 
-        $sheet->setCellValue('A1', 'نام');
-        $sheet->setCellValue('B1', 'نام خانوادگی');
-        $sheet->setCellValue('C1', 'شماره موبایل');
-        $row = 2;
+        $writer = new Xlsx($this->spreadsheet);
+        $fileName = 'export-' . time() . '.xlsx';
+        $path = Yii::getAlias('@backend') . '/web/uploads/' . $fileName;
+        $writer->setPreCalculateFormulas(false)->save($path);
+        $response['status'] = file_exists($path);
+        $response['message'] = Yii::t("biDashboard", $response['status'] ? 'The Operation Was Successful' : 'The Operation Failed');
 
-        foreach ($data as $item) {
-            $sheet->setCellValue('A' . $row, $item['user']['first_name']);
-            $sheet->setCellValue('B' . $row, $item['user']['last_name']);
-            $sheet->setCellValue('C' . $row, $item['user']['username']);
-            $row++;
-        }
-        // Save the spreadsheet to a file
-        $writer = new Xlsx($spreadsheet);
-        $filename = Yii::getAlias('@backend') . '/web/upload/Excel/' . 'report.xlsx';
-        $writer->setPreCalculateFormulas(false)->save($filename);
+        return $response;
     }
 
 }

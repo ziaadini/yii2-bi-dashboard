@@ -106,7 +106,7 @@ trait CoreTrait
         $end_of_the_last_week = $current_week['end'] - (60 * 60 * 24 * 7);
         return [
             'start' => $start_of_the_last_week,
-            'end' => $start_of_the_last_week,
+            'end' => $end_of_the_last_week,
         ];
     }
 
@@ -237,10 +237,6 @@ trait CoreTrait
         }
         return $monthDays;
     }
-
-
-
-
 
     protected function isValidTimeStamp($timestamp)
     {

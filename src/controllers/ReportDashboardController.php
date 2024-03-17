@@ -13,6 +13,7 @@ use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\models\ReportDashboardSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use sadi01\bidashboard\traits\CoreTrait;
+use yii\helpers\ArrayHelper;
 use yii\base\Model;
 use yii\db\Exception;
 use yii\filters\AccessControl;
@@ -20,9 +21,6 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
 use Yii;
-
-use yii\helpers\ArrayHelper;
-use function PHPUnit\Framework\countOf;
 
 class ReportDashboardController extends Controller
 {
@@ -134,7 +132,7 @@ class ReportDashboardController extends Controller
                 if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
                     $box->rangeDateCount = count($this->getMonthDays($box->lastDateSet['year']."/".$box->lastDateSet['month']));
                 else
-                    $box->rangeDateCount = count($this->getMonthDaysByDateArray($box->getStartAndEndTimeStampsForStaticDate($box->date_type)));
+                    $box->rangeDateCount = count($this->getMonthDaysByDateArray(CoreHelper::getStartAndEndTimeStampsForStaticDate($box->date_type)));
             }
 
             foreach ($box->boxWidgets as $widget){
@@ -143,7 +141,7 @@ class ReportDashboardController extends Controller
                 if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
                     $date_array = $widget->getStartAndEndTimestamps($widget, $box->lastDateSet['year'], $box->lastDateSet['month'], $box->lastDateSet['day']);
                 else
-                    $date_array = $widget->getStartAndEndTimeStampsForStaticDate($box->date_type);
+                    $date_array = CoreHelper::getStartAndEndTimeStampsForStaticDate($box->date_type);
 
                 $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
                 $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];

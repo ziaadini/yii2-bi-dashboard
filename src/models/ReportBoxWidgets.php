@@ -80,10 +80,10 @@ class ReportBoxWidgets extends ActiveRecord
     public function rules()
     {
         return [
-            [['widget_id', 'widget_field', 'widget_field_format'], 'required'],
             [['slave_id'], 'default', 'value' => function () {
                 return Yii::$app->params['bi_slave_id'] ?? null;
             }],
+            [['widget_id', 'widget_field', 'widget_field_format', 'slave_id'], 'required'],
             [['title'], 'string', 'max' => 128],
             [['title'], 'default', 'value' => null],
             [['widget_card_color'], 'default', 'value' => null],
@@ -204,44 +204,7 @@ class ReportBoxWidgets extends ActiveRecord
         return $date_array;
     }
 
-    /**
-     * @param $widget
-     * @param $dateType
-     * @return array = ['start' => start_timestamp, 'end' => end_timestamp]
-     */
-    public function getStartAndEndTimeStampsForStaticDate($dateType) : array
-    {
-        $date_array = [];
 
-        switch ($dateType) {
-            case ReportBox::DATE_TYPE_TODAY:
-                $date_array = CoreHelper::getStartAndEndOfDay();
-                break;
-            case ReportBox::DATE_TYPE_YESTERDAY:
-                $date_array = CoreHelper::getStartAndEndOfDay(time: time() - 86400);
-                break;
-            case ReportBox::DATE_TYPE_THIS_WEEK:
-                $date_array = $this->getStartAndEndOfCurrentWeek();
-                break;
-            case ReportBox::DATE_TYPE_LAST_WEEK:
-                $date_array = $this->getStartAndEndOfLastWeek();
-                break;
-            case ReportBox::DATE_TYPE_THIS_MONTH:
-                $date_array = $this->getStartAndEndOfMonth();
-                break;
-            case ReportBox::DATE_TYPE_LAST_MONTH:
-                $date_array = $this->getStartAndEndOfMonth(timestamp: time() - 2592000);
-                break;
-            case ReportBox::DATE_TYPE_THIS_YEAR:
-                $date_array = $this->getStartAndEndOfYear();
-                break;
-            case ReportBox::DATE_TYPE_LAST_YEAR:
-                $date_array = $this->getStartAndEndOfYear(timestamp: time() - 31536000);
-                break;
-        }
-        return $date_array;
-
-    }
 
     public function collectResults($widget, $results) {
 

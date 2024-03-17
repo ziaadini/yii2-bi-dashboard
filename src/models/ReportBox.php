@@ -87,7 +87,7 @@ class ReportBox extends ActiveRecord
 
     public static function getDb()
     {
-        return Yii::$app->biDB;
+        return Yii::$app->noSlaveBiDB ?? Yii::$app->biDB;
     }
 
     public static function tableName()
@@ -98,19 +98,16 @@ class ReportBox extends ActiveRecord
     public function rules()
     {
         return [
-            [['dashboard_id', 'display_type', 'range_type', 'title', 'date_type'], 'required', 'on' => self::SCENARIO_CREATE],
-            [['dashboard_id', 'display_type', 'title'], 'required', 'on' => self::SCENARIO_UPDATE],
-
-            [['title'], 'string', 'max' => 128],
-            [['description'], 'string', 'max' => 255],
-
             [['slave_id'], 'default', 'value' => function () {
                 return Yii::$app->params['bi_slave_id'] ?? null;
             }],
+            [['dashboard_id', 'display_type', 'range_type', 'title', 'date_type', 'slave_id'], 'required', 'on' => self::SCENARIO_CREATE],
+            [['dashboard_id', 'display_type', 'title', 'slave_id'], 'required', 'on' => self::SCENARIO_UPDATE],
+            [['title'], 'string', 'max' => 128],
+            [['description'], 'string', 'max' => 255],
             ['chart_type', 'required', 'when' => function($model) {
                 return $model->display_type == self::DISPLAY_CHART;
             }],
-
             [['dashboard_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportDashboard::class, 'targetAttribute' => ['dashboard_id' => 'id']],
             [['display_order', 'dashboard_id', 'display_type', 'date_type', 'chart_type', 'status', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'slave_id'], 'integer'],
         ];
@@ -145,23 +142,9 @@ class ReportBox extends ActiveRecord
         {
             if($this->isNewRecord)
             {
-                $dailyTypes = [
-                    self::DATE_TYPE_TODAY,
-                    self::DATE_TYPE_YESTERDAY,
-                    self::DATE_TYPE_THIS_WEEK,
-                    self::DATE_TYPE_LAST_WEEK,
-                    self::DATE_TYPE_THIS_MONTH,
-                    self::DATE_TYPE_LAST_MONTH,
-                ];
-
-                $monthlyTypes = [
-                    self::DATE_TYPE_THIS_YEAR,
-                    self::DATE_TYPE_LAST_YEAR
-                ];
-
-                if (in_array($this->date_type, $dailyTypes)) {
+                if (in_array($this->date_type, self::itemAlias('DailyDateTypes'))) {
                     $this->range_type = self::RANGE_TYPE_DAILY;
-                } elseif (in_array($this->date_type, $monthlyTypes)) {
+                } elseif (in_array($this->date_type, self::itemAlias('MonthlyDateTypes'))) {
                     $this->range_type = self::RANGE_TYPE_MONTHLY;
                 }
             }
@@ -293,60 +276,6 @@ class ReportBox extends ActiveRecord
         return $query->bySlaveId()->notDeleted();
     }
 
-    public static function itemAlias($type, $code = NULL)
-    {
-        $_items = [
-            'Status' => [
-                self::STATUS_ACTIVE => Yii::t('biDashboard', 'Active'),
-                self::STATUS_INACTIVE => Yii::t('biDashboard', 'InActive'),
-                self::STATUS_DELETED => Yii::t('biDashboard', 'Deleted'),
-            ],
-            'DisplayTypes' => [
-                self::DISPLAY_CHART => Yii::t('biDashboard', 'Chart'),
-                self::DISPLAY_TABLE => Yii::t('biDashboard', 'Table'),
-                self::DISPLAY_CARD => Yii::t('biDashboard', 'Card'),
-            ],
-            'DateTypes' => [
-              self::DATE_TYPE_FLEXIBLE => Yii::t('biDashboard', 'Flexible'),
-              self::DATE_TYPE_TODAY => Yii::t('biDashboard', 'Today'),
-              self::DATE_TYPE_YESTERDAY => Yii::t('biDashboard', 'Yesterday'),
-              self::DATE_TYPE_THIS_WEEK => Yii::t('biDashboard', 'This Week'),
-              self::DATE_TYPE_LAST_WEEK => Yii::t('biDashboard', 'Last Week'),
-              self::DATE_TYPE_THIS_MONTH => Yii::t('biDashboard', 'This Month'),
-              self::DATE_TYPE_LAST_MONTH => Yii::t('biDashboard', 'Last Month'),
-              self::DATE_TYPE_THIS_YEAR => Yii::t('biDashboard', 'This Year'),
-              self::DATE_TYPE_LAST_YEAR => Yii::t('biDashboard', 'Last Year'),
-            ],
-            'ChartTypes' => [
-                self::CHART_LINE => 'line',
-                self::CHART_COLUMN => 'column',
-                //self::CHART_PIE => 'pie',
-                self::CHART_AREA => 'area',
-                //self::CHART_WORD_CLOUD => 'worldcloud',
-            ],
-            'ChartNames' => [
-                self::CHART_LINE => Yii::t('biDashboard', 'Chart line'),
-                self::CHART_COLUMN => Yii::t('biDashboard', 'Chart column'),
-                //self::CHART_PIE => Yii::t('biDashboard', 'Chart pie'),
-                self::CHART_AREA => Yii::t('biDashboard', 'Chart area'),
-                //self::CHART_WORD_CLOUD => Yii::t('biDashboard', 'Chart world cloud'),
-            ],
-            'RangeType' => [
-                self::RANGE_TYPE_DAILY => Yii::t('biDashboard', 'Daily'),
-                self::RANGE_TYPE_MONTHLY => Yii::t('biDashboard', 'Monthly'),
-            ],
-            'Format' => [
-                self::FORMAT_CURRENCY => Yii::t('biDashboard', 'Currency'),
-                self::FORMAT_NUMBER => Yii::t('biDashboard', 'Number'),
-            ],
-        ];
-
-        if (isset($code))
-            return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
-        else
-            return isset($_items[$type]) ? $_items[$type] : false;
-    }
-
     public function getChartCategories($year, $month): Array {
 
         $categories = [];
@@ -383,38 +312,70 @@ class ReportBox extends ActiveRecord
         ];
     }
 
-    public function getStartAndEndTimeStampsForStaticDate($dateType) : array
+    public static function itemAlias($type, $code = NULL)
     {
-        $date_array = [];
+        $_items = [
+            'Status' => [
+                self::STATUS_ACTIVE => Yii::t('biDashboard', 'Active'),
+                self::STATUS_INACTIVE => Yii::t('biDashboard', 'InActive'),
+                self::STATUS_DELETED => Yii::t('biDashboard', 'Deleted'),
+            ],
+            'DisplayTypes' => [
+                self::DISPLAY_CHART => Yii::t('biDashboard', 'Chart'),
+                self::DISPLAY_TABLE => Yii::t('biDashboard', 'Table'),
+                self::DISPLAY_CARD => Yii::t('biDashboard', 'Card'),
+            ],
+            'DateTypes' => [
+                self::DATE_TYPE_FLEXIBLE => Yii::t('biDashboard', 'Flexible'),
+                self::DATE_TYPE_TODAY => Yii::t('biDashboard', 'Today'),
+                self::DATE_TYPE_YESTERDAY => Yii::t('biDashboard', 'Yesterday'),
+                self::DATE_TYPE_THIS_WEEK => Yii::t('biDashboard', 'This Week'),
+                self::DATE_TYPE_LAST_WEEK => Yii::t('biDashboard', 'Last Week'),
+                self::DATE_TYPE_THIS_MONTH => Yii::t('biDashboard', 'This Month'),
+                self::DATE_TYPE_LAST_MONTH => Yii::t('biDashboard', 'Last Month'),
+                self::DATE_TYPE_THIS_YEAR => Yii::t('biDashboard', 'This Year'),
+                self::DATE_TYPE_LAST_YEAR => Yii::t('biDashboard', 'Last Year'),
+            ],
+            'DailyDateTypes' => [
+                self::DATE_TYPE_TODAY,
+                self::DATE_TYPE_YESTERDAY,
+                self::DATE_TYPE_THIS_WEEK,
+                self::DATE_TYPE_LAST_WEEK,
+                self::DATE_TYPE_THIS_MONTH,
+                self::DATE_TYPE_LAST_MONTH,
+            ],
+            'MonthlyDateTypes' => [
+                self::DATE_TYPE_THIS_YEAR,
+                self::DATE_TYPE_LAST_YEAR
+            ],
+            'ChartTypes' => [
+                self::CHART_LINE => 'line',
+                self::CHART_COLUMN => 'column',
+                //self::CHART_PIE => 'pie',
+                self::CHART_AREA => 'area',
+                //self::CHART_WORD_CLOUD => 'worldcloud',
+            ],
+            'ChartNames' => [
+                self::CHART_LINE => Yii::t('biDashboard', 'Chart line'),
+                self::CHART_COLUMN => Yii::t('biDashboard', 'Chart column'),
+                //self::CHART_PIE => Yii::t('biDashboard', 'Chart pie'),
+                self::CHART_AREA => Yii::t('biDashboard', 'Chart area'),
+                //self::CHART_WORD_CLOUD => Yii::t('biDashboard', 'Chart world cloud'),
+            ],
+            'RangeType' => [
+                self::RANGE_TYPE_DAILY => Yii::t('biDashboard', 'Daily'),
+                self::RANGE_TYPE_MONTHLY => Yii::t('biDashboard', 'Monthly'),
+            ],
+            'Format' => [
+                self::FORMAT_CURRENCY => Yii::t('biDashboard', 'Currency'),
+                self::FORMAT_NUMBER => Yii::t('biDashboard', 'Number'),
+            ],
+        ];
 
-        switch ($dateType) {
-            case ReportBox::DATE_TYPE_TODAY:
-                $date_array = CoreHelper::getStartAndEndOfDay();
-                break;
-            case ReportBox::DATE_TYPE_YESTERDAY:
-                $date_array = CoreHelper::getStartAndEndOfDay(time: time() - 86400);
-                break;
-            case ReportBox::DATE_TYPE_THIS_WEEK:
-                $date_array = $this->getStartAndEndOfCurrentWeek();
-                break;
-            case ReportBox::DATE_TYPE_LAST_WEEK:
-                $date_array = $this->getStartAndEndOfLastWeek();
-                break;
-            case ReportBox::DATE_TYPE_THIS_MONTH:
-                $date_array = $this->getStartAndEndOfMonth();
-                break;
-            case ReportBox::DATE_TYPE_LAST_MONTH:
-                $date_array = $this->getStartAndEndOfMonth(timestamp: time() - 2592000);
-                break;
-            case ReportBox::DATE_TYPE_THIS_YEAR:
-                $date_array = $this->getStartAndEndOfYear();
-                break;
-            case ReportBox::DATE_TYPE_LAST_YEAR:
-                $date_array = $this->getStartAndEndOfYear(timestamp: time() - 31536000);
-                break;
-        }
-        return $date_array;
-
+        if (isset($code))
+            return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
+        else
+            return isset($_items[$type]) ? $_items[$type] : false;
     }
 
     public function behaviors()

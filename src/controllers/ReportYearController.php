@@ -126,6 +126,7 @@ class ReportYearController extends Controller
         $model = new ReportYear();
 
         if ($model->load($this->request->post()) && $model->validate()) {
+
             if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,
@@ -158,6 +159,7 @@ class ReportYearController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load($this->request->post()) && $model->validate()) {
+
             if ($model->save(false)) {
                 return $this->asJson([
                     'status' => true,

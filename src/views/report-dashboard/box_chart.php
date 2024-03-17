@@ -177,22 +177,24 @@ $pdate = Yii::$app->pdate;
                 <?= Html::a('<i class="fas fa-arrow-up font-light"></i>', 'javascript:void(0)',
                     [
                         'title' => Yii::t('biDashboard', 'Moving'),
+                        'data-confirm-alert' => 0,
                         'aria-label' => Yii::t('yii', 'Moving'),
                         'data-reload-pjax-container' => 'p-jax-report-dashboard-view',
                         'data-pjax' => '0',
                         'data-url' => Url::to(['/bidashboard/report-box/dec-order', 'id' => $box->id]),
-                        'class' => "p-jax-btn-no-confirm text-secondary mr-2",
+                        'class' => "p-jax-btn text-secondary mr-2",
                         'data-title' => Yii::t('biDashboard', 'Moving'),
                         'data-toggle' => 'tooltip',
                     ]); ?>
                 <?= Html::a('<i class="fas fa-arrow-down font-light"></i>', 'javascript:void(0)',
                     [
                         'title' => Yii::t('biDashboard', 'Moving'),
+                        'data-confirm-alert' => 0,
                         'aria-label' => Yii::t('yii', 'Moving'),
                         'data-reload-pjax-container' => 'p-jax-report-dashboard-view',
                         'data-pjax' => '0',
                         'data-url' => Url::to(['/bidashboard/report-box/inc-order', 'id' => $box->id]),
-                        'class' => "p-jax-btn-no-confirm text-secondary",
+                        'class' => "p-jax-btn text-secondary",
                         'data-title' => Yii::t('biDashboard', 'Moving'),
                         'data-toggle' => 'tooltip',
                     ]); ?>

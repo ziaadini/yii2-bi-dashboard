@@ -179,8 +179,7 @@ $pdate = Yii::$app->pdate;
                                     ]) ?>
                                 <?php if (Yii::$app->user->identity): ?>
                                     <?= Html::a(
-                                        '<i class="fas fa-external-link-alt fa-lg text-info "></i>',
-                                        [$pageWidget->widget->getModelRoute()],
+                                        '<i class="fas fa-external-link-alt fa-lg text-info "></i>', [$pageWidget->widget->getModelRoute()],
                                         [
                                             'title' => Yii::t('biDashboard', 'Show Model'),
                                             'aria-label' => Yii::t('biDashboard', 'Show Model'),
@@ -235,22 +234,24 @@ $pdate = Yii::$app->pdate;
                                 <?= Html::a('<i class="fas fa-arrow-up font-light"></i>', 'javascript:void(0)',
                                     [
                                         'title' => Yii::t('biDashboard', 'Moving'),
+                                        'data-confirm-alert' => 0,
                                         'aria-label' => Yii::t('yii', 'Moving'),
                                         'data-reload-pjax-container' => 'p-jax-report-page-add',
                                         'data-pjax' => '0',
                                         'data-url' => Url::to(['/bidashboard/report-page-widget/dec-order', 'id' => $pageWidget->id]),
-                                        'class' => "p-jax-btn-no-confirm text-secondary mr-2",
+                                        'class' => "p-jax-btn text-secondary mr-2",
                                         'data-title' => Yii::t('biDashboard', 'Moving'),
                                         'data-toggle' => 'tooltip',
                                     ]); ?>
                                 <?= Html::a('<i class="fas fa-arrow-down font-light"></i>', 'javascript:void(0)',
                                     [
                                         'title' => Yii::t('biDashboard', 'Moving'),
+                                        'data-confirm-alert' => 0,
                                         'aria-label' => Yii::t('yii', 'Moving'),
                                         'data-reload-pjax-container' => 'p-jax-report-page-add',
                                         'data-pjax' => '0',
                                         'data-url' => Url::to(['/bidashboard/report-page-widget/inc-order', 'id' => $pageWidget->id]),
-                                        'class' => "p-jax-btn-no-confirm text-secondary",
+                                        'class' => "p-jax-btn text-secondary",
                                         'data-title' => Yii::t('biDashboard', 'Moving'),
                                         'data-toggle' => 'tooltip',
                                     ]); ?>
