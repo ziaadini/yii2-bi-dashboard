@@ -9,6 +9,7 @@ class m240311_093645_create_years_for_slave_to_report_year_table extends Migrati
 {
     public $yearTable = '{{%report_year}}';
     public $widgetTable = '{{%report_widget}}';
+    
     public function init()
     {
         $this->db = 'biDB';
