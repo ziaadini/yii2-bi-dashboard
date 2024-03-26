@@ -120,7 +120,7 @@ $formatter = Yii::$app->formatter;
                 <?php foreach($box->boxWidgets as $table):?>
                     <tr>
                         <td class="text-center align-middle">
-                            <a href="<?= $table->widget->getModelRoute() ?>" target="_blank"><?= $table->title ?? $table->widget->title ?> | <span class="font-12"><?= $table->description ?></span></a>
+                            <a href="<?= Url::to($table->widget->getModelRoute()) ?>" data-pjax="0" target="_blank"><?= $table->title ?? $table->widget->title ?> | <span class="font-12"><?= $table->description ?></span></a>
                         </td>
                         <?php for ($i = 1; $i <= $table->rangeDateCount; $i++) {
                             if ($box->range_type == ReportBox::RANGE_TYPE_DAILY){

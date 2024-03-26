@@ -174,7 +174,8 @@ $pdate = Yii::$app->pdate;
                                     ]) ?>
                                 <?php if (Yii::$app->user->identity): ?>
                                     <?= Html::a(
-                                        '<i class="fas fa-external-link-alt fa-lg text-info "></i>', [$pageWidget->widget->getModelRoute()],
+                                        '<i class="fas fa-external-link-alt fa-lg text-info "></i>',
+                                        [$pageWidget->widget->getModelRoute()],
                                         [
                                             'title' => Yii::t('biDashboard', 'Show Model'),
                                             'aria-label' => Yii::t('biDashboard', 'Show Model'),
