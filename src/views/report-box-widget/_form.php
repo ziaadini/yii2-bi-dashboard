@@ -83,7 +83,12 @@ $this->registerJs($js);
                     <!-- widgetBody -->
                     <div class="px-3 py-2 border-bottom d-flex align-items-center justify-content-between">
                         <span class="card-title-item"> ویجت: <?= ($index + 1) ?></span>
-                        <button type="button" class="rounded-md remove-widget btn btn-danger btn-sm"><?= Yii::t('biDashboard', 'Remove Widget') ?></button>
+                        <div class="">
+                            <?php if ($modelWidget->widget !== null): ?>
+                                <a class="btn btn-info btn-sm rounded-md mr-1" href="<?= $modelWidget->widget->getModelRoute() ?>" target="_blank"><?= Yii::t('biDashboard', 'Show model') ?></a>
+                            <?php endif; ?>
+                            <button type="button" class="rounded-md remove-widget btn btn-danger btn-sm"><?= Yii::t('biDashboard', 'Remove Widget') ?></button>
+                        </div>
                     </div>
                     <div class="card-body">
                         <?php
