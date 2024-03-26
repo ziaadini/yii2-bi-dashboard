@@ -12,7 +12,6 @@ class m240310_075720_add_display_order_column_to_report_page_widget_table extend
         $this->db = 'biDB';
         parent::init();
     }
-
     /**
      * {@inheritdoc}
      */

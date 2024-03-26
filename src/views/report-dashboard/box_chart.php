@@ -68,7 +68,6 @@ $pdate = Yii::$app->pdate;
                             </select>
                         </div>
                     <?php endif; ?>
-
                 </div>
                 <?= Html::a('<i class="fas fa-sync text-success font-18"></i>', "javascript:void(0)",
                     [
@@ -122,7 +121,7 @@ $pdate = Yii::$app->pdate;
                 'chart' => [
                     'style' => [
                         'fontFamily' => 'IRANSans, sans-serif',
-                        /*'direction' => 'rtl'*/
+                        'direction' => 'ltr',
                     ],
                     'type' => ReportBox::itemAlias('ChartTypes', $box->chart_type),
                     'className' => 'high-chart'
@@ -178,6 +177,7 @@ $pdate = Yii::$app->pdate;
                 <?= Html::a('<i class="fas fa-arrow-up font-light"></i>', 'javascript:void(0)',
                     [
                         'title' => Yii::t('biDashboard', 'Moving'),
+                        'data-confirm-alert' => 0,
                         'aria-label' => Yii::t('yii', 'Moving'),
                         'data-reload-pjax-container' => 'p-jax-report-dashboard-view',
                         'data-pjax' => '0',
@@ -189,6 +189,7 @@ $pdate = Yii::$app->pdate;
                 <?= Html::a('<i class="fas fa-arrow-down font-light"></i>', 'javascript:void(0)',
                     [
                         'title' => Yii::t('biDashboard', 'Moving'),
+                        'data-confirm-alert' => 0,
                         'aria-label' => Yii::t('yii', 'Moving'),
                         'data-reload-pjax-container' => 'p-jax-report-dashboard-view',
                         'data-pjax' => '0',

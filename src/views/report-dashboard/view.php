@@ -49,7 +49,7 @@ $pdate = Yii::$app->pdate;
                 [
                     'data-pjax' => '0',
                     'class' => "btn btn-success rounded-md mr-2",
-                    'data-size' => 'modal-xl',
+                    'data-size' => 'modal-dialog-centered modal-xl',
                     'data-title' => Yii::t('biDashboard', 'create box'),
                     'data-toggle' => 'modal',
                     'data-target' => '#modal-pjax-bi',

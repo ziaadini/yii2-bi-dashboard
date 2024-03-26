@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = ' ' . $this->title;
                         [
                             'data-pjax' => '0',
                             'class' => "btn btn-success rounded-md",
-                            'data-size' => 'modal-lg',
+                            'data-size' => 'modal-lg modal-dialog-centered',
                             'data-title' => Yii::t('biDashboard', 'create dashboard'),
                             'data-toggle' => 'modal',
                             'data-target' => '#modal-pjax-bi',
@@ -92,7 +92,7 @@ $this->params['breadcrumbs'][] = ' ' . $this->title;
                                     return Html::a('<i class="fas fa-edit"></i>', "javascript:void(0)", [
                                         'data-pjax' => '0',
                                         'class' => "btn text-primary",
-                                        'data-size' => 'modal-xl',
+                                        'data-size' => 'modal-dialog-centered modal-xl',
                                         'data-title' => Yii::t('biDashboard', 'update'),
                                         'data-toggle' => 'modal',
                                         'data-target' => '#modal-pjax-bi',

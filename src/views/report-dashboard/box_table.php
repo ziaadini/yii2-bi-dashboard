@@ -119,7 +119,9 @@ $formatter = Yii::$app->formatter;
             <?php if(!empty($box->boxWidgets)): ?>
                 <?php foreach($box->boxWidgets as $table):?>
                     <tr>
-                        <td class="text-center align-middle"><?= $table->title ?? $table->widget->title ?> | <span class="font-12 text-muted"><?= $table->description ?></span></td>
+                        <td class="text-center align-middle">
+                            <a href="<?= $table->widget->getModelRoute() ?>" target="_blank"><?= $table->title ?? $table->widget->title ?> | <span class="font-12"><?= $table->description ?></span></a>
+                        </td>
                         <?php for ($i = 1; $i <= $table->rangeDateCount; $i++) {
                             if ($box->range_type == ReportBox::RANGE_TYPE_DAILY){
                                 if (!empty($table->results['combine'])){
@@ -172,6 +174,12 @@ $formatter = Yii::$app->formatter;
                     <?= Yii::$app->formatter->asRelativeTime($box->last_run, 'now'); ?>
                 <?php endif; ?>
             </button>
+            <a class="btn btn-success btn-sm rounded-md font-12 mr-2 d-flex align-items-center"
+               data-pjax="0"
+               href="<?= Url::to(['/bidashboard/report-box/export-excel', 'id' => $box->id]) ?>"
+            >
+                <i class="fa-file-excel far font-14 mr-1"></i><?= ' ' . Yii::t('biDashboard', 'Export Excel File')?>
+            </a>
             <?= Html::a(Yii::t('biDashboard', 'Add and Edit Widgets'), "javascript:void(0)",
                 [
                     'data-pjax' => '0',
@@ -188,6 +196,7 @@ $formatter = Yii::$app->formatter;
                 <?= Html::a('<i class="fas fa-arrow-up font-light"></i>', 'javascript:void(0)',
                     [
                         'title' => Yii::t('biDashboard', 'Moving'),
+                        'data-confirm-alert' => 0,
                         'aria-label' => Yii::t('yii', 'Moving'),
                         'data-reload-pjax-container' => 'p-jax-report-dashboard-view',
                         'data-pjax' => '0',
@@ -199,6 +208,7 @@ $formatter = Yii::$app->formatter;
                 <?= Html::a('<i class="fas fa-arrow-down font-light"></i>', 'javascript:void(0)',
                     [
                         'title' => Yii::t('biDashboard', 'Moving'),
+                        'data-confirm-alert' => 0,
                         'aria-label' => Yii::t('yii', 'Moving'),
                         'data-reload-pjax-container' => 'p-jax-report-dashboard-view',
                         'data-pjax' => '0',

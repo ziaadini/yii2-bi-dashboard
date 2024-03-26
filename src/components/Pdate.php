@@ -594,8 +594,6 @@ class Pdate extends Component
         }
         return ($mod === '') ? $array : implode($mod, $array);
     }
-
-
     /** Gregorian & Jalali (Hijri_Shamsi,Solar) date converter Functions
      * Author: JDF.SCR.IR =>> Download Full Version : http://jdf.scr.ir/jdf
      * License: GNU/LGPL _ Open Source & Free _ Version: 2.70 : [2017=1395]
@@ -662,6 +660,7 @@ class Pdate extends Component
         }
         return ($mod === '') ? array($gy, $gm, $gd) : $gy . $mod . $gm . $mod . $gd;
     }
+
 }
 
 

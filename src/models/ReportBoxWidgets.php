@@ -2,7 +2,7 @@
 
 namespace sadi01\bidashboard\models;
 
-use sadi01\bidashboard\helpers\CoreHelper;
+use sadi01\bidashboard\helpers\FormatHelper;
 use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\models\ReportBox;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
@@ -59,6 +59,7 @@ class ReportBoxWidgets extends ActiveRecord
 
     public $description;
     public $rangeType;
+    public $dateType;
     public $isValid;
     public $rangeDateCount;
     public $results = [];
@@ -78,10 +79,10 @@ class ReportBoxWidgets extends ActiveRecord
     public function rules()
     {
         return [
-            [['widget_id', 'widget_field', 'widget_field_format'], 'required'],
             [['slave_id'], 'default', 'value' => function () {
                 return Yii::$app->params['bi_slave_id'] ?? null;
             }],
+            [['widget_id', 'widget_field', 'widget_field_format', 'slave_id'], 'required'],
             [['title'], 'string', 'max' => 128],
             [['title'], 'default', 'value' => null],
             [['widget_card_color'], 'default', 'value' => null],
@@ -158,10 +159,10 @@ class ReportBoxWidgets extends ActiveRecord
     public static function getFormattedValue($format, $value)
     {
         return match ($format) {
-            self::FORMAT_NUMBER => Yii::$app->formatter->asInteger($value),
-            self::FORMAT_CURRENCY => Yii::$app->formatter->asCurrency($value),
-            self::FORMAT_GRAM => number_format($value) . ' ' . Yii::t('biDashboard', 'Gram'),
-            self::FORMAT_KILOGRAM => $value/1000 . ' ' . Yii::t('biDashboard', 'Kilo Gram'),
+            self::FORMAT_NUMBER => FormatHelper::formatNumber($value),
+            self::FORMAT_CURRENCY => FormatHelper::formatCurrency($value),
+            self::FORMAT_GRAM => FormatHelper::formatGram($value),
+            self::FORMAT_KILOGRAM => FormatHelper::formatKiloGram($value),
             default => null,
         };
     }
@@ -170,36 +171,39 @@ class ReportBoxWidgets extends ActiveRecord
 
         $this->description = $this->widget->description;
         $this->rangeType = $this->widget->range_type;
+        $this->dateType = $this->box->date_type;
         $this->rangeDateCount = 12;
         $this->cardResultCount = 0;
         $this->isValid = self::VALID;
     }
 
-    public function getStartAndEndTimestamps($widget, $year, $month, $day) : array
+    public function getStartAndEndTimestamps($widget, $year, $month, $day) : Array
     {
-        if ($widget->rangeType == ReportWidget::RANGE_TYPE_DAILY) {
+        $date_array = [];
 
-            if ($widget->box->display_type == ReportBox::DISPLAY_CARD){
-                $date_array = CoreHelper::getStartAndEndOfDay(time: $this->jalaliToTimestamp($year.'/'.$month.'/'.$day.' 00:00:00'));
-            }
-            else {
-                $date_array = $this->getStartAndEndOfMonth($year . '/' . $month);
-                //check below
+        // Determine the range type and display type
+        $isDaily = $widget->rangeType == ReportWidget::RANGE_TYPE_DAILY;
+        $isMonthly = $widget->rangeType == ReportWidget::RANGE_TYPE_MONTHLY;
+        $isCard = $widget->box->display_type == ReportBox::DISPLAY_CARD;
+
+        // Handle daily range type
+        if ($isDaily) {
+            $timestamp = $this->jalaliToTimestamp($year.'/'.$month.'/'.$day.' 00:00:00');
+            $date_array = $isCard ? $this->getStartAndEndOfDay(time: $timestamp) : $this->getStartAndEndOfMonth($year . '/' . $month);
+
+            if (!$isCard) {
                 $widget->rangeDateCount = count($this->getMonthDays($year . '/' . $month));
             }
         }
-        elseif ($widget->rangeType == ReportWidget::RANGE_TYPE_MONTHLY) {
 
-            if ($widget->box->display_type == ReportBox::DISPLAY_CARD) {
-                $date_array = $this->getStartAndEndOfMonth($year . '/' . $month);
-            }
-            else {
-                $date_array = $this->getStartAndEndOfYear($year);
-            }
+        // Handle monthly range type
+        if ($isMonthly) {
+            $date_array = $isCard ? $this->getStartAndEndOfMonth($year . '/' . $month) : $this->getStartAndEndOfYear($year);
         }
-
         return $date_array;
     }
+
+
 
     public function collectResults($widget, $results) {
 
@@ -253,10 +257,8 @@ class ReportBoxWidgets extends ActiveRecord
 
             $chartData = $widget->results['chartData'];
             $percentageOfChange = &$widget->results['percentageOfChange'];
-
             $percentageOfChange[0] = 0;
             $dataCount = count($chartData);
-
             for ($i = 0; $i < $dataCount - 1; $i++) {
                 $currentData = $chartData[$i];
                 $nextData = $chartData[$i + 1];

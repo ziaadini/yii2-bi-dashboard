@@ -24,6 +24,7 @@ use Yii;
  * @property int $display_type
  * @property int $chart_type
  * @property int $range_type
+ * @property int $date_type
  * @property int $last_run
  * @property int $last_date_set
  * @property int $status
@@ -51,11 +52,20 @@ class ReportBox extends ActiveRecord
     const SCENARIO_DEFAULT = 'default';
     const SCENARIO_CREATE = 'create';
     const SCENARIO_UPDATE = 'update';
-    //const SCENARIO_UPDATE_LAST_RUN = 'update_last_run';
 
     const DISPLAY_CARD = 1;
     const DISPLAY_CHART = 2;
     const DISPLAY_TABLE = 3;
+
+    const DATE_TYPE_FLEXIBLE = 0;
+    const DATE_TYPE_TODAY = 1;
+    const DATE_TYPE_YESTERDAY = 2;
+    const DATE_TYPE_THIS_WEEK = 3;
+    const DATE_TYPE_LAST_WEEK = 4;
+    const DATE_TYPE_THIS_MONTH = 5;
+    const DATE_TYPE_LAST_MONTH = 6;
+    const DATE_TYPE_THIS_YEAR = 7;
+    const DATE_TYPE_LAST_YEAR = 8;
 
     const CHART_LINE = 1;
     const CHART_COLUMN = 2;
@@ -77,7 +87,7 @@ class ReportBox extends ActiveRecord
 
     public static function getDb()
     {
-        return Yii::$app->biDB;
+        return Yii::$app->noSlaveBiDB ?? Yii::$app->biDB;
     }
 
     public static function tableName()
@@ -88,21 +98,18 @@ class ReportBox extends ActiveRecord
     public function rules()
     {
         return [
-            [['dashboard_id', 'display_type', 'range_type', 'title'], 'required', 'on' => self::SCENARIO_CREATE],
-            [['dashboard_id', 'display_type', 'title'], 'required', 'on' => self::SCENARIO_UPDATE],
-
-            [['title'], 'string', 'max' => 128],
-            [['description'], 'string', 'max' => 255],
-
             [['slave_id'], 'default', 'value' => function () {
                 return Yii::$app->params['bi_slave_id'] ?? null;
             }],
+            [['dashboard_id', 'display_type', 'range_type', 'title', 'date_type', 'slave_id'], 'required', 'on' => self::SCENARIO_CREATE],
+            [['dashboard_id', 'display_type', 'title', 'slave_id'], 'required', 'on' => self::SCENARIO_UPDATE],
+            [['title'], 'string', 'max' => 128],
+            [['description'], 'string', 'max' => 255],
             ['chart_type', 'required', 'when' => function($model) {
                 return $model->display_type == self::DISPLAY_CHART;
             }],
-
             [['dashboard_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportDashboard::class, 'targetAttribute' => ['dashboard_id' => 'id']],
-            [['display_order', 'dashboard_id', 'display_type', 'chart_type', 'status', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'slave_id'], 'integer'],
+            [['display_order', 'dashboard_id', 'display_type', 'date_type', 'chart_type', 'status', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'slave_id'], 'integer'],
         ];
     }
 
@@ -110,7 +117,7 @@ class ReportBox extends ActiveRecord
     {
         return [
             self::SCENARIO_DEFAULT => ['display_order', 'dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
-            self::SCENARIO_CREATE => ['display_order', 'dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
+            self::SCENARIO_CREATE => ['display_order', 'date_type', 'dashboard_id', 'display_type', 'range_type', 'title', 'description', 'slave_id', 'chart_type'],
             self::SCENARIO_UPDATE => ['display_order', 'dashboard_id', 'display_type', 'title', 'description', 'slave_id', 'chart_type'],
         ];
     }
@@ -129,6 +136,23 @@ class ReportBox extends ActiveRecord
         return false;
     }
 
+    public function beforeValidate()
+    {
+        if (parent::beforeValidate())
+        {
+            if($this->isNewRecord)
+            {
+                if (in_array($this->date_type, self::itemAlias('DailyDateTypes'))) {
+                    $this->range_type = self::RANGE_TYPE_DAILY;
+                } elseif (in_array($this->date_type, self::itemAlias('MonthlyDateTypes'))) {
+                    $this->range_type = self::RANGE_TYPE_MONTHLY;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     public function attributeLabels()
     {
         return [
@@ -140,6 +164,7 @@ class ReportBox extends ActiveRecord
             'display_type' => Yii::t('biDashboard', 'Display Type'),
             'chart_type' => Yii::t('biDashboard', 'Chart Type'),
             'range_type' => Yii::t('biDashboard', 'Range Type'),
+            'date_type' => Yii::t('biDashboard', 'Date Type'),
             'status' => Yii::t('biDashboard', 'Status'),
             'created_at' => Yii::t('biDashboard', 'Created At'),
             'updated_at' => Yii::t('biDashboard', 'Updated At'),
@@ -251,6 +276,44 @@ class ReportBox extends ActiveRecord
         return $query->bySlaveId()->notDeleted();
     }
 
+    public function getChartCategories($year, $month): Array {
+
+        $categories = [];
+        $pdate = Yii::$app->pdate;
+        $monthDaysCount = count($this->getMonthDays($year . '/' . $month));
+
+        if ($this->range_type == self::RANGE_TYPE_DAILY){
+            for($i = 1; $i<= $monthDaysCount; $i++ ){
+                $categories[] = $i;
+            }
+        }
+        elseif($this->range_type == self::RANGE_TYPE_MONTHLY){
+            for($i = 1; $i <= 12; $i++){
+                $categories[] = $pdate->jdate_words(['mm' => $i])['mm'];
+            }
+        }
+
+        return $categories;
+    }
+
+    public function getLastDateSet(int $last_date_set) : Array
+    {
+        if ($this->date_type == self::DATE_TYPE_FLEXIBLE){
+            return [
+                'day' => CoreHelper::getDay($last_date_set),
+                'month' => CoreHelper::getMonth($last_date_set),
+                'year' => CoreHelper::getYear($last_date_set),
+            ];
+        }
+        return [
+            'year' => null,
+            'month' => null,
+            'day' => null
+        ];
+    }
+
+
+
     public static function itemAlias($type, $code = NULL)
     {
         $_items = [
@@ -263,6 +326,29 @@ class ReportBox extends ActiveRecord
                 self::DISPLAY_CHART => Yii::t('biDashboard', 'Chart'),
                 self::DISPLAY_TABLE => Yii::t('biDashboard', 'Table'),
                 self::DISPLAY_CARD => Yii::t('biDashboard', 'Card'),
+            ],
+            'DateTypes' => [
+                self::DATE_TYPE_FLEXIBLE => Yii::t('biDashboard', 'Flexible'),
+                self::DATE_TYPE_TODAY => Yii::t('biDashboard', 'Today'),
+                self::DATE_TYPE_YESTERDAY => Yii::t('biDashboard', 'Yesterday'),
+                self::DATE_TYPE_THIS_WEEK => Yii::t('biDashboard', 'This Week'),
+                self::DATE_TYPE_LAST_WEEK => Yii::t('biDashboard', 'Last Week'),
+                self::DATE_TYPE_THIS_MONTH => Yii::t('biDashboard', 'This Month'),
+                self::DATE_TYPE_LAST_MONTH => Yii::t('biDashboard', 'Last Month'),
+                self::DATE_TYPE_THIS_YEAR => Yii::t('biDashboard', 'This Year'),
+                self::DATE_TYPE_LAST_YEAR => Yii::t('biDashboard', 'Last Year'),
+            ],
+            'DailyDateTypes' => [
+                self::DATE_TYPE_TODAY,
+                self::DATE_TYPE_YESTERDAY,
+                self::DATE_TYPE_THIS_WEEK,
+                self::DATE_TYPE_LAST_WEEK,
+                self::DATE_TYPE_THIS_MONTH,
+                self::DATE_TYPE_LAST_MONTH,
+            ],
+            'MonthlyDateTypes' => [
+                self::DATE_TYPE_THIS_YEAR,
+                self::DATE_TYPE_LAST_YEAR
             ],
             'ChartTypes' => [
                 self::CHART_LINE => 'line',
@@ -292,35 +378,6 @@ class ReportBox extends ActiveRecord
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
         else
             return isset($_items[$type]) ? $_items[$type] : false;
-    }
-
-    public function getChartCategories($year, $month): Array {
-
-        $categories = [];
-        $pdate = Yii::$app->pdate;
-        $monthDaysCount = count($this->getMonthDays($year . '/' . $month));
-
-        if ($this->range_type == self::RANGE_TYPE_DAILY){
-            for($i = 1; $i<= $monthDaysCount; $i++ ){
-                $categories[] = $i;
-            }
-        }
-        elseif($this->range_type == self::RANGE_TYPE_MONTHLY){
-            for($i = 1; $i <= 12; $i++){
-                $categories[] = $pdate->jdate_words(['mm' => $i])['mm'];
-            }
-        }
-
-        return $categories;
-    }
-
-    public function getLastDateSet(int $last_date_set) : Array
-    {
-        return [
-            'day' => CoreHelper::getDay($last_date_set),
-            'month' => CoreHelper::getMonth($last_date_set),
-            'year' => CoreHelper::getYear($last_date_set),
-        ];
     }
 
     public function behaviors()

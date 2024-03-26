@@ -10,6 +10,15 @@ use Yii;
  */
 trait CoreTrait
 {
+    const DATE_TYPE_TODAY = 1;
+    const DATE_TYPE_YESTERDAY = 2;
+    const DATE_TYPE_THIS_WEEK = 3;
+    const DATE_TYPE_LAST_WEEK = 4;
+    const DATE_TYPE_THIS_MONTH = 5;
+    const DATE_TYPE_LAST_MONTH = 6;
+    const DATE_TYPE_THIS_YEAR = 7;
+    const DATE_TYPE_LAST_YEAR = 8;
+
     protected function rangeToTimestampRange($range, $format = "Y/m/d H:i:s", $calendar = 1, $delimiter = " - ", $endRangeDefaultHour = 23, $endRangeDefaultMin = 59, $endRangeDefaultSec = 59, $day = false)
     {
         $date_range_start = null;
@@ -83,6 +92,12 @@ trait CoreTrait
         ];
     }
 
+    protected function getStartAndEndOfLastDay($time_zone = 'Asia/Tehran')
+    {
+        $secondsInDay = 60 * 60 * 24;
+        return $this->getStartAndEndOfDay($time_zone, time() - $secondsInDay);
+    }
+
     protected function getStartAndEndOfCurrentWeek($time_zone = 'Asia/Tehran', $first_day_of_the_week = 'Saturday')
     {
         date_default_timezone_set($time_zone);
@@ -96,6 +111,17 @@ trait CoreTrait
         return [
             'start' => $start_of_the_week,
             'end' => $end_of_the_week,
+        ];
+    }
+
+    protected function getStartAndEndOfLastWeek()
+    {
+        $current_week = $this->getStartAndEndOfCurrentWeek();
+        $start_of_the_last_week = $current_week['start'] - (60 * 60 * 24 * 7);
+        $end_of_the_last_week = $current_week['end'] - (60 * 60 * 24 * 7);
+        return [
+            'start' => $start_of_the_last_week,
+            'end' => $end_of_the_last_week,
         ];
     }
 
@@ -122,10 +148,10 @@ trait CoreTrait
      * @param null|string $ym // e.g. 1399/03
      * @return array
      */
-    protected function getStartAndEndOfMonth($ym = null)
+    protected function getStartAndEndOfMonth($ym = null, $timestamp = null)
     {
         $pdate = Yii::$app->pdate;
-        $time = $ym ? $this->jalaliToTimestamp("$ym/01", "Y/m/d") : time();
+        $time = $ym ? $this->jalaliToTimestamp("$ym/01", "Y/m/d") : ($timestamp ?: time());
         $start_of_the_month = Yii::$app->pdate->jdate('Y-m-01', $time, '', 'Asia/Tehran', 'en');
         $end_of_the_month = Yii::$app->pdate->jdate('Y-m-t', $time, '', 'Asia/Tehran', 'en');
 
@@ -141,9 +167,9 @@ trait CoreTrait
         ];
     }
 
-    protected function getStartAndEndOfYear($year = 'Y')
+    protected function getStartAndEndOfYear($year = 'Y', $timestamp = null)
     {
-        $year = $year == 'Y' ? Yii::$app->pdate->jdate($year, time(), '', 'Asia/Tehran', 'en') : $year;
+        $year = $year == 'Y' ? Yii::$app->pdate->jdate($year, ($timestamp ?: time()), '', 'Asia/Tehran', 'en') : $year;
 
         return [
             'start' => $this->getStartAndEndOfMonth("$year/01")['start'],
@@ -212,6 +238,21 @@ trait CoreTrait
         return $monthDays;
     }
 
+    /**
+     * @param array $date_array // e.g: ['start' => start_timestamp, 'end' => end_timestamp]
+     * @return array
+     */
+    public function getMonthDaysByDateArray(Array $date_array)
+    {
+        for ($start = $date_array['start']; $start <= $date_array['end']; $start = $start + (60 * 60 * 24)) {
+            $monthDays[] = [
+                'start' => $start,
+                'end' => $start + (60 * 60 * 24) - 1
+            ];
+        }
+        return $monthDays;
+    }
+
     protected function isValidTimeStamp($timestamp)
     {
         return ((string)(int)$timestamp === $timestamp)
@@ -245,5 +286,84 @@ trait CoreTrait
             }
         }
         return null;
+    }
+
+    protected function getStartAndEndOfLastMonth(){
+
+        $pdate = Yii::$app->pdate;
+        list($jYear, $jMonth, $jDay) = explode('/', $pdate->jdate('Y/m/d', tr_num: 'en'));
+
+        // Adjust for last month
+        $jMonth--;
+        if ($jMonth == 0) {
+            $jMonth = 12;
+            $jYear--;
+        }
+
+        $numDaysLastMonth = count($this->getMonthDays("$jYear/$jMonth"));
+
+        // First and last day of last month
+        $firstDayLastMonth = $pdate->jmktime(0, 0, 0, $jMonth, 1, $jYear);
+        $lastDayLastMonth = $pdate->jmktime(23, 59, 59, $jMonth, $numDaysLastMonth, $jYear);
+
+        return [
+            'start' => $firstDayLastMonth,
+            'end' => $lastDayLastMonth
+        ];
+    }
+
+    protected function getStartAndEndOfLastYear()
+    {
+        $pdate = Yii::$app->pdate;
+        $jYear = explode('/', $pdate->jdate('Y/m/d', tr_num: 'en'))[0];
+        $jYear--;
+
+        //The number of days in Esfand
+        $numDaysLatestMonthOfLastYear = count($this->getMonthDays("$jYear/12"));
+
+        // First and last day of last year
+        $firstDayLastYear = $pdate->jmktime(0, 0, 0, 1, 1, $jYear);
+        $lastDayLastYear = $pdate->jmktime(23, 59, 59, 12, $numDaysLatestMonthOfLastYear, $jYear);
+        return [
+            'start' => $firstDayLastYear,
+            'end' => $lastDayLastYear
+        ];
+    }
+
+    /**
+     * @param int $dateType // e.g. DATE_TYPE_*
+     * @return Array
+     */
+    public function getStartAndEndTimeStampsForStaticDate(int $dateType) : Array
+    {
+        $date_array = [];
+
+        switch ($dateType) {
+            case self::DATE_TYPE_TODAY:
+                $date_array = $this->getStartAndEndOfDay();
+                break;
+            case self::DATE_TYPE_YESTERDAY:
+                $date_array = $this->getStartAndEndOfLastDay();
+                break;
+            case self::DATE_TYPE_THIS_WEEK:
+                $date_array = $this->getStartAndEndOfCurrentWeek();
+                break;
+            case self::DATE_TYPE_LAST_WEEK:
+                $date_array = $this->getStartAndEndOfLastWeek();
+                break;
+            case self::DATE_TYPE_THIS_MONTH:
+                $date_array = $this->getStartAndEndOfMonth();
+                break;
+            case self::DATE_TYPE_LAST_MONTH:
+                $date_array = $this->getStartAndEndOfLastMonth();
+                break;
+            case self::DATE_TYPE_THIS_YEAR:
+                $date_array = $this->getStartAndEndOfYear();
+                break;
+            case self::DATE_TYPE_LAST_YEAR:
+                $date_array = $this->getStartAndEndOfLastYear();
+                break;
+        }
+        return $date_array;
     }
 }

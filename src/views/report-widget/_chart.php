@@ -28,48 +28,53 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="work-report-index card">
             <div class="panel-group m-bot20" id="accordion">
                 <?php Pjax::begin(['id' => 'p-jax-report-page-widget-chart', 'enablePushState' => false,'clientOptions' => ['push' => false],]); ?>
-                <div class="card-body">
-                    <?= Html::dropDownList('your-dropdown-name', Yii::$app->request->get('chart_type'), ReportWidgetResult::itemAlias('Chart'), [
-                        'id' => 'chart_type_id',
-                        'class' => 'form-control col-sm-3',
-                        'onchange' => 'pjaxChartReload()',
-                    ]);
-                    ?>
-                    <?= Highcharts::widget([
-                        'options' => [
-                            'chart' => ['type' => $chart_type],
-                            'title' => [
-                                'text' => $widget->title
-                            ],
-                            'xAxis' => [
-                                'categories' => $titles
-                            ],
-                            'yAxis' => [
+                <div class="card-body text-center">
+                    <?php if (!empty($results)): ?>
+                        <?= Html::dropDownList('your-dropdown-name', Yii::$app->request->get('chart_type'), ReportWidgetResult::itemAlias('Chart'), [
+                            'id' => 'chart_type_id',
+                            'class' => 'form-control col-sm-3',
+                            'onchange' => 'pjaxChartReload()',
+                        ]);
+                        ?>
+                        <?= Highcharts::widget([
+                            'options' => [
+                                'chart' => ['type' => $chart_type],
                                 'title' => [
                                     'text' => $widget->title
                                 ],
-                                'min' => 0,
-                                'max' => $results ? max($results) : 0,
-                                'tickInterval' => 10
-                            ],
-                            'series' => [
-                                [
-                                    'name' => $widget->title,
-                                    'data' => $results
+                                'xAxis' => [
+                                    'categories' => $titles
                                 ],
-                            ],
-                            'plotOptions' => [
-                                'pie' => [
-                                    'allowPointSelect' => true,
-                                    'cursor' => 'pointer',
-                                    'dataLabels' => [
-                                        'enabled' => true,
+                                'yAxis' => [
+                                    'title' => [
+                                        'text' => $widget->title
+                                    ],
+                                    'min' => 0,
+                                    'max' => $results ? max($results) : 0,
+                                    'tickInterval' => 10
+                                ],
+                                'series' => [
+                                    [
+                                        'name' => $widget->title,
+                                        'data' => $results
                                     ],
                                 ],
+                                'plotOptions' => [
+                                    'pie' => [
+                                        'allowPointSelect' => true,
+                                        'cursor' => 'pointer',
+                                        'dataLabels' => [
+                                            'enabled' => true,
+                                        ],
+                                    ],
+                                ]
                             ]
-                        ]
-                    ]);
-                    ?>
+                        ]);
+                        ?>
+                    <?php else: ?>
+                    <div class="alert alert-danger" role="alert"><?= Yii::t("biDashboard", 'No Data')?></div>
+                    <div class="alert alert-danger" role="alert"><?= Yii::t("biDashboard", 'Please run widget/widgets first')?></div>
+                    <?php endif; ?>
                 </div>
                 <?php Pjax::end(); ?>
             </div>

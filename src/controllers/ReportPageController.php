@@ -2,6 +2,9 @@
 
 namespace sadi01\bidashboard\controllers;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use sadi01\bidashboard\components\ExcelReport;
 use sadi01\bidashboard\helpers\CoreHelper;
 use sadi01\bidashboard\models\ReportPage;
 use sadi01\bidashboard\models\ReportPageSearch;
@@ -48,7 +51,7 @@ class ReportPageController extends Controller
                                 'allow' => true,
                                 'roles' => ['BI/ReportPage/index'],
                                 'actions' => [
-                                    'index'
+                                    'index','export-excel'
                                 ]
                             ],
                             [
@@ -219,7 +222,7 @@ class ReportPageController extends Controller
         }
 
         if ($model->range_type == $model::RANGE_DAY) {
-            $rangeDateNumber = count($this->getCurrentMonthDays());
+            $rangeDateNumber = count($this->getMonthDaysByDateArray($date_array));
         } else {
             $rangeDateNumber = 12;
         }
@@ -422,6 +425,45 @@ class ReportPageController extends Controller
             'success' => true,
             'message' => $errors ? Yii::t('biDashboard', 'Error In Run Widget') : Yii::t("biDashboard", 'Success'),
         ]);
+    }
+
+    public function actionExportExcel($id, $start_range = null, $end_range = null)
+    {
+        $page = $this->findModel($id);
+        $excel = new ExcelReport();
+        $pdate = Yii::$app->pdate;
+
+        $date_array = [];
+        $date_array['start'] = $start_range ? (int)$start_range : null;
+        $date_array['end'] = $end_range ? (int)$end_range : null;
+
+        if (!$page->widgets) {
+            return $this->asJson([
+                'status' => false,
+                'message' => Yii::t("biDashboard", 'The Operation Failed')
+            ]);
+        }
+
+        if ($page->range_type == $page::RANGE_DAY) {
+            $rangeDateNumber = count($this->getMonthDaysByDateArray($date_array));
+        } else {
+            $rangeDateNumber = 12;
+        }
+
+        $results = [];
+        foreach ($page->reportPageWidgets as $pageWidget) {
+            $lastResult = $pageWidget->widget->lastResult($date_array['start'], $date_array['end']);
+            $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
+            $results = array_reverse($widgetLastResult);
+            if (!empty($results)) {
+                $array [] = $pageWidget->collectResults($pageWidget, $results);
+            }
+        }
+
+        $columnNames = $excel->getColumnNames($rangeDateNumber);
+        $excel->setCellValuesOfFirstRow($page, $columnNames, $rangeDateNumber, $pdate);
+        $excel->setCellValues($excel, $page->reportPageWidgets, $columnNames, $rangeDateNumber);
+        return $excel->save();
     }
 
     /**

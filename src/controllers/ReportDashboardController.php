@@ -3,7 +3,6 @@
 namespace sadi01\bidashboard\controllers;
 
 use common\models\BaseModel;
-use sadi01\bidashboard\helpers\CoreHelper;
 use sadi01\bidashboard\models\ReportBaseModel;
 use sadi01\bidashboard\models\ReportBox;
 use sadi01\bidashboard\models\ReportBoxWidgets;
@@ -13,6 +12,7 @@ use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\models\ReportDashboardSearch;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use sadi01\bidashboard\traits\CoreTrait;
+use yii\helpers\ArrayHelper;
 use yii\base\Model;
 use yii\db\Exception;
 use yii\filters\AccessControl;
@@ -20,8 +20,6 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
 use Yii;
-
-use yii\helpers\ArrayHelper;
 
 class ReportDashboardController extends Controller
 {
@@ -122,21 +120,27 @@ class ReportDashboardController extends Controller
         $cards = [];
         $tables = [];
 
-        foreach ($boxes as $box){
+        foreach ($boxes as $index => $box){
 
             $box->lastDateSet = $box->getLastDateSet($box->last_date_set);
 
             if ($box->display_type == ReportBox::DISPLAY_CHART)
                 $box->chartCategories = $box->getChartCategories($box->lastDateSet['year'],$box->lastDateSet['month']);
 
-            if ($box->range_type == ReportBox::RANGE_TYPE_DAILY)
-                //$box->rangeDateCount = count($this->getMonthDays("$box->lastDateSet['year']/$box->lastDateSet['month']"));
-                $box->rangeDateCount = count($this->getMonthDays($box->lastDateSet['year']."/".$box->lastDateSet['month']));
+            if ($box->range_type == ReportBox::RANGE_TYPE_DAILY){
+                if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
+                    $box->rangeDateCount = count($this->getMonthDays($box->lastDateSet['year']."/".$box->lastDateSet['month']));
+                else
+                    $box->rangeDateCount = count($this->getMonthDaysByDateArray($box->getStartAndEndTimeStampsForStaticDate($box->date_type)));
+            }
 
             foreach ($box->boxWidgets as $widget){
 
                 $widget->setWidgetProperties();
-                $date_array = $widget->getStartAndEndTimestamps($widget, $box->lastDateSet['year'], $box->lastDateSet['month'], $box->lastDateSet['day']);
+                if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
+                    $date_array = $widget->getStartAndEndTimestamps($widget, $box->lastDateSet['year'], $box->lastDateSet['month'], $box->lastDateSet['day']);
+                else
+                    $date_array = $box->getStartAndEndTimeStampsForStaticDate($box->date_type);
 
                 $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
                 $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];

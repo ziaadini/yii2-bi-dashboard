@@ -58,7 +58,7 @@ class ReportModelClass extends ActiveRecord
             [['slave_id'], 'default', 'value' => function () {
                 return Yii::$app->params['bi_slave_id'] ?? null;
             }],
-            [['model_class', 'title'], 'required'],
+            [['model_class', 'title', 'slave_id'], 'required'],
             [['title'], 'required', 'on' => $this::SCENARIO_UPDATE],
             [['status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'slave_id'], 'integer'],
             [['model_class', 'title'], 'string', 'max' => 128],

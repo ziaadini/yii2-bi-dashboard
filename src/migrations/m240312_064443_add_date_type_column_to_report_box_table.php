@@ -25,6 +25,6 @@ class m240312_064443_add_date_type_column_to_report_box_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropColumn('{{%report_box}}', 'last_run');
+        $this->dropColumn('{{%report_box}}', 'date_type');
     }
 }

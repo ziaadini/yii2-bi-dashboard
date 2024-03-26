@@ -2,6 +2,7 @@
 
 namespace sadi01\bidashboard\models;
 
+use sadi01\bidashboard\helpers\FormatHelper;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -39,6 +40,8 @@ class ReportPageWidget extends ActiveRecord
     const FORMAT_GRAM = 3;
     const FORMAT_KILOGRAM= 4;
 
+    public $results = [];
+
     public static function getDb()
     {
         return Yii::$app->biDB;
@@ -61,7 +64,7 @@ class ReportPageWidget extends ActiveRecord
             [['slave_id'], 'default', 'value' => function () {
                 return Yii::$app->params['bi_slave_id'] ?? null;
             }],
-            [['page_id', 'widget_id', 'report_widget_field'], 'required'],
+            [['page_id', 'widget_id', 'report_widget_field', 'slave_id'], 'required'],
             [['page_id', 'display_order', 'widget_id', 'report_widget_field_format', 'status', 'slave_id'], 'integer'],
             [['report_widget_field'], 'string', 'max' => 64],
             [['page_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportPage::class, 'targetAttribute' => ['page_id' => 'id']],
@@ -93,13 +96,13 @@ class ReportPageWidget extends ActiveRecord
     {
         switch ($this->report_widget_field_format) {
             case self::FORMAT_NUMBER:
-                return Yii::$app->formatter->asInteger($value);
+                return FormatHelper::formatNumber($value);
             case self::FORMAT_CURRENCY:
-                return Yii::$app->formatter->asCurrency($value);
+                return FormatHelper::formatCurrency($value);
             case self::FORMAT_GRAM:
-                return number_format($value) . ' ' . Yii::t('biDashboard', 'Gram');
+                return FormatHelper::formatCurrency($value);
             case self::FORMAT_KILOGRAM:
-                return $value/1000 . ' ' . Yii::t('biDashboard', 'Kilo Gram');
+                return FormatHelper::formatKiloGram($value);
         }
     }
 
@@ -209,6 +212,46 @@ class ReportPageWidget extends ActiveRecord
     public function canDelete()
     {
         return true;
+    }
+
+    public function collectResults($widget, $results)
+    {
+        $pdate = Yii::$app->pdate;
+
+        $widget->results['data'] = array_map(function ($item) use ($widget) {
+            return (int)$item[$widget->report_widget_field];
+        }, $results);
+
+        $widget->results['categories'] = array_map(function ($item) use ($widget) {
+            if ($widget->page->range_type == ReportPage::RANGE_DAY) {
+                return $item['day'];
+            } else {
+                return $item['month_name'];
+            }
+        }, $results);
+
+        $widget->results['combine'] = array_combine($widget->results['categories'], $widget->results['data']);
+
+        if ($widget->page->range_type == ReportPage::RANGE_DAY){
+            for ($i = 0; $i <= 30; $i++) {
+                if (array_key_exists($i+1, $widget->results['combine'])) {
+                    $widget->results['final_result'][$i] = $widget->results['combine'][$i+1];
+                }
+                else {
+                    $widget->results['final_result'][$i] = 0;
+                }
+            }
+        }
+        elseif($widget->page->range_type == ReportPage::RANGE_MONTH){
+            for ($i = 0; $i <= 11; $i++){
+                if (array_key_exists($pdate->jdate_words(['mm' => $i+1])['mm'], $widget->results['combine'])){
+                    $widget->results['final_result'][$i] = $widget->results['combine'][$pdate->jdate_words(['mm' => $i+1])['mm']];
+                }
+                else {
+                    $widget->results['final_result'][$i] = 0;
+                }
+            }
+        }
     }
 
     /**

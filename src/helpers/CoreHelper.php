@@ -1,6 +1,5 @@
 <?php
 
-
 namespace sadi01\bidashboard\helpers;
 
 use Yii;
@@ -17,19 +16,6 @@ class CoreHelper
         } else {
             return null;
         }
-    }
-
-    public static function getStartAndEndOfDay($time_zone = 'Asia/Tehran', $time = null)
-    {
-        date_default_timezone_set($time_zone);
-        $time = $time ?: time();
-        $start = strtotime("today", $time);
-        $end   = strtotime("tomorrow", $start) - 1;
-
-        return [
-            'start' => $start,
-            'end'   => $end,
-        ];
     }
 
     public static function getMonthsCountBetweenTwoDays($min_day, $max_day)

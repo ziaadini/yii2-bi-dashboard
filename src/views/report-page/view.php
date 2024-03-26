@@ -39,7 +39,7 @@ $pdate = Yii::$app->pdate;
     <div class="p-3 bg-white">
         <?= Alert::widget() ?>
         <div class="d-flex justify-content-between">
-            <div class="d-flex align-items-center w-50">
+            <div class="d-flex align-items-center w-48">
                 <h2 title="<?= $model->title ?>" class="font-16 mb-0 text-overflow-ellipsis"><?= $model->title ?></h2>
                 <?php if (Yii::$app->user->identity): ?>
                     <?= Html::a('<i class="fa fa-edit"></i>', "javascript:void(0)",
@@ -89,7 +89,7 @@ $pdate = Yii::$app->pdate;
                         <?= Html::a(Yii::t('biDashboard', 'add widget'), "javascript:void(0)",
                             [
                                 'data-pjax' => '0',
-                                'class' => "btn btn-success",
+                                'class' => "btn btn-success btn-sm font-12",
                                 'data-size' => 'modal-xl',
                                 'data-title' => Yii::t('biDashboard', 'create'),
                                 'data-toggle' => 'modal',
@@ -100,6 +100,11 @@ $pdate = Yii::$app->pdate;
                                 'data-reload-pjax-container' => 'p-jax-report-page-add',
                                 'data-reload-pjax-container-on-show' => 0
                             ]) ?>
+                        <a class="btn btn-warning btn-sm font-12"
+                           data-pjax="0"
+                           href="<?= Url::to(['/bidashboard/report-page/export-excel', 'id' => $model->id, 'start_range' => $startRange, 'end_range' => $endRange]) ?>"
+                        ><?= ' ' . Yii::t('biDashboard', 'Export Excel File')?>
+                        </a>
                         <?= Html::a(Yii::t('biDashboard', 'run all widget'), 'javascript:void(0)',
                             [
                                 'title' => Yii::t('biDashboard', 'run all widget'),
@@ -107,13 +112,13 @@ $pdate = Yii::$app->pdate;
                                 'data-reload-pjax-container' => 'p-jax-report-page-add',
                                 'data-pjax' => '0',
                                 'data-url' => Url::to(['/bidashboard/report-page/run-all-widgets', 'id' => $model->id, 'start_range' => $startRange, 'end_range' => $endRange]),
-                                'class' => " p-jax-btn btn btn-primary",
+                                'class' => " p-jax-btn btn btn-primary btn-sm font-12",
                                 'data-title' => Yii::t('biDashboard', 'run all widget'),
                             ]); ?>
                         <?= Html::a('<i class="fa fa-share-alt"></i>' . '  ' . Yii::t('biDashboard', 'share'), "javascript:void(0)",
                             [
                                 'data-pjax' => '0',
-                                'class' => "btn btn-primary",
+                                'class' => "btn btn-primary btn-sm font-12",
                                 'data-size' => 'modal-xl',
                                 'data-title' => Yii::t('biDashboard', 'create'),
                                 'data-toggle' => 'modal',
@@ -157,7 +162,7 @@ $pdate = Yii::$app->pdate;
                                     [
                                         'data-pjax' => '0',
                                         'class' => "btn btn-sm text-secondary fa-lg p-0",
-                                        'data-size' => 'modal-xl',
+                                        'data-size' => 'modal-xl modal-dialog-centered',
                                         'data-title' => Yii::t('biDashboard', 'Chart'),
                                         'data-toggle' => 'modal',
                                         'data-target' => '#modal-pjax-bi',
@@ -169,8 +174,7 @@ $pdate = Yii::$app->pdate;
                                     ]) ?>
                                 <?php if (Yii::$app->user->identity): ?>
                                     <?= Html::a(
-                                        '<i class="fas fa-external-link-alt fa-lg text-info "></i>',
-                                        [$pageWidget->widget->getModelRoute()],
+                                        '<i class="fas fa-external-link-alt fa-lg text-info "></i>', [$pageWidget->widget->getModelRoute()],
                                         [
                                             'title' => Yii::t('biDashboard', 'Show Model'),
                                             'aria-label' => Yii::t('biDashboard', 'Show Model'),
@@ -225,6 +229,7 @@ $pdate = Yii::$app->pdate;
                                 <?= Html::a('<i class="fas fa-arrow-up font-light"></i>', 'javascript:void(0)',
                                     [
                                         'title' => Yii::t('biDashboard', 'Moving'),
+                                        'data-confirm-alert' => 0,
                                         'aria-label' => Yii::t('yii', 'Moving'),
                                         'data-reload-pjax-container' => 'p-jax-report-page-add',
                                         'data-pjax' => '0',
@@ -236,6 +241,7 @@ $pdate = Yii::$app->pdate;
                                 <?= Html::a('<i class="fas fa-arrow-down font-light"></i>', 'javascript:void(0)',
                                     [
                                         'title' => Yii::t('biDashboard', 'Moving'),
+                                        'data-confirm-alert' => 0,
                                         'aria-label' => Yii::t('yii', 'Moving'),
                                         'data-reload-pjax-container' => 'p-jax-report-page-add',
                                         'data-pjax' => '0',
