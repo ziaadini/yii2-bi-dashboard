@@ -10,14 +10,14 @@ use Yii;
  */
 trait CoreTrait
 {
-    const DATE_TYPE_TODAY = 1;
-    const DATE_TYPE_YESTERDAY = 2;
-    const DATE_TYPE_THIS_WEEK = 3;
-    const DATE_TYPE_LAST_WEEK = 4;
-    const DATE_TYPE_THIS_MONTH = 5;
-    const DATE_TYPE_LAST_MONTH = 6;
-    const DATE_TYPE_THIS_YEAR = 7;
-    const DATE_TYPE_LAST_YEAR = 8;
+    public static $DATE_TYPE_TODAY = 1;
+    public static $DATE_TYPE_YESTERDAY = 2;
+    public static $DATE_TYPE_THIS_WEEK = 3;
+    public static $DATE_TYPE_LAST_WEEK = 4;
+    public static $DATE_TYPE_THIS_MONTH = 5;
+    public static $DATE_TYPE_LAST_MONTH = 6;
+    public static $DATE_TYPE_THIS_YEAR = 7;
+    public static $DATE_TYPE_LAST_YEAR = 8;
 
     protected function rangeToTimestampRange($range, $format = "Y/m/d H:i:s", $calendar = 1, $delimiter = " - ", $endRangeDefaultHour = 23, $endRangeDefaultMin = 59, $endRangeDefaultSec = 59, $day = false)
     {
@@ -339,28 +339,28 @@ trait CoreTrait
         $date_array = [];
 
         switch ($dateType) {
-            case self::DATE_TYPE_TODAY:
+            case self::$DATE_TYPE_TODAY:
                 $date_array = $this->getStartAndEndOfDay();
                 break;
-            case self::DATE_TYPE_YESTERDAY:
+            case self::$DATE_TYPE_YESTERDAY:
                 $date_array = $this->getStartAndEndOfLastDay();
                 break;
-            case self::DATE_TYPE_THIS_WEEK:
+            case self::$DATE_TYPE_THIS_WEEK:
                 $date_array = $this->getStartAndEndOfCurrentWeek();
                 break;
-            case self::DATE_TYPE_LAST_WEEK:
+            case self::$DATE_TYPE_LAST_WEEK:
                 $date_array = $this->getStartAndEndOfLastWeek();
                 break;
-            case self::DATE_TYPE_THIS_MONTH:
+            case self::$DATE_TYPE_THIS_MONTH:
                 $date_array = $this->getStartAndEndOfMonth();
                 break;
-            case self::DATE_TYPE_LAST_MONTH:
+            case self::$DATE_TYPE_LAST_MONTH:
                 $date_array = $this->getStartAndEndOfLastMonth();
                 break;
-            case self::DATE_TYPE_THIS_YEAR:
+            case self::$DATE_TYPE_THIS_YEAR:
                 $date_array = $this->getStartAndEndOfYear();
                 break;
-            case self::DATE_TYPE_LAST_YEAR:
+            case self::$DATE_TYPE_LAST_YEAR:
                 $date_array = $this->getStartAndEndOfLastYear();
                 break;
         }
