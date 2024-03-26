@@ -594,8 +594,6 @@ class Pdate extends Component
         }
         return ($mod === '') ? $array : implode($mod, $array);
     }
-
-
     /** Gregorian & Jalali (Hijri_Shamsi,Solar) date converter Functions
      * Author: JDF.SCR.IR =>> Download Full Version : http://jdf.scr.ir/jdf
      * License: GNU/LGPL _ Open Source & Free _ Version: 2.70 : [2017=1395]
@@ -661,13 +659,6 @@ class Pdate extends Component
             $gd -= $v;
         }
         return ($mod === '') ? array($gy, $gm, $gd) : $gy . $mod . $gm . $mod . $gd;
-    }
-
-    function persian_to_english($string) {
-        $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-        $english = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-        return str_replace($persian, $english, $string);
     }
 
 }

@@ -288,15 +288,10 @@ trait CoreTrait
         return null;
     }
 
-    private function getPersianDateComponents($pdate) {
-        $dateArray = explode('/', $pdate->jdate('Y/m/d'));
-        return array_map([$pdate, 'persian_to_english'], $dateArray);
-    }
-
     protected function getStartAndEndOfLastMonth(){
 
         $pdate = Yii::$app->pdate;
-        list($jYear, $jMonth, $jDay) = $this->getPersianDateComponents($pdate);
+        list($jYear, $jMonth, $jDay) = explode('/', $pdate->jdate('Y/m/d', tr_num: 'en'));
 
         // Adjust for last month
         $jMonth--;
@@ -320,7 +315,7 @@ trait CoreTrait
     protected function getStartAndEndOfLastYear()
     {
         $pdate = Yii::$app->pdate;
-        $jYear = $this->getPersianDateComponents($pdate)[0];
+        $jYear = explode('/', $pdate->jdate('Y/m/d', tr_num: 'en'))[0];
         $jYear--;
 
         //The number of days in Esfand
