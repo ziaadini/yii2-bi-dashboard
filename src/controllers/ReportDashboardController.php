@@ -3,7 +3,6 @@
 namespace sadi01\bidashboard\controllers;
 
 use common\models\BaseModel;
-use sadi01\bidashboard\helpers\CoreHelper;
 use sadi01\bidashboard\models\ReportBaseModel;
 use sadi01\bidashboard\models\ReportBox;
 use sadi01\bidashboard\models\ReportBoxWidgets;
@@ -132,7 +131,7 @@ class ReportDashboardController extends Controller
                 if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
                     $box->rangeDateCount = count($this->getMonthDays($box->lastDateSet['year']."/".$box->lastDateSet['month']));
                 else
-                    $box->rangeDateCount = count($this->getMonthDaysByDateArray(CoreHelper::getStartAndEndTimeStampsForStaticDate($box->date_type)));
+                    $box->rangeDateCount = count($this->getMonthDaysByDateArray($box->getStartAndEndTimeStampsForStaticDate($box->date_type)));
             }
 
             foreach ($box->boxWidgets as $widget){
@@ -141,7 +140,7 @@ class ReportDashboardController extends Controller
                 if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
                     $date_array = $widget->getStartAndEndTimestamps($widget, $box->lastDateSet['year'], $box->lastDateSet['month'], $box->lastDateSet['day']);
                 else
-                    $date_array = CoreHelper::getStartAndEndTimeStampsForStaticDate($box->date_type);
+                    $date_array = $box->getStartAndEndTimeStampsForStaticDate($box->date_type);
 
                 $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
                 $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];

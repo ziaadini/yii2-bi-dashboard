@@ -120,7 +120,7 @@ $formatter = Yii::$app->formatter;
                 <?php foreach($box->boxWidgets as $table):?>
                     <tr>
                         <td class="text-center align-middle">
-                            <a href="<?= $table->widget->getModelRoute() ?>"><?= $table->title ?? $table->widget->title ?> | <span class="font-12"><?= $table->description ?></span></a>
+                            <a href="<?= $table->widget->getModelRoute() ?>" target="_blank"><?= $table->title ?? $table->widget->title ?> | <span class="font-12"><?= $table->description ?></span></a>
                         </td>
                         <?php for ($i = 1; $i <= $table->rangeDateCount; $i++) {
                             if ($box->range_type == ReportBox::RANGE_TYPE_DAILY){
@@ -174,18 +174,12 @@ $formatter = Yii::$app->formatter;
                     <?= Yii::$app->formatter->asRelativeTime($box->last_run, 'now'); ?>
                 <?php endif; ?>
             </button>
-            <?= Html::a('<i class="fa-file-excel far font-14 mr-1"></i>' . ' ' . Yii::t('biDashboard', 'Export Excel File'), "javascript:void(0)",
-                [
-                    'id' => 'excel_btn_'.$box->id,
-                    'title' => Yii::t('biDashboard', 'Export Excel File'),
-                    'aria-label' => Yii::t('yii', 'Export Excel File'),
-                    'data-reload-pjax-container' => 'p-jax-report-dashboard-view',
-                    'data-pjax' => '0',
-                    'data-url' => Url::to(['/bidashboard/report-box/export-excel', 'id' => $box->id] ),
-                    'class' => "p-jax-btn btn btn-success btn-sm rounded-md font-12 mr-2 d-flex align-items-center",
-                    'data-title' => Yii::t('biDashboard', 'Export Excel File'),
-                    'data-toggle' => 'tooltip',
-                ]) ?>
+            <a class="btn btn-success btn-sm rounded-md font-12 mr-2 d-flex align-items-center"
+               data-pjax="0"
+               href="<?= Url::to(['/bidashboard/report-box/export-excel', 'id' => $box->id]) ?>"
+            >
+                <i class="fa-file-excel far font-14 mr-1"></i><?= ' ' . Yii::t('biDashboard', 'Export Excel File')?>
+            </a>
             <?= Html::a(Yii::t('biDashboard', 'Add and Edit Widgets'), "javascript:void(0)",
                 [
                     'data-pjax' => '0',

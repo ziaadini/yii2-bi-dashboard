@@ -2,7 +2,6 @@
 
 namespace sadi01\bidashboard\models;
 
-use sadi01\bidashboard\helpers\CoreHelper;
 use sadi01\bidashboard\helpers\FormatHelper;
 use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\models\ReportBox;
@@ -190,7 +189,7 @@ class ReportBoxWidgets extends ActiveRecord
         // Handle daily range type
         if ($isDaily) {
             $timestamp = $this->jalaliToTimestamp($year.'/'.$month.'/'.$day.' 00:00:00');
-            $date_array = $isCard ? CoreHelper::getStartAndEndOfDay(time: $timestamp) : $this->getStartAndEndOfMonth($year . '/' . $month);
+            $date_array = $isCard ? $this->getStartAndEndOfDay(time: $timestamp) : $this->getStartAndEndOfMonth($year . '/' . $month);
 
             if (!$isCard) {
                 $widget->rangeDateCount = count($this->getMonthDays($year . '/' . $month));

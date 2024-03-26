@@ -10,6 +10,15 @@ use Yii;
  */
 trait CoreTrait
 {
+    const DATE_TYPE_TODAY = 1;
+    const DATE_TYPE_YESTERDAY = 2;
+    const DATE_TYPE_THIS_WEEK = 3;
+    const DATE_TYPE_LAST_WEEK = 4;
+    const DATE_TYPE_THIS_MONTH = 5;
+    const DATE_TYPE_LAST_MONTH = 6;
+    const DATE_TYPE_THIS_YEAR = 7;
+    const DATE_TYPE_LAST_YEAR = 8;
+
     protected function rangeToTimestampRange($range, $format = "Y/m/d H:i:s", $calendar = 1, $delimiter = " - ", $endRangeDefaultHour = 23, $endRangeDefaultMin = 59, $endRangeDefaultSec = 59, $day = false)
     {
         $date_range_start = null;
@@ -81,6 +90,12 @@ trait CoreTrait
             'start' => $start,
             'end' => $end,
         ];
+    }
+
+    protected function getStartAndEndOfLastDay($time_zone = 'Asia/Tehran')
+    {
+        $secondsInDay = 60 * 60 * 24;
+        return $this->getStartAndEndOfDay($time_zone, time() - $secondsInDay);
     }
 
     protected function getStartAndEndOfCurrentWeek($time_zone = 'Asia/Tehran', $first_day_of_the_week = 'Saturday')
@@ -271,5 +286,89 @@ trait CoreTrait
             }
         }
         return null;
+    }
+
+    private function getPersianDateComponents($pdate) {
+        $dateArray = explode('/', $pdate->jdate('Y/m/d'));
+        return array_map([$pdate, 'persian_to_english'], $dateArray);
+    }
+
+    protected function getStartAndEndOfLastMonth(){
+
+        $pdate = Yii::$app->pdate;
+        list($jYear, $jMonth, $jDay) = $this->getPersianDateComponents($pdate);
+
+        // Adjust for last month
+        $jMonth--;
+        if ($jMonth == 0) {
+            $jMonth = 12;
+            $jYear--;
+        }
+
+        $numDaysLastMonth = count($this->getMonthDays("$jYear/$jMonth"));
+
+        // First and last day of last month
+        $firstDayLastMonth = $pdate->jmktime(0, 0, 0, $jMonth, 1, $jYear);
+        $lastDayLastMonth = $pdate->jmktime(23, 59, 59, $jMonth, $numDaysLastMonth, $jYear);
+
+        return [
+            'start' => $firstDayLastMonth,
+            'end' => $lastDayLastMonth
+        ];
+    }
+
+    protected function getStartAndEndOfLastYear()
+    {
+        $pdate = Yii::$app->pdate;
+        $jYear = $this->getPersianDateComponents($pdate)[0];
+        $jYear--;
+
+        //The number of days in Esfand
+        $numDaysLatestMonthOfLastYear = count($this->getMonthDays("$jYear/12"));
+
+        // First and last day of last year
+        $firstDayLastYear = $pdate->jmktime(0, 0, 0, 1, 1, $jYear);
+        $lastDayLastYear = $pdate->jmktime(23, 59, 59, 12, $numDaysLatestMonthOfLastYear, $jYear);
+        return [
+            'start' => $firstDayLastYear,
+            'end' => $lastDayLastYear
+        ];
+    }
+
+    /**
+     * @param int $dateType // e.g. DATE_TYPE_*
+     * @return Array
+     */
+    public function getStartAndEndTimeStampsForStaticDate(int $dateType) : Array
+    {
+        $date_array = [];
+
+        switch ($dateType) {
+            case self::DATE_TYPE_TODAY:
+                $date_array = $this->getStartAndEndOfDay();
+                break;
+            case self::DATE_TYPE_YESTERDAY:
+                $date_array = $this->getStartAndEndOfLastDay();
+                break;
+            case self::DATE_TYPE_THIS_WEEK:
+                $date_array = $this->getStartAndEndOfCurrentWeek();
+                break;
+            case self::DATE_TYPE_LAST_WEEK:
+                $date_array = $this->getStartAndEndOfLastWeek();
+                break;
+            case self::DATE_TYPE_THIS_MONTH:
+                $date_array = $this->getStartAndEndOfMonth();
+                break;
+            case self::DATE_TYPE_LAST_MONTH:
+                $date_array = $this->getStartAndEndOfLastMonth();
+                break;
+            case self::DATE_TYPE_THIS_YEAR:
+                $date_array = $this->getStartAndEndOfYear();
+                break;
+            case self::DATE_TYPE_LAST_YEAR:
+                $date_array = $this->getStartAndEndOfLastYear();
+                break;
+        }
+        return $date_array;
     }
 }

@@ -151,7 +151,7 @@ class ReportBoxController extends Controller
             if ($year) {
                 $date_array = $widget->getStartAndEndTimestamps($widget, $year, $month, $day);
             } else {
-                $date_array = CoreHelper::getStartAndEndTimeStampsForStaticDate($box->date_type);
+                $date_array = $box->getStartAndEndTimeStampsForStaticDate($box->date_type);
             }
 
             $widget->widget->runWidget($date_array['start'], $date_array['end']);
@@ -219,6 +219,7 @@ class ReportBoxController extends Controller
     {
         $box = $this->findModel($id);
         $excel = new ExcelReport();
+        $pdate = Yii::$app->pdate;
 
         if (!$box->boxWidgets) {
             return $this->asJson([
@@ -234,26 +235,28 @@ class ReportBoxController extends Controller
             if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
                 $box->rangeDateCount = count($this->getMonthDays($box->lastDateSet['year']."/".$box->lastDateSet['month']));
             else
-                $box->rangeDateCount = count($this->getMonthDaysByDateArray(CoreHelper::getStartAndEndTimeStampsForStaticDate($box->date_type)));
+                $box->rangeDateCount = count($this->getMonthDaysByDateArray($box->getStartAndEndTimeStampsForStaticDate($box->date_type)));
         }
-        foreach ($box->boxWidgets as $widget){
 
-            $widget->setWidgetProperties();
+
+        foreach ($box->boxWidgets as $boxWidget){
+
+            $boxWidget->setWidgetProperties();
             if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
-                $date_array = $widget->getStartAndEndTimestamps($widget, $box->lastDateSet['year'], $box->lastDateSet['month'], $box->lastDateSet['day']);
+                $date_array = $boxWidget->getStartAndEndTimestamps($boxWidget, $box->lastDateSet['year'], $box->lastDateSet['month'], $box->lastDateSet['day']);
             else
-                $date_array = CoreHelper::getStartAndEndTimeStampsForStaticDate($box->date_type);
+                $date_array = $box->getStartAndEndTimeStampsForStaticDate($box->date_type);
 
-            $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
+            $lastResult = $boxWidget->widget->lastResult($date_array['start'], $date_array['end']);
             $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
             $results = array_reverse($widgetLastResult);
 
             if (!empty($results)) {
-                $widget->collectResults($widget, $results);
+                $boxWidget->collectResults($boxWidget, $results);
             }
 
-            if ($widget->errors) {
-                $errors[] = $widget->errors;
+            if ($boxWidget->errors) {
+                $errors[] = $boxWidget->errors;
             }
         }
 
@@ -264,44 +267,12 @@ class ReportBoxController extends Controller
             ]);
         }
 
-        $count = $box->boxWidgets[0]->rangeDateCount;
+        $rangeDateNumber = $box->boxWidgets[0]->rangeDateCount;
+        $columnNames = $excel->getColumnNames($rangeDateNumber);
+        $excel->setCellValuesOfFirstRow($box, $columnNames, $rangeDateNumber, $pdate);
 
-        $columnNames = [];
-        for ($i = 0; $i <= 25; $i++) {
-            for ($j = ($i > 0 ? 0 : 1); $j <= 25; $j++) {
-                $columnNames[] = ($i > 0 ? chr($i + 64) : '') . chr($j + 65);
-                if (count($columnNames) == $count) {
-                    break 2;
-                }
-            }
-        }
-
-        $excel->sheet->setCellValue('A1', 'ویجت ها');
-
-        $pdate = Yii::$app->pdate;
-        for ($i = 0; $i < $count; $i++) {
-            if ($box->range_type == ReportBox::RANGE_TYPE_DAILY)
-                $excel->sheet->setCellValue($columnNames[$i] . 1, $i + 1);
-            elseif($box->range_type == ReportBox::RANGE_TYPE_MONTHLY)
-                $excel->sheet->setCellValue($columnNames[$i] . 1, $pdate->jdate_words(['mm' => $i + 1], ' '));
-        }
-
-        foreach ($box->boxWidgets as $index => $boxWidget) {
-            $excel->sheet->setCellValue('A' . $index + 2, $boxWidget->title . ' | ' . $boxWidget->widget->description);
-            foreach ($boxWidget->results['chartData'] as $i => $data){
-                $excel->sheet->setCellValue($columnNames[$i] . $index + 2, $boxWidget->results['chartData'][$i]);
-                if ($count == $i + 1) {
-                    break;
-                }
-            }
-        }
-        $response = $excel->save();
-
-        return $this->asJson([
-            'status' => $response['status'],
-            'message' => $response['message'],
-        ]);
-
+        $excel->setCellValues($excel, $box->boxWidgets, $columnNames, $rangeDateNumber, true);
+        return $excel->save();
     }
 
     public function actionDelete(int $id)

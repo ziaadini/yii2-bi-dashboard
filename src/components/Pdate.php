@@ -662,6 +662,14 @@ class Pdate extends Component
         }
         return ($mod === '') ? array($gy, $gm, $gd) : $gy . $mod . $gm . $mod . $gd;
     }
+
+    function persian_to_english($string) {
+        $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        $english = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        return str_replace($persian, $english, $string);
+    }
+
 }
 
 

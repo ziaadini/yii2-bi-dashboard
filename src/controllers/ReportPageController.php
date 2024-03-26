@@ -430,15 +430,12 @@ class ReportPageController extends Controller
     public function actionExportExcel($id, $start_range = null, $end_range = null)
     {
         $page = $this->findModel($id);
-
         $excel = new ExcelReport();
+        $pdate = Yii::$app->pdate;
 
         $date_array = [];
         $date_array['start'] = $start_range ? (int)$start_range : null;
         $date_array['end'] = $end_range ? (int)$end_range : null;
-
-        $pdate = Yii::$app->pdate;
-
 
         if (!$page->widgets) {
             return $this->asJson([
@@ -455,51 +452,18 @@ class ReportPageController extends Controller
 
         $results = [];
         foreach ($page->reportPageWidgets as $pageWidget) {
-
             $lastResult = $pageWidget->widget->lastResult($date_array['start'], $date_array['end']);
             $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
             $results = array_reverse($widgetLastResult);
             if (!empty($results)) {
                 $array [] = $pageWidget->collectResults($pageWidget, $results);
             }
-
         }
 
-        $columnNames = [];
-        for ($i = 0; $i <= 25; $i++) {
-            for ($j = ($i > 0 ? 0 : 1); $j <= 25; $j++) {
-                $columnNames[] = ($i > 0 ? chr($i + 64) : '') . chr($j + 65);
-                if (count($columnNames) == $rangeDateNumber) {
-                    break 2;
-                }
-            }
-        }
-        $excel->sheet->setCellValue('A1', 'ویجت ها');
-        for ($i = 0; $i < $rangeDateNumber; $i++) {
-            if ($page->range_type == $page::RANGE_DAY){
-                $excel->sheet->setCellValue($columnNames[$i] . 1, $i + 1);
-            }
-            elseif($page->range_type == $page::RANGE_MONTH){
-                $excel->sheet->setCellValue($columnNames[$i] . 1, $pdate->jdate_words(['mm' => $i + 1], ' '));
-            }
-        }
-        foreach ($page->reportPageWidgets as $index => $pageWidget) {
-            $excel->sheet->setCellValue('A' . $index + 2, $pageWidget->widget->title);
-            foreach ($pageWidget->results['final_result'] as $i => $data){
-                $excel->sheet->setCellValue($columnNames[$i] . $index + 2, $pageWidget->results['final_result'][$i]);
-                if ($rangeDateNumber == $i + 1) {
-                    break;
-                }
-            }
-        }
-
-        $response = $excel->save();
-
-        return $this->asJson([
-            'status' => $response['status'],
-            'message' => $response['message'],
-        ]);
-
+        $columnNames = $excel->getColumnNames($rangeDateNumber);
+        $excel->setCellValuesOfFirstRow($page, $columnNames, $rangeDateNumber, $pdate);
+        $excel->setCellValues($excel, $page->reportPageWidgets, $columnNames, $rangeDateNumber);
+        return $excel->save();
     }
 
     /**
