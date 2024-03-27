@@ -113,7 +113,15 @@ $pdate = Yii::$app->pdate;
                 <?php foreach ($box->boxWidgets as $card): ?>
                     <div class="card shadow-sm text-white <?= $card->widget_card_color ? ReportBoxWidgets::itemAlias('CardColorsClass', $card->widget_card_color) : 'bg-secondary' ?> m-2 rounded-md min-width-card">
                         <div class="card-header px-2 d-flex justify-content-between align-items-center">
-                            <a class="font-12 text-white" href="<?= Url::to($card->widget->getModelRoute()) ?>" data-pjax="0" target="_blank"><?= $card->title ?? $card->widget->title ?></a>
+                            <?= Html::a(
+                                $card->title ?? $card->widget->title,
+                                [$card->widget->getModelRoute()],
+                                [
+                                    'data-pjax' => '0',
+                                    'target' => '_blank',
+                                    'class' => 'font-12 text-white',
+                                ]
+                            ) ?>
                             <div class="d-flex align-items-center">
                                 <?= Html::a('<i class="fas fa-trash-alt text-danger font-14"></i>', "javascript:void(0)",
                                     [
