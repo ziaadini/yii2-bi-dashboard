@@ -25,7 +25,7 @@ class ExcelReport
 
         $writer = new Xlsx($this->spreadsheet);
         $fileName = 'export-' . time() . '.xlsx';
-        $path = Yii::getAlias('@backend') . '/web/uploads/' . $fileName;
+        $path = Yii::getAlias('@webroot/') . $fileName;
         $writer->setPreCalculateFormulas(false)->save($path);
 
         if (file_exists($path)){
