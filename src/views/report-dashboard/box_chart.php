@@ -135,7 +135,7 @@ $pdate = Yii::$app->pdate;
                     'viewFullscreen' => 'مشاهده در حالت تمام صفحه',
                 ],
                 'title' => [
-                    'text' => '' ,
+                    'text' => $box->description,
                 ],
                 'xAxis' => [
                     'categories' => $box->chartCategories
@@ -145,7 +145,10 @@ $pdate = Yii::$app->pdate;
                         'text' => 'مقدار'
                     ]
                 ],
-                'series' => $box->chartSeries
+                'series' => $box->chartSeries,
+                'tooltip' => [
+                    'pointFormat' =>'<b>{point.y:,.0f}</b>',
+                ],
             ]
         ]); ?>
     <?php else: ?>

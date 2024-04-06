@@ -139,9 +139,9 @@ $this->registerJs($js);
                             </div>
                             <div class="col-3">
                                 <?= $form->field($modelWidget, "[{$index}]title")->textInput([
-                                    'placeholder' => 'عنوان ویجت را وارد کنید...',
+                                    'placeholder' => 'پیش فرض عنوان اصلی ویجت می باشد.',
                                     'maxlength' => true,
-                                    'class' => 'form-control rounded-md input-border'
+                                    'class' => 'form-control rounded-md input-border font-10'
                                 ])->label('عنوان ویجت')
                                 ?>
                             </div>
