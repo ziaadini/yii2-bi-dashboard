@@ -4,6 +4,7 @@ use yii\web\View;
 use sadi01\bidashboard\models\ReportBoxWidgets;
 use sadi01\bidashboard\models\ReportYear;
 use sadi01\bidashboard\models\ReportBox;
+use sadi01\bidashboard\models\ReportModelClass;
 use yii\helpers\Url;
 
 $script = <<< JS
@@ -99,7 +100,7 @@ $formatter = Yii::$app->formatter;
                 ]) ?>
         </div>
     </div>
-    <div class="card-body p-0">
+    <div class="card-body p-0 card-body p-0 table-responsive text-nowrap">
         <table class="bg-white mb-0 table table-hover table-striped table-bordered">
             <thead class="text-white bg-inverse">
             <tr>
@@ -119,15 +120,22 @@ $formatter = Yii::$app->formatter;
             <?php if(!empty($box->boxWidgets)): ?>
                 <?php foreach($box->boxWidgets as $table):?>
                     <tr>
-                        <td class="text-center align-middle">
+                        <td class="text-center align-middle py-1">
                             <?= Html::a(
                                 ($table->title ?? $table->widget->title) . " | " . Html::tag('span', $table->description, ['class' => 'font-12']),
                                 [$table->widget->getModelRoute()],
                                 [
                                     'data-pjax' => '0',
                                     'target' => '_blank',
+                                    'class' => "text-inverse",
                                 ]
                             ) ?>
+                            <div class="d-flex justify-content-between mt-3">
+                                <span class="bg-warning font-10 px-1 py-1 rounded-md mr-1" data-toggle="tooltip" title="ویجت گزارش"><?= ReportModelClass::itemAlias('list', $table->widget->search_model_class) ?></span>
+                                <span class="bg-warning font-10 px-1 py-1 rounded-md ml-1" data-toggle="tooltip" title="فیلد ویجت گزارش: <?= $table->widget_field ?>">
+                                    <?= $table->widget->getOutputColumnTitle($table->widget_field) ?>
+                                </span>
+                            </div>
                         </td>
                         <?php for ($i = 1; $i <= $table->rangeDateCount; $i++) {
                             if ($box->range_type == ReportBox::RANGE_TYPE_DAILY){
