@@ -138,16 +138,17 @@ $pdate = Yii::$app->pdate;
                     'text' => $box->description,
                 ],
                 'xAxis' => [
-                    'categories' => $box->chartCategories
+                    'categories' => $box->chartCategories,
                 ],
                 'yAxis' => [
                     'title' => [
                         'text' => 'مقدار'
-                    ]
+                    ],
                 ],
                 'series' => $box->chartSeries,
                 'tooltip' => [
-                    'pointFormat' =>'<b>{point.y:,.0f}</b>',
+                    'formatter' => new \yii\web\JsExpression('function(){ return this.series.name + ": <b>" + Highcharts.numberFormat(this.y, 0, ".", ",") + "</b>"; }'),
+                    'useHTML' => true
                 ],
             ]
         ]); ?>
