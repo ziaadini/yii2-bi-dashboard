@@ -147,7 +147,7 @@ $pdate = Yii::$app->pdate;
                 ],
                 'series' => $box->chartSeries,
                 'tooltip' => [
-                    'formatter' => new \yii\web\JsExpression('function(){ return this.series.name + ": <b>" + Highcharts.numberFormat(this.y, 0, ".", ",") + "</b>"; }'),
+                    'formatter' => new \yii\web\JsExpression('function(){ return this.series.name + "<br>" + this.x +": <b>" + Highcharts.numberFormat(this.y, 0, ".", ",") + "</b>"; }'),
                     'useHTML' => true
                 ],
             ]
