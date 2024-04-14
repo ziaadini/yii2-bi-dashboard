@@ -124,7 +124,7 @@ class ReportDashboardController extends Controller
 
             $box->lastDateSet = $box->getLastDateSet($box->last_date_set);
 
-            if ($box->display_type == ReportBox::DISPLAY_CHART)
+            if ($box->display_type == ReportBox::DISPLAY_CHART && ($box->chart_type != ReportBox::CHART_PIE && $box->chart_type != ReportBox::CHART_WORD_CLOUD))
                 $box->chartCategories = $box->getChartCategories($box->lastDateSet['year'],$box->lastDateSet['month']);
 
             if ($box->range_type == ReportBox::RANGE_TYPE_DAILY){
@@ -184,7 +184,6 @@ class ReportDashboardController extends Controller
     public function actionCreate()
     {
         $model = new ReportDashboard();
-
         if ($model->load($this->request->post()) && $model->validate()) {
 
             if($model->save())
@@ -208,7 +207,6 @@ class ReportDashboardController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load($this->request->post()) && $model->validate()) {
             if ($model->save(false)) {
                 return $this->asJson([

@@ -40,33 +40,42 @@ $pdate = Yii::$app->pdate;
 
 <div class="border bg-white rounded-md shadow mb-2 text-center">
     <div class="card-header d-flex align-items-center justify-content-between px-3">
-        <span><?= $box->title ?? 'عنوان باکس' ?> | <span class="font-12 font-normal">(<?= ReportBox::itemAlias('RangeType', $box->range_type) ?>)</span></span>
+            <span class="mr-3"><?= $box->title ?? 'عنوان باکس' ?>
+                <?php if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE): ?>
+                    <span> | <span class="btn btn-sm btn-warning disabled px-1 py-0 rounded-md"><?= ReportBox::itemAlias('RangeType', $box->range_type) ?></span></span>
+                <?php endif; ?>
+            </span>
         <div class="d-flex align-items-center">
             <div class="d-flex align-items-center">
                 <div class="d-flex mr-1">
-                    <?php if ($box->range_type == ReportBox::RANGE_TYPE_DAILY): ?>
+                    <?php if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE): ?>
+                        <?php if ($box->range_type == ReportBox::RANGE_TYPE_DAILY && ($box->chart_type == ReportBox::CHART_PIE || $box->chart_type == ReportBox::CHART_WORD_CLOUD)): ?>
+                            <div class="px-1">
+                                <select name="day" class="form-control rounded-md btn-sm" id="select_day_<?= $box->id ?>">
+                                    <?php for ($i = 1; $i <= 31; $i++): ?>
+                                        <option value="<?= $i ?>" <?= $box->lastDateSet['day'] == $i ? 'selected' : '' ?> ><?= $i ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                        <?php endif; ?>
+                    <?php if ($box->range_type == ReportBox::RANGE_TYPE_DAILY || $box->range_type == ReportBox::RANGE_TYPE_MONTHLY && ($box->chart_type == ReportBox::CHART_PIE || $box->chart_type == ReportBox::CHART_WORD_CLOUD)): ?>
                         <div>
-                            <select name="month" class="form-control rounded-md" id="select_month_<?= $box->id ?>">
+                            <select name="month" class="form-control rounded-md btn-sm" id="select_month_<?= $box->id ?>">
                                 <?php for ($i = 1; $i <= 12; $i++): ?>
                                     <option value="<?= $i ?>" <?= $box->lastDateSet['month'] == $i ? 'selected' : '' ?> ><?= $pdate->jdate_words(['mm' => $i])['mm'] ?></option>
                                 <?php endfor; ?>
                             </select>
                         </div>
+                    <?php endif; ?>
                         <div class="px-1">
-                            <select name="year" class="form-control rounded-md" id="select_year_<?= $box->id ?>">
+                            <select name="year" class="form-control rounded-md btn-sm" id="select_year_<?= $box->id ?>">
                                 <?php foreach (ReportYear::itemAlias('List') as $Year): ?>
                                     <option <?= $Year ?> <?= $box->lastDateSet['year'] == $Year ? 'selected' : '' ?> ><?= $Year ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                    <?php elseif ($box->range_type == ReportBox::RANGE_TYPE_MONTHLY): ?>
-                        <div class="px-1">
-                            <select name="year" class="form-control rounded-md" id="select_year_<?= $box->id ?>">
-                                <?php foreach (ReportYear::itemAlias('List') as $Year): ?>
-                                    <option <?= $Year ?> <?= $box->lastDateSet['year'] == $Year ? 'selected' : '' ?> ><?= $Year ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
+                    <?php else: ?>
+                        <button class="bg-white border border-warning btn btn-sm disabled mr-2 py-2 rounded-md shadow-none"><?= ReportBox::itemAlias('DateTypes', $box->date_type) ?></button>
                     <?php endif; ?>
                 </div>
                 <?= Html::a('<i class="fas fa-sync text-success font-18"></i>', "javascript:void(0)",
@@ -87,7 +96,7 @@ $pdate = Yii::$app->pdate;
                 [
                     'data-pjax' => '0',
                     'class' => "d-flex mr-2",
-                    'data-size' => 'modal-xl',
+                    'data-size' => 'modal-dialog-centered modal-xl',
                     'data-title' => Yii::t('biDashboard', 'Edit Box'),
                     'data-toggle' => 'modal',
                     'data-target' => '#modal-pjax-bi',
@@ -108,7 +117,21 @@ $pdate = Yii::$app->pdate;
                 ]) ?>
         </div>
     </div>
-    <?php if (!empty($box->chartSeries)): ?>
+    <?php
+    $tooltipFormatter = null;
+    switch ($box->chart_type) {
+        case ReportBox::CHART_PIE:
+            $tooltipFormatter = new \yii\web\JsExpression('function(){ return this.point.name + ": <b>" + Highcharts.numberFormat(this.point.y, 0, ".", ",") + "</b>"; }');
+            break;
+        case ReportBox::CHART_WORD_CLOUD:
+            $tooltipFormatter = new \yii\web\JsExpression('function(){ return this.point.name + ": <b>" + Highcharts.numberFormat(this.point.weight, 0, ".", ",") + "</b>"; }');
+            break;
+        default:
+            $tooltipFormatter = new \yii\web\JsExpression('function(){ return this.series.name + "<br>" + this.x +": <b>" + Highcharts.numberFormat(this.y, 0, ".", ",") + "</b>"; }');
+    }
+    ?>
+
+    <?php if (count($box->boxWidgets) > 0): ?>
         <?= Highcharts::widget([
             'options' => [
                 'scripts' => [
@@ -145,18 +168,37 @@ $pdate = Yii::$app->pdate;
                         'text' => 'مقدار'
                     ],
                 ],
-                'series' => $box->chartSeries,
+                'series' => $box->chart_type == ReportBox::CHART_PIE || $box->chart_type == ReportBox::CHART_WORD_CLOUD ? [
+                    [
+                        'type' => ReportBox::itemAlias('ChartTypes', $box->chart_type),
+                        'data' => ReportBox::getPieOrWordcloudChartDataArray($box)
+                    ],
+                ] : array_map(function($series) {
+                    return [
+                        'name' => $series['name'],
+                        'data' => $series['data'],
+                    ];
+                }, $box->chartSeries),
+                'plotOptions' => [
+                    'series' => [
+                        'cursor' => 'pointer',
+                        'style' => [
+                            'fontFamily' => 'IRANSans, sans-serif',
+                        ],
+                    ],
+                ],
                 'tooltip' => [
-                    'formatter' => new \yii\web\JsExpression('function(){ return this.series.name + "<br>" + this.x +": <b>" + Highcharts.numberFormat(this.y, 0, ".", ",") + "</b>"; }'),
+                    'formatter' => $tooltipFormatter,
                     'useHTML' => true
                 ],
             ]
         ]); ?>
-    <?php else: ?>
-        <div class="d-flex align-items-center justify-content-center min-h-96 w-100">
-            <span class="text-muted">این باکس خالی است!</span>
-        </div>
-    <?php endif; ?>
+        <?php else: ?>
+            <div class="d-flex align-items-center justify-content-center min-h-96 w-100">
+                <span class="text-muted">این باکس خالی است!</span>
+            </div>
+        <?php endif; ?>
+
     <div class="card-footer d-flex align-items-center justify-content-between px-3">
         <span class="text-muted font-12 mr-3"><?= $box->description ?? '(توضیحات باکس)' ?></span>
         <div class="d-flex">

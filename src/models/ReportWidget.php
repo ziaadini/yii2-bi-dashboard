@@ -200,6 +200,16 @@ class ReportWidget extends ActiveRecord
         return $searchModel->getAttributeLabel($field);
     }
 
+    public static function getWidgetFields($widgetId) : Array
+    {
+        $fields = [];
+        $widget = self::find()->where(['id' => $widgetId])->one();
+        foreach ($widget->add_on['outputColumn'] as $column) {
+            $fields[] = $column['column_name'];
+        }
+        return $fields;
+    }
+
     /**
      * @param $id
      * @param $start_range

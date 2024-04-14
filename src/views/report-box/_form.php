@@ -19,7 +19,7 @@ use yii\web\View;
 
     <?php $form = ActiveForm::begin(['id' => 'dynamic-form', 'enableClientValidation' => true]); ?>
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-center border-bottom mb-3 pb-1">
         <div class="col-4">
             <?= $form->field($model, 'title')->textInput([
                 'placeholder' => 'عنوان باکس را وارد کنید...',
@@ -71,7 +71,7 @@ use yii\web\View;
                         'pluginOptions' => ['allowClear' => true]
                     ],
                     'pluginOptions' => [
-                        'depends' => ["display_type-id"],
+                        'depends' => ["display_type-id", "chart_type-id"],
                         'initialize' => !$model->isNewRecord,
                         'url' => Url::to(['/bidashboard/report-box/date-types/'])
                     ],
