@@ -31,11 +31,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= Html::encode($this->title) ?>
                     </h4>
                     <div>
-                        <?= Html::a(Html::tag('span', Yii::t('biDashboard', 'Widget data source'),
+                        <?= Html::a(
+                            Yii::t('biDashboard', 'Show model'),
+                            [$modelRoute],
                             [
-                                'class' => ['btn btn-info']
+                                'data-pjax' => '0',
+                                'target' => '_blank',
+                                'class' => 'btn btn-info rounded-md',
                             ]
-                        ), $modelRoute, ['data-pjax' => '0', 'target' => '_blank']) ?>
+                        ) ?>
                     </div>
                 </div>
                 <div class="card-body">
