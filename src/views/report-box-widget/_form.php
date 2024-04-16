@@ -79,11 +79,12 @@ $this->registerJs($js);
     <div class="card border rounded-md shadow-sm bg-slate-300">
         <div class="card-header border-bottom d-flex px-3 align-items-center justify-content-between">
             <div class="">
-                <span>عنوان باکس: </span> <span><?= $modelBox->title ?></span>
+                <span>عنوان باکس: </span><span><?= $modelBox->title ?></span>
+
             </div>
             <button type="button" class="rounded-md add-widget btn btn-success btn-sm"><?= Yii::t('biDashboard', 'add widget') ?></button>
         </div>
-        <div class="card-body container-items">
+        <div class="card-body container-items pb-0">
             <!-- widgetContainer -->
             <?php foreach ($modelsWidget as $index => $modelWidget): ?>
                 <div class="item card border rounded-md shadow-sm">
@@ -187,12 +188,38 @@ $this->registerJs($js);
                 </div>
             <?php endforeach; ?>
         </div>
+        <div class="card-footer d-flex align-items-center justify-content-between">
+            <div class="font-12 text-secondary">
+                <span>توضیحات باکس: </span><span><?= $modelBox->description ?></span>
+            </div>
+            <div class="font-12 text-secondary">
+                <span>نوع باکس: </span>
+                <span>
+                    <?php if ($modelBox->display_type === ReportBox::DISPLAY_CHART): ?>
+                    <?= ReportBox::itemAlias('ChartNames', $modelBox->chart_type) ?>
+                    <?php else: ?>
+                    <?= ReportBox::itemAlias('DisplayTypes', $modelBox->display_type) ?>
+                    <?php endif; ?>
+                </span>
+            </div>
+        </div>
     </div>
     <?php DynamicFormWidget::end(); ?>
 
-    <div class="d-flex justify-content-end">
-        <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success rounded-md']) ?>
+    <div class="d-flex justify-content-between">
+        <div class="">
+            <div class="d-flex">
+                <span class="font-18 text-danger"> * </span>
+                <span class="font-12 ml-2 text-bold text-muted">فیلدهای خروجی انتخابی در نمودار های ابرکلمات و دایره ای باید از یک نوع باشند (همگی عدد یا همگی مبلغ و... باشند)</span>
+            </div>
+            <div class="d-flex">
+                <span class="font-18 text-danger"> * </span>
+                <span class="font-12 ml-2 text-bold text-muted">در نمودار ها و کارت ها فیلد های خروجی انتخابی باید از نوع عددی باشند (تعداد، مبلغ و...) و نه از نوع عنوان (نام ماه و...)</span>
+            </div>
+        </div>
+        <div class="d-flex align-items-center">
+            <?= Html::submitButton(Yii::t('biDashboard', 'Save'), ['class' => 'btn btn-success rounded-md']) ?>
+        </div>
     </div>
-
     <?php ActiveForm::end(); ?>
 </div>
