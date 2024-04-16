@@ -221,7 +221,7 @@ class ReportBoxWidgets extends ActiveRecord
         if ($widget->box->display_type == ReportBox::DISPLAY_CARD)
         {
             foreach ($results as $result){
-                if (isset($result[$widget->widget_field]))
+                if (isset($result[$widget->widget_field]) && is_numeric($result[$widget->widget_field]))
                     $widget->cardResultCount += $result[$widget->widget_field];
                 else
                     $widget->isValid = self::IN_VALID;
@@ -229,7 +229,7 @@ class ReportBoxWidgets extends ActiveRecord
         }
         if ($widget->box->display_type == ReportBox::DISPLAY_CHART && ($widget->box->chart_type == ReportBox::CHART_PIE || $widget->box->chart_type == ReportBox::CHART_WORD_CLOUD)){
             foreach ($results as $result){
-                if (isset($result[$widget->widget_field]))
+                if (isset($result[$widget->widget_field]) && is_numeric($result[$widget->widget_field]))
                     $widget->chartResultCount += $result[$widget->widget_field];
                 else
                     $widget->isValid = self::IN_VALID;

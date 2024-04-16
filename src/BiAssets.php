@@ -36,10 +36,12 @@ class BiAssets extends AssetBundle
         'bidashboard/dist/js/custom.min.js',
         'bidashboard/dist/js/sparkline/sparkline.js',
         'bidashboard/dist/js/utility.js',
+        'bidashboard/dist/js/wordcloud.min.js',
     ];
 
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap4\BootstrapPluginAsset',
+        'miloschuman\highcharts\HighchartsAsset'
     ];
 }

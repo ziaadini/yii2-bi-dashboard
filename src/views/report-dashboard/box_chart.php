@@ -12,10 +12,6 @@ use miloschuman\highcharts\HighchartsAsset;
 
 /** @var ReportBox $box */
 HighchartsAsset::register($this)->withScripts(['modules/stock', 'modules/exporting', 'modules/drilldown']);
-
-$this->registerJsFile('https://code.highcharts.com/modules/wordcloud.js', [
-    'depends' => 'miloschuman\highcharts\HighchartsAsset'
-]);
 $script = <<< JS
     $(document).ready(function() {
         $("#select_year_$box->id, #select_month_$box->id, #select_day_$box->id").on("change", function() {
