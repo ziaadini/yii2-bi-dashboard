@@ -22,6 +22,13 @@ jQuery(".dynamicform_wrapper").on("afterInsert", function(e, item) {
     jQuery(".dynamicform_wrapper .card-title-item").each(function(index) {
         jQuery(this).html("ویجت: " + (index + 1));
     });
+    jQuery(item).find("select").each(function() {
+        jQuery(this).val(null).trigger("change");
+    });
+    jQuery(item).find(".depdrop-field").each(function() {
+        // Reset the DepDrop field
+        jQuery(this).depdrop("reset");
+    });
 });
 
 $(".dynamicform_wrapper").on("beforeDelete", function(e, item) {
@@ -126,6 +133,7 @@ $this->registerJs($js);
                                     'options' => [
                                         'id' => "widget_field-{$index}",
                                         'placeholder' => 'فیلد خروجی ویجت را انتخاب کنید...',
+                                        'class' => 'depdrop-field'
                                     ],
                                     'select2Options' => [
                                         'pluginOptions' => ['allowClear' => true]

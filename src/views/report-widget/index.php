@@ -31,7 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div id="collapseSearch" class="panel-collapse collapse" aria-expanded="false">
                         <?php echo $this->render('_search', ['model' => $searchModel]); ?>
                     </div>
-
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
                         'columns' => [
@@ -39,6 +38,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             'id',
                             'title',
                             'description',
+                            [
+                                'attribute' => 'range_type',
+                                'value' => function (ReportWidget $model) {
+                                    return ReportWidget::itemAlias('RangeTypes', $model->range_type);
+                                },
+                            ],
                             'search_model_class',
                             'search_model_method',
                             [

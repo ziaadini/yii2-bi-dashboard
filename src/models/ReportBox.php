@@ -312,7 +312,14 @@ class ReportBox extends ActiveRecord
         ];
     }
 
-
+    public static function getPieOrWordcloudChartDataArray($box)
+    {
+        $data = [];
+        foreach ($box->boxWidgets as $chart) {
+            $data[] = [$chart->title ?? $chart->widget->title, $chart->chartResultCount];
+        }
+        return $data;
+    }
 
     public static function itemAlias($type, $code = NULL)
     {
@@ -353,16 +360,16 @@ class ReportBox extends ActiveRecord
             'ChartTypes' => [
                 self::CHART_LINE => 'line',
                 self::CHART_COLUMN => 'column',
-                //self::CHART_PIE => 'pie',
+                self::CHART_PIE => 'pie',
                 self::CHART_AREA => 'area',
-                //self::CHART_WORD_CLOUD => 'worldcloud',
+                self::CHART_WORD_CLOUD => 'wordcloud',
             ],
             'ChartNames' => [
                 self::CHART_LINE => Yii::t('biDashboard', 'Chart line'),
                 self::CHART_COLUMN => Yii::t('biDashboard', 'Chart column'),
-                //self::CHART_PIE => Yii::t('biDashboard', 'Chart pie'),
+                self::CHART_PIE => Yii::t('biDashboard', 'Chart pie'),
                 self::CHART_AREA => Yii::t('biDashboard', 'Chart area'),
-                //self::CHART_WORD_CLOUD => Yii::t('biDashboard', 'Chart world cloud'),
+                self::CHART_WORD_CLOUD => Yii::t('biDashboard', 'Chart world cloud'),
             ],
             'RangeType' => [
                 self::RANGE_TYPE_DAILY => Yii::t('biDashboard', 'Daily'),

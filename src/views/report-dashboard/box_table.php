@@ -32,7 +32,7 @@ $formatter = Yii::$app->formatter;
 
 <div class="card text-center table-responsive border rounded-md shadow mb-5">
     <div class="card-header d-flex align-items-center justify-content-between px-3">
-        <span><?= $box->title ?? 'عنوان باکس' ?> | <span class="font-12 font-normal">(<?= ReportBox::itemAlias('RangeType', $box->range_type) ?>)</span></span>
+        <span><?= $box->title ?? 'عنوان باکس' ?> | <span class="btn btn-sm btn-warning disabled px-1 py-0 rounded-md"><?= ReportBox::itemAlias('RangeType', $box->range_type) ?></span></span>
         <div class="d-flex align-items-center">
             <div class="d-flex align-items-center">
                 <div class="d-flex mr-1">

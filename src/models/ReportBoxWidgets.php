@@ -3,8 +3,8 @@
 namespace sadi01\bidashboard\models;
 
 use sadi01\bidashboard\helpers\FormatHelper;
-use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\models\ReportBox;
+use sadi01\bidashboard\models\ReportWidget;
 use sadi01\bidashboard\traits\AjaxValidationTrait;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use sadi01\bidashboard\traits\CoreTrait;
@@ -65,6 +65,7 @@ class ReportBoxWidgets extends ActiveRecord
     public $results = [];
 
     public $cardResultCount;
+    public $chartResultCount;
 
     public static function getDb()
     {
@@ -85,6 +86,7 @@ class ReportBoxWidgets extends ActiveRecord
             [['widget_id', 'widget_field', 'widget_field_format', 'slave_id'], 'required'],
             [['title'], 'string', 'max' => 128],
             [['title'], 'default', 'value' => null],
+            ['widget_field', 'validateWidgetField'],
             [['widget_card_color'], 'default', 'value' => null],
             [['widget_field'], 'string', 'max' => 64],
             [['box_id', 'widget_id', 'widget_field_format', 'widget_card_color', 'status', 'slave_id', 'id'], 'integer'],
@@ -110,6 +112,13 @@ class ReportBoxWidgets extends ActiveRecord
             'updated_by' => Yii::t('biDashboard', 'Updated By'),
             'created_by' => Yii::t('biDashboard', 'Created By'),
         ];
+    }
+
+    public function validateWidgetField($attribute, $params, $validator)
+    {
+        if (!in_array($this->widget_field, ReportWidget::getWidgetFields($this->widget_id))) {
+            $this->addError($attribute, Yii::t("biDashboard", 'Invalid Widget Field'));
+        }
     }
 
     /**
@@ -174,6 +183,7 @@ class ReportBoxWidgets extends ActiveRecord
         $this->dateType = $this->box->date_type;
         $this->rangeDateCount = 12;
         $this->cardResultCount = 0;
+        $this->chartResultCount = 0;
         $this->isValid = self::VALID;
     }
 
@@ -185,11 +195,12 @@ class ReportBoxWidgets extends ActiveRecord
         $isDaily = $widget->rangeType == ReportWidget::RANGE_TYPE_DAILY;
         $isMonthly = $widget->rangeType == ReportWidget::RANGE_TYPE_MONTHLY;
         $isCard = $widget->box->display_type == ReportBox::DISPLAY_CARD;
+        $isPieOrWordCloud = $widget->box->chart_type == ReportBox::CHART_PIE || $widget->box->chart_type == ReportBox::CHART_WORD_CLOUD;
 
         // Handle daily range type
         if ($isDaily) {
             $timestamp = $this->jalaliToTimestamp($year.'/'.$month.'/'.$day.' 00:00:00');
-            $date_array = $isCard ? $this->getStartAndEndOfDay(time: $timestamp) : $this->getStartAndEndOfMonth($year . '/' . $month);
+            $date_array = ($isCard || $isPieOrWordCloud) ? $this->getStartAndEndOfDay(time: $timestamp) : $this->getStartAndEndOfMonth($year . '/' . $month);
 
             if (!$isCard) {
                 $widget->rangeDateCount = count($this->getMonthDays($year . '/' . $month));
@@ -198,21 +209,28 @@ class ReportBoxWidgets extends ActiveRecord
 
         // Handle monthly range type
         if ($isMonthly) {
-            $date_array = $isCard ? $this->getStartAndEndOfMonth($year . '/' . $month) : $this->getStartAndEndOfYear($year);
+            $date_array = ($isCard || $isPieOrWordCloud) ? $this->getStartAndEndOfMonth($year . '/' . $month) : $this->getStartAndEndOfYear($year);
         }
         return $date_array;
     }
-
-
 
     public function collectResults($widget, $results) {
 
         $pdate = Yii::$app->pdate;
 
-        if ($widget->box->display_type == ReportBox::DISPLAY_CARD){
+        if ($widget->box->display_type == ReportBox::DISPLAY_CARD)
+        {
             foreach ($results as $result){
                 if (isset($result[$widget->widget_field]))
                     $widget->cardResultCount += $result[$widget->widget_field];
+                else
+                    $widget->isValid = self::IN_VALID;
+            }
+        }
+        if ($widget->box->display_type == ReportBox::DISPLAY_CHART && ($widget->box->chart_type == ReportBox::CHART_PIE || $widget->box->chart_type == ReportBox::CHART_WORD_CLOUD)){
+            foreach ($results as $result){
+                if (isset($result[$widget->widget_field]))
+                    $widget->chartResultCount += $result[$widget->widget_field];
                 else
                     $widget->isValid = self::IN_VALID;
             }

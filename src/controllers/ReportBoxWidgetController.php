@@ -173,6 +173,7 @@ class ReportBoxWidgetController extends Controller
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
         $out = [];
+
         if (isset($_POST['depdrop_parents'])) {
 
             $widgetId = $_POST['depdrop_parents'][0];
