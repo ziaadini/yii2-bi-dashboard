@@ -178,7 +178,7 @@ class ReportBoxWidgets extends ActiveRecord
 
     public function setWidgetProperties() {
 
-        $this->description = $this->widget->description;
+        $this->description = $this->widget->description ?? '';
         $this->rangeType = $this->widget->range_type;
         $this->dateType = $this->box->date_type;
         $this->rangeDateCount = 12;

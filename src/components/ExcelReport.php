@@ -80,7 +80,7 @@ class ExcelReport
         foreach ($widgets as $index => $widget) {
             $title = $isBox ? $widget->title . ' | ' . $widget->widget->description : $widget->widget->title;
             $excel->sheet->setCellValue('A' . $index + 2, $title);
-            $results = $isBox ? $widget->results['chartData'] : $widget->results['final_result'];
+            $results = $isBox ? (isset($widget->results['chartData']) ? $widget->results['chartData'] : []) : (isset($widget->results['final_result']) ? $widget->results['final_result'] : []);
             foreach ($results as $i => $data){
                 $excel->sheet->setCellValue($columnNames[$i] . $index + 2, $results[$i]);
                 if ($rangeDateNumber == $i + 1) {
