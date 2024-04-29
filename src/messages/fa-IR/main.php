@@ -221,6 +221,7 @@ return [
     'Last Month' => 'ماه قبل',
     'This Year' => 'سال جاری',
     'Last Year' => 'سال قبل',
+    'Flexible Year' => 'سال قابل انتخاب',
     'Date Type' => 'نوع تاریخ',
     'Export Excel File' => 'خروجی اکسل',
     'It is not possible to move' => 'امکان جابجایی وجود ندارد',

@@ -119,59 +119,61 @@ $formatter = Yii::$app->formatter;
             <tbody>
             <?php if(!empty($box->boxWidgets)): ?>
                 <?php foreach($box->boxWidgets as $table):?>
-                    <tr>
-                        <td class="text-center align-middle py-1">
-                            <?= Html::a(
-                                ($table->title ?? $table->widget->title) . " | " . Html::tag('span', $table->description, ['class' => 'font-12']),
-                                [$table->widget->getModelRoute()],
-                                [
-                                    'data-pjax' => '0',
-                                    'target' => '_blank',
-                                    'class' => "text-inverse",
-                                ]
-                            ) ?>
-                            <div class="d-flex justify-content-between mt-3">
-                                <span class="bg-warning font-10 px-1 py-1 rounded-md mr-1" data-toggle="tooltip" title="ویجت گزارش"><?= ReportModelClass::itemAlias('list', $table->widget->search_model_class) ?></span>
-                                <span class="bg-warning font-10 px-1 py-1 rounded-md ml-1" data-toggle="tooltip" title="فیلد ویجت گزارش: <?= $table->widget_field ?>">
+                    <?php if(isset($table->widget)):?>
+                        <tr>
+                            <td class="text-center align-middle py-1">
+                                <?= Html::a(
+                                    ($table->title ?? $table->widget->title) . " | " . Html::tag('span', $table->description, ['class' => 'font-12']),
+                                    [$table->widget->getModelRoute()],
+                                    [
+                                        'data-pjax' => '0',
+                                        'target' => '_blank',
+                                        'class' => "text-inverse",
+                                    ]
+                                ) ?>
+                                <div class="d-flex justify-content-between mt-3">
+                                    <span class="bg-warning font-10 px-1 py-1 rounded-md mr-1" data-toggle="tooltip" title="ویجت گزارش"><?= ReportModelClass::itemAlias('list', $table->widget->search_model_class) ?></span>
+                                    <span class="bg-warning font-10 px-1 py-1 rounded-md ml-1" data-toggle="tooltip" title="فیلد ویجت گزارش: <?= $table->widget_field ?>">
                                     <?= $table->widget->getOutputColumnTitle($table->widget_field) ?>
                                 </span>
-                            </div>
-                        </td>
-                        <?php for ($i = 1; $i <= $table->rangeDateCount; $i++) {
-                            if ($box->range_type == ReportBox::RANGE_TYPE_DAILY){
-                                if (!empty($table->results['combine'])){
-                                    if (array_key_exists($i , $table->results['combine']) == 1){
-                                        echo '<td scope="col" class="text-center align-middle">';
-                                        echo ReportBoxWidgets::getFormattedValue($table->widget_field_format, $table->results['combine'][$i]);
-                                        echo "<a title='کپی' class='far fa-copy font-14 text-secondary p-1' onclick='copyToClipboard(\"{$table->results['combine'][$i]}\")' href='javascript:void(0)' data-pjax='0'></a>";
-                                        if ($table->results['percentageOfChange'][$i-1] != 0){
-                                            echo '<br>' . '%' . abs($table->results['percentageOfChange'][$i-1]);
-                                            echo '<i class="p-1 mt-2 fa ' . ($table->results['percentageOfChange'][$i-1] < 0 ? 'fas fa-arrow-alt-circle-down text-danger' : 'fas fa-arrow-alt-circle-up text-success') . '"></i>';
+                                </div>
+                            </td>
+                            <?php for ($i = 1; $i <= $table->rangeDateCount; $i++) {
+                                if ($box->range_type == ReportBox::RANGE_TYPE_DAILY){
+                                    if (!empty($table->results['combine'])){
+                                        if (array_key_exists($i , $table->results['combine']) == 1){
+                                            echo '<td scope="col" class="text-center align-middle">';
+                                            echo ReportBoxWidgets::getFormattedValue($table->widget_field_format, $table->results['combine'][$i]);
+                                            echo "<a title='کپی' class='far fa-copy font-14 text-secondary p-1' onclick='copyToClipboard(\"{$table->results['combine'][$i]}\")' href='javascript:void(0)' data-pjax='0'></a>";
+                                            if ($table->results['percentageOfChange'][$i-1] != 0){
+                                                echo '<br>' . '%' . abs($table->results['percentageOfChange'][$i-1]);
+                                                echo '<i class="p-1 mt-2 fa ' . ($table->results['percentageOfChange'][$i-1] < 0 ? 'fas fa-arrow-alt-circle-down text-danger' : 'fas fa-arrow-alt-circle-up text-success') . '"></i>';
+                                            }
+                                            echo '</td>';
                                         }
-                                        echo '</td>';
+                                        else
+                                            echo '<td scope="col" class="text-center align-middle">'. '-' . '</td>';
                                     }
-                                    else
-                                        echo '<td scope="col" class="text-center align-middle">'. '-' . '</td>';
                                 }
-                            }
-                            elseif($box->range_type == ReportBox::RANGE_TYPE_MONTHLY) {
-                                if (!empty($table->results['combine'])){
-                                    if (array_key_exists($pdate->jdate_words(['mm' => $i], ' ') , $table->results['combine']) == 1){
-                                        echo '<td scope="col" class="text-center align-middle">';
-                                        echo ReportBoxWidgets::getFormattedValue($table->widget_field_format, $table->results['combine'][$pdate->jdate_words(['mm' => $i], ' ')]);
-                                        echo "<a title='کپی' class='far fa-copy font-14 text-secondary p-1' onclick='copyToClipboard(\"{$table->results['combine'][$pdate->jdate_words(['mm' => $i], ' ')]}\")' href='javascript:void(0)' data-pjax='0'></a>";
-                                        if ($table->results['percentageOfChange'][$i-1] != 0){
-                                            echo '<br>' . '%' . abs($table->results['percentageOfChange'][$i-1]);
-                                            echo '<i class="p-1 mt-2 fa ' . ($table->results['percentageOfChange'][$i-1] < 0 ? 'fas fa-arrow-alt-circle-down text-danger' : 'fas fa-arrow-alt-circle-up text-success') . '"></i>';
+                                elseif($box->range_type == ReportBox::RANGE_TYPE_MONTHLY) {
+                                    if (!empty($table->results['combine'])){
+                                        if (array_key_exists($pdate->jdate_words(['mm' => $i], ' ') , $table->results['combine']) == 1){
+                                            echo '<td scope="col" class="text-center align-middle">';
+                                            echo ReportBoxWidgets::getFormattedValue($table->widget_field_format, $table->results['combine'][$pdate->jdate_words(['mm' => $i], ' ')]);
+                                            echo "<a title='کپی' class='far fa-copy font-14 text-secondary p-1' onclick='copyToClipboard(\"{$table->results['combine'][$pdate->jdate_words(['mm' => $i], ' ')]}\")' href='javascript:void(0)' data-pjax='0'></a>";
+                                            if ($table->results['percentageOfChange'][$i-1] != 0){
+                                                echo '<br>' . '%' . abs($table->results['percentageOfChange'][$i-1]);
+                                                echo '<i class="p-1 mt-2 fa ' . ($table->results['percentageOfChange'][$i-1] < 0 ? 'fas fa-arrow-alt-circle-down text-danger' : 'fas fa-arrow-alt-circle-up text-success') . '"></i>';
+                                            }
+                                            echo '</td>';
                                         }
-                                        echo '</td>';
+                                        else
+                                            echo '<td scope="col" class="text-center align-middle">'. '-' . '</td>';
                                     }
-                                    else
-                                        echo '<td scope="col" class="text-center align-middle">'. '-' . '</td>';
                                 }
-                            }
-                        } ?>
-                    </tr>
+                            } ?>
+                        </tr>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="d-flex align-items-center justify-content-center min-h-28 w-100">

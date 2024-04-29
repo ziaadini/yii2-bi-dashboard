@@ -191,11 +191,12 @@ class ReportBoxWidgets extends ActiveRecord
     {
         $date_array = [];
 
-        // Determine the range type and display type
+        // Determine the range type, display type and date type (flexible or flexible year)
         $isDaily = $widget->rangeType == ReportWidget::RANGE_TYPE_DAILY;
         $isMonthly = $widget->rangeType == ReportWidget::RANGE_TYPE_MONTHLY;
         $isCard = $widget->box->display_type == ReportBox::DISPLAY_CARD;
         $isPieOrWordCloud = $widget->box->chart_type == ReportBox::CHART_PIE || $widget->box->chart_type == ReportBox::CHART_WORD_CLOUD;
+        $isFlexibleYear = $widget->box->date_type == ReportBox::DATE_TYPE_FLEXIBLE_YEAR;
 
         // Handle daily range type
         if ($isDaily) {
@@ -209,7 +210,11 @@ class ReportBoxWidgets extends ActiveRecord
 
         // Handle monthly range type
         if ($isMonthly) {
-            $date_array = ($isCard || $isPieOrWordCloud) ? $this->getStartAndEndOfMonth($year . '/' . $month) : $this->getStartAndEndOfYear($year);
+            if ($isFlexibleYear) {
+                $date_array = $this->getStartAndEndOfYear($year);
+            }
+            else
+                $date_array = ($isCard || $isPieOrWordCloud ) ? $this->getStartAndEndOfMonth($year . '/' . $month) : $this->getStartAndEndOfYear($year);
         }
         return $date_array;
     }

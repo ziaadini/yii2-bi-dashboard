@@ -39,6 +39,8 @@ $pdate = Yii::$app->pdate;
             <span class="mr-3"><?= $box->title ?? 'عنوان باکس' ?>
                 <?php if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE): ?>
                     <span> | <span class="btn btn-sm btn-warning disabled px-1 py-0 rounded-md"><?= ReportBox::itemAlias('RangeType', $box->range_type) ?></span></span>
+                <?php elseif ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE_YEAR): ?>
+                    <span> | <span class="btn btn-sm btn-warning disabled px-1 py-0 rounded-md"><?= ReportBox::itemAlias('DateTypes', $box->date_type) ?></span></span>
                 <?php endif; ?>
             </span>
         <div class="d-flex align-items-center">
@@ -63,6 +65,14 @@ $pdate = Yii::$app->pdate;
                             </select>
                         </div>
                     <?php endif; ?>
+                        <div class="px-1">
+                            <select name="year" class="form-control rounded-md btn-sm" id="select_year_<?= $box->id ?>">
+                                <?php foreach (ReportYear::itemAlias('List') as $Year): ?>
+                                    <option <?= $Year ?> <?= $box->lastDateSet['year'] == $Year ? 'selected' : '' ?> ><?= $Year ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    <?php elseif ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE_YEAR): ?>
                         <div class="px-1">
                             <select name="year" class="form-control rounded-md btn-sm" id="select_year_<?= $box->id ?>">
                                 <?php foreach (ReportYear::itemAlias('List') as $Year): ?>

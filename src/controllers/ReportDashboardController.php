@@ -134,24 +134,26 @@ class ReportDashboardController extends Controller
                     $box->rangeDateCount = count($this->getMonthDaysByDateArray($box->getStartAndEndTimeStampsForStaticDate($box->date_type)));
             }
 
-            foreach ($box->boxWidgets as $widget){
+            foreach ($box->boxWidgets as $boxWidget){
 
-                $widget->setWidgetProperties();
-                if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
-                    $date_array = $widget->getStartAndEndTimestamps($widget, $box->lastDateSet['year'], $box->lastDateSet['month'], $box->lastDateSet['day']);
-                else
-                    $date_array = $box->getStartAndEndTimeStampsForStaticDate($box->date_type);
+                if (isset($boxWidget->widget)){
+                    $boxWidget->setWidgetProperties();
+                    if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE || $box->date_type == ReportBox::DATE_TYPE_FLEXIBLE_YEAR)
+                        $date_array = $boxWidget->getStartAndEndTimestamps($boxWidget, $box->lastDateSet['year'], $box->lastDateSet['month'], $box->lastDateSet['day']);
+                    else
+                        $date_array = $box->getStartAndEndTimeStampsForStaticDate($box->date_type);
 
-                $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
-                $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
-                $results = array_reverse($widgetLastResult);
+                    $lastResult = $boxWidget->widget->lastResult($date_array['start'], $date_array['end']);
+                    $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
+                    $results = array_reverse($widgetLastResult);
 
-                if (!empty($results)) {
-                    $widget->collectResults($widget, $results);
-                }
+                    if (!empty($results)) {
+                        $boxWidget->collectResults($boxWidget, $results);
+                    }
 
-                if ($widget->errors) {
-                    $errors[] = $widget->errors;
+                    if ($boxWidget->errors) {
+                        $errors[] = $boxWidget->errors;
+                    }
                 }
             }
 
@@ -170,6 +172,8 @@ class ReportDashboardController extends Controller
                 $chart->chartSeries[] = ['name' => $boxWidget->title ?? $boxWidget->widget->title, 'data' => $boxWidget->results['chartData'] ?? ''];
             }
         }
+
+
 
         return $this->render('view', [
             'model' => $model,
