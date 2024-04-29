@@ -66,6 +66,7 @@ class ReportBox extends ActiveRecord
     const DATE_TYPE_LAST_MONTH = 6;
     const DATE_TYPE_THIS_YEAR = 7;
     const DATE_TYPE_LAST_YEAR = 8;
+    const DATE_TYPE_FLEXIBLE_YEAR = 9;
 
     const CHART_LINE = 1;
     const CHART_COLUMN = 2;
@@ -305,6 +306,13 @@ class ReportBox extends ActiveRecord
                 'year' => CoreHelper::getYear($last_date_set),
             ];
         }
+        if ($this->date_type == self::DATE_TYPE_FLEXIBLE_YEAR){
+            return [
+                'year' => CoreHelper::getYear($last_date_set),
+                'month' => null,
+                'day' => null
+            ];
+        }
         return [
             'year' => null,
             'month' => null,
@@ -344,6 +352,7 @@ class ReportBox extends ActiveRecord
                 self::DATE_TYPE_LAST_MONTH => Yii::t('biDashboard', 'Last Month'),
                 self::DATE_TYPE_THIS_YEAR => Yii::t('biDashboard', 'This Year'),
                 self::DATE_TYPE_LAST_YEAR => Yii::t('biDashboard', 'Last Year'),
+                self::DATE_TYPE_FLEXIBLE_YEAR => Yii::t('biDashboard', 'Flexible Year'),
             ],
             'DailyDateTypes' => [
                 self::DATE_TYPE_TODAY,
@@ -355,7 +364,8 @@ class ReportBox extends ActiveRecord
             ],
             'MonthlyDateTypes' => [
                 self::DATE_TYPE_THIS_YEAR,
-                self::DATE_TYPE_LAST_YEAR
+                self::DATE_TYPE_LAST_YEAR,
+                self::DATE_TYPE_FLEXIBLE_YEAR
             ],
             'ChartTypes' => [
                 self::CHART_LINE => 'line',

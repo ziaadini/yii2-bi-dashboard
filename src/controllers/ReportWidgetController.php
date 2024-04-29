@@ -324,7 +324,7 @@ class ReportWidgetController extends Controller
         $dashboards = $widget->reportDashboards;
 
         if ($widget->load($this->request->post()) && $widget->validate()) {
-            if ($widget->canDelete() && $widget->softDelete()) {
+            if ($widget->canDelete() && $widget->softDelete() && $widget->softDeleteRelatedBoxWidgets()) {
                 return $this->asJson([
                     'status' => true,
                     'message' => Yii::t("biDashboard", 'Widget Deleted')

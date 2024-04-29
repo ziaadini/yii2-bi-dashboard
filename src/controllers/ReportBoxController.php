@@ -238,7 +238,6 @@ class ReportBoxController extends Controller
                 $box->rangeDateCount = count($this->getMonthDaysByDateArray($box->getStartAndEndTimeStampsForStaticDate($box->date_type)));
         }
 
-
         foreach ($box->boxWidgets as $boxWidget){
 
             $boxWidget->setWidgetProperties();

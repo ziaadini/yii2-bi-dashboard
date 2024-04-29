@@ -36,6 +36,8 @@ $pdate = Yii::$app->pdate;
             <span class="mr-3"><?= $box->title ?? 'عنوان باکس' ?>
                 <?php if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE): ?>
                     <span> | <span class="btn btn-sm btn-warning disabled px-1 py-0 rounded-md"><?= ReportBox::itemAlias('RangeType', $box->range_type) ?></span></span>
+                <?php elseif ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE_YEAR): ?>
+                    <span> | <span class="btn btn-sm btn-warning disabled px-1 py-0 rounded-md"><?= ReportBox::itemAlias('DateTypes', $box->date_type) ?></span></span>
                 <?php endif; ?>
             </span>
             <div class="d-flex align-items-center">
@@ -58,6 +60,14 @@ $pdate = Yii::$app->pdate;
                                     <?php endfor; ?>
                                 </select>
                             </div>
+                            <div class="px-1">
+                                <select name="year" class="form-control rounded-md btn-sm" id="select_year_<?= $box->id ?>">
+                                    <?php foreach (ReportYear::itemAlias('List') as $Year): ?>
+                                        <option <?= $Year ?> <?= $box->lastDateSet['year'] == $Year ? 'selected' : '' ?> ><?= $Year ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        <?php elseif ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE_YEAR): ?>
                             <div class="px-1">
                                 <select name="year" class="form-control rounded-md btn-sm" id="select_year_<?= $box->id ?>">
                                     <?php foreach (ReportYear::itemAlias('List') as $Year): ?>
@@ -111,37 +121,39 @@ $pdate = Yii::$app->pdate;
         <div class="card-body row min-h-60">
             <?php if (!empty($box->boxWidgets)): ?>
                 <?php foreach ($box->boxWidgets as $card): ?>
-                    <div class="card shadow-sm text-white <?= $card->widget_card_color ? ReportBoxWidgets::itemAlias('CardColorsClass', $card->widget_card_color) : 'bg-secondary' ?> m-2 rounded-md min-width-card">
-                        <div class="card-header px-2 d-flex justify-content-between align-items-center">
-                            <?= Html::a(
-                                $card->title ?? $card->widget->title,
-                                [$card->widget->getModelRoute()],
-                                [
-                                    'data-pjax' => '0',
-                                    'target' => '_blank',
-                                    'class' => 'font-12 text-white',
-                                ]
-                            ) ?>
-                            <div class="d-flex align-items-center">
-                                <?= Html::a('<i class="fas fa-trash-alt text-danger font-14"></i>', "javascript:void(0)",
+                    <?php if (isset($card->widget)): ?>
+                        <div class="card shadow-sm text-white <?= $card->widget_card_color ? ReportBoxWidgets::itemAlias('CardColorsClass', $card->widget_card_color) : 'bg-secondary' ?> m-2 rounded-md min-width-card">
+                            <div class="card-header px-2 d-flex justify-content-between align-items-center">
+                                <?= Html::a(
+                                    $card->title ?? $card->widget->title,
+                                    [$card->widget->getModelRoute()],
                                     [
-                                        'title' => Yii::t('biDashboard', 'Delete'),
                                         'data-pjax' => '0',
-                                        'class' => "p-jax-btn d-flex btn btn-light p-button",
-                                        'data-url' => Url::to(['report-box-widget/delete', 'widgetId' => $card->id]),
-                                        'data-handle-form-submit' => 1,
-                                        'data-reload-pjax-container' => 'p-jax-report-dashboard-view',
-                                        'data-toggle' => 'tooltip',
-                                    ]) ?>
+                                        'target' => '_blank',
+                                        'class' => 'font-12 text-white',
+                                    ]
+                                ) ?>
+                                <div class="d-flex align-items-center">
+                                    <?= Html::a('<i class="fas fa-trash-alt text-danger font-14"></i>', "javascript:void(0)",
+                                        [
+                                            'title' => Yii::t('biDashboard', 'Delete'),
+                                            'data-pjax' => '0',
+                                            'class' => "p-jax-btn d-flex btn btn-light p-button",
+                                            'data-url' => Url::to(['report-box-widget/delete', 'widgetId' => $card->id]),
+                                            'data-handle-form-submit' => 1,
+                                            'data-reload-pjax-container' => 'p-jax-report-dashboard-view',
+                                            'data-toggle' => 'tooltip',
+                                        ]) ?>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h2 class="text-center"><?= ReportBoxWidgets::getFormattedValue($card->widget_field_format, $card->cardResultCount) ?></h2>
+                            </div>
+                            <div class="card-footer d-flex justify-content-between align-items-center h6 p-2 mb-0">
+                                <p class="mb-0"><?= $card->description ?></p>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <h2 class="text-center"><?= ReportBoxWidgets::getFormattedValue($card->widget_field_format, $card->cardResultCount) ?></h2>
-                        </div>
-                        <div class="card-footer d-flex justify-content-between align-items-center h6 p-2 mb-0">
-                            <p class="mb-0"><?= $card->description ?></p>
-                        </div>
-                    </div>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="d-flex align-items-center justify-content-center w-100">
