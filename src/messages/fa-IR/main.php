@@ -203,6 +203,7 @@ return [
     'Row' => 'ردیف',
     'Rials' => 'ریال',
     'Dashboard List' => 'لیست داشبورد ها',
+    'Widget List' => 'لیست ویجت ها',
     'Dashboard Name' => 'نام داشبورد',
     'Dashboard ID' => 'شناسه داشبورد',
     'Page ID' => 'شناسه صفحه',

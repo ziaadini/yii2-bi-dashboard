@@ -49,7 +49,17 @@ use sadi01\bidashboard\models\ReportDashboard;
                     <tr>
                         <td scope="col" class="text-center align-middle"><?= ++$index ?></td>
                         <td scope="col" class="text-center align-middle"><?= $dashboard->id ?></td>
-                        <td scope="col" class="text-center align-middle"><?= $dashboard->title ?></td>
+                        <td scope="col" class="text-center align-middle">
+                            <?= Html::a(
+                                $dashboard->title,
+                                ['/bidashboard/report-dashboard/view?id='.$dashboard->id],
+                                [
+                                    'data-pjax' => '0',
+                                    'target' => '_blank',
+                                    'class' => '',
+                                ]
+                            ) ?>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
@@ -71,7 +81,17 @@ use sadi01\bidashboard\models\ReportDashboard;
                     <tr>
                         <td scope="col" class="text-center align-middle"><?= ++$index ?></td>
                         <td scope="col" class="text-center align-middle"><?= $page->id ?></td>
-                        <td scope="col" class="text-center align-middle"><?= $page->title ?></td>
+                        <td scope="col" class="text-center align-middle">
+                            <?= Html::a(
+                                $page->title,
+                                ['/bidashboard/report-page/view?id='.$page->id],
+                                [
+                                    'data-pjax' => '0',
+                                    'target' => '_blank',
+                                    'class' => '',
+                                ]
+                            ) ?>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

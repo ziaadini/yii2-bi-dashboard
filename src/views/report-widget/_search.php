@@ -18,19 +18,37 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="d-flex align-items-end">
+        <div class="search-filed d-flex min-w-60 mr-2">
 
-    <?= $form->field($model, 'title') ?>
+            <?= $form->field($model, 'id',[
+                'options' => [
+                    'class' => 'mr-2',
+                ]])->textInput([
+                'class' => 'form-control rounded-md',
+                'placeholder' => 'شناسه ویجت را وارد کنید...'
+            ])->label(false) ?>
 
-    <?= $form->field($model, 'description') ?>
+            <?= $form->field($model, 'title',[
+                'options' => [
+                    'class' => 'mr-2',
+                ]])->textInput([
+                'class' => 'form-control rounded-md',
+                'placeholder' => 'عنوان ویجت را وارد کنید...'
+            ])->label(false) ?>
 
-    <?= $form->field($model, 'search_model_class') ?>
+            <?= $form->field($model, 'description',[
+                'options' => [
+                    'class' => 'mr-2',
+                ]])->textInput([
+                'class' => 'form-control rounded-md',
+                'placeholder' => ' توضیحات ویجت را وارد کنید...'
+            ])->label(false) ?>
 
-    <?= $form->field($model, 'search_model_method') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('biDashboard', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('biDashboard', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+        </div>
+        <div class="">
+            <?= Html::submitButton(Yii::t('biDashboard', 'Search'), ['class' => 'btn btn-primary rounded-md']) ?>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>
