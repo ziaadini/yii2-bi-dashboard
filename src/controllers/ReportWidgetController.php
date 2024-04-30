@@ -323,7 +323,7 @@ class ReportWidgetController extends Controller
         $pages = $widget->reportPages;
         $dashboards = $widget->reportDashboards;
 
-        if ($widget->load($this->request->post()) && $widget->validate()) {
+        if ($widget->load($this->request->post())) {
             if ($widget->canDelete() && $widget->softDelete() && $widget->softDeleteRelatedBoxWidgets()) {
                 return $this->asJson([
                     'status' => true,
