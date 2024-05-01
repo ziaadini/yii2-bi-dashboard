@@ -32,9 +32,16 @@ class ReportPageWidgetController extends Controller
                                 'allow' => true,
                                 'roles' => ['BI/ReportPageWidget/delete'],
                                 'actions' => [
-                                    'delete','inc-order','dec-order'
+                                    'delete',
                                 ]
                             ],
+                            [
+                                'allow' => true,
+                                'roles' => ['BI/ReportPage/view'],
+                                'actions' => [
+                                    'inc-order','dec-order'
+                                ]
+                            ]
                         ]
                 ],
                 'verbs' => [
