@@ -1,10 +1,10 @@
 <?php
 
-namespace sadi01\bidashboard\controllers;
+namespace ziaadini\bidashboard\controllers;
 
-use sadi01\bidashboard\models\ReportYear;
-use sadi01\bidashboard\models\ReportYearSearch;
-use sadi01\bidashboard\traits\AjaxValidationTrait;
+use ziaadini\bidashboard\models\ReportYear;
+use ziaadini\bidashboard\models\ReportYearSearch;
+use ziaadini\bidashboard\traits\AjaxValidationTrait;
 use Yii;
 use Yii\base\ExitException;
 use yii\filters\AccessControl;
@@ -31,51 +31,51 @@ class ReportYearController extends Controller
                 'access' => [
                     'class' => AccessControl::class,
                     'rules' =>
+                    [
                         [
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportYear/index'],
-                                'actions' => [
-                                    'index'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportYear/view'],
-                                'actions' => [
-                                    'view'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportYear/create'],
-                                'actions' => [
-                                    'create',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportYear/update'],
-                                'actions' => [
-                                    'update',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportYear/delete'],
-                                'actions' => [
-                                    'delete'
-                                ]
-                            ],
-                        ]
+                            'allow' => true,
+                            'roles' => ['BI/ReportYear/index'],
+                            'actions' => [
+                                'index'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportYear/view'],
+                            'actions' => [
+                                'view'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportYear/create'],
+                            'actions' => [
+                                'create',
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportYear/update'],
+                            'actions' => [
+                                'update',
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportYear/delete'],
+                            'actions' => [
+                                'delete'
+                            ]
+                        ],
+                    ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'create' => ['GET','POST'],
-                        'update' => ['GET','POST'],
+                        'create' => ['GET', 'POST'],
+                        'update' => ['GET', 'POST'],
                         'delete' => ['POST', 'DELETE'],
                     ],
                 ],

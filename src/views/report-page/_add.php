@@ -1,8 +1,8 @@
 <?php
 
-use sadi01\bidashboard\models\ReportPageWidget;
-use sadi01\bidashboard\models\ReportWidget;
-use sadi01\bidashboard\models\ReportPage;
+use ziaadini\bidashboard\models\ReportPageWidget;
+use ziaadini\bidashboard\models\ReportWidget;
+use ziaadini\bidashboard\models\ReportPage;
 use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
 use yii\helpers\Html;
@@ -13,10 +13,10 @@ use kartik\depdrop\DepDrop;
 
 
 /** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\ReportPageWidget $model */
+/** @var ziaadini\bidashboard\models\ReportPageWidget $model */
 /** @var yii\widgets\ActiveForm $form */
-/** @var sadi01\bidashboard\models\ReportPage $page */
-/** @var sadi01\bidashboard\models\ReportWidget $widgets */
+/** @var ziaadini\bidashboard\models\ReportPage $page */
+/** @var ziaadini\bidashboard\models\ReportWidget $widgets */
 ?>
 <div class="report-widget-create">
     <div class="page-content container-fluid text-left ">
@@ -26,7 +26,7 @@ use kartik\depdrop\DepDrop;
                     <div class="report-page-widget-form">
                         <?php $form = ActiveForm::begin(['id' => 'page-widget-form']); ?>
                         <?= $form->field($model, 'widget_id')->widget(Select2::class, [
-                            'data' => ReportWidget::itemAlias('List',$page->range_type),
+                            'data' => ReportWidget::itemAlias('List', $page->range_type),
                             'options' => [
                                 'placeholder' => Yii::t('biDashboard', 'Select widget'),
                             ],

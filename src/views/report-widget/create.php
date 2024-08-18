@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 /**
  * @var yii\web\View $this
- * @var sadi01\bidashboard\models\ReportWidget $model
+ * @var ziaadini\bidashboard\models\ReportWidget $model
  * @var $queryString string
  * @var $queryParams array
  * @var $output_column array

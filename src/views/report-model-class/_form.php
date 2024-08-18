@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\ReportModelClass $model */
+/** @var ziaadini\bidashboard\models\ReportModelClass $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(['id' => 'report-model-class-form', 'enableClientValidation' => true]); ?>
 
-    <?= $form->field($model, 'model_class')->textInput(['maxlength' => true,'disabled' => true]) ?>
+    <?= $form->field($model, 'model_class')->textInput(['maxlength' => true, 'disabled' => true]) ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 

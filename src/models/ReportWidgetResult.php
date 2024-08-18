@@ -1,9 +1,9 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
-use sadi01\bidashboard\behaviors\Jsonable;
-use sadi01\bidashboard\traits\CoreTrait;
+use ziaadini\bidashboard\behaviors\Jsonable;
+use ziaadini\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;

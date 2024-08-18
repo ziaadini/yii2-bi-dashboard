@@ -3,9 +3,9 @@
 use yii\helpers\Html;
 use yii\web\View;
 use yii\widgets\ActiveForm;
-use sadi01\bidashboard\models\ReportPage;
-use sadi01\bidashboard\models\ReportBoxWidgets;
-use sadi01\bidashboard\models\ReportDashboard;
+use ziaadini\bidashboard\models\ReportPage;
+use ziaadini\bidashboard\models\ReportBoxWidgets;
+use ziaadini\bidashboard\models\ReportDashboard;
 
 /** @var View $this */
 /** @var ReportWidget $model */
@@ -29,75 +29,75 @@ use sadi01\bidashboard\models\ReportDashboard;
 
 <?php if (!empty($pages) || !empty($dashboards)): ?>
     <div class="card border rounded-md mt-4 mb-0">
-    <div class="card-header d-flex align-items-center justify-content-center px-3">
-        <span class="alert alert-danger mb-0 px-2 py-1 rounded-md"><?= Yii::t('biDashboard', 'This widget is used in the following pages and dashboards') ?></span>
+        <div class="card-header d-flex align-items-center justify-content-center px-3">
+            <span class="alert alert-danger mb-0 px-2 py-1 rounded-md"><?= Yii::t('biDashboard', 'This widget is used in the following pages and dashboards') ?></span>
+        </div>
+        <div class="card-body row min-h-60 py-3">
+
+            <?php if (!empty($dashboards)): ?>
+                <!--Dashboard Table-->
+                <table class="bg-white mb-0 table table-hover table-striped table-bordered">
+                    <thead class="text-white bg-secondary">
+                        <tr>
+                            <th scope="col" class="text-center font-normal"><?= Yii::t('biDashboard', 'Row') ?></th>
+                            <th scope="col" class="text-center font-normal"><?= Yii::t('biDashboard', 'Dashboard ID') ?></th>
+                            <th scope="col" class="text-center font-normal"><?= Yii::t('biDashboard', 'Dashboard Name') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($dashboards as $index => $dashboard): ?>
+                            <tr>
+                                <td scope="col" class="text-center align-middle"><?= ++$index ?></td>
+                                <td scope="col" class="text-center align-middle"><?= $dashboard->id ?></td>
+                                <td scope="col" class="text-center align-middle">
+                                    <?= Html::a(
+                                        $dashboard->title,
+                                        ['/bidashboard/report-dashboard/view?id=' . $dashboard->id],
+                                        [
+                                            'data-pjax' => '0',
+                                            'target' => '_blank',
+                                            'class' => '',
+                                        ]
+                                    ) ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+
+            <?php if (!empty($pages)): ?>
+                <!-- Pges Table -->
+                <table class="bg-white mb-0 table table-hover mt-3 table-striped table-bordered">
+                    <thead class="text-white bg-secondary">
+                        <tr>
+                            <th scope="col" class="text-center font-normal"><?= Yii::t('biDashboard', 'Row') ?></th>
+                            <th class="text-center font-normal"><?= Yii::t('biDashboard', 'Page ID') ?></th>
+                            <th scope="col" class="text-center font-normal"><?= Yii::t('biDashboard', 'Page Name') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($pages as $index => $page): ?>
+                            <tr>
+                                <td scope="col" class="text-center align-middle"><?= ++$index ?></td>
+                                <td scope="col" class="text-center align-middle"><?= $page->id ?></td>
+                                <td scope="col" class="text-center align-middle">
+                                    <?= Html::a(
+                                        $page->title,
+                                        ['/bidashboard/report-page/view?id=' . $page->id],
+                                        [
+                                            'data-pjax' => '0',
+                                            'target' => '_blank',
+                                            'class' => '',
+                                        ]
+                                    ) ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+
+        </div>
     </div>
-    <div class="card-body row min-h-60 py-3">
-
-        <?php if (!empty($dashboards)): ?>
-            <!--Dashboard Table-->
-            <table class="bg-white mb-0 table table-hover table-striped table-bordered">
-                <thead class="text-white bg-secondary">
-                <tr>
-                    <th scope="col" class="text-center font-normal"><?= Yii::t('biDashboard', 'Row') ?></th>
-                    <th scope="col" class="text-center font-normal"><?= Yii::t('biDashboard', 'Dashboard ID') ?></th>
-                    <th scope="col" class="text-center font-normal"><?= Yii::t('biDashboard', 'Dashboard Name') ?></th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($dashboards as $index => $dashboard): ?>
-                    <tr>
-                        <td scope="col" class="text-center align-middle"><?= ++$index ?></td>
-                        <td scope="col" class="text-center align-middle"><?= $dashboard->id ?></td>
-                        <td scope="col" class="text-center align-middle">
-                            <?= Html::a(
-                                $dashboard->title,
-                                ['/bidashboard/report-dashboard/view?id='.$dashboard->id],
-                                [
-                                    'data-pjax' => '0',
-                                    'target' => '_blank',
-                                    'class' => '',
-                                ]
-                            ) ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php endif; ?>
-
-        <?php if (!empty($pages)): ?>
-            <!-- Pges Table -->
-            <table class="bg-white mb-0 table table-hover mt-3 table-striped table-bordered">
-                <thead class="text-white bg-secondary">
-                <tr>
-                    <th scope="col" class="text-center font-normal"><?= Yii::t('biDashboard', 'Row') ?></th>
-                    <th class="text-center font-normal"><?= Yii::t('biDashboard', 'Page ID') ?></th>
-                    <th scope="col" class="text-center font-normal"><?= Yii::t('biDashboard', 'Page Name') ?></th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($pages as $index => $page): ?>
-                    <tr>
-                        <td scope="col" class="text-center align-middle"><?= ++$index ?></td>
-                        <td scope="col" class="text-center align-middle"><?= $page->id ?></td>
-                        <td scope="col" class="text-center align-middle">
-                            <?= Html::a(
-                                $page->title,
-                                ['/bidashboard/report-page/view?id='.$page->id],
-                                [
-                                    'data-pjax' => '0',
-                                    'target' => '_blank',
-                                    'class' => '',
-                                ]
-                            ) ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php endif; ?>
-
-    </div>
-</div>
 <?php endif; ?>

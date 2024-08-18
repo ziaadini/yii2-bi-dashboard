@@ -1,11 +1,11 @@
 <?php
 
-namespace sadi01\bidashboard\controllers;
+namespace ziaadini\bidashboard\controllers;
 
-use sadi01\bidashboard\models\ExternalData;
-use sadi01\bidashboard\models\ExternalDataSearch;
-use sadi01\bidashboard\models\ExternalDataValue;
-use sadi01\bidashboard\traits\AjaxValidationTrait;
+use ziaadini\bidashboard\models\ExternalData;
+use ziaadini\bidashboard\models\ExternalDataSearch;
+use ziaadini\bidashboard\models\ExternalDataValue;
+use ziaadini\bidashboard\traits\AjaxValidationTrait;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -34,44 +34,44 @@ class ExternalDataController extends Controller
                 'access' => [
                     'class' => AccessControl::class,
                     'rules' =>
+                    [
                         [
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ExternalData/index'],
-                                'actions' => [
-                                    'index'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ExternalData/view'],
-                                'actions' => [
-                                    'view'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ExternalData/create'],
-                                'actions' => [
-                                    'create',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ExternalData/update'],
-                                'actions' => [
-                                    'update',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ExternalData/delete'],
-                                'actions' => [
-                                    'delete'
-                                ]
-                            ],
+                            'allow' => true,
+                            'roles' => ['BI/ExternalData/index'],
+                            'actions' => [
+                                'index'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ExternalData/view'],
+                            'actions' => [
+                                'view'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ExternalData/create'],
+                            'actions' => [
+                                'create',
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ExternalData/update'],
+                            'actions' => [
+                                'update',
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ExternalData/delete'],
+                            'actions' => [
+                                'delete'
+                            ]
+                        ],
 
-                        ]
+                    ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,

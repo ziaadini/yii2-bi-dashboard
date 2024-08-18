@@ -1,9 +1,10 @@
 <?php
+
 /**
  * ActiveQueryJson
  */
 
-namespace sadi01\bidashboard\components;
+namespace ziaadini\bidashboard\components;
 
 use yii\base\InvalidArgumentException;
 use yii\db\ActiveQuery;
@@ -78,12 +79,12 @@ class ActiveQueryJson extends ActiveQuery
      * @return $this
      * @see https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html
      */
-    public function jsonContainsWhere($column, $value, $tableName='')
+    public function jsonContainsWhere($column, $value, $tableName = '')
     {
         $columns = explode('.', $column);
         $cond    = array_shift($columns);
-        if (isset($tableName) && !empty(trim($tableName))){
-            $cond = $tableName.'.'.$cond;
+        if (isset($tableName) && !empty(trim($tableName))) {
+            $cond = $tableName . '.' . $cond;
         }
         if (empty($columns)) {
             $condition = "JSON_CONTAINS($cond, '$value')";

@@ -1,13 +1,13 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
-use sadi01\bidashboard\helpers\CoreHelper;
-use sadi01\bidashboard\traits\AjaxValidationTrait;
-use sadi01\bidashboard\traits\CoreTrait;
+use ziaadini\bidashboard\helpers\CoreHelper;
+use ziaadini\bidashboard\traits\AjaxValidationTrait;
+use ziaadini\bidashboard\traits\CoreTrait;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
-use sadi01\bidashboard\models\ReportBoxWidgets;
+use ziaadini\bidashboard\models\ReportBoxWidgets;
 use yii\db\ActiveRecord;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use Yii;
@@ -35,9 +35,9 @@ use Yii;
  * @property int $created_by
  *
  * @property ReportBoxWidgets $boxWidgets
-*
+ *
  * @mixin SoftDeleteBehavior
-*/
+ */
 
 
 class ReportBox extends ActiveRecord
@@ -106,7 +106,7 @@ class ReportBox extends ActiveRecord
             [['dashboard_id', 'display_type', 'title', 'slave_id'], 'required', 'on' => self::SCENARIO_UPDATE],
             [['title'], 'string', 'max' => 128],
             [['description'], 'string', 'max' => 255],
-            ['chart_type', 'required', 'when' => function($model) {
+            ['chart_type', 'required', 'when' => function ($model) {
                 return $model->display_type == self::DISPLAY_CHART;
             }],
             [['dashboard_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportDashboard::class, 'targetAttribute' => ['dashboard_id' => 'id']],
@@ -139,10 +139,8 @@ class ReportBox extends ActiveRecord
 
     public function beforeValidate()
     {
-        if (parent::beforeValidate())
-        {
-            if($this->isNewRecord)
-            {
+        if (parent::beforeValidate()) {
+            if ($this->isNewRecord) {
                 if (in_array($this->date_type, self::itemAlias('DailyDateTypes'))) {
                     $this->range_type = self::RANGE_TYPE_DAILY;
                 } elseif (in_array($this->date_type, self::itemAlias('MonthlyDateTypes'))) {
@@ -194,14 +192,12 @@ class ReportBox extends ActiveRecord
                     'display_type' => $this->display_type,
                     'dashboard_id' => $this->dashboard_id
                 ])->max('display_order');
-
         } elseif ($type == 'min') {
             return ReportBox::find()
                 ->where([
                     'display_type' => $this->display_type,
                     'dashboard_id' => $this->dashboard_id
                 ])->min('display_order');
-
         } else {
             throw new Exception("Invalid type: $type. Expected 'max' or 'min'.");
         }
@@ -217,12 +213,10 @@ class ReportBox extends ActiveRecord
             if ($direction === 'inc') {
                 $orderCondition = ['>', 'display_order', $this->display_order];
                 $orderSort = SORT_ASC;
-            }
-            else if ($direction === 'dec') {
+            } else if ($direction === 'dec') {
                 $orderCondition = ['<', 'display_order', $this->display_order];
                 $orderSort = SORT_DESC;
-            }
-            else {
+            } else {
                 throw new \Exception('Invalid direction');
             }
 
@@ -247,7 +241,6 @@ class ReportBox extends ActiveRecord
             } else {
                 throw new \Exception(Yii::t("biDashboard", 'The Operation Failed'));
             }
-
         } catch (\Exception | \Throwable $e) {
             $transaction->rollBack();
             $result['message'] = $e->getMessage();
@@ -277,19 +270,19 @@ class ReportBox extends ActiveRecord
         return $query->bySlaveId()->notDeleted();
     }
 
-    public function getChartCategories($year, $month): Array {
+    public function getChartCategories($year, $month): array
+    {
 
         $categories = [];
         $pdate = Yii::$app->pdate;
         $monthDaysCount = count($this->getMonthDays($year . '/' . $month));
 
-        if ($this->range_type == self::RANGE_TYPE_DAILY){
-            for($i = 1; $i<= $monthDaysCount; $i++ ){
+        if ($this->range_type == self::RANGE_TYPE_DAILY) {
+            for ($i = 1; $i <= $monthDaysCount; $i++) {
                 $categories[] = $i;
             }
-        }
-        elseif($this->range_type == self::RANGE_TYPE_MONTHLY){
-            for($i = 1; $i <= 12; $i++){
+        } elseif ($this->range_type == self::RANGE_TYPE_MONTHLY) {
+            for ($i = 1; $i <= 12; $i++) {
                 $categories[] = $pdate->jdate_words(['mm' => $i])['mm'];
             }
         }
@@ -297,16 +290,16 @@ class ReportBox extends ActiveRecord
         return $categories;
     }
 
-    public function getLastDateSet(int $last_date_set) : Array
+    public function getLastDateSet(int $last_date_set): array
     {
-        if ($this->date_type == self::DATE_TYPE_FLEXIBLE){
+        if ($this->date_type == self::DATE_TYPE_FLEXIBLE) {
             return [
                 'day' => CoreHelper::getDay($last_date_set),
                 'month' => CoreHelper::getMonth($last_date_set),
                 'year' => CoreHelper::getYear($last_date_set),
             ];
         }
-        if ($this->date_type == self::DATE_TYPE_FLEXIBLE_YEAR){
+        if ($this->date_type == self::DATE_TYPE_FLEXIBLE_YEAR) {
             return [
                 'year' => CoreHelper::getYear($last_date_set),
                 'month' => null,
@@ -423,5 +416,4 @@ class ReportBox extends ActiveRecord
             ],
         ];
     }
-
 }

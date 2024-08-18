@@ -1,15 +1,15 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
-use sadi01\bidashboard\traits\AjaxValidationTrait;
-use sadi01\bidashboard\traits\CoreTrait;
+use ziaadini\bidashboard\traits\AjaxValidationTrait;
+use ziaadini\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
-use sadi01\bidashboard\models\ReportPage;
+use ziaadini\bidashboard\models\ReportPage;
 
 /**
  * This is the model class for table "sharing_page".
@@ -152,7 +152,8 @@ class SharingPage extends \yii\db\ActiveRecord
                 self::STATUS_DELETED => '#ff5050',
                 self::STATUS_ACTIVE => '#04AA6D',
             ],
-            'List' => $data];
+            'List' => $data
+        ];
         if (isset($code))
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
         else

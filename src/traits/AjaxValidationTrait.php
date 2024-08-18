@@ -1,6 +1,6 @@
 <?php
 
-namespace sadi01\bidashboard\traits;
+namespace ziaadini\bidashboard\traits;
 
 use Yii;
 use yii\base\Model;

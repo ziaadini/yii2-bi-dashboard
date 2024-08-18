@@ -1,8 +1,8 @@
 <?php
 
-use sadi01\bidashboard\models\ReportBoxWidgets;
-use sadi01\bidashboard\models\ReportBox;
-use sadi01\bidashboard\models\ReportWidget;
+use ziaadini\bidashboard\models\ReportBoxWidgets;
+use ziaadini\bidashboard\models\ReportBox;
+use ziaadini\bidashboard\models\ReportWidget;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\bootstrap4\ActiveForm;
 use kartik\select2\Select2;
@@ -126,7 +126,7 @@ $this->registerJs($js);
                                         'allowClear' => true,
                                         'initialize' => !$modelBox->isNewRecord,
                                     ],
-                                ])->label('ویجت'. ' '. '<span class="text-danger">*</span>'); ?>
+                                ])->label('ویجت' . ' ' . '<span class="text-danger">*</span>'); ?>
                             </div>
                             <div class="col-3">
                                 <?= $form->field($modelWidget, "[{$index}]widget_field")->widget(DepDrop::class, [
@@ -144,7 +144,7 @@ $this->registerJs($js);
                                         'initialize' => !$modelWidget->isNewRecord,
                                         'url' => Url::to(['/bidashboard/report-box-widget/get-widget-columns/'])
                                     ]
-                                ])->label('فیلد خروجی ویجت'. ' '. '<span class="text-danger">*</span>'); ?>
+                                ])->label('فیلد خروجی ویجت' . ' ' . '<span class="text-danger">*</span>'); ?>
                             </div>
                             <div class="col-3">
                                 <?= $form->field($modelWidget, "[{$index}]title")->textInput([
@@ -165,7 +165,7 @@ $this->registerJs($js);
                                         'allowClear' => true,
                                         'initialize' => !$modelWidget->isNewRecord,
                                     ]
-                                ])->label('فرمت فیلد خروجی ویجت'. ' '. '<span class="text-danger">*</span>'); ?>
+                                ])->label('فرمت فیلد خروجی ویجت' . ' ' . '<span class="text-danger">*</span>'); ?>
                             </div>
                             <?php if ($modelBox->display_type === ReportBox::DISPLAY_CARD): ?>
                                 <div class="col-3 mt-1">
@@ -196,9 +196,9 @@ $this->registerJs($js);
                 <span>نوع باکس: </span>
                 <span>
                     <?php if ($modelBox->display_type === ReportBox::DISPLAY_CHART): ?>
-                    <?= ReportBox::itemAlias('ChartNames', $modelBox->chart_type) ?>
+                        <?= ReportBox::itemAlias('ChartNames', $modelBox->chart_type) ?>
                     <?php else: ?>
-                    <?= ReportBox::itemAlias('DisplayTypes', $modelBox->display_type) ?>
+                        <?= ReportBox::itemAlias('DisplayTypes', $modelBox->display_type) ?>
                     <?php endif; ?>
                 </span>
             </div>

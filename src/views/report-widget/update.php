@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\ReportWidget $model */
+/** @var ziaadini\bidashboard\models\ReportWidget $model */
 
 $this->title = Yii::t('biDashboard', 'Update Report Widget: {name}', [
     'name' => $model->title,

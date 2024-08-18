@@ -1,11 +1,11 @@
 <?php
 
-namespace sadi01\bidashboard\controllers;
+namespace ziaadini\bidashboard\controllers;
 
-use sadi01\bidashboard\models\ReportPage;
-use sadi01\bidashboard\models\SharingPage;
-use sadi01\bidashboard\models\SharingPageSearch;
-use sadi01\bidashboard\traits\AjaxValidationTrait;
+use ziaadini\bidashboard\models\ReportPage;
+use ziaadini\bidashboard\models\SharingPage;
+use ziaadini\bidashboard\models\SharingPageSearch;
+use ziaadini\bidashboard\traits\AjaxValidationTrait;
 use Yii;
 use Yii\base\ExitException;
 use yii\filters\AccessControl;
@@ -33,67 +33,67 @@ class SharingPageController extends Controller
                 'access' => [
                     'class' => AccessControl::class,
                     'rules' =>
+                    [
                         [
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/SharingPage/index'],
-                                'actions' => [
-                                    'index'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/SharingPage/view'],
-                                'actions' => [
-                                    'view'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/SharingPage/create'],
-                                'actions' => [
-                                    'create',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/SharingPage/update'],
-                                'actions' => [
-                                    'update',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/SharingPage/delete'],
-                                'actions' => [
-                                    'delete'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/SharingPage/management'],
-                                'actions' => [
-                                    'management',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/SharingPage/expire'],
-                                'actions' => [
-                                    'expire'
-                                ]
-                            ],
-                        ]
+                            'allow' => true,
+                            'roles' => ['BI/SharingPage/index'],
+                            'actions' => [
+                                'index'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/SharingPage/view'],
+                            'actions' => [
+                                'view'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/SharingPage/create'],
+                            'actions' => [
+                                'create',
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/SharingPage/update'],
+                            'actions' => [
+                                'update',
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/SharingPage/delete'],
+                            'actions' => [
+                                'delete'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/SharingPage/management'],
+                            'actions' => [
+                                'management',
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/SharingPage/expire'],
+                            'actions' => [
+                                'expire'
+                            ]
+                        ],
+                    ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'management' => ['GET','POST'],
+                        'management' => ['GET', 'POST'],
                         'expire' => ['POST'],
-                        'create' => ['GET','POST'],
-                        'update' => ['GET','POST'],
+                        'create' => ['GET', 'POST'],
+                        'update' => ['GET', 'POST'],
                         'delete' => ['POST', 'DELETE'],
                     ],
                 ],
@@ -259,7 +259,6 @@ class SharingPageController extends Controller
                 'status' => true,
                 'message' => Yii::t("biDashboard", 'The Operation Was Successful')
             ]);
-
         } else {
             return $this->asJson([
                 'status' => false,

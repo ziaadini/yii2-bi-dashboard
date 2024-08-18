@@ -1,8 +1,8 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
-use sadi01\bidashboard\helpers\FormatHelper;
+use ziaadini\bidashboard\helpers\FormatHelper;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -38,7 +38,7 @@ class ReportPageWidget extends ActiveRecord
     const FORMAT_NUMBER = 1;
     const FORMAT_CURRENCY = 2;
     const FORMAT_GRAM = 3;
-    const FORMAT_KILOGRAM= 4;
+    const FORMAT_KILOGRAM = 4;
 
     public $results = [];
 
@@ -128,13 +128,11 @@ class ReportPageWidget extends ActiveRecord
                 ->where([
                     'page_id' => $this->page_id
                 ])->max('display_order');
-
         } elseif ($type == 'min') {
             return ReportPageWidget::find()
                 ->where([
                     'page_id' => $this->page_id
                 ])->min('display_order');
-
         } else {
             throw new Exception("Invalid type: $type. Expected 'max' or 'min'.");
         }
@@ -150,12 +148,10 @@ class ReportPageWidget extends ActiveRecord
             if ($direction === 'inc') {
                 $orderCondition = ['>', 'display_order', $this->display_order];
                 $orderSort = SORT_ASC;
-            }
-            else if ($direction === 'dec') {
+            } else if ($direction === 'dec') {
                 $orderCondition = ['<', 'display_order', $this->display_order];
                 $orderSort = SORT_DESC;
-            }
-            else {
+            } else {
                 throw new \Exception('Invalid direction');
             }
 
@@ -180,7 +176,6 @@ class ReportPageWidget extends ActiveRecord
             } else {
                 throw new \Exception(Yii::t("biDashboard", 'The Operation Failed'));
             }
-
         } catch (\Exception | \Throwable $e) {
             $transaction->rollBack();
             $result['message'] = $e->getMessage();
@@ -232,22 +227,19 @@ class ReportPageWidget extends ActiveRecord
 
         $widget->results['combine'] = array_combine($widget->results['categories'], $widget->results['data']);
 
-        if ($widget->page->range_type == ReportPage::RANGE_DAY){
+        if ($widget->page->range_type == ReportPage::RANGE_DAY) {
             for ($i = 0; $i <= 30; $i++) {
-                if (array_key_exists($i+1, $widget->results['combine'])) {
-                    $widget->results['final_result'][$i] = $widget->results['combine'][$i+1];
-                }
-                else {
+                if (array_key_exists($i + 1, $widget->results['combine'])) {
+                    $widget->results['final_result'][$i] = $widget->results['combine'][$i + 1];
+                } else {
                     $widget->results['final_result'][$i] = 0;
                 }
             }
-        }
-        elseif($widget->page->range_type == ReportPage::RANGE_MONTH){
-            for ($i = 0; $i <= 11; $i++){
-                if (array_key_exists($pdate->jdate_words(['mm' => $i+1])['mm'], $widget->results['combine'])){
-                    $widget->results['final_result'][$i] = $widget->results['combine'][$pdate->jdate_words(['mm' => $i+1])['mm']];
-                }
-                else {
+        } elseif ($widget->page->range_type == ReportPage::RANGE_MONTH) {
+            for ($i = 0; $i <= 11; $i++) {
+                if (array_key_exists($pdate->jdate_words(['mm' => $i + 1])['mm'], $widget->results['combine'])) {
+                    $widget->results['final_result'][$i] = $widget->results['combine'][$pdate->jdate_words(['mm' => $i + 1])['mm']];
+                } else {
                     $widget->results['final_result'][$i] = 0;
                 }
             }

@@ -1,13 +1,13 @@
 <?php
 
-namespace sadi01\bidashboard\controllers;
+namespace ziaadini\bidashboard\controllers;
 
-use sadi01\bidashboard\models\ReportBox;
-use sadi01\bidashboard\models\ReportBoxWidgets;
-use sadi01\bidashboard\models\ReportWidget;
-use sadi01\bidashboard\traits\AjaxValidationTrait;
-use sadi01\bidashboard\traits\CoreTrait;
-use sadi01\bidashboard\models\ReportBaseModel;
+use ziaadini\bidashboard\models\ReportBox;
+use ziaadini\bidashboard\models\ReportBoxWidgets;
+use ziaadini\bidashboard\models\ReportWidget;
+use ziaadini\bidashboard\traits\AjaxValidationTrait;
+use ziaadini\bidashboard\traits\CoreTrait;
+use ziaadini\bidashboard\models\ReportBaseModel;
 use yii\base\Model;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -29,22 +29,24 @@ class ReportBoxWidgetController extends Controller
                 'access' => [
                     'class' => AccessControl::class,
                     'rules' =>
+                    [
                         [
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportBoxWidget/update'],
-                                'actions' => [
-                                    'update', 'card-colors', 'get-widget-columns',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportBoxWidget/delete'],
-                                'actions' => [
-                                    'delete'
-                                ]
-                            ],
-                        ]
+                            'allow' => true,
+                            'roles' => ['BI/ReportBoxWidget/update'],
+                            'actions' => [
+                                'update',
+                                'card-colors',
+                                'get-widget-columns',
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportBoxWidget/delete'],
+                            'actions' => [
+                                'delete'
+                            ]
+                        ],
+                    ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,
@@ -95,8 +97,7 @@ class ReportBoxWidgetController extends Controller
                             'status' => true,
                             'message' => Yii::t("biDashboard", 'The Operation Was Successful')
                         ]);
-                    }
-                    else {
+                    } else {
                         $transaction->rollBack();
                         return $this->asJson([
                             'status' => false,
@@ -105,14 +106,13 @@ class ReportBoxWidgetController extends Controller
                     }
                 } catch (Exception $e) {
                     $transaction->rollBack();
-                    Yii::error($e->getMessage() .PHP_EOL. $e->getTraceAsString(), Yii::$app->controller->id . '/' . Yii::$app->controller->action->id);
+                    Yii::error($e->getMessage() . PHP_EOL . $e->getTraceAsString(), Yii::$app->controller->id . '/' . Yii::$app->controller->action->id);
                     return $this->asJson([
                         'status' => false,
                         'message' => $e->getMessage(),
                     ]);
                 }
-            }
-            else {
+            } else {
                 return $this->asJson([
                     'status' => false,
                     'message' => Yii::t("biDashboard", 'The Operation Failed'),
@@ -136,8 +136,7 @@ class ReportBoxWidgetController extends Controller
                 'status' => true,
                 'message' => Yii::t("biDashboard", 'The Operation Was Successful')
             ]);
-        }
-        else {
+        } else {
             return $this->asJson([
                 'status' => false,
                 'message' => Yii::t("biDashboard", 'Error In Delete Action')
@@ -145,7 +144,8 @@ class ReportBoxWidgetController extends Controller
         }
     }
 
-    public function actionCardColors() {
+    public function actionCardColors()
+    {
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
@@ -156,7 +156,7 @@ class ReportBoxWidgetController extends Controller
             if ($display_type == ReportBox::DISPLAY_CARD) {
 
                 $colors = ReportBoxWidgets::itemAlias('CardColorsName');
-                foreach ($colors as $key => $color){
+                foreach ($colors as $key => $color) {
                     $out[] = [
                         "id" => $key,
                         "name" => $color
@@ -178,7 +178,7 @@ class ReportBoxWidgetController extends Controller
 
             $widgetId = $_POST['depdrop_parents'][0];
 
-            if ($widgetId != null ) {
+            if ($widgetId != null) {
                 $widget = ReportWidget::findOne(['id' => $widgetId]);
                 if (!$widget) {
                     return ['output' => [], 'selected' => ''];

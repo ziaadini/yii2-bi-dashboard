@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use miloschuman\highcharts\Highcharts;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
-use sadi01\bidashboard\models\ReportWidgetResult;
+use ziaadini\bidashboard\models\ReportWidgetResult;
 use yii\web\JsExpression;
 
 
 /**
  * @var yii\web\View $this
- * @var sadi01\bidashboard\models\ReportWidget $widget
+ * @var ziaadini\bidashboard\models\ReportWidget $widget
  * @var $titles array
  * @var $results array
  * @var $chart_type string
@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="page-content container-fluid text-left">
         <div class="work-report-index card">
             <div class="panel-group m-bot20" id="accordion">
-                <?php Pjax::begin(['id' => 'p-jax-report-page-widget-chart', 'enablePushState' => false,'clientOptions' => ['push' => false],]); ?>
+                <?php Pjax::begin(['id' => 'p-jax-report-page-widget-chart', 'enablePushState' => false, 'clientOptions' => ['push' => false],]); ?>
                 <div class="card-body text-center">
                     <?php if (!empty($results)): ?>
                         <?= Html::dropDownList('your-dropdown-name', Yii::$app->request->get('chart_type'), ReportWidgetResult::itemAlias('Chart'), [
@@ -72,8 +72,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                         ?>
                     <?php else: ?>
-                    <div class="alert alert-danger" role="alert"><?= Yii::t("biDashboard", 'No Data')?></div>
-                    <div class="alert alert-danger" role="alert"><?= Yii::t("biDashboard", 'Please run widget/widgets first')?></div>
+                        <div class="alert alert-danger" role="alert"><?= Yii::t("biDashboard", 'No Data') ?></div>
+                        <div class="alert alert-danger" role="alert"><?= Yii::t("biDashboard", 'Please run widget/widgets first') ?></div>
                     <?php endif; ?>
                 </div>
                 <?php Pjax::end(); ?>
@@ -84,10 +84,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <script>
     function pjaxChartReload() {
         var chart_type = $('#chart_type_id').val();
-        var urlPjax = "/bidashboard/report-widget/modal-show-chart?id=<?=$widget->id?>&field=<?=$field?>&start_range=<?=$start_range?>&end_range=<?=$end_range?>&chart_type="+chart_type;
+        var urlPjax = "/bidashboard/report-widget/modal-show-chart?id=<?= $widget->id ?>&field=<?= $field ?>&start_range=<?= $start_range ?>&end_range=<?= $end_range ?>&chart_type=" + chart_type;
         $.pjax.reload({
             container: '#p-jax-report-page-widget-chart',
-            replace: false ,
+            replace: false,
             url: urlPjax,
             push: false,
         });

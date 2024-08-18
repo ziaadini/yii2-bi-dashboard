@@ -70,7 +70,7 @@ In the example photo above, we can see the widgets applied to the "Invoices" pag
 users to add new widgets related to the "Invoices" model. The list of widgets showcases different metrics and data
 visualizations relevant to invoice management, providing valuable insights for business analysis.
 
-![btn create widget in view](https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/guide/btn-create-widget-in-view.png)
+![btn create widget in view](https://raw.githubusercontent.com/ziaadini/yii2-bi-dashboard/master/src/img/guide/btn-create-widget-in-view.png)
 
 ### Widget Creation Model
 
@@ -91,7 +91,7 @@ Using the Widget Creation Model, users can:
   obtain
   summarizations, enhancing data exploration and insights.
 
-![modal create widget](https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/guide/modal-create-widget.png)
+![modal create widget](https://raw.githubusercontent.com/ziaadini/yii2-bi-dashboard/master/src/img/guide/modal-create-widget.png)
 
 ### Page Types and Widget Actions
 
@@ -99,11 +99,11 @@ In the bidashboard, there are two types of pages: day and month.
 
 ### Day
 
-![Page Day](https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/guide/page-daily.png)
+![Page Day](https://raw.githubusercontent.com/ziaadini/yii2-bi-dashboard/master/src/img/guide/page-daily.png)
 
 ### Month
 
-![Page Month](https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/guide/page.png)
+![Page Month](https://raw.githubusercontent.com/ziaadini/yii2-bi-dashboard/master/src/img/guide/page.png)
 
 Each widget on the view page is accompanied by five buttons that provide various actions:
 
@@ -127,13 +127,13 @@ The Bidashboard extension allows you to visualize the results of a widget using 
 with versatile data representations. Currently, the extension supports the following chart types:
 
 1. Area Chart
-   ![Area Chart](https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/guide/chart-area.png)
+   ![Area Chart](https://raw.githubusercontent.com/ziaadini/yii2-bi-dashboard/master/src/img/guide/chart-area.png)
 
 2. Columns Chart
-   ![Columns Chart](https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/guide/chart-column.png)
+   ![Columns Chart](https://raw.githubusercontent.com/ziaadini/yii2-bi-dashboard/master/src/img/guide/chart-column.png)
 
 3. Pie Chart
-   ![Pie Chart](https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/guide/chart-pie.png)
+   ![Pie Chart](https://raw.githubusercontent.com/ziaadini/yii2-bi-dashboard/master/src/img/guide/chart-pie.png)
 
 
 
@@ -142,4 +142,4 @@ with versatile data representations. Currently, the extension supports the follo
 
 In this image, you can see an example of reportModelClass that was created when the widget was created, and the user registered a desired title for them.
 
-![report model class](https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/guide/report_model_class.png)
+![report model class](https://raw.githubusercontent.com/ziaadini/yii2-bi-dashboard/master/src/img/guide/report_model_class.png)

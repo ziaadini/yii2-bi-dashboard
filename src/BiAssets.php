@@ -1,12 +1,12 @@
 <?php
 
-namespace sadi01\bidashboard;
+namespace ziaadini\bidashboard;
 
 use yii\web\AssetBundle;
 
 class BiAssets extends AssetBundle
 {
-    public $sourcePath = '@sadi01/bidashboard/assets';
+    public $sourcePath = '@ziaadini/bidashboard/assets';
 
     public $css = [
         'bidashboard/dist/css/fontiran.css',

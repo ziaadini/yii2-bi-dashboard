@@ -1,13 +1,13 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use sadi01\bidashboard\models\ExternalData;
+use ziaadini\bidashboard\models\ExternalData;
 
 /**
- * ExternalDataSearch represents the model behind the search form of `sadi01\bidashboard\models\ExternalData`.
+ * ExternalDataSearch represents the model behind the search form of `ziaadini\bidashboard\models\ExternalData`.
  */
 class ExternalDataSearch extends ExternalData
 {
@@ -51,7 +51,7 @@ class ExternalDataSearch extends ExternalData
         $this->load($params);
 
         if (!$this->validate()) {
-             $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
-use sadi01\bidashboard\traits\CoreTrait;
+use ziaadini\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\BlameableBehavior;

@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\ReportYear $model */
+/** @var ziaadini\bidashboard\models\ReportYear $model */
 
 $this->title = Yii::t('app', 'Update Report Year: {name}', [
     'name' => $model->id,

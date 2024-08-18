@@ -2,12 +2,12 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use sadi01\bidashboard\models\ExternalData;
-use sadi01\dateRangePicker\dateRangePicker;
+use ziaadini\bidashboard\models\ExternalData;
+use ziaadini\dateRangePicker\dateRangePicker;
 
 
 /** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\ExternalDataSearch $model */
+/** @var ziaadini\bidashboard\models\ExternalDataSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
@@ -28,25 +28,25 @@ use sadi01\dateRangePicker\dateRangePicker;
             <?= $form->field($model, 'status')->dropDownList(ExternalData::itemAlias('Status')) ?>
         </div>
         <div class="col-sm-3">
-            <?= $form->field($model, 'created_at')->widget(dateRangePicker::class,[
+            <?= $form->field($model, 'created_at')->widget(dateRangePicker::class, [
                 'options'  => [
                     'drops' => 'down',
                     'placement' => 'right',
                     'opens' => 'left',
                     'language' => 'fa',
-                    'jalaali'=> true,
-                    'showDropdowns'=> true,
+                    'jalaali' => true,
+                    'showDropdowns' => true,
                     'singleDatePicker' => true,
                     'useTimestamp' => true,
                     'timePicker' => true,
                     'timePicker24Hour' => true,
                     'timePickerSeconds' => true,
-                    'locale'=> [
+                    'locale' => [
                         'format' => 'jYYYY/jMM/jDD HH:mm:ss',
                     ],
                 ],
                 'htmlOptions' => [
-                    'class'	=> 'form-control',
+                    'class'    => 'form-control',
                     'id' => 'date_time_range',
                     'autocomplete' => 'off',
                 ]

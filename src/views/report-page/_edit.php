@@ -1,7 +1,7 @@
 <?php
 
-use sadi01\bidashboard\models\ReportPageWidget;
-use sadi01\bidashboard\models\ReportWidget;
+use ziaadini\bidashboard\models\ReportPageWidget;
+use ziaadini\bidashboard\models\ReportWidget;
 use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
 use yii\helpers\Html;
@@ -10,7 +10,7 @@ use yii\web\View;
 use yii\helpers\Url;
 
 
-/** @var sadi01\bidashboard\models\ReportPageWidget $model */
+/** @var ziaadini\bidashboard\models\ReportPageWidget $model */
 ?>
 <div class="report-widget-create">
     <div class="page-content container-fluid text-left">
@@ -34,4 +34,3 @@ use yii\helpers\Url;
         </div>
     </div>
 </div>
-

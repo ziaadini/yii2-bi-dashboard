@@ -1,6 +1,6 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
 use Yii;
 use yii\behaviors\BlameableBehavior;
@@ -43,7 +43,7 @@ class ReportPage extends ActiveRecord
     const FORMAT_NUMBER = 1;
     const FORMAT_CURRENCY = 2;
     const FORMAT_GRAM = 3;
-    const FORMAT_KILOGRAM= 4;
+    const FORMAT_KILOGRAM = 4;
 
     public static function getDb()
     {

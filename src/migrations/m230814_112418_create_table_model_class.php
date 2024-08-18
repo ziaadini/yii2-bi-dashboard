@@ -2,7 +2,7 @@
 
 
 use yii\db\Migration;
-use sadi01\bidashboard\models\ExternalDataValueSearch;
+use ziaadini\bidashboard\models\ExternalDataValueSearch;
 
 /**
  * Class m230814_112418_create_table_model_class
@@ -49,7 +49,6 @@ class m230814_112418_create_table_model_class extends Migration
             'updated_by' => null,
             'deleted_at' => 0,
         ]);
-
     }
 
     /**

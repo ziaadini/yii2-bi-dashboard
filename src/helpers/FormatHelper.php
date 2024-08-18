@@ -1,6 +1,7 @@
 <?php
 
-namespace sadi01\bidashboard\helpers;
+namespace ziaadini\bidashboard\helpers;
+
 use Yii;
 
 class FormatHelper
@@ -12,7 +13,7 @@ class FormatHelper
 
     public static function formatCurrency($number)
     {
-        return number_format($number) . ' ' .Yii::t('biDashboard', 'Rials');
+        return number_format($number) . ' ' . Yii::t('biDashboard', 'Rials');
     }
 
     public static function formatGram($number)
@@ -22,6 +23,6 @@ class FormatHelper
 
     public static function formatKiloGram($number)
     {
-        return $number/1000 . ' ' . Yii::t('biDashboard', 'Kilo Gram');
+        return $number / 1000 . ' ' . Yii::t('biDashboard', 'Kilo Gram');
     }
 }

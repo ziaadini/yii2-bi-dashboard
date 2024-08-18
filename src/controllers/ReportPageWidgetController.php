@@ -1,10 +1,10 @@
 <?php
 
-namespace sadi01\bidashboard\controllers;
+namespace ziaadini\bidashboard\controllers;
 
-use sadi01\bidashboard\models\ReportPage;
-use sadi01\bidashboard\models\ReportPageWidget;
-use sadi01\bidashboard\traits\AjaxValidationTrait;
+use ziaadini\bidashboard\models\ReportPage;
+use ziaadini\bidashboard\models\ReportPageWidget;
+use ziaadini\bidashboard\traits\AjaxValidationTrait;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -27,22 +27,23 @@ class ReportPageWidgetController extends Controller
                 'access' => [
                     'class' => AccessControl::class,
                     'rules' =>
+                    [
                         [
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPageWidget/delete'],
-                                'actions' => [
-                                    'delete',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/view'],
-                                'actions' => [
-                                    'inc-order','dec-order'
-                                ]
+                            'allow' => true,
+                            'roles' => ['BI/ReportPageWidget/delete'],
+                            'actions' => [
+                                'delete',
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportPage/view'],
+                            'actions' => [
+                                'inc-order',
+                                'dec-order'
                             ]
                         ]
+                    ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,

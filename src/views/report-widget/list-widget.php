@@ -1,12 +1,12 @@
 <?php
 
-use sadi01\bidashboard\models\ReportWidget;
+use ziaadini\bidashboard\models\ReportWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use sadi01\bidashboard\widgets\grid\ActionColumn;
-use sadi01\bidashboard\widgets\grid\GridView;
+use ziaadini\bidashboard\widgets\grid\ActionColumn;
+use ziaadini\bidashboard\widgets\grid\GridView;
 use yii\web\View;
-use sadi01\bidashboard\models\search\ReportWidgetSearch;
+use ziaadini\bidashboard\models\search\ReportWidgetSearch;
 use yii\data\ActiveDataProvider;
 use yii\widgets\Pjax;
 
@@ -45,7 +45,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'template' => '{view}',
             'buttons' => [
                 'view' => function ($url, ReportWidget $model, $key) {
-                    return Html::a('<i class="fa fa-eye"></i>', "javascript:void(0)",
+                    return Html::a(
+                        '<i class="fa fa-eye"></i>',
+                        "javascript:void(0)",
                         [
                             'data-pjax' => '0',
                             'class' => "btn text-info p-0",

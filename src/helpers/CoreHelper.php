@@ -1,6 +1,6 @@
 <?php
 
-namespace sadi01\bidashboard\helpers;
+namespace ziaadini\bidashboard\helpers;
 
 use Yii;
 

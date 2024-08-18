@@ -1,6 +1,6 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
 use yii\db\ActiveQuery;
 use yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
@@ -43,6 +43,4 @@ class ReportDashboardQuery extends ActiveQuery
             ],
         ];
     }
-
-
 }

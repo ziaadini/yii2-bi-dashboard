@@ -1,5 +1,6 @@
 <?php
-namespace sadi01\bidashboard\widgets;
+
+namespace ziaadini\bidashboard\widgets;
 
 use Yii;
 

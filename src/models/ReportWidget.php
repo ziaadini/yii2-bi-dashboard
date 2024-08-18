@@ -1,10 +1,10 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
-use sadi01\bidashboard\behaviors\Jsonable;
-use sadi01\bidashboard\components\Pdate;
-use sadi01\bidashboard\traits\CoreTrait;
+use ziaadini\bidashboard\behaviors\Jsonable;
+use ziaadini\bidashboard\components\Pdate;
+use ziaadini\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -218,7 +218,7 @@ class ReportWidget extends ActiveRecord
         return $searchModel->getAttributeLabel($field);
     }
 
-    public static function getWidgetFields($widgetId) : Array
+    public static function getWidgetFields($widgetId): array
     {
         $fields = [];
         $widget = self::find()->where(['id' => $widgetId])->one();
@@ -416,7 +416,7 @@ class ReportWidget extends ActiveRecord
             $data = ArrayHelper::map(self::find()->where(['range_type' => $code])->all(), 'id', 'title');
             $code = null;
         }
-        if ($type == 'AllWidgetsWithRangeType'){
+        if ($type == 'AllWidgetsWithRangeType') {
 
             $modelResult = self::find()->all();
             $result = [];

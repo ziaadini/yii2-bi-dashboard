@@ -1,8 +1,8 @@
 <?php
 
-namespace sadi01\bidashboard\behaviors;
+namespace ziaadini\bidashboard\behaviors;
 
-use sadi01\bidashboard\components\ActiveQueryJson;
+use ziaadini\bidashboard\components\ActiveQueryJson;
 use ReflectionProperty;
 use Yii;
 use yii\base\Behavior;
@@ -112,7 +112,7 @@ class Jsonable extends Behavior
                         case 'array':
                             $attributeValue = $this->owner->$attribute;
                             break;
-                        default :
+                        default:
                             $attributeValue = $this->owner->$attribute;
                     }
                     $commands[$jsonAttributeName][$attribute] = $attributeValue;
@@ -152,7 +152,7 @@ class Jsonable extends Behavior
                         case 'object':
                             $attributeValue = $this->owner->$attribute instanceof UploadedFile ? "'{$this->owner->$attribute->name}'" : $this->owner->$attribute;
                             break;
-                        default :
+                        default:
                             $attributeValue = $this->owner->$attribute;
                     }
                     $command .= '"$.' . $attribute . '", :' . $alphabet . ',';
@@ -199,7 +199,7 @@ class Jsonable extends Behavior
                     case 'object':
                         $attributeDefaultValue = null;
                         break;
-                    default :
+                    default:
                         $attributeDefaultValue = null;
                 }
 

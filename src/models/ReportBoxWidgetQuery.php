@@ -1,10 +1,10 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
 use yii\db\ActiveQuery;
 use yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
-use sadi01\bidashboard\models\ReportBoxWidgets;
+use ziaadini\bidashboard\models\ReportBoxWidgets;
 
 class ReportBoxWidgetQuery extends ActiveQuery
 {
@@ -43,5 +43,4 @@ class ReportBoxWidgetQuery extends ActiveQuery
             ],
         ];
     }
-
 }

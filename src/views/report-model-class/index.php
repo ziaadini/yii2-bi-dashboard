@@ -1,15 +1,15 @@
 <?php
 
-use sadi01\bidashboard\models\ReportModelClass;
+use ziaadini\bidashboard\models\ReportModelClass;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use sadi01\bidashboard\widgets\grid\ActionColumn;
-use sadi01\bidashboard\widgets\grid\GridView;
+use ziaadini\bidashboard\widgets\grid\ActionColumn;
+use ziaadini\bidashboard\widgets\grid\GridView;
 
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\ReportModelClassSearch $searchModel */
+/** @var ziaadini\bidashboard\models\ReportModelClassSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = Yii::t('biDashboard', 'Report Model Classes');
@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="card-header d-flex justify-content-between">
                 <h4 class="panel-title">
                     <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion"
-                       href="#collapseSearch" aria-expanded="false">
+                        href="#collapseSearch" aria-expanded="false">
                         <i class="fa fa-search"></i> جستجو
                     </a>
                 </h4>
@@ -47,7 +47,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             'template' => '{update}',
                             'buttons' => [
                                 'update' => function ($url, ReportModelClass $model, $key) {
-                                    return Html::a('<i class="fa fa-pen"></i>', "javascript:void(0)",
+                                    return Html::a(
+                                        '<i class="fa fa-pen"></i>',
+                                        "javascript:void(0)",
                                         [
                                             'data-pjax' => '0',
                                             'class' => "btn text-primary",

@@ -1,6 +1,6 @@
 <?php
 
-namespace sadi01\bidashboard\widgets\grid;
+namespace ziaadini\bidashboard\widgets\grid;
 
 use kartik\grid\GridView as KartikGridView;
 use Yii;
@@ -70,43 +70,48 @@ class GridView extends KartikGridView
         if (empty($this->customToolbar)) {
             $this->customToolbar = [
                 [
-                    'content' =>
-                        ($this->showCreateBtnAtToolbar ? (Html::a('<i class="far fa-plus"></i>', ['create'], [
-                                'title' => Yii::t('app', 'New'),
-                                'data' => [
-                                    'toggle' => 'tooltip',
-                                    'pjax' => '0',
-                                ],
-                                'class' => 'btn btn-success btn-outline mb-2'
-                            ]) . ' ') : '') .
-                        ($this->showDeleteBtnAtToolbar ? (Html::a(Html::tag('span', '', ['class' => "far fa-trash-alt"]), 'javascript:void(0)',
-                                [
-                                    'id' => 'grid-delete-selected-btn',
-                                    'title' => Yii::t('app', 'Remove selected row(s).'),
-                                    'aria-label' => Yii::t('app', 'Remove selected row(s).'),
-                                    'data-reload-pjax-container' => $this->reloadPjaxContainer,
-                                    'data-pjax' => '0',
-                                    'data-url' => Url::to(['delete-selected']),
-                                    'class' => "btn btn-danger ml-1 mb-2 p-jax-btn",
-                                    'data-title' => Yii::t('app', 'Remove selected row(s).'),
-                                    'data-toggle' => 'tooltip',
-                                    'data-method' => 'post'
+                    'content' => ($this->showCreateBtnAtToolbar ? (Html::a('<i class="far fa-plus"></i>', ['create'], [
+                        'title' => Yii::t('app', 'New'),
+                        'data' => [
+                            'toggle' => 'tooltip',
+                            'pjax' => '0',
+                        ],
+                        'class' => 'btn btn-success btn-outline mb-2'
+                    ]) . ' ') : '') .
+                        ($this->showDeleteBtnAtToolbar ? (Html::a(
+                            Html::tag('span', '', ['class' => "far fa-trash-alt"]),
+                            'javascript:void(0)',
+                            [
+                                'id' => 'grid-delete-selected-btn',
+                                'title' => Yii::t('app', 'Remove selected row(s).'),
+                                'aria-label' => Yii::t('app', 'Remove selected row(s).'),
+                                'data-reload-pjax-container' => $this->reloadPjaxContainer,
+                                'data-pjax' => '0',
+                                'data-url' => Url::to(['delete-selected']),
+                                'class' => "btn btn-danger ml-1 mb-2 p-jax-btn",
+                                'data-title' => Yii::t('app', 'Remove selected row(s).'),
+                                'data-toggle' => 'tooltip',
+                                'data-method' => 'post'
 
-                                ]) . ' ') : '') .
-                        ($this->showConfirmBtnAtToolbar ? (Html::a(Html::tag('span', '', ['class' => "far fa-check"]), 'javascript:void(0)',
-                                [
-                                    'id' => 'grid-confirm-selected-btn',
-                                    'title' => Yii::t('app', 'Confirm selected row(s).'),
-                                    'aria-label' => Yii::t('app', 'Confirm selected row(s).'),
-                                    'data-reload-pjax-container' => $this->reloadPjaxContainer,
-                                    'data-pjax' => '0',
-                                    'data-url' => Url::to(['confirm-selected']),
-                                    'class' => "btn btn-success ml-1 mb-2 p-jax-btn",
-                                    'data-title' => Yii::t('app', 'Confirm selected row(s).'),
-                                    'data-toggle' => 'tooltip',
-                                    'data-method' => 'post'
+                            ]
+                        ) . ' ') : '') .
+                        ($this->showConfirmBtnAtToolbar ? (Html::a(
+                            Html::tag('span', '', ['class' => "far fa-check"]),
+                            'javascript:void(0)',
+                            [
+                                'id' => 'grid-confirm-selected-btn',
+                                'title' => Yii::t('app', 'Confirm selected row(s).'),
+                                'aria-label' => Yii::t('app', 'Confirm selected row(s).'),
+                                'data-reload-pjax-container' => $this->reloadPjaxContainer,
+                                'data-pjax' => '0',
+                                'data-url' => Url::to(['confirm-selected']),
+                                'class' => "btn btn-success ml-1 mb-2 p-jax-btn",
+                                'data-title' => Yii::t('app', 'Confirm selected row(s).'),
+                                'data-toggle' => 'tooltip',
+                                'data-method' => 'post'
 
-                                ]) . ' ') : ''),
+                            ]
+                        ) . ' ') : ''),
                 ]
             ];
         }
@@ -124,7 +129,8 @@ class GridView extends KartikGridView
                             ];
                         }
                     ]
-                ], $this->columns
+                ],
+                $this->columns
             ) : $this->columns;
 
 

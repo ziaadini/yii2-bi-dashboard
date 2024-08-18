@@ -1,13 +1,13 @@
 <?php
 
-namespace sadi01\bidashboard;
+namespace ziaadini\bidashboard;
 
 /**
  *
  * ```php
  * 'modules' => [
  *     'bidashboard' => [
- *          'class' => 'sadi01\bidashboard\Module'
+ *          'class' => 'ziaadini\bidashboard\Module'
  *     ]
  * ]
  * ```
@@ -21,5 +21,5 @@ class Module extends \yii\base\Module
      * The module name
      */
     const MODULE = "bidashboard";
-    public $layout="bid_main";
+    public $layout = "bid_main";
 }

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 
 $this->title = 'Bi Dashboard';
-$url = Yii::$app->assetManager->getPublishedUrl('@sadi01/bidashboard/assets');
+$url = Yii::$app->assetManager->getPublishedUrl('@ziaadini/bidashboard/assets');
 
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-body text-center">
-                                    <img src="<?=$url?>/bidashboard/images/BI.png" class="img-fluid w-50">
+                                    <img src="<?= $url ?>/bidashboard/images/BI.png" class="img-fluid w-50">
                                 </div>
                             </div>
                         </div>

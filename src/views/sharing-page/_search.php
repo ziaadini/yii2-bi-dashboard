@@ -1,14 +1,14 @@
 <?php
 
-use sadi01\bidashboard\models\ReportPage;
-use sadi01\bidashboard\models\SharingPage;
-use sadi01\dateRangePicker\dateRangePicker;
+use ziaadini\bidashboard\models\ReportPage;
+use ziaadini\bidashboard\models\SharingPage;
+use ziaadini\dateRangePicker\dateRangePicker;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var \sadi01\bidashboard\models\SharingPageSearch $model */
+/** @var \ziaadini\bidashboard\models\SharingPageSearch $model */
 /** @var ActiveForm $form */
 ?>
 

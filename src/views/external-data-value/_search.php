@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
-use sadi01\bidashboard\models\ExternalData;
+use ziaadini\bidashboard\models\ExternalData;
 use yii\helpers\ArrayHelper;
-use sadi01\dateRangePicker\dateRangePicker;
-use sadi01\bidashboard\models\ExternalDataValue;
+use ziaadini\dateRangePicker\dateRangePicker;
+use ziaadini\bidashboard\models\ExternalDataValue;
 
 /** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\ExternalDataValueSearch $model */
+/** @var ziaadini\bidashboard\models\ExternalDataValueSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
@@ -33,7 +33,7 @@ use sadi01\bidashboard\models\ExternalDataValue;
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
-            ])->label(Yii::t('biDashboard','External Data')); ?>
+            ])->label(Yii::t('biDashboard', 'External Data')); ?>
         </div>
         <div class="col-sm-3">
             <?= $form->field($model, 'value') ?>
@@ -42,25 +42,25 @@ use sadi01\bidashboard\models\ExternalDataValue;
             <?= $form->field($model, 'status')->dropDownList(ExternalDataValue::itemAlias('Status')) ?>
         </div>
         <div class="col-sm-3">
-            <?= $form->field($model, 'created_at')->widget(dateRangePicker::class,[
+            <?= $form->field($model, 'created_at')->widget(dateRangePicker::class, [
                 'options'  => [
                     'drops' => 'down',
                     'placement' => 'right',
                     'opens' => 'left',
                     'language' => 'fa',
-                    'jalaali'=> true,
-                    'showDropdowns'=> true,
+                    'jalaali' => true,
+                    'showDropdowns' => true,
                     'singleDatePicker' => true,
                     'useTimestamp' => true,
                     'timePicker' => true,
                     'timePicker24Hour' => true,
                     'timePickerSeconds' => true,
-                    'locale'=> [
+                    'locale' => [
                         'format' => 'jYYYY/jMM/jDD HH:mm:ss',
                     ],
                 ],
                 'htmlOptions' => [
-                    'class'	=> 'form-control',
+                    'class'    => 'form-control',
                     'id' => 'date_time_range',
                     'autocomplete' => 'off',
                 ]

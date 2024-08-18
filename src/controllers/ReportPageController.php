@@ -1,18 +1,18 @@
 <?php
 
-namespace sadi01\bidashboard\controllers;
+namespace ziaadini\bidashboard\controllers;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use sadi01\bidashboard\components\ExcelReport;
-use sadi01\bidashboard\helpers\CoreHelper;
-use sadi01\bidashboard\models\ReportPage;
-use sadi01\bidashboard\models\ReportPageSearch;
-use sadi01\bidashboard\models\ReportPageWidget;
-use sadi01\bidashboard\models\ReportWidget;
-use sadi01\bidashboard\models\SharingPage;
-use sadi01\bidashboard\traits\AjaxValidationTrait;
-use sadi01\bidashboard\traits\CoreTrait;
+use ziaadini\bidashboard\components\ExcelReport;
+use ziaadini\bidashboard\helpers\CoreHelper;
+use ziaadini\bidashboard\models\ReportPage;
+use ziaadini\bidashboard\models\ReportPageSearch;
+use ziaadini\bidashboard\models\ReportPageWidget;
+use ziaadini\bidashboard\models\ReportWidget;
+use ziaadini\bidashboard\models\SharingPage;
+use ziaadini\bidashboard\traits\AjaxValidationTrait;
+use ziaadini\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -40,78 +40,81 @@ class ReportPageController extends Controller
                 'access' => [
                     'class' => AccessControl::class,
                     'rules' =>
+                    [
                         [
-                            [
-                                'allow' => true,
-                                'actions' => [
-                                    'view-by-access-key'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/index'],
-                                'actions' => [
-                                    'index','export-excel'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/view'],
-                                'actions' => [
-                                    'view'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/create'],
-                                'actions' => [
-                                    'create','inc-order','dec-order'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/update'],
-                                'actions' => [
-                                    'update',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/delete'],
-                                'actions' => [
-                                    'delete'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/update-widget'],
-                                'actions' => [
-                                    'update-widget'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/add'],
-                                'actions' => [
-                                    'add'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/get-widget-column'],
-                                'actions' => [
-                                    'get-widget-column'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportPage/run-all-widgets'],
-                                'actions' => [
-                                    'run-all-widgets'
-                                ]
-                            ],
+                            'allow' => true,
+                            'actions' => [
+                                'view-by-access-key'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportPage/index'],
+                            'actions' => [
+                                'index',
+                                'export-excel'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportPage/view'],
+                            'actions' => [
+                                'view'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportPage/create'],
+                            'actions' => [
+                                'create',
+                                'inc-order',
+                                'dec-order'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportPage/update'],
+                            'actions' => [
+                                'update',
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportPage/delete'],
+                            'actions' => [
+                                'delete'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportPage/update-widget'],
+                            'actions' => [
+                                'update-widget'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportPage/add'],
+                            'actions' => [
+                                'add'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportPage/get-widget-column'],
+                            'actions' => [
+                                'get-widget-column'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportPage/run-all-widgets'],
+                            'actions' => [
+                                'run-all-widgets'
+                            ]
+                        ],
 
-                        ]
+                    ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,
@@ -361,7 +364,6 @@ class ReportPageController extends Controller
                     'status' => true,
                     'message' => Yii::t("biDashboard", 'The Operation Was Successful')
                 ]);
-
             } else {
                 return $this->asJson([
                     'status' => false,
@@ -456,7 +458,7 @@ class ReportPageController extends Controller
             $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
             $results = array_reverse($widgetLastResult);
             if (!empty($results)) {
-                $array [] = $pageWidget->collectResults($pageWidget, $results);
+                $array[] = $pageWidget->collectResults($pageWidget, $results);
             }
         }
 
@@ -486,7 +488,7 @@ class ReportPageController extends Controller
     {
         $model = SharingPage::find()
             ->where(['access_key' => $access_key])
-            ->andWhere(['>=','expire_time',time()])
+            ->andWhere(['>=', 'expire_time', time()])
             ->limit(1)
             ->one();
 

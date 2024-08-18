@@ -1,7 +1,7 @@
 <?php
 
 
-use sadi01\bidashboard\components\Menu;
+use ziaadini\bidashboard\components\Menu;
 
 $menu_items = [];
 $menu_items = [
@@ -49,26 +49,26 @@ $menu_items = [
     ],
 ];
 ?>
-    <aside class="left-sidebar">
+<aside class="left-sidebar">
 
-        <!-- Sidebar scroll-->
-        <div class="scroll-sidebar">
-            <!-- Sidebar navigation-->
-            <nav class="sidebar-nav">
-                <?php if (Yii::$app->user->identity): ?>
-                    <?= Menu::widget(
-                        [
-                            'options' => ['id' => 'sidebarnav'],
-                            'itemOptions' => ['class' => 'sidebar-item'],
-                            'items' => $menu_items,
-                        ]
-                    ) ?>
-                <?php endif; ?>
-            </nav>
-            <!-- End Sidebar navigation -->
-        </div>
-        <!-- End Sidebar scroll-->
-    </aside>
+    <!-- Sidebar scroll-->
+    <div class="scroll-sidebar">
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav">
+            <?php if (Yii::$app->user->identity): ?>
+                <?= Menu::widget(
+                    [
+                        'options' => ['id' => 'sidebarnav'],
+                        'itemOptions' => ['class' => 'sidebar-item'],
+                        'items' => $menu_items,
+                    ]
+                ) ?>
+            <?php endif; ?>
+        </nav>
+        <!-- End Sidebar navigation -->
+    </div>
+    <!-- End Sidebar scroll-->
+</aside>
 
 <?php
 $script = <<<JS

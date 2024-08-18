@@ -1,11 +1,11 @@
 <?php
 
-namespace sadi01\bidashboard\controllers;
+namespace ziaadini\bidashboard\controllers;
 
 use Yii;
-use sadi01\bidashboard\models\ReportModelClass;
-use sadi01\bidashboard\models\ReportModelClassSearch;
-use sadi01\bidashboard\traits\AjaxValidationTrait;
+use ziaadini\bidashboard\models\ReportModelClass;
+use ziaadini\bidashboard\models\ReportModelClassSearch;
+use ziaadini\bidashboard\traits\AjaxValidationTrait;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -31,22 +31,22 @@ class ReportModelClassController extends Controller
                 'access' => [
                     'class' => AccessControl::class,
                     'rules' =>
+                    [
                         [
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportModelClass/index'],
-                                'actions' => [
-                                    'index'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportModelClass/update'],
-                                'actions' => [
-                                    'update'
-                                ]
-                            ],
+                            'allow' => true,
+                            'roles' => ['BI/ReportModelClass/index'],
+                            'actions' => [
+                                'index'
+                            ]
                         ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportModelClass/update'],
+                            'actions' => [
+                                'update'
+                            ]
+                        ],
+                    ],
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,

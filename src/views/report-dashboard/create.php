@@ -1,6 +1,6 @@
 <?php
 
-use sadi01\bidashboard\models\ReportDashboard;
+use ziaadini\bidashboard\models\ReportDashboard;
 use yii\helpers\Html;
 use yii\web\View;
 

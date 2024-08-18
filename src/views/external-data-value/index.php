@@ -1,17 +1,18 @@
 <?php
+
 use Yii;
 
 use yii\helpers\Url;
-use sadi01\bidashboard\widgets\grid\ActionColumn;
-use sadi01\bidashboard\widgets\grid\GridView;
+use ziaadini\bidashboard\widgets\grid\ActionColumn;
+use ziaadini\bidashboard\widgets\grid\GridView;
 use yii\widgets\Pjax;
 use yii\helpers\Html;
-use sadi01\bidashboard\models\ExternalDataValue;
-use sadi01\bidashboard\widgets\ReportModalWidget;
+use ziaadini\bidashboard\models\ExternalDataValue;
+use ziaadini\bidashboard\widgets\ReportModalWidget;
 
 
 /** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\ExternalDataSearch $searchModel */
+/** @var ziaadini\bidashboard\models\ExternalDataSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 /** @var yii\data\ActiveDataProvider $dataProviderValues */
 /** @var array $queryParams */
@@ -37,10 +38,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         'searchModelFormName' => key(Yii::$app->request->getQueryParams()),
                         'outputColumn' => [
                             "day" => "روز",
-                            "year"=> "سال",
-                            "month"=> "ماه",
-                            "total_count"=> "تعداد",
-                            "total_amount"=> "جمع‌کل"
+                            "year" => "سال",
+                            "month" => "ماه",
+                            "total_count" => "تعداد",
+                            "total_amount" => "جمع‌کل"
                         ],
                     ]) ?>
                 </div>
@@ -76,7 +77,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                             'buttons' => [
                                 'update' => function ($url, ExternalDataValue $model, $key) {
-                                    return Html::a('<i class="fa fa-pen"></i>', "javascript:void(0)",
+                                    return Html::a(
+                                        '<i class="fa fa-pen"></i>',
+                                        "javascript:void(0)",
                                         [
                                             'data-pjax' => '0',
                                             'class' => "btn text-primary",

@@ -19,7 +19,7 @@ Before installing and using the bidashboard, ensure you have the following prere
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/):
 
 ```bash
-composer require --prefer-dist sadi01/yii2-bi-dashboard:"*"
+composer require --prefer-dist ziaadini/yii2-bi-dashboard:"*"
 ```
 
 To use this extension, you have to configure the bidashboard module in your application configuration:
@@ -29,7 +29,7 @@ return [
     //....
     'modules' => [
         'bidashboard' => [
-            'class' => 'sadi01\bidashboard\Module',
+            'class' => 'ziaadini\bidashboard\Module',
         ],
     ]
 ];
@@ -48,7 +48,7 @@ You have to add the database configuration to env, its example is in - [Env.exam
 Run module migrations:
 
 ```bash
-php yii migrate --migrationPath=@sadi01/bidashboard/migrations
+php yii migrate --migrationPath=@ziaadini/bidashboard/migrations
 ```
 
 Or, Add migrations path in console application config:
@@ -61,7 +61,7 @@ Or, Add migrations path in console application config:
          
         ],
         'migrationPath' => [
-            '@vendor/sadi01/yii2-bi-dashboard/src/migrations',
+            '@vendor/ziaadini/yii2-bi-dashboard/src/migrations',
             '@app/migrations'
         ]
     ],
@@ -80,4 +80,4 @@ BSD 3-Clause License
 
 Copyright (c) 2023, Sadegh Shafii
 All rights reserved.
-[License](https://github.com/Sadi01/yii2-bi-dashboard/blob/master/LICENSE.md)
+[License](https://github.com/ziaadini/yii2-bi-dashboard/blob/master/LICENSE.md)

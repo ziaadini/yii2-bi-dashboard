@@ -1,10 +1,10 @@
 <?php
 
-namespace sadi01\bidashboard\controllers;
+namespace ziaadini\bidashboard\controllers;
 
-use sadi01\bidashboard\models\ExternalDataValue;
-use sadi01\bidashboard\models\ExternalDataValueSearch;
-use sadi01\bidashboard\traits\AjaxValidationTrait;
+use ziaadini\bidashboard\models\ExternalDataValue;
+use ziaadini\bidashboard\models\ExternalDataValueSearch;
+use ziaadini\bidashboard\traits\AjaxValidationTrait;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -31,52 +31,52 @@ class ExternalDataValueController extends Controller
                 'access' => [
                     'class' => AccessControl::class,
                     'rules' =>
+                    [
                         [
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ExternalDataValue/index'],
-                                'actions' => [
-                                    'index'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ExternalDataValue/view'],
-                                'actions' => [
-                                    'view'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ExternalDataValue/create'],
-                                'actions' => [
-                                    'create',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ExternalDataValue/update'],
-                                'actions' => [
-                                    'update',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ExternalDataValue/delete'],
-                                'actions' => [
-                                    'delete'
-                                ]
-                            ],
+                            'allow' => true,
+                            'roles' => ['BI/ExternalDataValue/index'],
+                            'actions' => [
+                                'index'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ExternalDataValue/view'],
+                            'actions' => [
+                                'view'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ExternalDataValue/create'],
+                            'actions' => [
+                                'create',
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ExternalDataValue/update'],
+                            'actions' => [
+                                'update',
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ExternalDataValue/delete'],
+                            'actions' => [
+                                'delete'
+                            ]
+                        ],
 
-                        ]
+                    ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'create' => ['GET','POST'],
-                        'update' => ['GET','POST'],
+                        'create' => ['GET', 'POST'],
+                        'update' => ['GET', 'POST'],
                         'delete' => ['POST', 'DELETE'],
                     ],
                 ],

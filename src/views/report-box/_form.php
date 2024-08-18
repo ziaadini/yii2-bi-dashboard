@@ -1,6 +1,6 @@
 <?php
 
-use sadi01\bidashboard\models\ReportBox;
+use ziaadini\bidashboard\models\ReportBox;
 use yii\bootstrap4\ActiveForm;
 use kartik\select2\Select2;
 use kartik\depdrop\DepDrop;
@@ -25,7 +25,7 @@ use yii\web\View;
                 'placeholder' => 'عنوان باکس را وارد کنید...',
                 'maxlength' => true,
                 'class' => 'form-control rounded-md input-border'
-            ])->label('عنوان باکس'. ' '. '<span class="text-danger">*</span>') ?>
+            ])->label('عنوان باکس' . ' ' . '<span class="text-danger">*</span>') ?>
         </div>
         <?php if ($model->isNewRecord): ?>
             <div class="col-4">
@@ -39,7 +39,7 @@ use yii\web\View;
                         'allowClear' => true,
                         'initialize' => !$model->isNewRecord,
                     ],
-                ])->label('نوع نمایش' . ' '. '<span class="text-danger">*</span>'); ?>
+                ])->label('نوع نمایش' . ' ' . '<span class="text-danger">*</span>'); ?>
             </div>
             <div class="col-4">
                 <?= $form->field($model, "chart_type")->widget(DepDrop::class, [
@@ -75,7 +75,7 @@ use yii\web\View;
                         'initialize' => !$model->isNewRecord,
                         'url' => Url::to(['/bidashboard/report-box/date-types/'])
                     ],
-                ])->label('نوع تاریخ'. ' '. '<span class="text-danger">*</span>'); ?>
+                ])->label('نوع تاریخ' . ' ' . '<span class="text-danger">*</span>'); ?>
             </div>
             <div class="col-4">
                 <?= $form->field($model, "range_type", ['enableClientValidation' => false])->widget(DepDrop::class, [

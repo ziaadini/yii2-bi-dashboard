@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\web\View;
-use sadi01\bidashboard\models\ReportDashboard;
+use ziaadini\bidashboard\models\ReportDashboard;
 
 /** @var View $this */
 /** @var ReportDashboard $model */

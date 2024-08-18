@@ -1,6 +1,6 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;

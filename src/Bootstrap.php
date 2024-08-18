@@ -1,9 +1,9 @@
 <?php
 
-namespace sadi01\bidashboard;
+namespace ziaadini\bidashboard;
 
-use sadi01\bidashboard\components\Env;
-use sadi01\bidashboard\components\Pdate;
+use ziaadini\bidashboard\components\Env;
+use ziaadini\bidashboard\components\Pdate;
 use WebApplication;
 use Yii;
 use yii\base\Application;

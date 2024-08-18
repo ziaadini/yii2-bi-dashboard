@@ -1,10 +1,10 @@
 <?php
 
-namespace sadi01\bidashboard\widgets;
+namespace ziaadini\bidashboard\widgets;
 
 use Yii;
 use app\models\UserModel;
-use sadi01\bidashboard\models\ReportWidget;
+use ziaadini\bidashboard\models\ReportWidget;
 use yii\base\Widget;
 use yii\helpers\Html;
 

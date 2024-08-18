@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
-use sadi01\bidashboard\widgets\grid\ActionColumn;
-use sadi01\bidashboard\widgets\grid\GridView;
-use  sadi01\bidashboard\models\ExternalDataValue;
+use ziaadini\bidashboard\widgets\grid\ActionColumn;
+use ziaadini\bidashboard\widgets\grid\GridView;
+use  ziaadini\bidashboard\models\ExternalDataValue;
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\ExternalData $model */
+/** @var ziaadini\bidashboard\models\ExternalData $model */
 /** @var yii\data\ActiveDataProvider $dataProviderValue */
 
 $this->title = $model->title;
@@ -30,20 +30,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card-body">
                     <table class="table table-striped table-bordered">
                         <thead>
-                        <tr>
-                            <td><?= Yii::t('biDashboard', 'ID') ?></td>
-                            <td><?= Yii::t('biDashboard', 'title') ?></td>
-                            <td><?= Yii::t('biDashboard', 'Created At') ?></td>
-                            <td><?= Yii::t('biDashboard', 'Updated At') ?></td>
-                        </tr>
+                            <tr>
+                                <td><?= Yii::t('biDashboard', 'ID') ?></td>
+                                <td><?= Yii::t('biDashboard', 'title') ?></td>
+                                <td><?= Yii::t('biDashboard', 'Created At') ?></td>
+                                <td><?= Yii::t('biDashboard', 'Updated At') ?></td>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td><?= $model->id ?></td>
-                            <td><?= $model->title ?></td>
-                            <td><?= Yii::$app->pdate->jdate('Y/m/d-h:i', $model->created_at) ?></td>
-                            <td><?= Yii::$app->pdate->jdate('Y/m/d-h:i', $model->updated_at) ?></td>
-                        </tr>
+                            <tr>
+                                <td><?= $model->id ?></td>
+                                <td><?= $model->title ?></td>
+                                <td><?= Yii::$app->pdate->jdate('Y/m/d-h:i', $model->created_at) ?></td>
+                                <td><?= Yii::$app->pdate->jdate('Y/m/d-h:i', $model->updated_at) ?></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -63,7 +63,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= Yii::t('biDashboard', 'External Data Values') ?>
                     </h4>
                     <div>
-                        <?= Html::a(Yii::t('biDashboard', 'Add new value'), "javascript:void(0)",
+                        <?= Html::a(
+                            Yii::t('biDashboard', 'Add new value'),
+                            "javascript:void(0)",
                             [
                                 'data-pjax' => '0',
                                 'class' => "btn btn-success",
@@ -74,7 +76,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-url' => Url::to(['/bidashboard/external-data-value/create', 'external_data_id' => $model->id]),
                                 'data-handle-form-submit' => 1,
                                 'data-reload-pjax-container' => 'p-jax-external-data-value'
-                            ])
+                            ]
+                        )
                         ?>
                     </div>
                 </div>
@@ -90,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'value',
                             [
                                 'attribute' => 'created_at',
-                                'value' => function($item){
+                                'value' => function ($item) {
                                     return Yii::$app->pdate->jdate('Y/m/d-h:i', $item->created_at);
                                 }
                             ],
@@ -105,7 +108,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 },
                                 'buttons' => [
                                     'update' => function ($url, ExternalDataValue $model, $key) {
-                                        return Html::a('<i class="fa fa-pen"></i>', "javascript:void(0)",
+                                        return Html::a(
+                                            '<i class="fa fa-pen"></i>',
+                                            "javascript:void(0)",
                                             [
                                                 'data-pjax' => '0',
                                                 'class' => "btn text-primary",

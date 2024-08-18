@@ -1,6 +1,6 @@
 <?php
 
-use sadi01\bidashboard\models\ReportDashboard;
+use ziaadini\bidashboard\models\ReportDashboard;
 use kartik\select2\Select2;
 use kartik\depdrop\DepDrop;
 use yii\helpers\Url;
@@ -25,21 +25,20 @@ use yii\web\View;
                 'placeholder' => 'عنوان داشبورد را وارد کنید...',
                 'maxlength' => true,
                 'class' => 'form-control rounded-md input-border'
-            ])->label('عنوان داشبورد'. ' '. '<span class="text-danger">*</span>') ?>
+            ])->label('عنوان داشبورد' . ' ' . '<span class="text-danger">*</span>') ?>
         </div>
         <div class="col-7">
             <?= $form->field($model, 'description')->textInput([
                 'placeholder' => 'توضیحات داشبورد را وارد کنید...',
                 'maxlength' => true,
                 'class' => 'form-control rounded-md input-border'
-            ])->label('توضیحات داشبورد'. ' '. '<span class="text-danger">*</span>') ?>
+            ])->label('توضیحات داشبورد' . ' ' . '<span class="text-danger">*</span>') ?>
         </div>
         <?php if ($model->isNewRecord): ?>
             <div class="col-4">
                 <?= $form->field($model, 'status')->widget(Select2::class, [
                     'data' => ReportDashboard::itemAlias('Status'),
-                    'options' => [
-                    ],
+                    'options' => [],
                     'pluginOptions' => [
                         'allowClear' => true,
                         'initialize' => !$model->isNewRecord,

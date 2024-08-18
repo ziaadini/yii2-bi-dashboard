@@ -1,14 +1,14 @@
 <?php
 
-use sadi01\bidashboard\models\ExternalData;
-use sadi01\bidashboard\widgets\grid\ActionColumn;
-use sadi01\bidashboard\widgets\grid\GridView;
+use ziaadini\bidashboard\models\ExternalData;
+use ziaadini\bidashboard\widgets\grid\ActionColumn;
+use ziaadini\bidashboard\widgets\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\ExternalDataSearch $searchModel */
+/** @var ziaadini\bidashboard\models\ExternalDataSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 /** @var yii\data\ActiveDataProvider $dataProviderValues */
 
@@ -26,7 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 </h4>
                 <div>
                     <?=
-                    Html::a(Yii::t('biDashboard', 'Create External Data'), "javascript:void(0)",
+                    Html::a(
+                        Yii::t('biDashboard', 'Create External Data'),
+                        "javascript:void(0)",
                         [
                             'data-pjax' => '0',
                             'class' => "btn btn-primary",
@@ -37,7 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-url' => Url::to(['/bidashboard/external-data/create']),
                             'data-handle-form-submit' => 1,
                             'data-reload-pjax-container' => 'p-jax-external-data'
-                        ])
+                        ]
+                    )
                     ?>
                 </div>
             </div>
@@ -67,7 +70,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             'template' => '{add-value} {view}  {update}  {delete}',
                             'buttons' => [
                                 'update' => function ($url, ExternalData $model, $key) {
-                                    return Html::a('<i class="fa fa-pen"></i>', "javascript:void(0)",
+                                    return Html::a(
+                                        '<i class="fa fa-pen"></i>',
+                                        "javascript:void(0)",
                                         [
                                             'data-pjax' => '0',
                                             'class' => "btn text-primary",

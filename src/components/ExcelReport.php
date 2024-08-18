@@ -1,6 +1,7 @@
 <?php
 
-namespace sadi01\bidashboard\components;
+namespace ziaadini\bidashboard\components;
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Yii;
@@ -28,18 +29,17 @@ class ExcelReport
         $path = Yii::getAlias('@webroot/') . $fileName;
         $writer->setPreCalculateFormulas(false)->save($path);
 
-        if (file_exists($path)){
+        if (file_exists($path)) {
 
             // Set the headers for the response
             $headers = Yii::$app->response->getHeaders();
             $headers->set('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            $headers->set('Content-Disposition: attachment; filename="'. $fileName .'"');
+            $headers->set('Content-Disposition: attachment; filename="' . $fileName . '"');
 
             Yii::$app->response->SendFile($path)->send();
             unlink($path);
             return true;
-        }
-        else {
+        } else {
             throw new NotFoundHttpException("Error while Export as Excel File");
         }
     }
@@ -67,21 +67,21 @@ class ExcelReport
     {
         $this->sheet->setCellValue('A1', 'ویجت ها');
         for ($i = 0; $i < $rangeDateNumber; $i++) {
-            if ($model->range_type == self::RANGE_TYPE_DAILY){
+            if ($model->range_type == self::RANGE_TYPE_DAILY) {
                 $this->sheet->setCellValue($columnNames[$i] . 1, $i + 1);
-            }
-            elseif($model->range_type == self::RANGE_TYPE_MONTHLY){
+            } elseif ($model->range_type == self::RANGE_TYPE_MONTHLY) {
                 $this->sheet->setCellValue($columnNames[$i] . 1, $pdate->jdate_words(['mm' => $i + 1], ' '));
             }
         }
     }
 
-    public function setCellValues($excel, $widgets, $columnNames, $rangeDateNumber, $isBox = false) {
+    public function setCellValues($excel, $widgets, $columnNames, $rangeDateNumber, $isBox = false)
+    {
         foreach ($widgets as $index => $widget) {
             $title = $isBox ? $widget->title . ' | ' . $widget->widget->description : $widget->widget->title;
             $excel->sheet->setCellValue('A' . $index + 2, $title);
             $results = $isBox ? (isset($widget->results['chartData']) ? $widget->results['chartData'] : []) : (isset($widget->results['final_result']) ? $widget->results['final_result'] : []);
-            foreach ($results as $i => $data){
+            foreach ($results as $i => $data) {
                 $excel->sheet->setCellValue($columnNames[$i] . $index + 2, $results[$i]);
                 if ($rangeDateNumber == $i + 1) {
                     break;

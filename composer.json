@@ -1,5 +1,5 @@
 {
-  "name": "sadi01/yii2-bi-dashboard",
+  "name": "ziaadini/yii2-bi-dashboard",
   "description": "Yii2 Business Intelligence Dashboard",
   "keywords": [
     "yii2",
@@ -9,18 +9,23 @@
     "dashboard",
     "business intelligence"
   ],
-  "homepage": "https://github.com/Sadi01/yii2-bi-dashboard",
+  "homepage": "https://github.com/ziaadini/yii2-bi-dashboard",
   "type": "yii2-extension",
   "license": "BSD-3-Clause",
   "support": {
-    "issues": "https://github.com/Sadi01/yii2-bi-dashboard/issues?state=open",
-    "source": "https://github.com/Sadi01/yii2-bi-dashboard"
+    "issues": "https://github.com/ziaadini/yii2-bi-dashboard/issues?state=open",
+    "source": "https://github.com/ziaadini/yii2-bi-dashboard"
   },
   "authors": [
     {
+      "name": "Yadollah Ziaadini",
+      "email": "y.ziaadini@gmail.com",
+      "homepage": "https://github.com/ziaadini"
+    },
+    {
       "name": "Sadegh Shafii",
       "email": "sadshafiei.01@gmail.com",
-      "homepage": "https://github.com/Sadi01"
+      "homepage": "https://github.com/ziaadini"
     },
     {
       "name": "Saeed Baghaee Ravari",
@@ -44,11 +49,11 @@
     "kartik-v/yii2-widget-select2": "^2.1.4",
     "kartik-v/yii2-widget-depdrop": "@dev",
     "miloschuman/yii2-highcharts-widget": "^10.0",
-    "sadi01/yii2-daterangepicker": "*",
+    "ziaadini/yii2-daterangepicker": "*",
     "wbraganca/yii2-dynamicform": "*"
   },
   "autoload": {
-    "psr-4": { "sadi01\\bidashboard\\": "src" }
+    "psr-4": { "ziaadini\\bidashboard\\": "src" }
   },
   "config": {
     "process-timeout": 1800,
@@ -66,6 +71,6 @@
     }
   ],
   "extra": {
-    "bootstrap": "sadi01\\bidashboard\\Bootstrap"
+    "bootstrap": "ziaadini\\bidashboard\\Bootstrap"
   }
 }

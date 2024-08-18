@@ -1,12 +1,12 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * ExternalDataValueSearch represents the model behind the search form of `sadi01\bidashboard\models\ExternalDataValue`.
+ * ExternalDataValueSearch represents the model behind the search form of `ziaadini\bidashboard\models\ExternalDataValue`.
  */
 class ExternalDataValueSearch extends ExternalDataValue
 {

@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\ExternalData $model */
+/** @var ziaadini\bidashboard\models\ExternalData $model */
 
 $this->title = Yii::t('biDashboard', 'Update External Data: {name}', [
     'name' => $model->title,

@@ -1,11 +1,11 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use sadi01\bidashboard\models\ReportBox;
+use ziaadini\bidashboard\models\ReportBox;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use Yii;
 
@@ -141,5 +141,4 @@ class ReportDashboard extends ActiveRecord
             ],
         ];
     }
-
 }

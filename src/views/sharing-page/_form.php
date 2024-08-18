@@ -1,9 +1,9 @@
 <?php
 
-use sadi01\bidashboard\components\Pdate;
-use sadi01\bidashboard\models\SharingPage;
-use sadi01\bidashboard\models\ReportPage;
-use sadi01\dateRangePicker\dateRangePicker;
+use ziaadini\bidashboard\components\Pdate;
+use ziaadini\bidashboard\models\SharingPage;
+use ziaadini\bidashboard\models\ReportPage;
+use ziaadini\dateRangePicker\dateRangePicker;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -23,26 +23,26 @@ use yii\widgets\Pjax;
         ArrayHelper::map(ReportPage::find()->all(), 'id', 'title'),
         ['prompt' => 'Select a page']
     ) ?>
-    <?= $form->field($model, 'expire_time')->widget(dateRangePicker::class,[
+    <?= $form->field($model, 'expire_time')->widget(dateRangePicker::class, [
         'options'  => [
             'drops' => 'down',
             'placement' => 'right',
             'opens' => 'left',
             'language' => 'fa',
-            'jalaali'=> true,
-            'showDropdowns'=> true,
+            'jalaali' => true,
+            'showDropdowns' => true,
             'singleDatePicker' => true,
             'useTimestamp' => true,
             'timePicker' => true,
             'timePicker24Hour' => true,
             'timePickerSeconds' => true,
-            'locale'=> [
+            'locale' => [
                 'format' => 'jYYYY/jMM/jDD HH:mm:ss',
 
             ],
         ],
         'htmlOptions' => [
-            'class'	=> 'form-control',
+            'class'    => 'form-control',
             'id' => 'from_date_time',
             'autocomplete' => 'off',
         ]

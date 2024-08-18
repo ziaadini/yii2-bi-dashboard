@@ -1,8 +1,8 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
-use sadi01\bidashboard\models\ReportDashboard;
+use ziaadini\bidashboard\models\ReportDashboard;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -58,6 +58,4 @@ class ReportDashboardSearch extends ReportDashboard
 
         return $dataProvider;
     }
-
-
 }

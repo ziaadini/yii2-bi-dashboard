@@ -1,18 +1,18 @@
 <?php
 
-namespace sadi01\bidashboard\controllers;
+namespace ziaadini\bidashboard\controllers;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use sadi01\bidashboard\components\ExcelReport;
-use sadi01\bidashboard\helpers\CoreHelper;
-use sadi01\bidashboard\models\ReportBaseModel;
-use sadi01\bidashboard\models\ReportBox;
-use sadi01\bidashboard\models\ReportBoxWidgets;
-use sadi01\bidashboard\models\ReportWidget;
-use sadi01\bidashboard\traits\AjaxValidationTrait;
-use sadi01\bidashboard\traits\CoreTrait;
+use ziaadini\bidashboard\components\ExcelReport;
+use ziaadini\bidashboard\helpers\CoreHelper;
+use ziaadini\bidashboard\models\ReportBaseModel;
+use ziaadini\bidashboard\models\ReportBox;
+use ziaadini\bidashboard\models\ReportBoxWidgets;
+use ziaadini\bidashboard\models\ReportWidget;
+use ziaadini\bidashboard\traits\AjaxValidationTrait;
+use ziaadini\bidashboard\traits\CoreTrait;
 use yii\base\Model;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -34,29 +34,48 @@ class ReportBoxController extends Controller
                 'access' => [
                     'class' => AccessControl::class,
                     'rules' =>
+                    [
                         [
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportBox/create'],
-                                'actions' => [
-                                    'create','chart-types','range-types','date-types','get-widgets-by-range','run','run-box','inc-order', 'dec-order','export-excel'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportBox/update'],
-                                'actions' => [
-                                    'update','chart-types','range-types','date-types','get-widgets-by-range','run','run-box','export-excel','inc-order', 'dec-order','export-table'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportBox/delete'],
-                                'actions' => [
-                                    'delete'
-                                ]
-                            ],
-                        ]
+                            'allow' => true,
+                            'roles' => ['BI/ReportBox/create'],
+                            'actions' => [
+                                'create',
+                                'chart-types',
+                                'range-types',
+                                'date-types',
+                                'get-widgets-by-range',
+                                'run',
+                                'run-box',
+                                'inc-order',
+                                'dec-order',
+                                'export-excel'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportBox/update'],
+                            'actions' => [
+                                'update',
+                                'chart-types',
+                                'range-types',
+                                'date-types',
+                                'get-widgets-by-range',
+                                'run',
+                                'run-box',
+                                'export-excel',
+                                'inc-order',
+                                'dec-order',
+                                'export-table'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportBox/delete'],
+                            'actions' => [
+                                'delete'
+                            ]
+                        ],
+                    ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,
@@ -88,17 +107,14 @@ class ReportBoxController extends Controller
                         'status' => true,
                         'message' => Yii::t("biDashboard", 'Box Saved Successfully')
                     ]);
-
                 } catch (Exception $e) {
-                    Yii::error($e->getMessage() .PHP_EOL. $e->getTraceAsString(), Yii::$app->controller->id . '/' . Yii::$app->controller->action->id);
+                    Yii::error($e->getMessage() . PHP_EOL . $e->getTraceAsString(), Yii::$app->controller->id . '/' . Yii::$app->controller->action->id);
                     return $this->asJson([
                         'status' => false,
-                        'message' => $e->getMessage() .PHP_EOL. Yii::t("biDashboard", 'Error In Save Box'),
+                        'message' => $e->getMessage() . PHP_EOL . Yii::t("biDashboard", 'Error In Save Box'),
                     ]);
                 }
-            }
-
-            else {
+            } else {
                 return $this->asJson([
                     'status' => false,
                     'message' => $model->errors,
@@ -110,7 +126,6 @@ class ReportBoxController extends Controller
         return $this->renderAjax('create', [
             'model' => $model,
         ]);
-
     }
 
     public function actionUpdate($id)
@@ -125,8 +140,7 @@ class ReportBoxController extends Controller
                     'status' => true,
                     'message' => Yii::t("biDashboard", 'The Operation Was Successful')
                 ]);
-            }
-            else {
+            } else {
                 return $this->asJson([
                     'status' => false,
                     'message' => $model->errors,
@@ -138,7 +152,6 @@ class ReportBoxController extends Controller
         return $this->renderAjax('update', [
             'model' => $model,
         ]);
-
     }
 
     public function actionRunBox($id, $year = null, $month = null, $day = null)
@@ -230,15 +243,14 @@ class ReportBoxController extends Controller
 
         $box->lastDateSet = $box->getLastDateSet($box->last_date_set);
 
-        if ($box->range_type == ReportBox::RANGE_TYPE_DAILY)
-        {
+        if ($box->range_type == ReportBox::RANGE_TYPE_DAILY) {
             if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
-                $box->rangeDateCount = count($this->getMonthDays($box->lastDateSet['year']."/".$box->lastDateSet['month']));
+                $box->rangeDateCount = count($this->getMonthDays($box->lastDateSet['year'] . "/" . $box->lastDateSet['month']));
             else
                 $box->rangeDateCount = count($this->getMonthDaysByDateArray($box->getStartAndEndTimeStampsForStaticDate($box->date_type)));
         }
 
-        foreach ($box->boxWidgets as $boxWidget){
+        foreach ($box->boxWidgets as $boxWidget) {
 
             $boxWidget->setWidgetProperties();
             if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
@@ -283,8 +295,7 @@ class ReportBoxController extends Controller
                 'status' => true,
                 'message' => Yii::t("biDashboard", 'The Operation Was Successful')
             ]);
-        }
-        else {
+        } else {
             return $this->asJson([
                 'status' => false,
                 'message' => Yii::t("biDashboard", 'Error In Delete Action')
@@ -292,7 +303,8 @@ class ReportBoxController extends Controller
         }
     }
 
-    public function actionChartTypes() {
+    public function actionChartTypes()
+    {
 
         $out = [];
 
@@ -301,7 +313,7 @@ class ReportBoxController extends Controller
             if ($display_type == ReportBox::DISPLAY_CHART) {
 
                 $charts = ReportBox::itemAlias('ChartNames');
-                foreach ($charts as $key => $chart){
+                foreach ($charts as $key => $chart) {
                     $out[] = [
                         "id" => $key,
                         "name" => $chart
@@ -330,18 +342,15 @@ class ReportBoxController extends Controller
             $display_type = $_POST['depdrop_parents'][0];
             $chart_type = $_POST['depdrop_parents'][1];
 
-            if ($display_type == ReportBox::DISPLAY_CARD || $chart_type == ReportBox::CHART_PIE || $chart_type == ReportBox::CHART_WORD_CLOUD)
-            {
+            if ($display_type == ReportBox::DISPLAY_CARD || $chart_type == ReportBox::CHART_PIE || $chart_type == ReportBox::CHART_WORD_CLOUD) {
                 $dateTypes = ReportBox::itemAlias('DateTypes');
-                foreach ($dateTypes as $key => $dateType){
+                foreach ($dateTypes as $key => $dateType) {
                     $out[] = [
                         "id" => $key,
                         "name" => $dateType
                     ];
                 }
-            }
-            elseif ($display_type == ReportBox::DISPLAY_CHART && $chart_type != ReportBox::CHART_PIE && $chart_type != ReportBox::CHART_WORD_CLOUD || $display_type == ReportBox::DISPLAY_TABLE)
-            {
+            } elseif ($display_type == ReportBox::DISPLAY_CHART && $chart_type != ReportBox::CHART_PIE && $chart_type != ReportBox::CHART_WORD_CLOUD || $display_type == ReportBox::DISPLAY_TABLE) {
                 $out[] = [
                     "id" => ReportBox::DATE_TYPE_FLEXIBLE,
                     "name" => ReportBox::itemAlias('DateTypes', ReportBox::DATE_TYPE_FLEXIBLE)
@@ -368,10 +377,9 @@ class ReportBoxController extends Controller
 
             $date_type = $_POST['depdrop_parents'][0];
 
-            if ($date_type == ReportBox::DATE_TYPE_FLEXIBLE)
-            {
+            if ($date_type == ReportBox::DATE_TYPE_FLEXIBLE) {
                 $rangTypes = ReportBox::itemAlias('RangeType');
-                foreach ($rangTypes as $key => $rangType){
+                foreach ($rangTypes as $key => $rangType) {
                     $out[] = [
                         "id" => $key,
                         "name" => $rangType
@@ -391,16 +399,17 @@ class ReportBoxController extends Controller
         ]);
     }
 
-    public function actionGetWidgetsByRange(){
+    public function actionGetWidgetsByRange()
+    {
 
         $out = [];
 
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
-            if ($parents != null){
+            if ($parents != null) {
                 $range_type = $parents[0];
                 $widgets = ReportWidget::itemAlias('List', $range_type);
-                foreach ($widgets as $key => $widget){
+                foreach ($widgets as $key => $widget) {
                     $out[] = [
                         "id" => $key,
                         "name" => $widget
@@ -427,5 +436,4 @@ class ReportBoxController extends Controller
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
-
 }

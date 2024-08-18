@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\ReportModelClass $model */
+/** @var ziaadini\bidashboard\models\ReportModelClass $model */
 
 $this->title = Yii::t('biDashboard', 'Update Report Model Class: {name}', [
     'name' => $model->title,

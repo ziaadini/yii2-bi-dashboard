@@ -1,13 +1,13 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use sadi01\bidashboard\models\ReportWidget;
+use ziaadini\bidashboard\models\ReportWidget;
 
 /**
- * ReportWidgetSearch represents the model behind the search form of `sadi01\bidashboard\models\ReportWidget`.
+ * ReportWidgetSearch represents the model behind the search form of `ziaadini\bidashboard\models\ReportWidget`.
  */
 class ReportWidgetSearch extends ReportWidget
 {
@@ -59,7 +59,7 @@ class ReportWidgetSearch extends ReportWidget
         $query->andFilterWhere([
             'id' => $this->id,
             'search_model_class' => $this->search_model_class,
-            'search_model_method'=>$this->search_model_method,
+            'search_model_method' => $this->search_model_method,
             'status' => $this->status,
             'deleted_at' => $this->deleted_at,
             'range_type' => $this->range_type,

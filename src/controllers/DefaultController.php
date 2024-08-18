@@ -1,6 +1,6 @@
 <?php
 
-namespace sadi01\bidashboard\controllers;
+namespace ziaadini\bidashboard\controllers;
 
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -17,15 +17,15 @@ class DefaultController extends Controller
                 'access' => [
                     'class' => AccessControl::class,
                     'rules' =>
+                    [
                         [
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/Default/index'],
-                                'actions' => [
-                                    'index'
-                                ]
-                            ],
-                        ]
+                            'allow' => true,
+                            'roles' => ['BI/Default/index'],
+                            'actions' => [
+                                'index'
+                            ]
+                        ],
+                    ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,

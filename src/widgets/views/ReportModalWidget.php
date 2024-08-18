@@ -1,8 +1,8 @@
 <?php
 
-namespace sadi01\bidashboard\widgets\views;
+namespace ziaadini\bidashboard\widgets\views;
 
-use sadi01\bidashboard\BiAssets;
+use ziaadini\bidashboard\BiAssets;
 use Yii;
 use yii\bootstrap4\Modal;
 use yii\helpers\Url;
@@ -28,7 +28,9 @@ $url = $biAssets->baseUrl;
 
 ?>
 
-<?= Html::a(Html::tag('span', 'افزودن ویجت', ['class' => ['btn btn-info']]), "javascript:void(0)",
+<?= Html::a(
+    Html::tag('span', 'افزودن ویجت', ['class' => ['btn btn-info']]),
+    "javascript:void(0)",
     [
         'data-pjax' => '0',
         'data-size' => 'modal-xl',
@@ -48,9 +50,12 @@ $url = $biAssets->baseUrl;
         ]),
         'data-handle-form-submit' => 1,
         'class' => 'm-1',
-    ]) ?>
+    ]
+) ?>
 
-<?= Html::a(Html::tag('span', 'لیست ویجت‌ها', ['class' => ['btn btn-info']]), "javascript:void(0)",
+<?= Html::a(
+    Html::tag('span', 'لیست ویجت‌ها', ['class' => ['btn btn-info']]),
+    "javascript:void(0)",
     [
         'data-pjax' => '0',
         'data-size' => 'modal-xl',
@@ -65,9 +70,10 @@ $url = $biAssets->baseUrl;
         ]),
         'data-handle-form-submit' => 0,
         'class' => 'm-1',
-    ]) ?>
+    ]
+) ?>
 
-    <?php if (Yii::$app->controller->module->layout !== 'bid_main') { ?>
+<?php if (Yii::$app->controller->module->layout !== 'bid_main') { ?>
     <?php
     Modal::begin([
         'headerOptions' => ['id' => 'modalPjaxOverHeader-bi'],
@@ -87,7 +93,7 @@ $url = $biAssets->baseUrl;
     <?php Modal::end(); ?>
 <?php } ?>
 
-    <?php if (Yii::$app->controller->module->layout !== 'bid_main') { ?>
+<?php if (Yii::$app->controller->module->layout !== 'bid_main') { ?>
     <?php
     Modal::begin([
         'headerOptions' => ['id' => 'modalPjaxHeader-bi'],

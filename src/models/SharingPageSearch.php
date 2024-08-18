@@ -1,6 +1,6 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -18,7 +18,7 @@ class SharingPageSearch extends SharingPage
     {
         return [
             [['id', 'page_id', 'expire_time', 'created_by', 'updated_by', 'created_at', 'updated_at', 'deleted_at'], 'integer'],
-            [['access_key','expire_time'], 'safe'],
+            [['access_key', 'expire_time'], 'safe'],
         ];
     }
 
@@ -52,7 +52,7 @@ class SharingPageSearch extends SharingPage
 
         if (!$this->validate()) {
 
-             $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 

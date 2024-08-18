@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\ExternalDataValue $model */
+/** @var ziaadini\bidashboard\models\ExternalDataValue $model */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'External Data Values'), 'url' => ['index']];

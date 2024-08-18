@@ -1,13 +1,13 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
-use sadi01\bidashboard\helpers\FormatHelper;
-use sadi01\bidashboard\models\ReportBox;
-use sadi01\bidashboard\models\ReportWidget;
-use sadi01\bidashboard\traits\AjaxValidationTrait;
+use ziaadini\bidashboard\helpers\FormatHelper;
+use ziaadini\bidashboard\models\ReportBox;
+use ziaadini\bidashboard\models\ReportWidget;
+use ziaadini\bidashboard\traits\AjaxValidationTrait;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
-use sadi01\bidashboard\traits\CoreTrait;
+use ziaadini\bidashboard\traits\CoreTrait;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -44,7 +44,7 @@ class ReportBoxWidgets extends ActiveRecord
     const FORMAT_NUMBER = 1;
     const FORMAT_CURRENCY = 2;
     const FORMAT_GRAM = 3;
-    const FORMAT_KILOGRAM= 4;
+    const FORMAT_KILOGRAM = 4;
 
     const CARD_PRIMARY = 1;
     const CARD_SECONDARY = 2;
@@ -176,7 +176,8 @@ class ReportBoxWidgets extends ActiveRecord
         };
     }
 
-    public function setWidgetProperties() {
+    public function setWidgetProperties()
+    {
 
         $this->description = $this->widget->description;
         $this->rangeType = $this->widget->range_type;
@@ -187,7 +188,7 @@ class ReportBoxWidgets extends ActiveRecord
         $this->isValid = self::VALID;
     }
 
-    public function getStartAndEndTimestamps($widget, $year, $month, $day) : Array
+    public function getStartAndEndTimestamps($widget, $year, $month, $day): array
     {
         $date_array = [];
 
@@ -200,7 +201,7 @@ class ReportBoxWidgets extends ActiveRecord
 
         // Handle daily range type
         if ($isDaily) {
-            $timestamp = $this->jalaliToTimestamp($year.'/'.$month.'/'.$day.' 00:00:00');
+            $timestamp = $this->jalaliToTimestamp($year . '/' . $month . '/' . $day . ' 00:00:00');
             $date_array = ($isCard || $isPieOrWordCloud) ? $this->getStartAndEndOfDay(time: $timestamp) : $this->getStartAndEndOfMonth($year . '/' . $month);
 
             if (!$isCard) {
@@ -212,35 +213,33 @@ class ReportBoxWidgets extends ActiveRecord
         if ($isMonthly) {
             if ($isFlexibleYear) {
                 $date_array = $this->getStartAndEndOfYear($year);
-            }
-            else
-                $date_array = ($isCard || $isPieOrWordCloud ) ? $this->getStartAndEndOfMonth($year . '/' . $month) : $this->getStartAndEndOfYear($year);
+            } else
+                $date_array = ($isCard || $isPieOrWordCloud) ? $this->getStartAndEndOfMonth($year . '/' . $month) : $this->getStartAndEndOfYear($year);
         }
         return $date_array;
     }
 
-    public function collectResults($widget, $results) {
+    public function collectResults($widget, $results)
+    {
 
         $pdate = Yii::$app->pdate;
 
-        if ($widget->box->display_type == ReportBox::DISPLAY_CARD)
-        {
-            foreach ($results as $result){
+        if ($widget->box->display_type == ReportBox::DISPLAY_CARD) {
+            foreach ($results as $result) {
                 if (isset($result[$widget->widget_field]) && is_numeric($result[$widget->widget_field]))
                     $widget->cardResultCount += $result[$widget->widget_field];
                 else
                     $widget->isValid = self::IN_VALID;
             }
         }
-        if ($widget->box->display_type == ReportBox::DISPLAY_CHART && ($widget->box->chart_type == ReportBox::CHART_PIE || $widget->box->chart_type == ReportBox::CHART_WORD_CLOUD)){
-            foreach ($results as $result){
+        if ($widget->box->display_type == ReportBox::DISPLAY_CHART && ($widget->box->chart_type == ReportBox::CHART_PIE || $widget->box->chart_type == ReportBox::CHART_WORD_CLOUD)) {
+            foreach ($results as $result) {
                 if (isset($result[$widget->widget_field]) && is_numeric($result[$widget->widget_field]))
                     $widget->chartResultCount += $result[$widget->widget_field];
                 else
                     $widget->isValid = self::IN_VALID;
             }
-        }
-        else {
+        } else {
             $widget->results['data'] = array_map(function ($item) use ($widget) {
                 return (int)$item[$widget->widget_field];
             }, $results);
@@ -255,24 +254,20 @@ class ReportBoxWidgets extends ActiveRecord
 
             $widget->results['combine'] = array_combine($widget->results['categories'], $widget->results['data']);
 
-            if ($widget->rangeType == ReportWidget::RANGE_TYPE_DAILY){
+            if ($widget->rangeType == ReportWidget::RANGE_TYPE_DAILY) {
                 for ($i = 0; $i <= 30; $i++) {
-                    if (array_key_exists($i+1, $widget->results['combine'])) {
-                        $widget->results['chartData'][$i] = $widget->results['combine'][$i+1];
-                    }
-                    else {
+                    if (array_key_exists($i + 1, $widget->results['combine'])) {
+                        $widget->results['chartData'][$i] = $widget->results['combine'][$i + 1];
+                    } else {
                         $widget->results['chartData'][$i] = 0;
                     }
                 }
-            }
+            } elseif ($widget->rangeType == ReportWidget::RANGE_TYPE_MONTHLY) {
 
-            elseif($widget->rangeType == ReportWidget::RANGE_TYPE_MONTHLY){
-
-                for ($i = 0; $i <= 11; $i++){
-                    if (array_key_exists($pdate->jdate_words(['mm' => $i+1])['mm'], $widget->results['combine'])){
-                        $widget->results['chartData'][$i] = $widget->results['combine'][$pdate->jdate_words(['mm' => $i+1])['mm']];
-                    }
-                    else {
+                for ($i = 0; $i <= 11; $i++) {
+                    if (array_key_exists($pdate->jdate_words(['mm' => $i + 1])['mm'], $widget->results['combine'])) {
+                        $widget->results['chartData'][$i] = $widget->results['combine'][$pdate->jdate_words(['mm' => $i + 1])['mm']];
+                    } else {
                         $widget->results['chartData'][$i] = 0;
                     }
                 }
@@ -289,12 +284,10 @@ class ReportBoxWidgets extends ActiveRecord
                 if ($currentData != 0 && $nextData != 0) {
                     $change = $nextData - $currentData;
                     $percentageOfChange[$i + 1] = round(($change / $currentData) * 100, 2);
-                }
-                else {
+                } else {
                     $percentageOfChange[$i + 1] = 0;
                 }
             }
-
         }
     }
 
@@ -366,5 +359,4 @@ class ReportBoxWidgets extends ActiveRecord
             ],
         ];
     }
-
 }

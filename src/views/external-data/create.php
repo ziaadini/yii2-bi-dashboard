@@ -1,7 +1,7 @@
 <?php
 
 /** @var yii\web\View $this */
-/** @var sadi01\bidashboard\models\ExternalData $model */
+/** @var ziaadini\bidashboard\models\ExternalData $model */
 
 $this->title = Yii::t('biDashboard', 'Create External Data');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('biDashboard', 'External Datas'), 'url' => ['index']];

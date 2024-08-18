@@ -3,10 +3,10 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
-use sadi01\bidashboard\models\ReportModelClass;
-use sadi01\bidashboard\models\ReportPage;
+use ziaadini\bidashboard\models\ReportModelClass;
+use ziaadini\bidashboard\models\ReportPage;
 use yii\web\View;
-use sadi01\bidashboard\models\ReportWidgetResult;
+use ziaadini\bidashboard\models\ReportWidgetResult;
 
 use yii\widgets\Pjax;
 
@@ -14,7 +14,7 @@ use yii\widgets\Pjax;
 /**
  * @var $modelRoute string
  * @var $runWidget ReportWidgetResult
- * @var sadi01\bidashboard\models\ReportWidget $model
+ * @var ziaadini\bidashboard\models\ReportWidget $model
  */
 
 $this->title = $model->title;
@@ -93,18 +93,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     <h4>پارامترهای ورودی</h4>
                     <table class="table table-striped table-bordered text-center kv-grid-table">
                         <thead class="kv-table-header w1">
-                        <tr>
-                            <th>پارامتر</th>
-                            <th>مقدار</th>
-                        </tr>
+                            <tr>
+                                <th>پارامتر</th>
+                                <th>مقدار</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($model->params as $key => $value): ?>
-                            <tr>
-                                <td><?= $key ?></td>
-                                <td><?= json_encode($value) ?></td>
-                            </tr>
-                        <?php endforeach; ?>
+                            <?php foreach ($model->params as $key => $value): ?>
+                                <tr>
+                                    <td><?= $key ?></td>
+                                    <td><?= json_encode($value) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -112,18 +112,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     <h4>پارامترهای خروجی</h4>
                     <table class="table table-striped table-bordered text-center kv-grid-table">
                         <thead class="kv-table-header w1">
-                        <tr>
-                            <th>پارامتر</th>
-                            <th>مقدار</th>
-                        </tr>
+                            <tr>
+                                <th>پارامتر</th>
+                                <th>مقدار</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($model->outputColumn as $key => $value): ?>
-                            <tr>
-                                <td><?= $value['column_name'] ?></td>
-                                <td><?= $value['column_title'] ?></td>
-                            </tr>
-                        <?php endforeach; ?>
+                            <?php foreach ($model->outputColumn as $key => $value): ?>
+                                <tr>
+                                    <td><?= $value['column_name'] ?></td>
+                                    <td><?= $value['column_title'] ?></td>
+                                </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>

@@ -1,7 +1,7 @@
 <?php
 
-use sadi01\bidashboard\models\ReportModelClass;
-use sadi01\bidashboard\models\ReportWidget;
+use ziaadini\bidashboard\models\ReportModelClass;
+use ziaadini\bidashboard\models\ReportWidget;
 use yii\bootstrap4\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -38,27 +38,27 @@ use yii\web\View;
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
             <thead>
-            <tr>
-                <th colspan="2">پارامتر‌های جستجوی</th>
-            </tr>
-            <tr>
-                <th><?= Yii::t('biDashboard', 'attribute') ?></th>
-                <th><?= Yii::t('biDashboard', 'value') ?></th>
-            </tr>
+                <tr>
+                    <th colspan="2">پارامتر‌های جستجوی</th>
+                </tr>
+                <tr>
+                    <th><?= Yii::t('biDashboard', 'attribute') ?></th>
+                    <th><?= Yii::t('biDashboard', 'value') ?></th>
+                </tr>
             </thead>
             <tbody>
-            <?php if (count($queryParams)): ?>
-                <?php foreach ($queryParams as $Pkey => $Pvalue): ?>
-                    <tr>
-                        <td>
-                            <?= Yii::t('app', $Pkey) ?>
-                        </td>
-                        <td>
-                            <?= json_encode($Pvalue) ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
+                <?php if (count($queryParams)): ?>
+                    <?php foreach ($queryParams as $Pkey => $Pvalue): ?>
+                        <tr>
+                            <td>
+                                <?= Yii::t('app', $Pkey) ?>
+                            </td>
+                            <td>
+                                <?= json_encode($Pvalue) ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
@@ -66,33 +66,33 @@ use yii\web\View;
     <div class="repeater">
         <table class="table table-striped table-bordered">
             <thead>
-            <tr>
-                <th colspan="2">فیلد‌های خروجی گزارش ویجت</th>
-                <th>
-                    <input data-repeater-create type="button" value="افزودن" class="btn btn-success"/>
-                </th>
-            </tr>
+                <tr>
+                    <th colspan="2">فیلد‌های خروجی گزارش ویجت</th>
+                    <th>
+                        <input data-repeater-create type="button" value="افزودن" class="btn btn-success" />
+                    </th>
+                </tr>
             </thead>
             <tbody data-repeater-list="output_column">
-            <tr data-repeater-item>
-                <th>
-                    <div class="form-group">
-                        <label>فیلد</label>
-                        <input type="text" name="column_name" class="form-control"/>
-                    </div>
-                </th>
-                <th>
-                    <div class="form-group">
-                        <label>عنوان</label>
-                        <input type="text" name="column_title" class="form-control"/>
-                    </div>
-                </th>
-                <th class="col-sm-1">
-                    <div class="form-group mt-2">
-                        <input data-repeater-delete type="button" value="حذف" class="btn btn-danger mt-4"/>
-                    </div>
-                </th>
-            </tr>
+                <tr data-repeater-item>
+                    <th>
+                        <div class="form-group">
+                            <label>فیلد</label>
+                            <input type="text" name="column_name" class="form-control" />
+                        </div>
+                    </th>
+                    <th>
+                        <div class="form-group">
+                            <label>عنوان</label>
+                            <input type="text" name="column_title" class="form-control" />
+                        </div>
+                    </th>
+                    <th class="col-sm-1">
+                        <div class="form-group mt-2">
+                            <input data-repeater-delete type="button" value="حذف" class="btn btn-danger mt-4" />
+                        </div>
+                    </th>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -104,19 +104,18 @@ use yii\web\View;
 </div>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         var outPutColumn = $('.repeater').repeater({
-            show: function () {
+            show: function() {
                 $(this).slideDown();
             },
         });
 
         outPutColumn.setList([
-            <?php foreach ($output_column as $Kcolumn => $Vcolumn): ?>
-            {
-                "column_name": "<?= $Kcolumn ?>",
-                "column_title": "<?= $Vcolumn ?>",
-            },
+            <?php foreach ($output_column as $Kcolumn => $Vcolumn): ?> {
+                    "column_name": "<?= $Kcolumn ?>",
+                    "column_title": "<?= $Vcolumn ?>",
+                },
             <?php endforeach; ?>
         ])
     });

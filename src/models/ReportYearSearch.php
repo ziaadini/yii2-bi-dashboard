@@ -1,13 +1,13 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use sadi01\bidashboard\models\ReportYear;
+use ziaadini\bidashboard\models\ReportYear;
 
 /**
- * ReportYearSearch represents the model behind the search form of `sadi01\bidashboard\models\ReportYear`.
+ * ReportYearSearch represents the model behind the search form of `ziaadini\bidashboard\models\ReportYear`.
  */
 class ReportYearSearch extends ReportYear
 {

@@ -1,17 +1,17 @@
 <?php
 
-namespace sadi01\bidashboard\controllers;
+namespace ziaadini\bidashboard\controllers;
 
-use sadi01\bidashboard\models\ReportBox;
-use sadi01\bidashboard\models\ReportDashboard;
-use sadi01\bidashboard\models\ReportBoxWidgets;
-use sadi01\bidashboard\models\ReportPage;
-use sadi01\bidashboard\models\ReportPageWidget;
-use sadi01\bidashboard\models\ReportWidget;
-use sadi01\bidashboard\models\ReportWidgetResult;
-use sadi01\bidashboard\models\ReportWidgetSearch;
-use sadi01\bidashboard\traits\AjaxValidationTrait;
-use sadi01\bidashboard\traits\CoreTrait;
+use ziaadini\bidashboard\models\ReportBox;
+use ziaadini\bidashboard\models\ReportDashboard;
+use ziaadini\bidashboard\models\ReportBoxWidgets;
+use ziaadini\bidashboard\models\ReportPage;
+use ziaadini\bidashboard\models\ReportPageWidget;
+use ziaadini\bidashboard\models\ReportWidget;
+use ziaadini\bidashboard\models\ReportWidgetResult;
+use ziaadini\bidashboard\models\ReportWidgetSearch;
+use ziaadini\bidashboard\traits\AjaxValidationTrait;
+use ziaadini\bidashboard\traits\CoreTrait;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -38,76 +38,76 @@ class ReportWidgetController extends Controller
                 'access' => [
                     'class' => AccessControl::class,
                     'rules' =>
+                    [
                         [
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportWidget/index'],
-                                'actions' => [
-                                    'index'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportWidget/view'],
-                                'actions' => [
-                                    'view'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportWidget/create'],
-                                'actions' => [
-                                    'create',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportWidget/update'],
-                                'actions' => [
-                                    'update',
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportWidget/delete'],
-                                'actions' => [
-                                    'delete'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportWidget/open-modal'],
-                                'actions' => [
-                                    'open-modal'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'roles' => ['BI/ReportWidget/run'],
-                                'actions' => [
-                                    'run'
-                                ]
-                            ],
-                            [
-                                'allow' => true,
-                                'actions' => [
-                                    'modal-show-chart'
-                                ]
-                            ],
+                            'allow' => true,
+                            'roles' => ['BI/ReportWidget/index'],
+                            'actions' => [
+                                'index'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportWidget/view'],
+                            'actions' => [
+                                'view'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportWidget/create'],
+                            'actions' => [
+                                'create',
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportWidget/update'],
+                            'actions' => [
+                                'update',
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportWidget/delete'],
+                            'actions' => [
+                                'delete'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportWidget/open-modal'],
+                            'actions' => [
+                                'open-modal'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['BI/ReportWidget/run'],
+                            'actions' => [
+                                'run'
+                            ]
+                        ],
+                        [
+                            'allow' => true,
+                            'actions' => [
+                                'modal-show-chart'
+                            ]
+                        ],
 
 
-                        ]
+                    ]
                 ],
                 'verbs' => [
                     'class' => VerbFilter::class,
                     'actions' => [
                         'index' => ['GET'],
                         'view' => ['GET'],
-                        'create' => ['GET','POST'],
-                        'update' => ['GET','POST'],
-                        'delete' => ['GET','POST','DELETE'],
+                        'create' => ['GET', 'POST'],
+                        'update' => ['GET', 'POST'],
+                        'delete' => ['GET', 'POST', 'DELETE'],
                         'open-modal' => ['GET'],
-                        'run' =>  ['GET','POST'],
+                        'run' =>  ['GET', 'POST'],
                         'modal-show-chart' => ['GET'],
                     ],
                 ],
@@ -154,14 +154,15 @@ class ReportWidgetController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|Response
      */
-    public function actionCreate($searchModelClass = null,
-                                 $searchModelMethod = null,
-                                 $searchModelRunResultView = null,
-                                 $search_route = null,
-                                 $search_model_form_name = null,
-                                 $queryParams = null,
-                                 $output_column = null)
-    {
+    public function actionCreate(
+        $searchModelClass = null,
+        $searchModelMethod = null,
+        $searchModelRunResultView = null,
+        $search_route = null,
+        $search_model_form_name = null,
+        $queryParams = null,
+        $output_column = null
+    ) {
         $model = new ReportWidget();
         $model->loadDefaultValues();
 

@@ -1,7 +1,7 @@
 <?php
 
-use sadi01\bidashboard\models\ReportBoxWidgets;
-use sadi01\bidashboard\models\ReportBox;
+use ziaadini\bidashboard\models\ReportBoxWidgets;
+use ziaadini\bidashboard\models\ReportBox;
 use yii\helpers\Html;
 use yii\web\View;
 

@@ -1,5 +1,6 @@
 <?php
-namespace sadi01\bidashboard\widgets\grid;
+
+namespace ziaadini\bidashboard\widgets\grid;
 
 
 use Yii;
@@ -13,7 +14,7 @@ use yii\grid\ActionColumn as YiiActionColumn;
  */
 class ActionColumn extends YiiActionColumn
 {
-    public $contentOptions = ['class'=>'grid-btn'];
+    public $contentOptions = ['class' => 'grid-btn'];
     /**
      * Initializes the default button rendering callbacks.
      */

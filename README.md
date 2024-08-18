@@ -1,9 +1,9 @@
 <p align="center">
     <a href="https://en.wikipedia.org/wiki/Business_intelligence" target="_blank" rel="external">
-        <img src="https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/yii.png" height="80px">
+        <img src="https://raw.githubusercontent.com/ziaadini/yii2-bi-dashboard/master/src/img/yii.png" height="80px">
     </a>
     <a href="https://en.wikipedia.org/wiki/Business_intelligence" target="_blank" rel="external">
-        <img src="https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/BI.png" height="80px">
+        <img src="https://raw.githubusercontent.com/ziaadini/yii2-bi-dashboard/master/src/img/BI.png" height="80px">
     </a>
     <h1 align="center">Business intelligence dashboard for Yii 2</h1>
     <br>
@@ -27,7 +27,7 @@ Installation
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/):
 
 ```
-composer require --prefer-dist sadi01/yii2-bi-dashboard:"*"
+composer require --prefer-dist ziaadini/yii2-bi-dashboard:"*"
 ```
 
 ### Alternative Method:
@@ -38,7 +38,7 @@ following entry to the `require` section:
 ```json
 {
   "require": {
-    "sadi01/yii2-bi-dashboard": "*"
+    "ziaadini/yii2-bi-dashboard": "*"
   }
 }
 ```
@@ -62,7 +62,7 @@ return [
     //....
     'modules' => [
         'bidashboard' => [
-            'class' => 'sadi01\bidashboard\Module',
+            'class' => 'ziaadini\bidashboard\Module',
         ],
     ]
 ];
@@ -81,7 +81,7 @@ DB Migrations
 Run module migrations:
 
 ```php
-php yii migrate --migrationPath=@sadi01/bidashboard/migrations
+php yii migrate --migrationPath=@ziaadini/bidashboard/migrations
 ```
 
 Or, Add migrations path in console application config:
@@ -92,7 +92,7 @@ Or, Add migrations path in console application config:
         'class' => 'yii\console\controllers\MigrateController',
         'migrationNamespaces' => [],
         'migrationPath' => [
-            '@vendor/sadi01/yii2-bi-dashboard/src/migrations',
+            '@vendor/ziaadini/yii2-bi-dashboard/src/migrations',
             '@app/migrations'
         ]
     ],
@@ -104,7 +104,7 @@ How To Use
 add to view model:
 
 ```php
-use sadi01\bidashboard\widgets\ReportModalWidget;
+use ziaadini\bidashboard\widgets\ReportModalWidget;
 
 <?= ReportModalWidget::widget([
     'queryParams' => $queryParams,

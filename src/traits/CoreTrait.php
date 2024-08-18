@@ -1,8 +1,8 @@
 <?php
 
-namespace sadi01\bidashboard\traits;
+namespace ziaadini\bidashboard\traits;
 
-use sadi01\bidashboard\components\Pdate;
+use ziaadini\bidashboard\components\Pdate;
 use Yii;
 
 /**
@@ -242,7 +242,7 @@ trait CoreTrait
      * @param array $date_array // e.g: ['start' => start_timestamp, 'end' => end_timestamp]
      * @return array
      */
-    public function getMonthDaysByDateArray(Array $date_array)
+    public function getMonthDaysByDateArray(array $date_array)
     {
         for ($start = $date_array['start']; $start <= $date_array['end']; $start = $start + (60 * 60 * 24)) {
             $monthDays[] = [
@@ -288,7 +288,8 @@ trait CoreTrait
         return null;
     }
 
-    protected function getStartAndEndOfLastMonth(){
+    protected function getStartAndEndOfLastMonth()
+    {
 
         $pdate = Yii::$app->pdate;
         list($jYear, $jMonth, $jDay) = explode('/', $pdate->jdate('Y/m/d', tr_num: 'en'));
@@ -334,7 +335,7 @@ trait CoreTrait
      * @param int $dateType // e.g. DATE_TYPE_*
      * @return Array
      */
-    public function getStartAndEndTimeStampsForStaticDate(int $dateType) : Array
+    public function getStartAndEndTimeStampsForStaticDate(int $dateType): array
     {
         $date_array = [];
 

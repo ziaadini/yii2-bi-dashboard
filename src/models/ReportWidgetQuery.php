@@ -1,13 +1,13 @@
 <?php
 
-namespace sadi01\bidashboard\models;
+namespace ziaadini\bidashboard\models;
 
 use yii\db\ActiveQuery;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
 
 /**
- * This is the ActiveQuery class for [[\sadi01\bidashboard\models\ReportWidget]].
+ * This is the ActiveQuery class for [[\ziaadini\bidashboard\models\ReportWidget]].
  *
  * @see ReportWidget
  *

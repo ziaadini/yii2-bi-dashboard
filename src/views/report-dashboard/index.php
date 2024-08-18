@@ -1,9 +1,9 @@
 <?php
 
-use sadi01\bidashboard\models\ReportDashboard;
-use sadi01\bidashboard\models\ReportDashboardSearch;
-use sadi01\bidashboard\widgets\grid\ActionColumn;
-use sadi01\bidashboard\widgets\grid\GridView;
+use ziaadini\bidashboard\models\ReportDashboard;
+use ziaadini\bidashboard\models\ReportDashboardSearch;
+use ziaadini\bidashboard\widgets\grid\ActionColumn;
+use ziaadini\bidashboard\widgets\grid\GridView;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -27,7 +27,9 @@ $this->params['breadcrumbs'][] = ' ' . $this->title;
                 <div class="d-flex align-items-center font-16 font-bold"><span><?= Yii::t('biDashboard', 'Dashboard List') ?></span></div>
                 <?= $this->render('_search', ['model' => $searchModel]); ?>
                 <div>
-                    <?= Html::a(Yii::t('biDashboard', 'create dashboard'), "javascript:void(0)",
+                    <?= Html::a(
+                        Yii::t('biDashboard', 'create dashboard'),
+                        "javascript:void(0)",
                         [
                             'data-pjax' => '0',
                             'class' => "btn btn-success rounded-md",
@@ -38,7 +40,8 @@ $this->params['breadcrumbs'][] = ' ' . $this->title;
                             'data-url' => Url::to(['report-dashboard/create']),
                             'data-handle-form-submit' => 1,
                             'data-reload-pjax-container' => 'p-jax-report-dashboard'
-                        ]) ?>
+                        ]
+                    ) ?>
                 </div>
             </div>
             <div class="card-body page-content container-fluid text-left">
@@ -52,7 +55,7 @@ $this->params['breadcrumbs'][] = ' ' . $this->title;
                             'attribute' => 'title',
                             'format' => 'raw',
                             'value' => function (ReportDashboard $model) {
-                                return Html::a($model->title, ['/bidashboard/report-dashboard/view','id' => $model->id ], [
+                                return Html::a($model->title, ['/bidashboard/report-dashboard/view', 'id' => $model->id], [
                                     'title' => $model->title,
                                     'class' => 'btn text-info',
                                     'data-toggle' => 'tooltip',
