@@ -23,6 +23,11 @@
       "homepage": "https://github.com/ziaadini"
     },
     {
+      "name": "Mohsen Saeidi",
+      "email": "mohsen.saeidi.dev@gmail.com",
+      "homepage": "https://github.com/MohsenSaeidiDev"
+    },
+    {
       "name": "Sadegh Shafii",
       "email": "sadshafiei.01@gmail.com",
       "homepage": "https://github.com/ziaadini"
@@ -49,7 +54,6 @@
     "kartik-v/yii2-widget-select2": "^2.1.4",
     "kartik-v/yii2-widget-depdrop": "@dev",
     "miloschuman/yii2-highcharts-widget": "^10.0",
-    "ziaadini/yii2-daterangepicker": "*",
     "wbraganca/yii2-dynamicform": "*"
   },
   "autoload": {
