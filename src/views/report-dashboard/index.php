@@ -17,6 +17,30 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('biDashboard', 'Report Dashboards');
 $this->params['breadcrumbs'][] = ' ' . $this->title;
 
+$this->registerJs("
+    $('.daily-update-checkbox').on('change', function() {
+        var checkbox = $(this);
+        var id = checkbox.val();
+        var dailyUpdate = checkbox.is(':checked') ? 1 : 0;
+
+        $.ajax({
+            url: '" . \yii\helpers\Url::to(['report-dashboard/change-daily-update']) . "',
+            type: 'POST',
+            data: {
+                id: id,
+                daily_update: dailyUpdate,
+                _csrf: yii.getCsrfToken()
+            },
+            success: function(data) {
+                $.pjax.reload({container: '#p-jax-report-dashboard'});
+            },
+            error: function() {
+                alert('خطا در تغییر بروزرسانی');
+            }
+        });
+    });
+");
+
 ?>
 
 <div class="page-content container-fluid text-left pt-5" id="main-wrapper">
@@ -70,6 +94,20 @@ $this->params['breadcrumbs'][] = ' ' . $this->title;
                             'value' => function (ReportDashboard $model) {
                                 return ReportDashboard::itemAlias('Status', $model->status);
                             },
+                        ],
+                        [
+                            'class' => \yii\grid\CheckboxColumn::class,
+                            'checkboxOptions' => function ($model, $key, $index, $column) {
+                                return [
+                                    'id' => 'chk_' . $model->id, // Unique ID for each checkbox
+                                    'value' => $model->id,
+                                    /*'onchange' => 'updateStatus(this)',*/
+                                    /*'value' => $model->daily_update,*/
+                                    'checked' => $model->daily_update ? true : false,
+                                    'class' => 'daily-update-checkbox',
+                                ];
+                            },
+                            'header' => Yii::t('biDashboard', 'Daily update'),
                         ],
                         [
                             'class' => ActionColumn::class,

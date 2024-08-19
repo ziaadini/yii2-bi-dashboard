@@ -228,5 +228,6 @@ return [
     'It is not possible to move' => 'امکان جابجایی وجود ندارد',
     'No Data' => 'داده ای برای نمایش وجود ندارد',
     'Please run widget/widgets first' => 'لطفا ابتدا ویجت/ویجت ها را اجرا کنید',
-    'Invalid Widget Field' => 'فیلد خروجی ویجت نامعتبر است'
+    'Invalid Widget Field' => 'فیلد خروجی ویجت نامعتبر است',
+    'Daily update' => 'بروزرسانی روزانه'
 ];

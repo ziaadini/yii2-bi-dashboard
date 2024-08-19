@@ -33,6 +33,7 @@ class ReportDashboardController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
+                    'except' => ['change-daily-update'],
                     'rules' =>
                     [
                         [
@@ -244,6 +245,28 @@ class ReportDashboardController extends Controller
             ]);
         }
     }
+
+    public function actionChangeDailyUpdate()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        if (Yii::$app->request->isAjax) {
+            $id = Yii::$app->request->post('id');
+            $dailyUpdate = Yii::$app->request->post('daily_update');
+
+            $model = ReportDashboard::findOne($id);
+            if ($model !== null) {
+                $model->daily_update = $dailyUpdate;
+                if ($model->save()) {
+                    return ['success' => true];
+                }
+            }
+        }
+        return ['success' => false];
+    }
+
+
+
 
     protected function findModel(int $id): ReportDashboard
     {

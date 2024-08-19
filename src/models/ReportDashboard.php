@@ -17,6 +17,7 @@ use Yii;
  * @property string $title
  * @property string $description
  * @property int $status
+ * @property int $daily_update
  * @property int $created_at
  * @property int $updated_at
  * @property int $deleted_at
@@ -35,6 +36,9 @@ class ReportDashboard extends ActiveRecord
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 2;
 
+    const DAILY_UPDATE_DISABLE = 0;
+    const DAILY_UPDATE_ENABLE = 1;
+
     public static function getDb()
     {
         return Yii::$app->biDB;
@@ -52,7 +56,7 @@ class ReportDashboard extends ActiveRecord
                 return Yii::$app->params['bi_slave_id'] ?? null;
             }],
             [['title', 'description', 'slave_id'], 'required'],
-            [['status', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'slave_id'], 'integer'],
+            [['status', 'daily_update', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'slave_id'], 'integer'],
             [['title'], 'string', 'max' => 128],
             [['description'], 'string', 'max' => 255]
         ];
@@ -65,6 +69,7 @@ class ReportDashboard extends ActiveRecord
             'title' => Yii::t('biDashboard', 'Title'),
             'description' => Yii::t('biDashboard', 'Description'),
             'status' => Yii::t('biDashboard', 'Status'),
+            'daily_update' => Yii::t('biDashboard', 'Daily update'),
             'created_at' => Yii::t('biDashboard', 'Created At'),
             'updated_at' => Yii::t('biDashboard', 'Updated At'),
             'deleted_at' => Yii::t('biDashboard', 'Deleted At'),
