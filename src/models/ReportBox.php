@@ -178,6 +178,11 @@ class ReportBox extends ActiveRecord
         return true;
     }
 
+    public function getDashboard()
+    {
+        return $this->hasOne(ReportDashboard::class, ['id' => 'dashboard_id']);
+    }
+
     public function getBoxWidgets()
     {
         return $this->hasMany(ReportBoxWidgets::class, ['box_id' => 'id']);
@@ -255,13 +260,44 @@ class ReportBox extends ActiveRecord
             ->viaTable('report_box_widgets', ['box_id' => 'id']);
     }
 
-    /**
-     *
-     * @return \yii\db\ActiveQuery|ReportDashboardQuery
-     */
-    public function getDashboard()
+    public static function runBox($box)
     {
-        return $this->hasOne(ReportDashboard::class, ['id' => 'dashboard_id']);
+        $instance = new self();
+
+        foreach ($box->boxWidgets as $index => $widget) {
+
+            $widget->setWidgetProperties();
+
+            if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
+            {
+                if ($box->range_type == ReportBox::RANGE_TYPE_DAILY)
+                    $date_array = $instance->getStartAndEndOfMonth(timestamp: $box->last_date_set);
+                else
+                    $date_array = $instance->getStartAndEndOfYear(timestamp: $box->last_date_set);
+            }
+            else
+                $date_array = $box->getStartAndEndTimeStampsForStaticDate($box->date_type);
+
+            $widget->widget->runWidget($date_array['start'], $date_array['end']);
+
+            $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
+            $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
+            $results = array_reverse($widgetLastResult);
+
+            if (!empty($results)) {
+                $widget->collectResults($widget, $results);
+            }
+        }
+
+        if ($date_array) {
+            $box->last_date_set = $date_array['start'];
+            $box->lastDateSet = $box->getLastDateSet($box->last_date_set);
+        }
+
+        $box->last_run = time();
+        $status = $box->save();
+
+        return $status;
     }
 
     public static function find()

@@ -8,6 +8,7 @@ use yii\db\ActiveRecord;
 use ziaadini\bidashboard\models\ReportBox;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use Yii;
+use ziaadini\bidashboard\traits\CoreTrait;
 
 /**
  * This is the model class for table "report_dashboard".
@@ -31,6 +32,7 @@ use Yii;
 
 class ReportDashboard extends ActiveRecord
 {
+    use CoreTrait;
 
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
@@ -86,6 +88,11 @@ class ReportDashboard extends ActiveRecord
     public function getDashboardBoxes()
     {
         return $this->hasMany(ReportBox::class, ['dashboard_id' => 'id'])->orderBy('display_type')->orderBy('display_order');
+    }
+
+    public function getBoxes()
+    {
+        return $this->hasMany(ReportBox::class, ['dashboard_id' => 'id']);
     }
 
     public static function find()

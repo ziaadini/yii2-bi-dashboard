@@ -104,6 +104,7 @@ class ReportDashboardController extends Controller
         ]);
     }
 
+
     /**
      * @param $id
      * @param $mustBeUpdated
@@ -119,7 +120,7 @@ class ReportDashboardController extends Controller
         $errors = [];
         $charts = [];
         $cards = [];
-        $tables = [];
+
 
         foreach ($boxes as $index => $box) {
 
@@ -172,8 +173,6 @@ class ReportDashboardController extends Controller
                 $chart->chartSeries[] = ['name' => $boxWidget->title ?? $boxWidget->widget->title, 'data' => $boxWidget->results['chartData'] ?? ''];
             }
         }
-
-
 
         return $this->render('view', [
             'model' => $model,
@@ -264,8 +263,6 @@ class ReportDashboardController extends Controller
         }
         return ['success' => false];
     }
-
-
 
 
     protected function findModel(int $id): ReportDashboard

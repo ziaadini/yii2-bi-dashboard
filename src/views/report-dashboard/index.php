@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = ' ' . $this->title;
 
 $this->registerJs("
     $('.daily-update-checkbox').on('change', function() {
+        console.log('hi');
         var checkbox = $(this);
         var id = checkbox.val();
         var dailyUpdate = checkbox.is(':checked') ? 1 : 0;
@@ -31,9 +32,7 @@ $this->registerJs("
                 daily_update: dailyUpdate,
                 _csrf: yii.getCsrfToken()
             },
-            success: function(data) {
-                $.pjax.reload({container: '#p-jax-report-dashboard'});
-            },
+            success: function(data) {},
             error: function() {
                 alert('خطا در تغییر بروزرسانی');
             }
@@ -90,24 +89,22 @@ $this->registerJs("
                         ],
                         'description',
                         [
-                            'attribute' => 'status',
-                            'value' => function (ReportDashboard $model) {
-                                return ReportDashboard::itemAlias('Status', $model->status);
-                            },
-                        ],
-                        [
                             'class' => \yii\grid\CheckboxColumn::class,
                             'checkboxOptions' => function ($model, $key, $index, $column) {
                                 return [
-                                    'id' => 'chk_' . $model->id, // Unique ID for each checkbox
+                                    'id' => $model->id, // Unique ID for each checkbox
                                     'value' => $model->id,
-                                    /*'onchange' => 'updateStatus(this)',*/
-                                    /*'value' => $model->daily_update,*/
                                     'checked' => $model->daily_update ? true : false,
                                     'class' => 'daily-update-checkbox',
                                 ];
                             },
                             'header' => Yii::t('biDashboard', 'Daily update'),
+                        ],
+                        [
+                            'attribute' => 'status',
+                            'value' => function (ReportDashboard $model) {
+                                return ReportDashboard::itemAlias('Status', $model->status);
+                            },
                         ],
                         [
                             'class' => ActionColumn::class,

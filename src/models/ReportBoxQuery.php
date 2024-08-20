@@ -34,6 +34,12 @@ class ReportBoxQuery extends ActiveQuery
         }
     }
 
+    public function dailyUpdate()
+    {
+        return $this->joinWith('dashboard')
+            ->andWhere(['daily_update' => ReportDashboard::DAILY_UPDATE_ENABLE]);
+    }
+
     public function behaviors()
     {
         return [
