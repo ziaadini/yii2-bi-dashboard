@@ -260,9 +260,10 @@ class ReportBox extends ActiveRecord
             ->viaTable('report_box_widgets', ['box_id' => 'id']);
     }
 
-    public static function runBox($box)
+    public static function runBox($boxId)
     {
         $instance = new self();
+        $box = self::findOne(['id' => $boxId]);
 
         foreach ($box->boxWidgets as $index => $widget) {
 

@@ -104,7 +104,6 @@ class ReportDashboardController extends Controller
         ]);
     }
 
-
     /**
      * @param $id
      * @param $mustBeUpdated
@@ -120,6 +119,7 @@ class ReportDashboardController extends Controller
         $errors = [];
         $charts = [];
         $cards = [];
+        $tables = [];
 
 
         foreach ($boxes as $index => $box) {
