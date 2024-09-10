@@ -276,8 +276,10 @@ class ReportBox extends ActiveRecord
                 else
                     $date_array = $instance->getStartAndEndOfYear(timestamp: $box->last_date_set);
             }
-            else
+            elseif ($box->date_type =! ReportBox::DATE_TYPE_FLEXIBLE)
+            {
                 $date_array = $box->getStartAndEndTimeStampsForStaticDate($box->date_type);
+            }
 
             $widget->widget->runWidget($date_array['start'], $date_array['end']);
 
