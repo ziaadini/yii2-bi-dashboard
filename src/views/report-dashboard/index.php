@@ -47,7 +47,8 @@ $this->registerJs("
     <div class="work-report-index card">
         <div class="panel-group m-bot20" id="accordion">
             <div class="card-header d-flex justify-content-between">
-                <div class="d-flex align-items-center font-16 font-bold"><span><?= Yii::t('biDashboard', 'Dashboard List') ?></span></div>
+                <div class="d-flex align-items-center font-16 font-bold">
+                    <span><?= Yii::t('biDashboard', 'Dashboard List') ?></span></div>
                 <?= $this->render('_search', ['model' => $searchModel]); ?>
                 <div>
                     <?= Html::a(

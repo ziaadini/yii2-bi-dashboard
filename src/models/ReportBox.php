@@ -264,43 +264,74 @@ class ReportBox extends ActiveRecord
     {
         $instance = new self();
         $box = self::findOne(['id' => $boxId]);
+        $date_array = [];
 
-        foreach ($box->boxWidgets as $index => $widget) {
+        if($box)
+        {
+            if ($box->date_type == self::DATE_TYPE_FLEXIBLE) {
 
-            $widget->setWidgetProperties();
+                if ($box->display_type == self::DISPLAY_CARD){
 
-            if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE)
-            {
-                if ($box->range_type == ReportBox::RANGE_TYPE_DAILY)
-                    $date_array = $instance->getStartAndEndOfMonth(timestamp: $box->last_date_set);
-                else
-                    $date_array = $instance->getStartAndEndOfYear(timestamp: $box->last_date_set);
+                    if ($box->range_type == self::RANGE_TYPE_DAILY)
+                    {
+                        $date_array = $instance->getStartAndEndOfDay(time: $box->last_date_set);
+                    }
+                    elseif($box->range_type == self::RANGE_TYPE_MONTHLY)
+                    {
+                        $date_array = $instance->getStartAndEndOfMonth(timestamp: $box->last_date_set);
+                    }
+                }
+
+                if($box->display_type != self::DISPLAY_CARD)
+                {
+                    if ($box->range_type == self::RANGE_TYPE_DAILY)
+                    {
+                        $date_array = $instance->getStartAndEndOfMonth(timestamp: $box->last_date_set);
+                    }
+
+                    elseif($box->range_type == self::RANGE_TYPE_MONTHLY)
+                    {
+                        $date_array = $instance->getStartAndEndOfYear(timestamp: $box->last_date_set);
+                    }
+                }
             }
-            elseif ($box->date_type =! ReportBox::DATE_TYPE_FLEXIBLE)
+
+            elseif ($box->date_type == self::DATE_TYPE_FLEXIBLE_YEAR)
+            {
+                $date_array = $instance->getStartAndEndOfYear(timestamp: $box->last_date_set);
+            }
+
+            else
             {
                 $date_array = $box->getStartAndEndTimeStampsForStaticDate($box->date_type);
             }
 
-            $widget->widget->runWidget($date_array['start'], $date_array['end']);
+            foreach ($box->boxWidgets as $index => $widget) {
 
-            $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
-            $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
-            $results = array_reverse($widgetLastResult);
+                $widget->setWidgetProperties();
+                $widget->widget->runWidget($date_array['start'], $date_array['end']);
 
-            if (!empty($results)) {
-                $widget->collectResults($widget, $results);
+                $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
+                $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
+                $results = array_reverse($widgetLastResult);
+
+                if (!empty($results)) {
+                    $widget->collectResults($widget, $results);
+                }
             }
+
+            if ($date_array) {
+                $box->last_date_set = $date_array['start'];
+                $box->lastDateSet = $box->getLastDateSet($box->last_date_set);
+            }
+
+            $box->last_run = time();
+            $status = $box->save();
+            return $status;
         }
+        else
+            return false;
 
-        if ($date_array) {
-            $box->last_date_set = $date_array['start'];
-            $box->lastDateSet = $box->getLastDateSet($box->last_date_set);
-        }
-
-        $box->last_run = time();
-        $status = $box->save();
-
-        return $status;
     }
 
     public static function find()

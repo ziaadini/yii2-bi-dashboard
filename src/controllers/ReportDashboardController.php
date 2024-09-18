@@ -113,6 +113,7 @@ class ReportDashboardController extends Controller
      */
     public function actionView($id)
     {
+
         $model = $this->findModel($id);
         $boxes = $model->dashboardBoxes;
 
@@ -120,7 +121,6 @@ class ReportDashboardController extends Controller
         $charts = [];
         $cards = [];
         $tables = [];
-
 
         foreach ($boxes as $index => $box) {
 
