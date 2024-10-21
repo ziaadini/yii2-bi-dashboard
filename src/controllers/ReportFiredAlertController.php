@@ -106,18 +106,6 @@ class ReportFiredAlertController extends Controller
         ]);
     }
 
-    /**
-     * @param $id
-     * @param $mustBeUpdated
-     * @return string|Response
-     *
-     *
-     */
-    public function actionView($id)
-    {
-
-    }
-
     public function actionCreate()
     {
         $model = new ReportFiredAlert();
@@ -178,7 +166,10 @@ class ReportFiredAlertController extends Controller
 
                 $model->seen_status = $seen_status;
                 $model->seen_time = time();
-                $model->seen_by = Yii::$app->user->id;
+                $model->seen_by_id = Yii::$app->user->id;
+                $model->seen_by_name = (
+                    Yii::$app->user->identity->first_name . ' ' .
+                    Yii::$app->user->identity->last_name) ?? Yii::$app->user->identity->username ?? '';
 
                 if ($model->save()) {
                     return ['success' => true];

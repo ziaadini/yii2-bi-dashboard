@@ -46,7 +46,9 @@ $pdate = Yii::$app->pdate;
                     <div class="d-flex mr-1 align-items-center">
                         <?php if(in_array($box->id, $boxesWithAlert)): ?>
                             <?= Html::a(
-                                '<i class="fa-bells font-20'. (in_array($box->id, $boxesWithFiredAlert) ? ' fas fire text-danger text-white' : ' fal text-secondary') .'" title="هشدار!"></i>',
+                                '<i class="fa-bells font-20'.
+                                (in_array($box->id, $boxesWithFiringAlert) ? ' fas fire text-danger text-white' : ' ') .
+                                (in_array($box->id, $boxesWithFiredAlert) ? 'fal text-danger' : ' fal').'" title="هشدار!"></i>',
                                 "javascript:void(0)",
                                 [
                                     'data-pjax' => '0',

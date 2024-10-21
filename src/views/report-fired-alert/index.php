@@ -4,6 +4,7 @@ use ziaadini\bidashboard\models\ReportFiredAlert;
 use ziaadini\bidashboard\models\ReportFiredAlertSearch;
 use ziaadini\bidashboard\widgets\grid\ActionColumn;
 use ziaadini\bidashboard\widgets\grid\GridView;
+use ziaadini\bidashboard\models\ReportWidget;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -35,7 +36,7 @@ $this->registerJs("
                 // Optionally handle success response here
             },
             error: function() {
-                alert('خطا در تغییر بروزرسانی');
+                alert('خطا در بروزرسانی');
             }
         });
     });
@@ -95,7 +96,7 @@ $this->registerJs("
                         [
                             'attribute' => Yii::t('biDashboard', 'Widget'),
                             'value' => function (ReportFiredAlert $model) {
-                                return $model->widget->title;
+                                return $model->widget->title . ' "' . ReportWidget::itemAlias('RangeTypes', $model->widget->range_type) . '"';
                             },
                         ],
                         [
@@ -120,7 +121,7 @@ $this->registerJs("
                         [
                             'attribute' => 'مشاهده توسط',
                             'value' => function (ReportFiredAlert $model) {
-                                return $model->user->fullName ?? '_';
+                                return $model->seen_by_name ?? '_';
                             },
                         ],
                         [
@@ -132,6 +133,12 @@ $this->registerJs("
                                 else {
                                     return Yii::$app->pdate->jdate('Y/m/d - H:i:s', $model->seen_time);
                                 }
+                            },
+                        ],
+                        [
+                            'attribute' => 'شناسه مشاهده کننده',
+                            'value' => function (ReportFiredAlert $model) {
+                                return $model->seen_by_id ?? '_';
                             },
                         ],
                     ],

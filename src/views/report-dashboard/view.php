@@ -24,6 +24,7 @@ use yii\web\JsExpression;
  * @var ReportBoxWidgets $cards
  * @var array $boxesWithAlert
  * @var array $boxesWithFiredAlert
+ * @var array $boxesWithFiringAlert
  */
 
 $this->title = $model->title;
@@ -98,7 +99,8 @@ $this->registerJs($script);
                     <?= $this->render('box_card', [
                         'box' => $box,
                         'boxesWithAlert' => $boxesWithAlert,
-                        'boxesWithFiredAlert' => $boxesWithFiredAlert
+                        'boxesWithFiredAlert' => $boxesWithFiredAlert,
+                        'boxesWithFiringAlert' => $boxesWithFiringAlert
                     ]) ?>
                     <?php Pjax::end(); ?>
                 <?php endforeach; ?>

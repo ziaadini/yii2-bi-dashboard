@@ -67,9 +67,10 @@ return [
     ]
 ];
 ```
-
-
-
+And for access Alerts to User for show who see the fired alerts:
+```
+implement fullName() function into your User model class
+```
 
 Env
 -------------

@@ -25,7 +25,8 @@ use ziaadini\bidashboard\traits\CoreTrait;
  * @property string $widget_field
  * @property int $seen_status
  * @property int $seen_time
- * @property int $seen_by
+ * @property int $seen_by_id
+ * @property string $seen_by_name
  * @property int $status
  * @property int $created_at
  * @property int $updated_at
@@ -66,8 +67,8 @@ class ReportFiredAlert extends ActiveRecord
                 return Yii::$app->params['bi_slave_id'] ?? null;
             }],
             [['slave_id', 'alert_id', 'box_id', 'dashboard_id', 'widget_result_id', 'widget_id', 'widget_field'], 'required'],
-            [['slave_id', 'alert_id', 'box_id', 'dashboard_id', 'widget_result_id', 'widget_id','status', 'seen_status', 'seen_time', 'seen_by', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by'], 'integer'],
-            [['widget_field'], 'string', 'max' => 64],
+            [['slave_id', 'alert_id', 'box_id', 'dashboard_id', 'widget_result_id', 'widget_id', 'status', 'seen_status', 'seen_time', 'seen_by_id', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by'], 'integer'],
+            [['widget_field', 'seen_by_name'], 'string', 'max' => 64],
             [['widget_result_alerting'], 'safe'],
             [['alert_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportAlert::class, 'targetAttribute' => ['alert_id' => 'id']],
             [['box_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportBox::class, 'targetAttribute' => ['box_id' => 'id']],
@@ -90,7 +91,8 @@ class ReportFiredAlert extends ActiveRecord
             'widget_field_title' => Yii::t('biDashboard', 'Widget Field'),
             'seen_status' => Yii::t('biDashboard', 'Seen'),
             'seen_time' => Yii::t('biDashboard', 'Seen'),
-            'seen_by' => Yii::t('biDashboard', 'Seen'),
+            'seen_by_id' => Yii::t('biDashboard', 'Seen'),
+            'seen_by_name' => Yii::t('biDashboard', 'Seen'),
             'status' => Yii::t('biDashboard', 'Status'),
             'created_at' => Yii::t('biDashboard', 'Created At'),
             'updated_at' => Yii::t('biDashboard', 'Updated At'),
@@ -137,10 +139,10 @@ class ReportFiredAlert extends ActiveRecord
         return $this->hasOne(ReportAlert::class, ['id' => 'alert_id']);
     }
 
-    public function getUser()
+    /*public function getUser()
     {
         return $this->hasOne(Yii::getAlias('@userModel'), ['id' => 'seen_by']);
-    }
+    }*/
 
     public function getBox()
     {

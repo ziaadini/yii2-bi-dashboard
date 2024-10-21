@@ -117,6 +117,7 @@ class ReportDashboardController extends Controller
         $model = $this->findModel($id);
         $boxes = $model->dashboardBoxes;
 
+        $boxesWithFiringAlert = ReportBox::boxesWithFiringAlert($id);
         $boxesWithFiredAlert = ReportBox::boxesWithFiredAlert($id);
         $boxesWithAlert = ReportBox::boxesWithAlert($id);
 
@@ -184,7 +185,8 @@ class ReportDashboardController extends Controller
             'tables' => $tables,
             'cards' => $cards,
             'boxesWithAlert' => $boxesWithAlert,
-            'boxesWithFiredAlert' => $boxesWithFiredAlert
+            'boxesWithFiredAlert' => $boxesWithFiredAlert,
+            'boxesWithFiringAlert' => $boxesWithFiringAlert
         ]);
     }
 

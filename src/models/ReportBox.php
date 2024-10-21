@@ -188,16 +188,34 @@ class ReportBox extends ActiveRecord
         return $this->hasMany(ReportBoxWidgets::class, ['box_id' => 'id']);
     }
 
-    public static function boxesWithFiredAlert(int $dashboardId)
+    public static function boxesWithFiringAlert(int $dashboardId)
     {
-        $firedBoxes =  ReportFiredAlert::find()
+        $firingBoxes =  ReportFiredAlert::find()
             ->select(['box_id'])
             ->where([
                 'dashboard_id' => $dashboardId,
                 'seen_status' => ReportFiredAlert::NOT_SEEN
             ])->column();
 
-        return array_unique($firedBoxes);
+        return array_unique($firingBoxes);
+    }
+
+    public static function boxesWithFiredAlert(int $dashboardId)
+    {
+        $subQuery = ReportFiredAlert::find()
+            ->select('box_id')
+            ->where([
+                'dashboard_id' => $dashboardId,
+                'seen_status' => ReportFiredAlert::NOT_SEEN
+            ]);
+
+        $boxIds = ReportFiredAlert::find()
+            ->select('box_id')
+            ->where(['not in', 'box_id', $subQuery])
+            ->distinct()
+            ->column();
+
+        return $boxIds;
     }
 
     public static function boxesWithAlert(int $dashboardId)
@@ -307,72 +325,66 @@ class ReportBox extends ActiveRecord
         $box = self::findOne(['id' => $boxId]);
         $date_array = [];
 
-        if($box)
-        {
-            if ($box->date_type == self::DATE_TYPE_FLEXIBLE) {
+        $transaction = Yii::$app->db->beginTransaction();
 
-                if ($box->display_type == self::DISPLAY_CARD){
-
-                    if ($box->range_type == self::RANGE_TYPE_DAILY)
-                    {
-                        $date_array = $instance->getStartAndEndOfDay(time: $box->last_date_set);
+        try {
+            if ($box) {
+                if ($box->date_type == self::DATE_TYPE_FLEXIBLE) {
+                    if ($box->display_type == self::DISPLAY_CARD) {
+                        if ($box->range_type == self::RANGE_TYPE_DAILY) {
+                            $date_array = $instance->getStartAndEndOfDay(time: $box->last_date_set);
+                        } elseif ($box->range_type == self::RANGE_TYPE_MONTHLY) {
+                            $date_array = $instance->getStartAndEndOfMonth(timestamp: $box->last_date_set);
+                        }
                     }
-                    elseif($box->range_type == self::RANGE_TYPE_MONTHLY)
-                    {
-                        $date_array = $instance->getStartAndEndOfMonth(timestamp: $box->last_date_set);
+
+                    if ($box->display_type != self::DISPLAY_CARD) {
+                        if ($box->range_type == self::RANGE_TYPE_DAILY) {
+                            $date_array = $instance->getStartAndEndOfMonth(timestamp: $box->last_date_set);
+                        } elseif ($box->range_type == self::RANGE_TYPE_MONTHLY) {
+                            $date_array = $instance->getStartAndEndOfYear(timestamp: $box->last_date_set);
+                        }
+                    }
+                } elseif ($box->date_type == self::DATE_TYPE_FLEXIBLE_YEAR) {
+                    $date_array = $instance->getStartAndEndOfYear(timestamp: $box->last_date_set);
+                } else {
+                    $date_array = $box->getStartAndEndTimeStampsForStaticDate($box->date_type);
+                }
+
+                foreach ($box->boxWidgets as $index => $widget) {
+                    $widget->setWidgetProperties();
+                    $widget->widget->runWidget($date_array['start'], $date_array['end']);
+
+                    $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
+                    $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
+                    $results = array_reverse($widgetLastResult);
+
+                    if (!empty($results)) {
+                        $widget->collectResults($widget, $results);
                     }
                 }
 
-                if($box->display_type != self::DISPLAY_CARD)
-                {
-                    if ($box->range_type == self::RANGE_TYPE_DAILY)
-                    {
-                        $date_array = $instance->getStartAndEndOfMonth(timestamp: $box->last_date_set);
-                    }
-
-                    elseif($box->range_type == self::RANGE_TYPE_MONTHLY)
-                    {
-                        $date_array = $instance->getStartAndEndOfYear(timestamp: $box->last_date_set);
-                    }
+                if ($date_array) {
+                    $box->last_date_set = $date_array['start'];
+                    $box->lastDateSet = $box->getLastDateSet($box->last_date_set);
                 }
-            }
 
-            elseif ($box->date_type == self::DATE_TYPE_FLEXIBLE_YEAR)
-            {
-                $date_array = $instance->getStartAndEndOfYear(timestamp: $box->last_date_set);
-            }
-
-            else
-            {
-                $date_array = $box->getStartAndEndTimeStampsForStaticDate($box->date_type);
-            }
-
-            foreach ($box->boxWidgets as $index => $widget) {
-
-                $widget->setWidgetProperties();
-                $widget->widget->runWidget($date_array['start'], $date_array['end']);
-
-                $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
-                $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
-                $results = array_reverse($widgetLastResult);
-
-                if (!empty($results)) {
-                    $widget->collectResults($widget, $results);
+                $box->last_run = time();
+                if ($box->save()) {
+                    $transaction->commit();
+                    return true;
+                } else {
+                    throw new Exception('Failed to save box.');
                 }
+            } else {
+                throw new Exception('Box not found.');
             }
+        } catch (Exception $e) {
 
-            if ($date_array) {
-                $box->last_date_set = $date_array['start'];
-                $box->lastDateSet = $box->getLastDateSet($box->last_date_set);
-            }
-
-            $box->last_run = time();
-            $status = $box->save();
-            return $status;
-        }
-        else
+            $transaction->rollBack();
+            Yii::error("Error in runBox (". $boxId . "): " . $e->getMessage());
             return false;
-
+        }
     }
 
     public static function find()
