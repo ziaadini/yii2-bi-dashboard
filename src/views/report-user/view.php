@@ -23,7 +23,6 @@ use yii\web\JsExpression;
  * @var ReportBox $tables
  * @var ReportBoxWidgets $cards
  * @var array $boxesWithAlert
- * @var array $boxesWithFiredAlert
  */
 
 $this->title = $model->title;
@@ -56,7 +55,7 @@ $this->registerJs($script);
         <?= Alert::widget() ?>
         <?php if (Yii::$app->user->identity): ?>
             <div class="d-flex flex-column">
-                <h1 class="h4 font-bold"><span class="border btn mr-1 px-2 py-0 rounded-md text-secondary font-bold shadow-sm"><?= $model->id ?></span><?= $model->title ?></h1>
+                <h1 class="h4 font-bold"><span class="border btn mr-1 px-2 py-0 rounded-md text-secondary"><?= $model->id ?></span><?= $model->title ?></h1>
                 <span class="text-muted"><?= $model->description ?></span>
             </div>
             <div class="d-flex align-items-center">
@@ -97,8 +96,7 @@ $this->registerJs($script);
                     ]); ?>
                     <?= $this->render('box_card', [
                         'box' => $box,
-                        'boxesWithAlert' => $boxesWithAlert,
-                        'boxesWithFiredAlert' => $boxesWithFiredAlert
+                        'boxesWithAlert' => $boxesWithAlert
                     ]) ?>
                     <?php Pjax::end(); ?>
                 <?php endforeach; ?>
@@ -122,8 +120,7 @@ $this->registerJs($script);
                     ]); ?>
                     <?= $this->render('box_chart', [
                         'box' => $box,
-                        'boxesWithAlert' => $boxesWithAlert,
-                        'boxesWithFiredAlert' => $boxesWithFiredAlert
+                        'boxesWithAlert' => $boxesWithAlert
                     ]); ?>
                     <?php Pjax::end(); ?>
                 <?php endforeach; ?>
@@ -146,8 +143,7 @@ $this->registerJs($script);
                 ]); ?>
                 <?= $this->render('box_table', [
                     'box' => $box,
-                    'boxesWithAlert' => $boxesWithAlert,
-                    'boxesWithFiredAlert' => $boxesWithFiredAlert
+                    'boxesWithAlert' => $boxesWithAlert
                 ]) ?>
                 <?php Pjax::end(); ?>
             <?php endforeach; ?>

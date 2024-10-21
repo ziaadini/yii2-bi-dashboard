@@ -17,7 +17,7 @@ class Menu extends \yii\widgets\Menu
     /**
      * @inheritdoc
      */
-    public $linkTemplate = '<a href="{url}" class="sidebar-link">{icon}<span class="hide-menu">{label}</span></a>';
+    public $linkTemplate = '<a href="{url}" class="sidebar-link p-2">{icon}<span class="hide-menu">{label}</span></a>';
     public $labelTemplate = '<p>{label}</p>';
     public $submenuTemplate = "<ul class='collapse {level}' >{items}</ul>";
     public $activateParents = true;
@@ -58,7 +58,7 @@ class Menu extends \yii\widgets\Menu
 
             foreach ($this->groups as $key => $group) {
                 $this->output .= $this->renderItems($group);
-                $this->output .= Html::tag('div', '', ['class' => 'devider']);
+                $this->output .= Html::tag('div', '', ['class' => 'devider m-0']);
             }
             echo Html::tag($tag, $this->output, $options);
         }

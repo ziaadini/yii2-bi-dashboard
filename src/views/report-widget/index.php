@@ -16,11 +16,11 @@ $this->title = Yii::t('biDashboard', 'Report Widgets');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="page-content container-fluid text-left pt-5" id="main-wrapper">
+<div class="page-content container-fluid text-left" id="main-wrapper">
     <?php Pjax::begin(['id' => 'p-jax-report-widget', 'enablePushState' => false]); ?>
     <div class="work-report-index card">
         <div class="panel-group m-bot20" id="accordion">
-            <div class="card-header d-flex justify-content-between">
+            <div class="card-header d-flex">
                 <div class="d-flex align-items-center font-16 font-bold">
                     <span><?= Yii::t('biDashboard', 'Widget List') ?></span>
                 </div>

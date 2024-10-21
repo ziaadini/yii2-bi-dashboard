@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use ziaadini\bidashboard\models\ExternalData;
-use sadi01\dateRangePicker\dateRangePicker;
+use mobit\dateRangePicker\dateRangePicker;
 
 
 /** @var yii\web\View $this */

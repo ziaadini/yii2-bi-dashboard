@@ -16,7 +16,7 @@ $this->title = Yii::t('app', 'Update Dashboard: {title}', [
     <div class="page-content container-fluid text-left ">
         <div class="work-report-index ">
             <div class="panel-group m-bot20" id="accordion">
-                <div class="card-body p-0">
+                <div class="card-body">
                     <?= $this->render('_form', [
                         'model' => $model,
                     ]) ?>

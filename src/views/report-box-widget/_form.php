@@ -80,7 +80,6 @@ $this->registerJs($js);
         <div class="card-header border-bottom d-flex px-3 align-items-center justify-content-between">
             <div class="">
                 <span>عنوان باکس: </span><span><?= $modelBox->title ?></span>
-
             </div>
             <button type="button" class="rounded-md add-widget btn btn-success btn-sm"><?= Yii::t('biDashboard', 'add widget') ?></button>
         </div>

@@ -6,47 +6,60 @@ use ziaadini\bidashboard\components\Menu;
 $menu_items = [];
 $menu_items = [
     [
+        'group' => 'Dashboard',
+        'label' => Yii::t('biDashboard', 'Dashboards'),
+        'icon' => '	fal fa-table',
+        'url' => ['/bidashboard/report-dashboard']
+    ],
+    [
         'group' => 'Widget',
         'label' => Yii::t('biDashboard', 'Widget'),
-        'icon' => 'fa fa-cogs',
+        'icon' => 'fal fa-cogs',
         'url' => ['/bidashboard/report-widget']
+    ],
+    [
+        'group' => 'Alerts',
+        'label' => Yii::t('biDashboard', 'Alerts'),
+        'icon' => 'fal fa-bells',
+        'url' => ['/bidashboard/report-alert']
+    ],
+    [
+        'group' => 'Users',
+        'label' => Yii::t('biDashboard', 'Users'),
+        'icon' => 'fal fa-users',
+        'url' => ['/bidashboard/report-user']
     ],
     [
         'group' => 'Page',
         'label' => Yii::t('biDashboard', 'Page'),
-        'icon' => 'fas fa-building',
+        'icon' => 'fal fa-building',
         'url' => ['/bidashboard/report-page']
     ],
     [
         'group' => 'Year',
         'label' => Yii::t('biDashboard', 'Year'),
-        'icon' => 'fa fa-calendar',
+        'icon' => 'fal fa-calendar',
         'url' => ['/bidashboard/report-year']
     ],
     [
         'group' => 'Sharing',
         'label' => Yii::t('biDashboard', 'Sharing'),
-        'icon' => 'fas fa-share',
+        'icon' => 'fal fa-share',
         'url' => ['/bidashboard/sharing-page']
     ],
     [
         'group' => 'External Data',
         'label' => Yii::t('biDashboard', 'External Data'),
-        'icon' => 'fas fa-file-excel',
+        'icon' => 'fal fa-file-excel',
         'url' => ['/bidashboard/external-data']
     ],
     [
         'group' => 'Model Class',
         'label' => Yii::t('biDashboard', 'Model Class'),
-        'icon' => '	fa fa-at',
+        'icon' => 'fal fa-at',
         'url' => ['/bidashboard/report-model-class']
     ],
-    [
-        'group' => 'Dashboard',
-        'label' => Yii::t('biDashboard', 'Dashboard'),
-        'icon' => '	fas fa-table',
-        'url' => ['/bidashboard/report-dashboard']
-    ],
+
 ];
 ?>
 <aside class="left-sidebar">

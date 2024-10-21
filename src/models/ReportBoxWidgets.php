@@ -19,6 +19,7 @@ use Yii;
  * @property int $id
  * @property int $slave_id
  * @property int $widget_id
+ * @property int $box_id
  * @property int $status
  * @property string widget_field
  * @property int widget_field_format

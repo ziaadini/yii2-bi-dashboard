@@ -7,9 +7,11 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use ziaadini\bidashboard\components\ExcelReport;
 use ziaadini\bidashboard\helpers\CoreHelper;
+use ziaadini\bidashboard\models\ReportAlert;
 use ziaadini\bidashboard\models\ReportBaseModel;
 use ziaadini\bidashboard\models\ReportBox;
 use ziaadini\bidashboard\models\ReportBoxWidgets;
+use ziaadini\bidashboard\models\ReportFiredAlert;
 use ziaadini\bidashboard\models\ReportWidget;
 use ziaadini\bidashboard\traits\AjaxValidationTrait;
 use ziaadini\bidashboard\traits\CoreTrait;
@@ -19,6 +21,7 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
 use Yii;
+use ziaadini\bidashboard\widgets\Alert;
 use function PHPUnit\Framework\returnArgument;
 
 class ReportBoxController extends Controller
@@ -33,6 +36,7 @@ class ReportBoxController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
+                    'except' => ['show-alerts'],
                     'rules' =>
                     [
                         [
@@ -159,22 +163,38 @@ class ReportBoxController extends Controller
         $box = $this->findModel($id);
         $date_array = null;
 
-        foreach ($box->boxWidgets as $index => $widget) {
-            $widget->setWidgetProperties();
+        $widgetsWithAlert = ReportAlert::boxAlerts($id);
+
+        if(!empty($widgetsWithAlert)){
+            $alertWidgetIds = array_column($widgetsWithAlert, 'widget_id');
+        }
+
+        foreach ($box->boxWidgets as $index => $boxWidget)
+        {
+            $boxWidget->setWidgetProperties();
+
             if ($year) {
-                $date_array = $widget->getStartAndEndTimestamps($widget, $year, $month, $day);
-            } else {
+                $date_array = $boxWidget->getStartAndEndTimestamps($boxWidget, $year, $month, $day);
+            }
+            else {
                 $date_array = $box->getStartAndEndTimeStampsForStaticDate($box->date_type);
             }
 
-            $widget->widget->runWidget($date_array['start'], $date_array['end']);
+            $widgetResult = $boxWidget->widget->runWidget($date_array['start'], $date_array['end']);
 
-            $lastResult = $widget->widget->lastResult($date_array['start'], $date_array['end']);
+            $lastResult = $boxWidget->widget->lastResult($date_array['start'], $date_array['end']);
             $widgetLastResult = $lastResult ? $lastResult->add_on['result'] : [];
             $results = array_reverse($widgetLastResult);
 
+            // check widget has alert
+            if(!empty($widgetsWithAlert) && in_array($boxWidget->widget_id, $alertWidgetIds))
+            {
+                ReportAlert::checkForAlert($id, $boxWidget->widget_id, $boxWidget->widget_field, $widgetResult->id, $results);
+
+            }
+
             if (!empty($results)) {
-                $widget->collectResults($widget, $results);
+                $boxWidget->collectResults($boxWidget, $results);
             }
         }
 

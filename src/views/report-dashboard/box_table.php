@@ -8,6 +8,8 @@ use ziaadini\bidashboard\models\ReportBox;
 use ziaadini\bidashboard\models\ReportModelClass;
 use yii\helpers\Url;
 
+/** @var ReportBox $box */
+/** @var array $boxesWithAlert */
 $script = <<< JS
     $(document).ready(function() {
         $("#select_year_$box->id, #select_month_$box->id, #select_day_$box->id").on("change", function() {
@@ -31,12 +33,29 @@ $pdate = Yii::$app->pdate;
 $formatter = Yii::$app->formatter;
 ?>
 
-<div class="card text-center table-responsive border rounded-md shadow mb-5">
+<div class="card text-center table-responsive border rounded-md shadow mb-5" id="box_<?= $box->id ?>">
     <div class="card-header d-flex align-items-center justify-content-between px-3">
-        <span><?= $box->title ?? 'عنوان باکس' ?> | <span class="btn btn-sm btn-warning disabled px-1 py-0 rounded-md"><?= ReportBox::itemAlias('RangeType', $box->range_type) ?></span></span>
+        <span><span class="border btn font-12 font-bold mr-1 px-1 py-0 rounded-md shadow-sm text-secondary"><?= $box->id ?></span><?= $box->title ?? 'عنوان باکس' ?> | <span class="btn btn-sm btn-warning disabled px-1 py-0 rounded-md"><?= ReportBox::itemAlias('RangeType', $box->range_type) ?></span></span>
         <div class="d-flex align-items-center">
             <div class="d-flex align-items-center">
-                <div class="d-flex mr-1">
+                <div class="d-flex mr-1 align-items-center">
+                    <?php if(in_array($box->id, $boxesWithAlert)): ?>
+                        <?= Html::a(
+                            '<i class="fa-bells font-20'. (in_array($box->id, $boxesWithFiredAlert) ? ' fas fire text-danger text-white' : ' fal text-secondary') .'" title="هشدار!"></i>',
+                            "javascript:void(0)",
+                            [
+                                'data-pjax' => '0',
+                                'class' => "d-flex mr-2",
+                                'data-size' => 'modal-dialog-centered modal-xxl',
+                                'data-title' => Yii::t('biDashboard', 'Fired Alerts'),
+                                'data-toggle' => 'modal',
+                                'data-target' => '#modal-pjax-bi',
+                                'data-url' => Url::to(['report-fired-alert/index', 'box_id' => $box->id]),
+                                'data-handle-form-submit' => 1,
+                                'data-reload-pjax-container' => 'p-jax-report-dashboard-view'
+                            ]
+                        ) ?>
+                    <?php endif; ?>
                     <?php if ($box->range_type == ReportBox::RANGE_TYPE_DAILY): ?>
                         <div>
                             <select name="month" class="form-control rounded-md" id="select_month_<?= $box->id ?>">
@@ -63,7 +82,7 @@ $formatter = Yii::$app->formatter;
                     <?php endif; ?>
                 </div>
                 <?= Html::a(
-                    '<i class="fas fa-sync text-success font-18"></i>',
+                    '<i class="far fa-sync text-success font-18"></i>',
                     "javascript:void(0)",
                     [
                         'id' => 'sync_btn_' . $box->id,
@@ -80,7 +99,7 @@ $formatter = Yii::$app->formatter;
                 <span class="font-bold mx-3 mt-1 text-secondary">|</span>
             </div>
             <?= Html::a(
-                '<i class="fas fa-edit text-info font-18"></i>',
+                '<i class="far fa-edit text-info font-18"></i>',
                 "javascript:void(0)",
                 [
                     'data-pjax' => '0',
@@ -95,7 +114,7 @@ $formatter = Yii::$app->formatter;
                 ]
             ) ?>
             <?= Html::a(
-                '<i class="fas fa-trash-alt text-danger font-18"></i>',
+                '<i class="far fa-trash-alt text-danger font-18"></i>',
                 "javascript:void(0)",
                 [
                     'title' => Yii::t('biDashboard', 'Delete Box'),
@@ -190,7 +209,7 @@ $formatter = Yii::$app->formatter;
         </table>
     </div>
     <div class="card-footer d-flex align-items-center justify-content-between px-3">
-        <span class="text-muted font-12 mr-3"><?= $box->description ?? '(توضیحات باکس)' ?></span>
+        <span class="text-muted font-10 mr-3"><?= $box->description ?? '(توضیحات باکس)' ?></span>
         <div class="d-flex">
             <button type="button" class="btn btn-sm btn-warning disabled mr-2 rounded-md shadow-none"> بروزرسانی:
                 <?php if ($box->last_run != 0): ?>

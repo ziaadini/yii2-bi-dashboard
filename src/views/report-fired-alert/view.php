@@ -22,28 +22,12 @@ use yii\web\JsExpression;
  * @var ReportBox $charts
  * @var ReportBox $tables
  * @var ReportBoxWidgets $cards
- * @var array $boxesWithAlert
- * @var array $boxesWithFiredAlert
  */
-
 $this->title = $model->title;
 $pdate = Yii::$app->pdate;
 
-$script = <<< JS
-    $(document).ready(function() {
-        function toggleClass() {
-            $('i.fa-bells.fire').toggleClass('text-danger');
-        }
-        setInterval(toggleClass, 450);
-    });
-JS;
-$this->registerJs($script);
 ?>
-<style>
-    .fa-bells {
-        transition: color 0.5s ease;
-    }
-</style>
+
 <div class="report-dashboard-view">
 
     <?php Pjax::begin([
@@ -56,11 +40,11 @@ $this->registerJs($script);
         <?= Alert::widget() ?>
         <?php if (Yii::$app->user->identity): ?>
             <div class="d-flex flex-column">
-                <h1 class="h4 font-bold"><span class="border btn mr-1 px-2 py-0 rounded-md text-secondary font-bold shadow-sm"><?= $model->id ?></span><?= $model->title ?></h1>
+                <h1 class="h4 font-bold"><?= $model->title ?></h1>
                 <span class="text-muted"><?= $model->description ?></span>
             </div>
             <div class="d-flex align-items-center">
-                <button type="button" class="btn btn-secondary rounded-md mr-2"> تاریخ امروز: <?= $pdate->jdate('Y/m/d - H:i') ?></button>
+                <button type="button" class="btn btn-secondary rounded-md mr-2"> تاریخ امروز: <?= $pdate->jdate('Y/m/d') ?></button>
                 <?= Html::a(
                     '<i class="fa-plus far"></i>' . ' ' . Yii::t('biDashboard', 'create box'),
                     "javascript:void(0)",
@@ -97,8 +81,6 @@ $this->registerJs($script);
                     ]); ?>
                     <?= $this->render('box_card', [
                         'box' => $box,
-                        'boxesWithAlert' => $boxesWithAlert,
-                        'boxesWithFiredAlert' => $boxesWithFiredAlert
                     ]) ?>
                     <?php Pjax::end(); ?>
                 <?php endforeach; ?>
@@ -122,8 +104,6 @@ $this->registerJs($script);
                     ]); ?>
                     <?= $this->render('box_chart', [
                         'box' => $box,
-                        'boxesWithAlert' => $boxesWithAlert,
-                        'boxesWithFiredAlert' => $boxesWithFiredAlert
                     ]); ?>
                     <?php Pjax::end(); ?>
                 <?php endforeach; ?>
@@ -146,8 +126,6 @@ $this->registerJs($script);
                 ]); ?>
                 <?= $this->render('box_table', [
                     'box' => $box,
-                    'boxesWithAlert' => $boxesWithAlert,
-                    'boxesWithFiredAlert' => $boxesWithFiredAlert
                 ]) ?>
                 <?php Pjax::end(); ?>
             <?php endforeach; ?>

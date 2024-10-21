@@ -188,6 +188,47 @@ class ReportBox extends ActiveRecord
         return $this->hasMany(ReportBoxWidgets::class, ['box_id' => 'id']);
     }
 
+    public static function boxesWithFiredAlert(int $dashboardId)
+    {
+        $firedBoxes =  ReportFiredAlert::find()
+            ->select(['box_id'])
+            ->where([
+                'dashboard_id' => $dashboardId,
+                'seen_status' => ReportFiredAlert::NOT_SEEN
+            ])->column();
+
+        return array_unique($firedBoxes);
+    }
+
+    public static function boxesWithAlert(int $dashboardId)
+    {
+        $dashboardBoxes = ReportBox::find()
+            ->select(['id'])
+            ->where(['dashboard_id' => $dashboardId])
+            ->column();
+
+        $boxWidgets = ReportBoxWidgets::find()
+            ->select(['box_id', 'widget_id', 'widget_field'])
+            ->where(['box_id' => $dashboardBoxes])
+            ->all();
+
+        // Gather box IDs with alerts
+        $alertedBoxes = [];
+        foreach ($boxWidgets as $boxWidget) {
+            $hasAlert = ReportAlert::find()
+                ->where([
+                    'widget_id' => $boxWidget->widget_id,
+                    'widget_field' => $boxWidget->widget_field,
+                ])->exists();
+
+            if ($hasAlert) {
+                $alertedBoxes[] = $boxWidget->box_id;
+            }
+        }
+
+        return array_unique($alertedBoxes);
+    }
+
     //this find the maximum/minimum order value for the current display_type and dashboard_id
     public function getDisplayOrderExtreme($type)
     {

@@ -228,6 +228,17 @@ class ReportWidget extends ActiveRecord
         return $fields;
     }
 
+    public static function getWidgetFieldTitle($widgetId, $widgetField): string
+    {
+        $widget = self::find()->where(['id' => $widgetId])->one();
+        $fieldTitle = '';
+        foreach ($widget->add_on['outputColumn'] as $column) {
+            if ($column['column_name'] == $widgetField)
+                $fieldTitle = $column['column_title'];
+        }
+        return $fieldTitle;
+    }
+
     /**
      * @param $id
      * @param $start_range
@@ -365,9 +376,27 @@ class ReportWidget extends ActiveRecord
         return $reportWidgetResult;
     }
 
-    public static function getWidgetList($rangeType = null): array
+    public static function getWidgetList($rangeType = null, $showRangeType = false): array
     {
-        return self::find()->where(['range_type' => $rangeType])->select(['title'])->indexBy('id')->column();
+        $query = self::find()->select(['id', 'title', 'range_type'])->indexBy('id');
+
+        if ($rangeType !== null) {
+            $query->where(['range_type' => $rangeType]);
+        }
+
+        $results = $query->all();
+
+        $widgetList = [];
+        foreach ($results as $result)
+        {
+            if ($showRangeType) {
+                $widgetList[$result->id] = $result->title . ' ((' . self::itemAlias('RangeTypes', $result->range_type) . '))';
+            } else {
+                $widgetList[$result->id] = $result->title;
+            }
+        }
+
+        return $widgetList;
     }
 
     public function canDelete()

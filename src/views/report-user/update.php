@@ -2,14 +2,10 @@
 
 use yii\helpers\Html;
 use yii\web\View;
-use ziaadini\bidashboard\models\ReportDashboard;
+use ziaadini\bidashboard\models\ReportUser;
 
 /** @var View $this */
-/** @var ReportDashboard $model */
-
-$this->title = Yii::t('app', 'Update Dashboard: {title}', [
-    'title' => $model->title,
-]);
+/** @var ReportUser $model */
 
 ?>
 <div class="report-widget-create">

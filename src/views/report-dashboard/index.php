@@ -42,7 +42,7 @@ $this->registerJs("
 
 ?>
 
-<div class="page-content container-fluid text-left pt-5" id="main-wrapper">
+<div class="page-content container-fluid text-left" id="main-wrapper">
     <?php Pjax::begin(['id' => 'p-jax-report-dashboard', 'enablePushState' => false]); ?>
     <div class="work-report-index card">
         <div class="panel-group m-bot20" id="accordion">

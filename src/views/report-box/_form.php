@@ -11,9 +11,7 @@ use yii\web\View;
 /** @var ReportBox $model */
 /** @var ActiveForm $form */
 /** @var View $this */
-
 ?>
-
 
 <div class="box-form">
 
