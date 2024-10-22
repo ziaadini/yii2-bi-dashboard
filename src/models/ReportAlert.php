@@ -253,13 +253,16 @@ class ReportAlert extends ActiveRecord
             ])->column();
 
         $alertUsers = ReportAlertUser::find()
+            ->select(['user_id', 'alert_id'])
+            ->distinct()
             ->where(['alert_id' => $firingAlertIds])
             ->with('alert', 'user')
             ->all();
 
         $notificationsArray = [];
 
-        foreach ($alertUsers as $alertUser) {
+        foreach ($alertUsers as $alertUser)
+        {
             $notification = [
                 'text' => $alertUser->alert->description .' (شناسه هشدار:'. $alertUser->alert->id .')',
                 'model_class' => self::class,

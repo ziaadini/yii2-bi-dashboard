@@ -19,13 +19,13 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
     <div class="d-flex align-items-end">
-        <div class="search-filed min-w-60 mr-2">
+        <div class="search-filed mr-2">
             <?= $form->field($model, 'title')->textInput([
                 'class' => 'form-control rounded-md',
                 'placeholder' => 'عنوان...'
             ])->label(false) ?>
         </div>
-        <div class="search-filed min-w-60 mr-2">
+        <div class="search-filed mr-2">
             <?= $form->field($model, 'description')->textInput([
                 'class' => 'form-control rounded-md',
                 'placeholder' => 'توضیحات...'

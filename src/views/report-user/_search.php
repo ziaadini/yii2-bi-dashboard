@@ -19,25 +19,25 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
     <div class="d-flex align-items-end">
-        <div class="search-filed min-w-60 mr-2">
+        <div class="search-filed mr-2">
             <?= $form->field($model, 'first_name')->textInput([
                 'class' => 'form-control rounded-md',
                 'placeholder' => 'نام...'
             ])->label(false) ?>
         </div>
-        <div class="search-filed min-w-60 mr-2">
+        <div class="search-filed mr-2">
             <?= $form->field($model, 'last_name')->textInput([
                 'class' => 'form-control rounded-md',
                 'placeholder' => 'نام خانوادگی...'
             ])->label(false) ?>
         </div>
-        <div class="search-filed min-w-60 mr-2">
+        <div class="search-filed mr-2">
             <?= $form->field($model, 'phone_number')->textInput([
                 'class' => 'form-control rounded-md',
                 'placeholder' => 'شماره تلفن...'
             ])->label(false) ?>
         </div>
-        <div class="search-filed min-w-60 mr-2">
+        <div class="search-filed mr-2">
             <?= $form->field($model, 'email')->textInput([
                 'class' => 'form-control rounded-md',
                 'placeholder' => 'ایمیل...'
