@@ -2,7 +2,7 @@
 
 use ziaadini\bidashboard\components\Pdate;
 use ziaadini\bidashboard\models\SharingPage;
-use ziaadini\dateRangePicker\dateRangePicker;
+use mobit\dateRangePicker\dateRangePicker;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;

@@ -19,6 +19,7 @@ $this->title = Yii::t('app', 'Update Dashboard: {title}', [
                 <div class="card-body p-0">
                     <?= $this->render('_form', [
                         'model' => $model,
+                        'fromBox' => $fromBox,
                     ]) ?>
                 </div>
             </div>

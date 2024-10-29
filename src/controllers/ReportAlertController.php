@@ -125,9 +125,11 @@ class ReportAlertController extends Controller
         ]);
     }
 
-    public function actionCreate()
+    public function actionCreate($widgetId = null, $widgetField = null, $fromBox = null)
     {
         $model = new ReportAlert();
+        $model->widget_id = $widgetId;
+        $model->widget_field = $widgetField;
         if ($model->load($this->request->post()) && $model->validate())
         {
             $userIds = $this->request->post()['ReportAlert']['users'];
@@ -185,12 +187,17 @@ class ReportAlertController extends Controller
         $this->performAjaxValidation($model);
         return $this->renderAjax('create', [
             'model' => $model,
+            'fromBox' => $fromBox
         ]);
     }
 
-    public function actionUpdate($id)
+    public function actionUpdate($id, $fromBox = null)
     {
         $model = $this->findModel($id);
+
+        /*echo \yii\helpers\VarDumper::dump($model, 10, true);
+        die();*/
+
 
         if ($model->load($this->request->post()) && $model->validate())
         {
@@ -252,6 +259,7 @@ class ReportAlertController extends Controller
         $this->performAjaxValidation($model);
         return $this->renderAjax('update', [
             'model' => $model,
+            'fromBox' => $fromBox
         ]);
     }
 

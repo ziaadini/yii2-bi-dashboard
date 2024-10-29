@@ -91,6 +91,39 @@ $this->registerJs($js);
                     <div class="px-3 py-2 border-bottom d-flex align-items-center justify-content-between">
                         <span class="card-title-item"> ویجت: <?= ($index + 1) ?></span>
                         <div class="">
+                            <?php if($modelWidget->haveAlert()): ?>
+                                <?= Html::a(
+                                    Yii::t('biDashboard', 'Edit Alert'),
+                                    "javascript:void(0)",
+                                    [
+                                        'data-pjax' => '0',
+                                        'class' => "btn btn-sm btn-warning mr-2 rounded-md",
+                                        'data-size' => 'modal-xxl modal-dialog-centered',
+                                        'data-title' => Yii::t('biDashboard', 'Edit Alert'),
+                                        'data-toggle' => 'modal',
+                                        'data-target' => '#modal-pjax-over-bi',
+                                        'data-url' => Url::to(['report-alert/update', 'id' => $modelWidget->haveAlert(), 'fromBox' => true]),
+                                        'data-handle-form-submit' => 1,
+                                        'data-reload-pjax-container' => 'p-jax-report-alert'
+                                    ]
+                                ) ?>
+                            <?php else: ?>
+                                <?= Html::a(
+                                    Yii::t('biDashboard', 'Create Alert'),
+                                    "javascript:void(0)",
+                                    [
+                                        'data-pjax' => '0',
+                                        'class' => "btn btn-sm btn-success mr-2 rounded-md",
+                                        'data-size' => 'modal-xxl modal-dialog-centered',
+                                        'data-title' => Yii::t('biDashboard', 'Create Alert'),
+                                        'data-toggle' => 'modal',
+                                        'data-target' => '#modal-pjax-over-bi',
+                                        'data-url' => Url::to(['report-alert/create', 'widgetId' => $modelWidget->widget_id, 'widgetField' => $modelWidget->widget_field, 'fromBox' => true]),
+                                        'data-handle-form-submit' => 1,
+                                        'data-reload-pjax-container' => 'p-jax-report-alert'
+                                    ]
+                                ) ?>
+                            <?php endif; ?>
                             <?php if ($modelWidget->widget !== null): ?>
                                 <?= Html::a(
                                     Yii::t('biDashboard', 'Show model'),

@@ -48,6 +48,7 @@ class ReportAlert extends ActiveRecord
     const NOTIFICATION_NONE = 0;
     const NOTIFICATION_SMS = 1;
     const NOTIFICATION_EMAIL = 2;
+    const NOTIFICATION_BOTH = 3;
 
     const NOT_SEEN = 0;
     const SEEN = 1;
@@ -80,7 +81,9 @@ class ReportAlert extends ActiveRecord
             }],
             [['title', 'description', 'slave_id', 'widget_id', 'widget_field'], 'required'],
             [['ceiling', 'floor'], 'validateFloorOrCeiling', 'skipOnError' => false, 'skipOnEmpty' => false],
+            [['widget_id', 'widget_field'], 'validateUniqueWidgetFieldCombination', 'skipOnError' => false, 'skipOnEmpty' => false],
             [['status', 'notification_type', 'seen', 'state', 'created_at', 'updated_at', 'deleted_at', 'updated_by', 'created_by', 'slave_id', 'ceiling', 'floor'], 'integer'],
+            [['users'], 'validateUsersRequired', 'skipOnError' => false, 'skipOnEmpty' => false],
             [['title'], 'string', 'max' => 128],
             [['description'], 'string', 'max' => 255],
             [['widget_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReportWidget::class, 'targetAttribute' => ['widget_id' => 'id']],
@@ -114,6 +117,35 @@ class ReportAlert extends ActiveRecord
         if (!$this->hasErrors()) {
             if (empty($this->floor) && empty($this->ceiling) || $this->floor == '' && $this->ceiling == '') {
                 return $this->addError('floor', 'حداقل یکی از مقادیر کف یا سقف باید وارد شوند.');
+            }
+        }
+    }
+
+    public function validateUniqueWidgetFieldCombination($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+
+            $query = self::find()
+                ->where(['widget_id' => $this->widget_id])
+                ->andWhere(['widget_field' => $this->widget_field]);
+
+            if (!empty($this->id) && $this->id != null) {
+                $query->andWhere(['!=', 'id', $this->id]);
+            }
+
+            $exists = $query->exists();
+
+            if ($exists) {
+                $this->addError($attribute, 'ترکیب ویجت و فیلد خروجی ویجت باید منحصر به فرد باشد.');
+            }
+        }
+    }
+
+    public function validateUsersRequired($attribute, $params)
+    {
+        if (in_array($this->notification_type, [self::NOTIFICATION_SMS, self::NOTIFICATION_EMAIL, self::NOTIFICATION_BOTH])) {
+            if (!is_array($this->$attribute) || count($this->$attribute) === 0) {
+                return $this->addError('users', 'حداقل یک کاربر را باید انتخاب کنید.');
             }
         }
     }
@@ -248,9 +280,10 @@ class ReportAlert extends ActiveRecord
         $firingAlertIds = self::find()
             ->select(['id'])
             ->where([
-                'notification_type' => $notificationType,
                 'state' => self::STATE_ALERTING
-            ])->column();
+            ])
+            ->andWhere(['in', 'notification_type', [$notificationType, self::NOTIFICATION_BOTH]])
+            ->column();
 
         $alertUsers = ReportAlertUser::find()
             ->select(['user_id', 'alert_id'])
@@ -297,6 +330,7 @@ class ReportAlert extends ActiveRecord
                 self::NOTIFICATION_NONE => Yii::t('biDashboard', 'No Notification'),
                 self::NOTIFICATION_SMS => Yii::t('biDashboard', 'SMS'),
                 self::NOTIFICATION_EMAIL => Yii::t('biDashboard', 'Email'),
+                self::NOTIFICATION_BOTH => Yii::t('biDashboard', 'SMS & Email'),
             ],
             'Seen' => [
                 self::SEEN => 'دیده شده',

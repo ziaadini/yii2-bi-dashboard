@@ -177,6 +177,16 @@ class ReportBoxWidgets extends ActiveRecord
         };
     }
 
+    public function haveAlert()
+    {
+        $alert = ReportAlert::find()
+            ->where(['widget_id' => $this->widget_id])
+            ->andWhere(['widget_field' => $this->widget_field])
+            ->one();
+
+        return $alert ? $alert->id : false;
+    }
+
     public function setWidgetProperties()
     {
 

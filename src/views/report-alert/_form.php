@@ -87,10 +87,11 @@ use yii\widgets\MaskedInput;
                 'options' => [
                     'id' => "widget_id",
                     'placeholder' => 'ویجت مورد نظر را انتخاب کنید...',
+                    'disabled' => $fromBox
                 ],
                 'pluginOptions' => [
                     'allowClear' => true,
-                    'initialize' => !$model->isNewRecord,
+                    'initialize' => !$model->isNewRecord || $fromBox,
                 ],
             ])->label('ویجت' . ' ' . '<span class="text-danger">*</span>'); ?>
         </div>
@@ -100,14 +101,15 @@ use yii\widgets\MaskedInput;
                 'options' => [
                     'id' => "widget_field",
                     'placeholder' => 'فیلد خروجی ویجت را انتخاب کنید...',
-                    'class' => 'depdrop-field'
+                    'class' => 'depdrop-field',
+                    'disabled' => $fromBox
                 ],
                 'select2Options' => [
                     'pluginOptions' => ['allowClear' => true]
                 ],
                 'pluginOptions' => [
                     'depends' => ["widget_id"],
-                    'initialize' => !$model->isNewRecord,
+                    'initialize' => !$model->isNewRecord || $fromBox,
                     'url' => Url::to(['/bidashboard/report-box-widget/get-widget-columns/'])
                 ]
             ])->label('فیلد خروجی ویجت' . ' ' . '<span class="text-danger">*</span>'); ?>

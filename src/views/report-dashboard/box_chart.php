@@ -248,7 +248,7 @@ $pdate = Yii::$app->pdate;
                 [
                     'data-pjax' => '0',
                     'class' => "btn btn-info btn-sm rounded-md font-12",
-                    'data-size' => 'modal-xl',
+                    'data-size' => 'modal-xl modal-dialog-centered',
                     'data-title' => Yii::t('biDashboard', 'Add and Edit Widgets'),
                     'data-toggle' => 'modal',
                     'data-target' => '#modal-pjax-bi',

@@ -2,6 +2,7 @@
 
 namespace ziaadini\bidashboard\controllers;
 
+use ziaadini\bidashboard\models\ReportAlert;
 use ziaadini\bidashboard\models\ReportBox;
 use ziaadini\bidashboard\models\ReportBoxWidgets;
 use ziaadini\bidashboard\models\ReportWidget;

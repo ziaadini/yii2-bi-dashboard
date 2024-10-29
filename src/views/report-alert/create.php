@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="report-page-create">
                     <?= $this->render('_form', [
                         'model' => $model,
+                        'fromBox' => $fromBox
                     ]) ?>
                 </div>
             </div>

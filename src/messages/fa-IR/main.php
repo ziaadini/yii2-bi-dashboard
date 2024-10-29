@@ -241,6 +241,7 @@ return [
     'Floor Amount' => 'مقدار کف',
     'Seen' => 'مشاهده',
     'Create Alert' => 'ایجاد هشدار',
+    'Edit Alert' => 'ویرایش هشدار',
     'Widget Field' => 'فیلد ویجت',
     'State' => 'حالت',
     'Box' => 'باکس',
@@ -256,4 +257,5 @@ return [
     'No Notification' => 'بدون اطلاع‌رسانی',
     'Notification Type' => 'نوع اطلاع‌رسانی',
     'SMS' => 'پیامک',
+    'SMS & Email' => 'پیامک و ایمیل',
 ];

@@ -140,8 +140,8 @@ class ReportDashboardController extends Controller
                     $box->rangeDateCount = count($this->getMonthDaysByDateArray($box->getStartAndEndTimeStampsForStaticDate($box->date_type)));
             }
 
-            foreach ($box->boxWidgets as $boxWidget) {
-
+            foreach ($box->boxWidgets as $boxWidget)
+            {
                 if (isset($boxWidget->widget)) {
                     $boxWidget->setWidgetProperties();
                     if ($box->date_type == ReportBox::DATE_TYPE_FLEXIBLE || $box->date_type == ReportBox::DATE_TYPE_FLEXIBLE_YEAR)

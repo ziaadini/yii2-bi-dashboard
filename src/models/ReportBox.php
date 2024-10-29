@@ -190,6 +190,8 @@ class ReportBox extends ActiveRecord
 
     public static function boxesWithFiringAlert(int $dashboardId)
     {
+        $firingBoxes = [];
+
         $firingBoxes =  ReportFiredAlert::find()
             ->select(['box_id'])
             ->where([
@@ -208,6 +210,8 @@ class ReportBox extends ActiveRecord
                 'dashboard_id' => $dashboardId,
                 'seen_status' => ReportFiredAlert::NOT_SEEN
             ]);
+
+        $boxIds = [];
 
         $boxIds = ReportFiredAlert::find()
             ->select('box_id')

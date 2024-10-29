@@ -2,7 +2,7 @@
 
 use ziaadini\bidashboard\models\ReportPage;
 use ziaadini\bidashboard\models\SharingPage;
-use ziaadini\dateRangePicker\dateRangePicker;
+use mobit\dateRangePicker\dateRangePicker;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
