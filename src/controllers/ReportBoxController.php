@@ -50,6 +50,7 @@ class ReportBoxController extends Controller
                                 'get-widgets-by-range',
                                 'run',
                                 'run-box',
+                                'run-box-auto',
                                 'inc-order',
                                 'dec-order',
                                 'export-excel'
@@ -205,6 +206,19 @@ class ReportBoxController extends Controller
 
         $box->last_run = time();
         $status = $box->save();
+        $message = Yii::t("biDashboard", $status ? 'The Operation Was Successful' : 'The Operation Failed');
+
+        return $this->asJson([
+            'status' => $status,
+            'message' => $message
+        ]);
+    }
+
+    public function actionRunBoxAuto($id)
+    {
+        $status = false;
+        $status = ReportBox::runBox($id);
+
         $message = Yii::t("biDashboard", $status ? 'The Operation Was Successful' : 'The Operation Failed');
 
         return $this->asJson([

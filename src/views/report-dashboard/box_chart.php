@@ -236,7 +236,22 @@ $pdate = Yii::$app->pdate;
 
     <div class="card-footer d-flex align-items-center justify-content-between px-3">
         <span class="text-muted font-10 mr-3"><?= $box->description ?? '(توضیحات باکس)' ?></span>
-        <div class="d-flex">
+        <div class="d-flex align-items-center">
+            <?= Html::a(
+                '<i class="fal fa-sync font-18"></i>',
+                "javascript:void(0)",
+                [
+                    'id' => 'sync_btn_auto_' . $box->id,
+                    'title' => 'تست بروز رسانی خودکار!',
+                    'aria-label' => 'تست بروز رسانی خودکار',
+                    'data-reload-pjax-container' => 'p-jax-report-dashboard-view',
+                    'data-pjax' => '0',
+                    'data-url' => Url::to(['/bidashboard/report-box/run-box-auto', 'id' => $box->id]),
+                    'class' => "p-jax-btn d-flex mr-3",
+                    'data-title' => Yii::t('biDashboard', 'Update Box'),
+                    'data-toggle' => 'tooltip',
+                ]
+            ) ?>
             <button type="button" class="btn btn-sm btn-warning disabled mr-2 rounded-md shadow-none"> بروزرسانی:
                 <?php if ($box->last_run != 0): ?>
                     <?= Yii::$app->formatter->asRelativeTime($box->last_run, 'now'); ?>
